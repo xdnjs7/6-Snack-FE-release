@@ -1,22 +1,20 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* 태블릿 사이즈 */
+  --breakpoint-sm: 744px;
+  /* 데스크탑 사이즈 */
+  --breakpoint-md: 1480px;
+
+  /* 색상 정의 */
+
+  /* 폰트 정의 */
+  --font-suit: var(--font-suit);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 body {
