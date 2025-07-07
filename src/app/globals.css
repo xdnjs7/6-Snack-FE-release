@@ -4,7 +4,7 @@
   /* 태블릿 사이즈 */
   --breakpoint-sm: 744px;
   /* 데스크탑 사이즈 */
-  --breakpoint-md: 1480px;
+  --breakpoint-md: 1400px;
 
   /* 색상 정의 */
   --color-white: #ffffff;
