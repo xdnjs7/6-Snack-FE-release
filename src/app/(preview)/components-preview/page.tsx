@@ -6,11 +6,14 @@
 import { useState } from "react";
 import TextArea from "@/components/common/TextArea";
 import MemberList from "@/components/common/MemberList";
+import Dropdown from "@/components/common/DropDown";
 import { TMemberItem } from "@/types/meberList.types";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
-  const [adminMessage, setAdminMessage] = useState("");
+  const [categoryOption, setCategoryOption] = useState("다른거");
+
+  const categoryOptions = ["음료", "과자", "아이스크림", "도시락", "라면", "사탕", "초콜릿", "떡볶이", "비빔밥"];
 
   const [members, setMembers] = useState<TMemberItem[]>([
     {
@@ -31,6 +34,8 @@ export default function ComponentsPreviewPage() {
     setMembers((prev) => prev.filter((member) => member.id !== id));
   };
 
+  const [sort, setSort] = useState("");
+
   return (
     <div className="p-10 space-y-10 bg-white min-h-screen">
       <h1 className="text-2xl font-bold">🧪 공통 컴포넌트 테스트</h1>
@@ -49,6 +54,12 @@ export default function ComponentsPreviewPage() {
         {members.map((member) => (
           <MemberList key={member.id} {...member} onDeleteUser={handleDeleteUser} />
         ))}
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold">Dropdown 컴포넌트</h2>
+        <Dropdown value={sort} onChange={setSort} />
+        <Dropdown value={categoryOption} onChange={setCategoryOption} options={categoryOptions} />
       </div>
     </div>
   );
