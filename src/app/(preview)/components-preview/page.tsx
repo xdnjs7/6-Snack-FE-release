@@ -8,12 +8,14 @@ import TextArea from "@/components/common/TextArea";
 import MemberList from "@/components/common/MemberList";
 import Dropdown from "@/components/common/DropDown";
 import { TMemberItem } from "@/types/meberList.types";
+import Toast from "@/components/common/Toast";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
   const [categoryOption, setCategoryOption] = useState("다른거");
-
+  const [budget] = useState(60000);
   const categoryOptions = ["음료", "과자", "아이스크림", "도시락", "라면", "사탕", "초콜릿", "떡볶이", "비빔밥"];
+  const [isToastVisible, setIsToastVisible] = useState(false);
 
   const [members, setMembers] = useState<TMemberItem[]>([
     {
@@ -35,6 +37,10 @@ export default function ComponentsPreviewPage() {
   };
 
   const [sort, setSort] = useState("");
+
+  const handleShowToast = () => {
+    setIsToastVisible(true);
+  };
 
   return (
     <div className="p-10 space-y-10 bg-white min-h-screen">
@@ -60,6 +66,18 @@ export default function ComponentsPreviewPage() {
         <h2 className="text-lg font-semibold">Dropdown 컴포넌트</h2>
         <Dropdown value={sort} onChange={setSort} />
         <Dropdown value={categoryOption} onChange={setCategoryOption} options={categoryOptions} />
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold">Toast 컴포넌트</h2>
+        <button
+          onClick={handleShowToast}
+          className="px-6 py-2 bg-black text-white rounded hover:bg-neutral-800 transition"
+        >
+          토스트 띄우기
+        </button>
+
+        {isToastVisible && <Toast text="예산이 부족합니다." budget={budget} onClose={() => setIsToastVisible(false)} />}
       </div>
     </div>
   );
