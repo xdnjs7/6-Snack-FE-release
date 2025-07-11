@@ -38,11 +38,11 @@ export default function ComponentsPreviewPage() {
   const [sort, setSort] = useState("");
 
   return (
-    <div className="p-10 space-y-10 bg-white min-h-screen">
+    <div className="p-10 space-y-6 bg-white min-h-screen">
       <h1 className="text-2xl font-bold">🧪 공통 컴포넌트 모음</h1>
 
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold bg-blue-300">TextArea 컴포넌트</h2>
+        <h2 className="text-lg font-semibold bg-blue-200">TextArea 컴포넌트</h2>
         <TextArea
           value={requestMessage}
           onChange={(e) => setRequestMessage(e.target.value)}
@@ -51,20 +51,20 @@ export default function ComponentsPreviewPage() {
       </div>
 
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold bg-blue-300">MemberList 컴포넌트</h2>
+        <h2 className="text-lg font-semibold bg-blue-200">MemberList 컴포넌트</h2>
         {members.map((member) => (
           <MemberList key={member.id} {...member} onDeleteUser={handleDeleteUser} />
         ))}
       </div>
 
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold">Dropdown 컴포넌트</h2>
+        <h2 className="text-lg font-semibold bg-blue-200">Dropdown 컴포넌트</h2>
         <Dropdown value={sort} onChange={setSort} />
         <Dropdown value={categoryOption} onChange={setCategoryOption} options={categoryOptions} />
       </div>
 
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold bg-blue-300">Product list 컴포넌트</h2>
+        <h2 className="text-lg font-semibold bg-blue-200">Product list 컴포넌트</h2>
         <ProductList />
       </div>
     </div>
