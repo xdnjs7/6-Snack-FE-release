@@ -1,11 +1,11 @@
 import { TMemberItem } from "@/types/meberList.types";
 
-type MemberListProps = TMemberItem & {
+type TMemberListProps = TMemberItem & {
   onDeleteUser?: (id: string) => void;
   onChangeRole?: (id: string, currentRole: TMemberItem["role"]) => void;
 };
 
-const MemberList = ({ id, name, email, role, onDeleteUser, onChangeRole }: MemberListProps) => {
+const MemberList = ({ id, name, email, role, onDeleteUser, onChangeRole }: TMemberListProps) => {
   const isSuperAdmin = role === "SUPER_ADMIN";
 
   return (
