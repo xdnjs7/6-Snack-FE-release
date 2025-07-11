@@ -11,8 +11,8 @@ const suit = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "간식 대장 스낵",
-  description: "간편하게 간식을 주문하세요",
+  title: "스낵(Snack)",
+  description: "여러 플랫폼에서 구매한 간식 내역을 한곳에 모아 관리할 수 있는 원스톱 간식 관리 서비스",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
