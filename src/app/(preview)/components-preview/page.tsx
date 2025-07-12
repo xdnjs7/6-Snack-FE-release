@@ -10,6 +10,7 @@ import Dropdown from "@/components/common/DropDown";
 import { TMemberItem } from "@/types/meberList.types";
 import ProductList from "@/components/common/ProductList";
 import Toast from "@/components/common/Toast";
+import RequestList from "@/components/common/RequestList";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -44,7 +45,7 @@ export default function ComponentsPreviewPage() {
   };
 
   return (
-    <div className="p-10 space-y-6 bg-white min-h-screen">
+    <div className="p-6 space-y-6 bg-white min-h-screen">
       <h1 className="text-2xl font-bold">🧪 공통 컴포넌트 모음</h1>
 
       <div className="space-y-4">
@@ -70,11 +71,6 @@ export default function ComponentsPreviewPage() {
       </div>
 
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold bg-blue-200">Product list 컴포넌트</h2>
-        <ProductList />
-      </div>
-        
-      <div className="space-y-4">
         <h2 className="text-lg font-semibold bg-blue-200">Toast 컴포넌트</h2>
         <button
           onClick={handleShowToast}
@@ -84,6 +80,16 @@ export default function ComponentsPreviewPage() {
         </button>
 
         {isToastVisible && <Toast text="예산이 부족합니다." budget={budget} onClose={() => setIsToastVisible(false)} />}
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold bg-blue-200">ProductList 컴포넌트</h2>
+        <ProductList />
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold bg-blue-200">RequestList 컴포넌트</h2>
+        <RequestList />
       </div>
     </div>
   );
