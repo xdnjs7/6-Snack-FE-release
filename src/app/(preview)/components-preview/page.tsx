@@ -9,6 +9,7 @@ import MemberList from "@/components/common/MemberList";
 import Dropdown from "@/components/common/DropDown";
 import { TMemberItem } from "@/types/meberList.types";
 import Toast from "@/components/common/Toast";
+import Button from "@/components/ui/Button";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -78,6 +79,18 @@ export default function ComponentsPreviewPage() {
         </button>
 
         {isToastVisible && <Toast text="예산이 부족합니다." budget={budget} onClose={() => setIsToastVisible(false)} />}
+      </div>
+
+      {/* 버튼 */}
+      <div>
+        <Button type="primary" label="확인" />
+        <Button type="secondary" label="취소" />
+        <Button type="dark" label="다크" />
+        <Button type="gray" label="회색" />
+        <Button type="disabled" label="비활성화" />
+        <Button type="mini-default" label="선택" />
+        <Button type="mini-active" label="선택됨" />
+        <Button type="mini-disabled" label="비활성" />  
       </div>
     </div>
   );
