@@ -11,6 +11,7 @@ import { TMemberItem } from "@/types/meberList.types";
 import ProductList from "@/components/common/ProductList";
 import Toast from "@/components/common/Toast";
 import RequestList from "@/components/common/RequestList";
+import Badge from "@/components/ui/Badge";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -90,6 +91,14 @@ export default function ComponentsPreviewPage() {
       <div className="space-y-4">
         <h2 className="text-lg font-semibold bg-blue-200">RequestList 컴포넌트</h2>
         <RequestList />
+      </div>
+      <div>
+        <Badge type="request" />
+        <Badge type="pending" />
+        <Badge type="approved" />
+        <Badge type="rejected" />
+        <Badge type="admin" />
+        <Badge type="user" />
       </div>
     </div>
   );
