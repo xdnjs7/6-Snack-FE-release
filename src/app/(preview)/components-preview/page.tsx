@@ -11,6 +11,8 @@ import { TMemberItem } from "@/types/meberList.types";
 import ProductList from "@/components/common/ProductList";
 import Toast from "@/components/common/Toast";
 import RequestList from "@/components/common/RequestList";
+import { SearchBar } from "@/components/ui/SearchBar";
+
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -91,6 +93,7 @@ export default function ComponentsPreviewPage() {
         <h2 className="text-lg font-semibold bg-blue-200">RequestList 컴포넌트</h2>
         <RequestList />
       </div>
+      <div className="w-full"><SearchBar/></div>
     </div>
   );
 }
