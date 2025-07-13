@@ -3,6 +3,7 @@
 import React from "react";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import MobileHeader from "./MobileHeader";
+import TabletHeader from "./TabletHeader";
 
 // 반응형에 따른 헤더 보여주기 위한 커스텀 훅 (useMediaQuery) 적용하는 부분
 const useResponsiveBreakpoints = () => {
@@ -22,14 +23,6 @@ export default function GlobalHeader() {
 
   return <MobileHeader />;
 }
-
-const TabletHeader = () => {
-  return (
-    <header className="hidden sm:block md:hidden">
-      <div>Tablet Header</div>
-    </header>
-  );
-};
 
 const DesktopHeader = () => {
   return (
