@@ -4,10 +4,9 @@ import { TSideMenuProps, TSideMenuItem } from "../../types/sideMenu.types";
 import XIcon from "./icons/XIcon";
 
 /**
- * SideMenu 컴포넌트
+ * SideMenu 사용 예시시
  * 
- * 오른쪽에서 슬라이드되는 사이드 메뉴 컴포넌트입니다.
- * 현재 페이지에 따른 활성화 상태와 호버 효과를 지원합니다.
+ * 자세한 사항은 SideMenuExample.tsx 참고
  * 
  * @example
  * ```tsx
