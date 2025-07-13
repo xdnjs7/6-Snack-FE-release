@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import SubCategoryMenu, { TCategoryItem } from "../SubCategoryMenu";
+import SubCategoryMenu from "../SubCategoryMenu";
+import { TCategoryItem } from "../../../types/subCategoryMenu.types";
 
 /**
  * SubCategoryMenu 예시 컴포넌트
