@@ -93,12 +93,20 @@ export default function ComponentsPreviewPage() {
         <RequestList />
       </div>
       <div>
-        <Badge type="request" />
-        <Badge type="pending" />
-        <Badge type="approved" />
-        <Badge type="rejected" />
-        <Badge type="admin" />
-        <Badge type="user" />
+        <div className="flex">
+          <div className="w-18">
+            <Badge type="request" />
+          </div>
+          <div className="w-19">
+            <Badge type="pending" />
+            <Badge type="approved" />
+            <Badge type="rejected" />
+          </div>
+          <div className="w-18">
+            <Badge type="admin" />
+            <Badge type="user" />
+          </div>
+        </div>
       </div>
     </div>
   );
