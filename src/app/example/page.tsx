@@ -1,6 +1,6 @@
-import SubCategoryMenuExamples from "@/components/common/SubCategoryMenuExamples";
-import SideMenuExample from "@/components/common/SideMenuExample";
-import PaginationExample from "@/components/common/PaginationExample";
+import SubCategoryMenuExamples from "@/components/common/examples/SubCategoryMenuExamples";
+import SideMenuExample from "@/components/common/examples/SideMenuExample";
+import PaginationExample from "@/components/common/examples/PaginationExample";
 
 export default function ExamplePage() {
   return (

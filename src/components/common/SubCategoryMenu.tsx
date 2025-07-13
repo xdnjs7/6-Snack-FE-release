@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ArrowIcon from "./icons/ArrowIcon";
+import ArrowIcon from "../../assets/icons/ArrowIcon";
 
 /**
  * 카테고리 메뉴 아이템 타입 (Prisma 스키마 기반)
@@ -113,7 +113,7 @@ const SubCategoryMenu = ({
                     : isParentSelected
                       ? "text-gray-950 font-bold" // 상위 카테고리 선택 시 볼드
                       : level === 0
-                        ? "text-gray-950 font-semibold group-hover:text-gray-900"
+                        ? "text-gray-950 font-normal group-hover:text-gray-900"
                         : "text-gray-500 font-normal group-hover:text-gray-700 group-hover:font-medium"
               }`}
             >
@@ -124,7 +124,7 @@ const SubCategoryMenu = ({
           {hasSubItems && (
             <ArrowIcon 
               direction={isExpanded ? "down" : "up"} 
-              className="w-4 h-4 transition-transform duration-200"
+              className="w-3 h-3 text-gray-300 transition-transform duration-200"
             />
           )}
         </div>

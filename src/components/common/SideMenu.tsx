@@ -1,7 +1,7 @@
 "use client";
 
 import { TSideMenuProps, TSideMenuItem } from "../../types/sideMenu.types";
-import XIcon from "./icons/XIcon";
+import XIcon from "../../assets/icons/XIcon";
 
 /**
  * SideMenu 사용 예시시
