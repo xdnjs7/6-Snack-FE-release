@@ -2,8 +2,9 @@
 
 import React from "react";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
+import MobileHeader from "./MobileHeader";
 
-// Custom hook for responsive logic
+// 반응형에 따른 헤더 보여주기 위한 커스텀 훅 (useMediaQuery) 적용하는 부분
 const useResponsiveBreakpoints = () => {
   const isMobile = useMediaQuery("(max-width: 743px)");
   const isTablet = useMediaQuery("(min-width: 744px) and (max-width: 1400px)");
@@ -12,7 +13,7 @@ const useResponsiveBreakpoints = () => {
   return { isMobile, isTablet, isDesktop };
 };
 
-const GlobalHeader = () => {
+export default function GlobalHeader() {
   const { isMobile, isTablet, isDesktop } = useResponsiveBreakpoints();
 
   if (isMobile) return <MobileHeader />;
@@ -20,19 +21,7 @@ const GlobalHeader = () => {
   if (isDesktop) return <DesktopHeader />;
 
   return <MobileHeader />;
-};
-
-const MobileHeader = () => {
-  return (
-    <header className="block sm:hidden">
-      {/* Mobile specific structure */}
-      <div className="w-full h-14 flex justify-between overflow-hidden"></div>
-        {/* 1. snack logo */}
-        {/* 2. menu btn */}
-      <div>Mobile Header</div>
-    </header>
-  );
-};
+}
 
 const TabletHeader = () => {
   return (
@@ -49,5 +38,3 @@ const DesktopHeader = () => {
     </header>
   );
 };
-
-export default GlobalHeader;

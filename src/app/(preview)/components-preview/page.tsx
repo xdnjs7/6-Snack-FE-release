@@ -11,6 +11,7 @@ import { TMemberItem } from "@/types/meberList.types";
 import ProductList from "@/components/common/ProductList";
 import Toast from "@/components/common/Toast";
 import RequestList from "@/components/common/RequestList";
+import GlobalHeader from "@/components/layout/GlobalHeader";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -90,6 +91,11 @@ export default function ComponentsPreviewPage() {
       <div className="space-y-4">
         <h2 className="text-lg font-semibold bg-blue-200">RequestList 컴포넌트</h2>
         <RequestList />
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold bg-blue-200">GlobalHeader (GNB) 컴포넌트</h2>
+        <GlobalHeader />
       </div>
     </div>
   );
