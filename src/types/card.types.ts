@@ -1,6 +1,6 @@
 import { StaticImageData } from "next/image";
 
-export type CardProps = {
+export type TCardProps = {
   name: string;
   purchaseCount?: number;
   price: string | number;

@@ -1,7 +1,7 @@
 import React from "react";
-import { CardProps } from "@/types/card.types";
+import { TCardProps } from "@/types/card.types";
 
-export const Card: React.FC<CardProps> = ({ name, purchaseCount, price, imageUrl }) => {
+export const Card: React.FC<TCardProps> = ({ name, purchaseCount, price, imageUrl }) => {
   return (
     <div className="w-40 h-64 sm:w-96 sm:h-auto flex flex-col justify-start items-start gap-3.5 sm:gap-5">
       <div className="w-full h-40 px-4 py-5 sm:h-96 sm:px-28 sm:py-20 relative bg-neutral-100 rounded-sm shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
