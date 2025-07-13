@@ -1,7 +1,7 @@
 "use client";
 
 interface ArrowIconProps {
-  direction: "left" | "right" | "down";
+  direction: "left" | "right" | "down" | "up";
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
@@ -15,10 +15,12 @@ const ArrowIcon = ({ direction, className = "", onClick, disabled = false }: Arr
       viewBox="0 0 8 15"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`cursor-pointer ${disabled ? "opacity-50" : ""} ${className}`}
+      className={`cursor-pointer text-gray-300 ${disabled ? "opacity-50" : ""} ${className}`}
       onClick={!disabled ? onClick : undefined}
       style={{
-        transform: direction === "left" ? "rotate(180deg)" : direction === "down" ? "rotate(90deg)" : "none"
+        transform: direction === "left" ? "rotate(180deg)" : 
+                   direction === "down" ? "rotate(90deg)" : 
+                   direction === "up" ? "rotate(-90deg)" : "none"
       }}
     >
       <path 
