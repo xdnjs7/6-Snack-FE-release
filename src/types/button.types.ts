@@ -1,10 +1,4 @@
-export type TButtonType = "primary" | "secondary" | "dark" | "light-outline" | "gray" | "disabled";
-
-export type TButtonProps = {
-  type: TButtonType;
-  label?: string;
-  onClick?: () => void;
-};
+export type TButtonType = "primary" | "black" | "light" | "whiteOutline" | "lightDisabled" | "whiteDisabled";
 
 export type TButtonStyle = {
   bg: string;

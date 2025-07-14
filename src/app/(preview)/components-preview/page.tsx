@@ -96,15 +96,20 @@ export default function ComponentsPreviewPage() {
       {/* 버튼 */}
       <div className="flex gap-5">
         <div className="flex flex-col w-96 gap-1">
-          <Button type="dark" label="다크" />
-          <Button type="primary" label="확인" />
-          <Button type="gray" label="회색" />
+          <Button type="black" label="Black 버튼" />
+          <Button type="primary" label="Primary 버튼" />
+          <Button type="lightDisabled" label="LightDisabled 버튼" />
         </div>
         <div className="flex flex-col w-96 gap-1">
-          <Button type="secondary" label="취소" />
-          <Button type="light-outline" label="비활성화" />
-          <Button type="disabled" label="비활성화" />
+          <Button type="whiteOutline" label="White Outline 버튼" />
+          <Button type="light" label="Light 버튼" />
+          <Button type="whiteDisabled" label="Disabled 버튼" />
         </div>
+        <Button
+          type="primary"
+          label="Primary 로그인"
+          textClassName="text-lg font-semibold w-24 h-10 flex items-center justify-center"
+        />
       </div>
     </div>
   );
