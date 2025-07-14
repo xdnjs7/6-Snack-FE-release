@@ -11,10 +11,10 @@ import { TMemberItem } from "@/types/meberList.types";
 import ProductList from "@/components/common/ProductList";
 import Toast from "@/components/common/Toast";
 import RequestList from "@/components/common/RequestList";
+import SubCategoryItem from "@/components/common/SubCategoryItem";
 import Card from "@/components/ui/Card";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 import SearchBar from "@/components/ui/SearchBar";
-
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -83,9 +83,12 @@ export default function ComponentsPreviewPage() {
           토스트 띄우기
         </button>
 
-        {isToastVisible && (
-          <Toast text="예산이 부족합니다." variant="success" budget={budget} onClose={() => setIsToastVisible(false)} />
-        )}
+        {isToastVisible && <Toast text="예산이 부족합니다." budget={budget} onClose={() => setIsToastVisible(false)} />}
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold bg-blue-200">SubCategoryItem 컴포넌트</h2>
+        <SubCategoryItem />
       </div>
 
       <div className="space-y-4">
@@ -97,8 +100,14 @@ export default function ComponentsPreviewPage() {
         <h2 className="text-lg font-semibold bg-blue-200">RequestList 컴포넌트</h2>
         <RequestList />
       </div>
-      <Card name="코카콜라 제로" purchaseCount={29} price={3000} imageUrl={img_coke_zero} />
-      <div className="w-full">
+
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold bg-blue-200">Card 컴포넌트</h2>
+        <Card name="코카콜라 제로" purchaseCount={29} price={3000} imageUrl={img_coke_zero} />
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold bg-blue-200">SearchBar 컴포넌트</h2>
         <SearchBar />
       </div>
     </div>
