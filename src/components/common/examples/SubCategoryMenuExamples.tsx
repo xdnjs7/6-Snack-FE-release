@@ -6,9 +6,13 @@ import SubCategoryMenu from "../SubCategoryMenu";
 import { TCategoryItem } from "../../../types/subCategoryMenu.types";
 
 /**
- * SubCategoryMenu 예시 컴포넌트
+ * SubCategoryMenu 컴포넌트 사용 예시
+ * 
+ * @description
+ * 서브카테고리 메뉴 컴포넌트의 기본적인 사용법을 보여주는 예시입니다.
+ * 실제 상품 카테고리 데이터를 기반으로 한 예시입니다.
  */
-const SubCategoryMenuExamples = () => {
+export default function SubCategoryMenuExamples() {
   const pathname = usePathname();
 
   // 예시 카테고리 데이터 (Prisma 스키마 기반)
@@ -151,6 +155,4 @@ const SubCategoryMenuExamples = () => {
       </div>
     </div>
   );
-};
-
-export default SubCategoryMenuExamples; 
+} 

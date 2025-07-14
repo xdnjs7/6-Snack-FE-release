@@ -1,12 +1,14 @@
 "use client";
 
 import { TSideMenuProps, TSideMenuItem } from "../../types/sideMenu.types";
-import XIcon from "../../assets/icons/XIcon";
+import XIcon from "../../svg/XIcon";
 
 /**
- * SideMenu 사용 예시시
+ * 사이드 메뉴 컴포넌트
  * 
- * 자세한 사항은 SideMenuExample.tsx 참고
+ * @description
+ * 오른쪽에서 슬라이드되는 사이드 메뉴 컴포넌트입니다.
+ * 현재 페이지 경로에 따라 메뉴 아이템이 활성화됩니다.
  * 
  * @example
  * ```tsx
@@ -46,15 +48,8 @@ import XIcon from "../../assets/icons/XIcon";
  *   );
  * };
  * ```
- * 
- * @param items - 메뉴 아이템 배열
- * @param isOpen - 메뉴 열림/닫힘 상태
- * @param currentPath - 현재 페이지 경로 (활성화 상태 결정)
- * @param onItemClick - 메뉴 아이템 클릭 시 호출되는 콜백
- * @param onClose - 메뉴 닫기 콜백
- * @param className - 추가 CSS 클래스
  */
-const SideMenu = ({ items, isOpen, currentPath, onItemClick, onClose, className = "" }: TSideMenuProps) => {
+export default function SideMenu({ items, isOpen, currentPath, onItemClick, onClose, className = "" }: TSideMenuProps) {
   if (!isOpen) return null;
 
   const isCurrentPage = (item: TSideMenuItem) => {
@@ -102,6 +97,4 @@ const SideMenu = ({ items, isOpen, currentPath, onItemClick, onClose, className 
       </div>
     </div>
   );
-};
-
-export default SideMenu; 
+} 

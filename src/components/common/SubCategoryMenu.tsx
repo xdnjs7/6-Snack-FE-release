@@ -1,16 +1,60 @@
 "use client";
 
 import { useState } from "react";
-import ArrowIcon from "../../assets/icons/ArrowIcon";
+import ArrowIcon from "../../svg/ArrowIcon";
 import { TCategoryItem, TSubCategoryMenuProps } from "../../types/subCategoryMenu.types";
 
-const SubCategoryMenu = ({ 
+/**
+ * 서브카테고리 메뉴 컴포넌트
+ * 
+ * @description
+ * 사이드바 형태의 계층적 카테고리 메뉴 컴포넌트입니다.
+ * 상위 카테고리를 클릭하면 하위 카테고리가 펼쳐지고,
+ * 현재 페이지 경로에 따라 메뉴 아이템이 활성화됩니다.
+ * 
+ * @example
+ * ```tsx
+ * import SubCategoryMenu from "@/components/common/SubCategoryMenu";
+ * import { usePathname } from "next/navigation";
+ * 
+ * const ProductListPage = () => {
+ *   const pathname = usePathname();
+ *   
+ *   const categories = [
+ *     {
+ *       id: 1,
+ *       name: "스낵",
+ *       children: [
+ *         { id: 11, name: "과자", href: "/products/snack/cookies" },
+ *         { id: 12, name: "쿠키", href: "/products/snack/cookies" },
+ *       ]
+ *     }
+ *   ];
+ * 
+ *   const handleItemClick = (item: TCategoryItem) => {
+ *     if (item.href) {
+ *       router.push(item.href);
+ *     }
+ *   };
+ * 
+ *   return (
+ *     <SubCategoryMenu
+ *       categories={categories}
+ *       currentPath={pathname}
+ *       onItemClick={handleItemClick}
+ *     />
+ *   );
+ * };
+ * ```
+ */
+
+export default function SubCategoryMenu({ 
   categories, 
   currentPath, 
   onItemClick, 
   className = ""
-}: TSubCategoryMenuProps) => {
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
+}: TSubCategoryMenuProps) {
+  const [expandedCategories, setExpandedCategories] = useState<Set<number>>(new Set());
   const [selectedParentId, setSelectedParentId] = useState<number | null>(null);
   const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
 
@@ -21,10 +65,10 @@ const SubCategoryMenu = ({
 
   const toggleCategory = (categoryId: number) => {
     const newExpanded = new Set(expandedCategories);
-    if (newExpanded.has(categoryId.toString())) {
-      newExpanded.delete(categoryId.toString());
+    if (newExpanded.has(categoryId)) {
+      newExpanded.delete(categoryId);
     } else {
-      newExpanded.add(categoryId.toString());
+      newExpanded.add(categoryId);
     }
     setExpandedCategories(newExpanded);
   };
@@ -45,7 +89,7 @@ const SubCategoryMenu = ({
   const renderMenuItem = (item: TCategoryItem, level: number = 0) => {
     const isActive = isCurrentPage(item);
     const hasSubItems = item.children && item.children.length > 0;
-    const isExpanded = expandedCategories.has(item.id.toString());
+    const isExpanded = expandedCategories.has(item.id);
     const isClickable = item.href || hasSubItems;
     
     // 선택 상태 확인
@@ -55,8 +99,8 @@ const SubCategoryMenu = ({
     return (
       <div key={item.id} className="w-full">
         <div
-          className={`w-full h-[50px] px-[14px] py-[15px] inline-flex justify-between items-center cursor-pointer hover:bg-gray-50 transition-colors group relative ${
-            level > 0 ? 'px-[30px] py-[15px]' : ''
+          className={`w-full h-[50px] py-[15px] inline-flex justify-between items-center cursor-pointer hover:bg-gray-50 transition-colors group relative ${
+            level > 0 ? 'px-[30px]' : 'px-[14px]'
           } ${!isClickable ? 'cursor-default' : ''} ${
             isActive ? 'bg-blue-50 border-r-2 border-blue-500' : ''
           }`}
@@ -119,6 +163,4 @@ const SubCategoryMenu = ({
       </div>
     </div>
   );
-};
-
-export default SubCategoryMenu; 
+} 

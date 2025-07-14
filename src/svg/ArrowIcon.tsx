@@ -1,13 +1,13 @@
 "use client";
 
-interface ArrowIconProps {
+type TArrowIconProps = {
   direction: "left" | "right" | "down" | "up";
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
-}
+};
 
-const ArrowIcon = ({ direction, className = "", onClick, disabled = false }: ArrowIconProps) => {
+export default function ArrowIcon({ direction, className = "", onClick, disabled = false }: TArrowIconProps) {
   return (
     <svg
       width="8"
@@ -29,6 +29,4 @@ const ArrowIcon = ({ direction, className = "", onClick, disabled = false }: Arr
       />
     </svg>
   );
-};
-
-export default ArrowIcon; 
+} 

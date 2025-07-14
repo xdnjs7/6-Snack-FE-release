@@ -2,9 +2,17 @@
 
 import { useState } from "react";
 import SideMenu from "../SideMenu";
-import { TSideMenuItem } from "../../types/sideMenu.types";
+import { TSideMenuItem } from "../../../types/sideMenu.types";
 
-const SideMenuExample = () => {
+/**
+ * SideMenu 컴포넌트 사용 예시
+ * 
+ * @description
+ * 사이드 메뉴 컴포넌트의 기본적인 사용법을 보여주는 예시입니다.
+ * 메뉴 열기/닫기와 현재 페이지 상태 변경을 테스트할 수 있습니다.
+ */
+
+export default function SideMenuExample() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState("/products");
 
@@ -82,6 +90,4 @@ const SideMenuExample = () => {
       />
     </div>
   );
-};
-
-export default SideMenuExample; 
+} 

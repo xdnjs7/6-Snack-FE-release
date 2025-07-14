@@ -1,11 +1,11 @@
 "use client";
 
-interface XIconProps {
+type TXIconProps = {
   className?: string;
   onClick?: () => void;
-}
+};
 
-const XIcon = ({ className = "", onClick }: XIconProps) => {
+export default function XIcon({ className = "", onClick }: TXIconProps) {
   return (
     <svg
       width="24"
@@ -20,6 +20,4 @@ const XIcon = ({ className = "", onClick }: XIconProps) => {
       <path d="M7 7L17 17" stroke="#373737" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
-};
-
-export default XIcon; 
+} 

@@ -2,12 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { TPaginationProps } from "../../types/pagination.types";
-import ArrowIcon from "../../assets/icons/ArrowIcon";
+import ArrowIcon from "../../svg/ArrowIcon";
 
 /**
- * Pagination 사용 예시
+ * 페이지네이션 컴포넌트
  * 
- * 자세한 사항은 PaginationExample.tsx 참고
+ * @description
+ * - 반응형 컴포넌트: 744px 미만에서는 작은 크기, 744px 이상에서는 큰 크기
+ * - 첫 페이지에서는 Prev 버튼이 비활성화됩니다
+ * - 마지막 페이지에서는 Next 버튼이 비활성화됩니다
+ * - onPrevPage, onNextPage가 제공되지 않으면 onPageChange를 사용합니다
  * 
  * @example
  * ```tsx
@@ -31,28 +35,15 @@ import ArrowIcon from "../../assets/icons/ArrowIcon";
  *   );
  * };
  * ```
- * 
- * @param currentPage - 현재 페이지 번호 (필수)
- * @param totalPages - 전체 페이지 수 (필수)
- * @param onPageChange - 페이지 변경 시 호출되는 콜백 함수 (필수)
- * @param onPrevPage - 이전 페이지로 이동 시 호출되는 콜백 함수 (선택사항)
- * @param onNextPage - 다음 페이지로 이동 시 호출되는 콜백 함수 (선택사항)
- * @param className - 추가 CSS 클래스 (선택사항)
- * 
- * @description
- * - 반응형 컴포넌트: 744px 미만에서는 작은 크기, 744px 이상에서는 큰 크기
- * - 첫 페이지에서는 Prev 버튼이 비활성화됩니다
- * - 마지막 페이지에서는 Next 버튼이 비활성화됩니다
- * - onPrevPage, onNextPage가 제공되지 않으면 onPageChange를 사용합니다
  */
-const Pagination = ({ 
+export default function Pagination({ 
   currentPage, 
   totalPages, 
   onPageChange, 
   onPrevPage, 
   onNextPage, 
   className = ""
-}: TPaginationProps) => {
+}: TPaginationProps) {
   const [isTablet, setIsTablet] = useState(false);
   
   useEffect(() => {
@@ -120,6 +111,4 @@ const Pagination = ({
       </div>
     </div>
   );
-};
-
-export default Pagination; 
+} 
