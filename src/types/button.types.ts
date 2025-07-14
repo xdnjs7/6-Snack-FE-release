@@ -1,19 +1,16 @@
-// types/button.types.ts
-export type ButtonType =
-  | 'primary'
-  | 'secondary'
-  | 'dark'
-  | 'light-outline'
-  | 'gray'
-  | 'disabled'
-  | 'mini-default'
-  | 'mini-active'
-  | 'mini-disabled';
-
-export type ButtonSize = 'lg' | 'sm';
+export type TButtonType = "primary" | "secondary" | "dark" | "light-outline" | "gray" | "disabled";
 
 export type TButtonProps = {
-  type: ButtonType;
+  type: TButtonType;
   label?: string;
   onClick?: () => void;
+};
+
+export type TButtonStyle = {
+  bg: string;
+  textColor?: string;
+  padding: string;
+  outline?: string;
+  font?: string;
+  size?: string;
 };

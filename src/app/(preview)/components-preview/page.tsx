@@ -94,15 +94,17 @@ export default function ComponentsPreviewPage() {
       </div>
 
       {/* 버튼 */}
-      <div>
-        <Button type="primary" label="확인" />
-        <Button type="secondary" label="취소" />
-        <Button type="dark" label="다크" />
-        <Button type="gray" label="회색" />
-        <Button type="disabled" label="비활성화" />
-        <Button type="mini-default" label="선택" />
-        <Button type="mini-active" label="선택됨" />
-        <Button type="mini-disabled" label="비활성" />
+      <div className="flex gap-5">
+        <div className="flex flex-col w-96 gap-1">
+          <Button type="dark" label="다크" />
+          <Button type="primary" label="확인" />
+          <Button type="gray" label="회색" />
+        </div>
+        <div className="flex flex-col w-96 gap-1">
+          <Button type="secondary" label="취소" />
+          <Button type="light-outline" label="비활성화" />
+          <Button type="disabled" label="비활성화" />
+        </div>
       </div>
     </div>
   );
