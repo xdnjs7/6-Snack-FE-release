@@ -62,7 +62,7 @@ export default function ComponentsPreviewPage() {
       <div className="space-y-4">
         <h2 className="text-lg font-semibold bg-blue-200">MemberList 컴포넌트</h2>
         {members.map((member) => (
-          <MemberList key={member.id} {...member} onDeleteUser={handleDeleteUser} />
+          <MemberList key={member.id} {...member} onClickDeleteUser={handleDeleteUser} />
         ))}
       </div>
 
@@ -81,7 +81,9 @@ export default function ComponentsPreviewPage() {
           토스트 띄우기
         </button>
 
-        {isToastVisible && <Toast text="예산이 부족합니다." budget={budget} onClose={() => setIsToastVisible(false)} />}
+        {isToastVisible && (
+          <Toast text="예산이 부족합니다." variant="success" budget={budget} onClose={() => setIsToastVisible(false)} />
+        )}
       </div>
 
       <div className="space-y-4">
