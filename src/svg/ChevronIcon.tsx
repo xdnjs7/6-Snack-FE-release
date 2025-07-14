@@ -6,12 +6,14 @@ type TChevronIconProps = {
   direction: "left" | "right" | "down" | "up";
   className?: string;
   color?: string;
+  onClick?: () => void; // Simple click handler
 };
 
 export default function ChevronIcon({
   direction,
   className = "",
   color = "var(--color-primary-100)",
+  onClick,
 }: TChevronIconProps) {
   return (
     <svg
@@ -21,6 +23,7 @@ export default function ChevronIcon({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={`cursor-pointer ${className}`}
+      onClick={onClick}
       style={{
         transform:
           direction === "left"
