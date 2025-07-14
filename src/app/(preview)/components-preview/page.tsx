@@ -49,7 +49,7 @@ export default function ComponentsPreviewPage() {
     <div className="p-6 space-y-6 bg-white min-h-screen">
       <h1 className="text-2xl font-bold">🧪 공통 컴포넌트 모음</h1>
 
-      {/* <div className="space-y-4">
+      <div className="space-y-4">
         <h2 className="text-lg font-semibold bg-blue-200">TextArea 컴포넌트</h2>
         <TextArea
           value={requestMessage}
@@ -91,11 +91,6 @@ export default function ComponentsPreviewPage() {
       <div className="space-y-4">
         <h2 className="text-lg font-semibold bg-blue-200">RequestList 컴포넌트</h2>
         <RequestList />
-      </div> */}
-
-      <div className="space-y-4">
-        <h2 className="text-lg font-semibold bg-blue-200">GlobalHeader (GNB) 컴포넌트</h2>
-        <GlobalHeader />
       </div>
     </div>
   );
