@@ -1,6 +1,6 @@
-import { TButtonStyle, TButtonType } from "@/types/button.types";
 import React from "react";
 import clsx from "clsx";
+import { TButtonStyle, TButtonType } from "@/types/button.types";
 
 type TButtonProps = {
   type: TButtonType;
@@ -43,13 +43,16 @@ const buttonStyleMap: Record<TButtonType, TButtonStyle> = {
   },
 };
 
-export default function Button({ type, label = "label", onClick, textClassName = "" }: TButtonProps) {
+function Button({ type, label = "label", onClick, textClassName = "" }: TButtonProps) {
   const style = buttonStyleMap[type];
 
   if (!style) {
     console.warn(`Unknown button type: ${type}`);
     return null;
   }
+
+  const disabledTypes: TButtonType[] = ["whiteDisabled", "lightDisabled"];
+  const isDisabled = disabledTypes.includes(type);
 
   const buttonClass = clsx(
     style.bg,
@@ -58,13 +61,14 @@ export default function Button({ type, label = "label", onClick, textClassName =
     style.outline,
     style.font,
     "rounded-sm inline-flex justify-center items-center",
+    isDisabled ? "cursor-not-allowed" : "cursor-pointer"
   );
 
-  const disabledTypes: TButtonType[] = ["whiteDisabled", "lightDisabled"];
-
   return (
-    <button className={buttonClass} disabled={disabledTypes.includes(type)} onClick={onClick}>
+    <button className={buttonClass} disabled={isDisabled} onClick={onClick}>
       <span className={clsx(textClassName)}>{label}</span>
     </button>
   );
 }
+
+export default Button;
