@@ -14,6 +14,8 @@ import Button from "@/components/ui/Button";
 import RequestList from "@/components/common/RequestList";
 import Card from "@/components/ui/Card";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
+import SearchBar from "@/components/ui/SearchBar";
+
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -95,6 +97,9 @@ export default function ComponentsPreviewPage() {
       <div className="space-y-4">
         <h2 className="text-lg font-semibold bg-blue-200">RequestList 컴포넌트</h2>
         <RequestList />
+      </div>
+      <div className="w-full">
+        <SearchBar />
       </div>
 
         {/* 카드 */}
