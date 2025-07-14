@@ -6,7 +6,7 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import IcSearch from "@/assets/icons/ic_search.svg";
 import { TSearchBarProps } from "@/types/serchBar.types";
 
-export const SearchBar: React.FC<TSearchBarProps> = ({ placeholder = "이름으로 검색하세요", initialValue = "" }) => {
+function SearchBar({ placeholder = "이름으로 검색하세요", initialValue = "" }: TSearchBarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -61,4 +61,6 @@ export const SearchBar: React.FC<TSearchBarProps> = ({ placeholder = "이름으�
       />
     </div>
   );
-};
+}
+
+export default SearchBar;
