@@ -1,4 +1,6 @@
-import React, { useState, KeyboardEvent, useCallback } from "react";
+"use client";
+
+import React, { useEffect, useState, KeyboardEvent, useCallback } from "react";
 import Image from "next/image";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import IcSearch from "@/assets/icons/ic_search.svg";
@@ -9,11 +11,17 @@ export const SearchBar: React.FC<TSearchBarProps> = ({ placeholder = "이름으�
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [searchText, setSearchText] = useState<string>(initialValue || searchParams.get("q") || "");
+  const [searchText, setSearchText] = useState<string>(initialValue);
+
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q && !initialValue) {
+      setSearchText(q);
+    }
+  }, [searchParams, initialValue]);
 
   const handleSearch = useCallback(() => {
     const searchTerm = searchText.trim();
-
     const params = new URLSearchParams(searchParams.toString());
 
     if (!searchTerm) {
