@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { ToastVariant } from "@/types/toast.types";
 
-import exclamationIc from "@/assets/icons/ic_exclamation_red.svg";
+import exclamationIc from "@/assets/icons/ic_exclamation_mark_red.svg";
 import checkIc from "@/assets/icons/ic_check_white.svg";
-import xIc from "@/assets/icons/ic_X_gray.svg";
+import xIc from "@/assets/icons/ic_x_gray.svg";
 
 type TToastProps = {
   text: string;
