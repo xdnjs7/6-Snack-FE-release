@@ -27,7 +27,7 @@ export default function QuantityDropdown({
       <div className="text-primary-950 text-base font-normal">수량</div>
       <div className="relative flex justify-start items-center w-25 p-3.5 bg-white rounded-sm border border-primary-300">
         <div className="flex-1 self-stretch flex justify-end items-center gap-1">
-          <div className="justify-center text-neutral-800 text-base font-normal">{selectedQuantity}</div>
+          <div className="justify-center text-primary-950 text-base font-normal">{selectedQuantity}</div>
           <ArrowIcon
             direction="down"
             className="w-4 h-4 p-[1px] text-primary-950"
@@ -36,13 +36,13 @@ export default function QuantityDropdown({
 
           {/* 드롭다운 메뉴 */}
           {showDropdown && (
-            <div className="absolute top-full right-0 mt-1 bg-white border border-primary-200 rounded-md shadow-lg z-10 w-25">
+            <div className="absolute top-full right-0 mt-1 bg-white border border-primary-300 rounded-md shadow-lg z-10 w-25">
               <div
                 className="overflow-y-auto py-2"
                 style={{
                   maxHeight: "128px",
                   scrollbarWidth: "thin",
-                  scrollbarColor: "#d1d5db #f3f4f6",
+                  scrollbarColor: "#4c8ae1 #f2f6ff",
                 }}
               >
                 {quantityOptions.map((quantity) => (

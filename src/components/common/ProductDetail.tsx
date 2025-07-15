@@ -7,12 +7,14 @@ import Image from "next/image";
 import { useState } from "react";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 import ic_like_normal from "@/assets/icons/ic_like_normal.svg";
-import ic_menu from "@/assets/icons/ic_menu.svg";
 import ArrowIcon from "../svg/ArrowIcon";
 import QuantityDropdown from "./QuantityDropdown";
+import MenuDropdown from "./MenuDropdown";
+import PlusToggleIconSvg from "../svg/PlusToggleIconSvg";
 
 export default function ProductDetail() {
   const [selectedQuantity, setSelectedQuantity] = useState(16);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
       <Mobile>
@@ -28,12 +30,11 @@ export default function ProductDetail() {
               </div>
               <p className="font-normal text-sm text-primary-950 tracking-tight">청량 ∙ 탄산 음료 </p>
             </div>
-            {/* 이미지 */}
-            {/* <div className="w-full flex justify-center">
+            <div className="w-full flex justify-center">
               <div className="relative w-full max-w-[496px] aspect-square">
                 <Image src={img_coke_zero} alt="코카콜라 제로" fill className="object-contain" />
               </div>
-            </div> */}
+            </div>
           </div>
 
           {/* (상품 정보) (장바구니담기부터 아래 부분) wrapper  */}
@@ -49,13 +50,11 @@ export default function ProductDetail() {
                 <div className="text-black text-lg font-extrabold">2,000원</div>
               </div>
 
-              {/* (상품수량, 드롭다운) 메뉴 */}
+              {/* (상품수량, 드롭다운) (메뉴) */}
               <div className="flex items-start gap-3.5">
                 <QuantityDropdown selectedQuantity={selectedQuantity} onQuantityChange={setSelectedQuantity} />
-                {/* 메뉴 버튼 */}
-                <div className="w-6 h-6 relative inline-flex flex-col justify-start items-start">
-                  <Image src={ic_menu} alt="더보기 메뉴" fill className="object-contain" />
-                </div>
+                {/* 여기에 console.log 지우고 상품 수정, 상품 삭제 모달 연결시켜 주세요 */}
+                <MenuDropdown onEdit={() => console.log("상품 수정")} onDelete={() => console.log("상품 삭제")} />
               </div>
             </div>
 
@@ -74,21 +73,43 @@ export default function ProductDetail() {
                 </div>
               </div>
               {/* 구매혜택  + 토글 안했을때 */}
-              <div className="self-stretch py-7 border-b border-neutral-200 inline-flex flex-col justify-center items-start gap-1.5">
+              <div className="self-stretch py-7 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-1.5">
                 <div className="self-stretch inline-flex justify-between items-center">
-                  <div className="justify-start text-neutral-800 text-base font-bold font-['SUIT']">구매혜택</div>
-                  {/* + Or - 버튼 */}
-
-                  <p>5포인트 적립 예정</p>
+                  <div className="text-primary-950 text-base font-bold">구매혜택</div>
+                  {/* + 토글 버튼, 클릭시 -로 변화하면서 아래 5포인트 적립 예정 보여지고 다시 토글시 숨겨짐 */}
+                  <PlusToggleIconSvg isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
                 </div>
+                {isOpen && <div className="text-primary-600 text-sm font-normal tracking-tight">5포인트 적립 예정</div>}
               </div>
 
-              <div>
-                <p></p>
+              {/* 배송방법 */}
+              <div className="self-stretch py-7 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-1.5">
+                <div className="self-stretch inline-flex justify-between items-center">
+                  <div className="text-primary-950 text-base font-bold">배송 방법</div>
+                  {/* + 토글 버튼, 클릭시 -로 변화하면서 아래 5포인트 적립 예정 보여지고 다시 토글시 숨겨짐 */}
+                  <PlusToggleIconSvg isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+                </div>
+                {isOpen && <div className="text-primary-600 text-sm font-normal tracking-tight">택배</div>}
               </div>
 
-              <div className="border-t-primary-100">배송방법</div>
-              <div className="border-t-primary-100">배송비</div>
+              {/* 배송비 */}
+              <div className="self-stretch py-7 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-1.5">
+                <div className="self-stretch inline-flex justify-between items-center">
+                  <div className="text-primary-950 text-base font-bold">배송비</div>
+                  {/* + 토글 버튼, 클릭시 -로 변화하면서 아래 5포인트 적립 예정 보여지고 다시 토글시 숨겨짐 */}
+                  <PlusToggleIconSvg isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+                </div>
+                {isOpen && (
+                  <div className="text-primary-600 text-sm font-normal tracking-tight">
+                    3,000원 (50,000원 이상 무료배송)
+                  </div>
+                )}
+                {isOpen && (
+                  <div className="text-primary-400 text-sm font-normal tracking-tight">
+                    도서산간 배송비 추가
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
