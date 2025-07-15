@@ -18,10 +18,11 @@ import Card from "@/components/ui/Card";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 import SearchBar from "@/components/ui/SearchBar";
 import Badge from "@/components/ui/Badge";
-import ProductModal from "@/components/common/ProductEditForm";
 import ProductEditForm from "@/components/common/ProductEditForm";
 import ProductRegistrationForm from "@/components/common/ProductRegistrationForm";
 import Input from "@/components/common/Input";
+import ConfirmationModal from "@/components/common/ConfirmationModal";
+import RequestListItem from "@/components/common/RequestListItem";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -54,6 +55,14 @@ export default function ComponentsPreviewPage() {
 
   const handleShowToast = () => {
     setIsToastVisible(true);
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 모달을 여는 함수
+  const handleOpenModal = () => {
+    setIsModalOpen(true); // isModalOpen 상태를 true로 변경하여 모달을 엽니다.
+    // 필요하다면 여기에서 setProductNameToDelete('새로운 상품명') 등으로 상품명을 동적으로 설정할 수 있습니다.
   };
 
   return (
@@ -191,17 +200,65 @@ export default function ComponentsPreviewPage() {
           <ProductEditForm />
           <h2 className="text-lg font-semibold bg-blue-100">[상품 등록 모달]</h2>
           <ProductRegistrationForm />
+          <h2 className="text-lg font-semibold bg-blue-100">[My Request List(요청 취소 가능)]</h2>
+          <RequestListItem
+            requestDate="2024. 07. 04"
+            productName="코카콜라 제로"
+            price={1900}
+            status="대기중"
+            onRequestCancel={() => {}}
+          />
           <h2 className="text-lg font-semibold bg-blue-100">[Input]</h2>
           <div>
             <Input value={inputValue} onChange={setInputValue} unit="원" label="floating label" />
             <p>현재 입력된 값: {inputValue}</p>
           </div>
-        </div>
-
-        <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[컴포넌트 이름] 컴포넌트</h2>
-          {/* 아래 예시처럼 본인 컴포넌트 불러오기 */}
-          {/* <SearchBar /> */}
+          <h2 className="text-lg font-semibold bg-blue-100">
+            [삭제 확인 모달] Props 전달로 모달 메시지, 버튼 텍스트 변경 가능
+          </h2>
+          {/* 이 버튼을 클릭하면 isModalOpen 상태가 true로 바뀌어 모달이 열립니다. */}
+          <button
+            onClick={handleOpenModal}
+            style={{
+              padding: "10px 20px",
+              fontSize: "16px",
+              cursor: "pointer",
+              backgroundColor: "#4CAF50",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+            }}
+          >
+            상품 삭제 모달 열기
+          </button>
+          <ConfirmationModal isOpen={isModalOpen} productName="예시 상품" onCancel={() => {}} onDelete={() => {}} />
+          <h2 className="text-lg font-semibold bg-blue-100">
+            [구매 요청 취소 모달] Props 전달로 모달 메시지, 버튼 텍스트 변경 가능
+          </h2>
+          {/* 이 버튼을 클릭하면 isModalOpen 상태가 true로 바뀌어 모달이 열립니다. */}
+          <button
+            onClick={handleOpenModal}
+            style={{
+              padding: "10px 20px",
+              fontSize: "16px",
+              cursor: "pointer",
+              backgroundColor: "#4CAF50",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+            }}
+          >
+            구매 요청 취소 모달 열기
+          </button>
+          <ConfirmationModal
+            isOpen={isModalOpen}
+            productName="예시 상품"
+            onCancel={() => {}}
+            onDelete={() => {}}
+            modalTitle="구매 요청을 취소하시겠어요?"
+            modalDescription="구매 요청 취소 후에는 복구할 수 없습니다."
+            confirmButtonText="요청 취소"
+          />
         </div>
       </div>
 
