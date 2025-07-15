@@ -9,12 +9,12 @@ type TBudgetIconSvgProps = {
 export default function BudgetIconSvg({ className = "", onClick, isActive = false }: TBudgetIconSvgProps) {
   return (
     <svg
-      width="24"
-      height="24"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`cursor-pointer text-gray-300 ${className}`}
+      className={`cursor-pointer text-primary-500 ${className}`}
       onClick={onClick}
     >
       <path
