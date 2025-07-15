@@ -24,13 +24,15 @@ export default function QuantityDropdown({
 
   return (
     <div className={`flex justify-center items-center gap-3.5 ${className}`}>
-      <div className="text-primary-950 text-base font-normal">수량</div>
+      <div className="text-primary-950 text-base/[20px] font-normal tracking-tight">수량</div>
       <div className="relative flex justify-start items-center w-25 p-3.5 bg-white rounded-sm border border-primary-300">
         <div className="flex-1 self-stretch flex justify-end items-center gap-1">
-          <div className="justify-center text-primary-950 text-base font-normal">{selectedQuantity}</div>
+          <div className="justify-center text-primary-950 text-base/[20px] font-normal tracking-tight">
+            {selectedQuantity}
+          </div>
           <ArrowIcon
             direction="down"
-            className="w-4 h-4 p-[1px] text-primary-950"
+            className="w-6 h-6 p-[4px] text-primary-950"
             onClick={() => setShowDropdown(!showDropdown)}
           />
 
