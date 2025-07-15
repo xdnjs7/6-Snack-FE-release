@@ -1,18 +1,20 @@
 "use client";
 
-type TXIconProps = {
+type TCheckIconProps = {
   className?: string;
   onClick?: () => void;
-  stroke?: string;
+  stroke?: string;  
+  strokeWidth?: number;
   bgColor?: string; 
 };
 
-export default function XIconSvg({
+export default function CheckIconSvg({
   className = "",
   onClick,
   stroke = "black",
-  bgColor = "transparent", 
-}: TXIconProps) {
+  strokeWidth = 2,
+  bgColor = "transparent",
+}: TCheckIconProps) {
   return (
     <svg
       width="24"
@@ -25,8 +27,13 @@ export default function XIconSvg({
     >
       <circle cx="12" cy="12" r="12" fill={bgColor} />
 
-      <path d="M17 7L7 17" stroke={stroke} strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M7 7L17 17" stroke={stroke} strokeWidth="1.5" strokeLinecap="round" />
+      <path
+        d="M7 12.5L10 15.5L17 8.5"
+        stroke={stroke}
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
