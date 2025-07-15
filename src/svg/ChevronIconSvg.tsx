@@ -6,10 +6,10 @@ type TChevronIconProps = {
   direction: "left" | "right" | "down" | "up";
   className?: string;
   color?: string;
-  onClick?: () => void; // Simple click handler
+  onClick?: () => void;
 };
 
-export default function ChevronIcon({
+export default function ChevronIconSvg({
   direction,
   className = "",
   color = "var(--color-primary-100)",
