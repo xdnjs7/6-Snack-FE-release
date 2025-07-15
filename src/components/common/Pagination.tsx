@@ -2,30 +2,30 @@
 
 import { useState, useEffect } from "react";
 import { TPaginationProps } from "../../types/pagination.types";
-import ArrowIcon from "../../svg/ArrowIcon";
+import ArrowIcon from "../svg/ArrowIcon";
 
 /**
  * 페이지네이션 컴포넌트
- * 
+ *
  * @description
  * - 반응형 컴포넌트: 744px 미만에서는 작은 크기, 744px 이상에서는 큰 크기
  * - 첫 페이지에서는 Prev 버튼이 비활성화됩니다
  * - 마지막 페이지에서는 Next 버튼이 비활성화됩니다
  * - onPrevPage, onNextPage가 제공되지 않으면 onPageChange를 사용합니다
- * 
+ *
  * @example
  * ```tsx
  * import Pagination from "@/components/common/Pagination";
- * 
+ *
  * const MyPage = () => {
  *   const [currentPage, setCurrentPage] = useState(1);
  *   const totalPages = 10;
- * 
+ *
  *   const handlePageChange = (page: number) => {
  *     setCurrentPage(page);
  *     // 데이터 로딩 로직
  *   };
- * 
+ *
  *   return (
  *     <Pagination
  *       currentPage={currentPage}
@@ -36,27 +36,27 @@ import ArrowIcon from "../../svg/ArrowIcon";
  * };
  * ```
  */
-export default function Pagination({ 
-  currentPage, 
-  totalPages, 
-  onPageChange, 
-  onPrevPage, 
-  onNextPage, 
-  className = ""
+export default function Pagination({
+  currentPage,
+  totalPages,
+  onPageChange,
+  onPrevPage,
+  onNextPage,
+  className = "",
 }: TPaginationProps) {
   const [isTablet, setIsTablet] = useState(false);
-  
+
   useEffect(() => {
     const checkScreenSize = () => {
       setIsTablet(window.innerWidth >= 744);
     };
-    
+
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    
-    return () => window.removeEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
-  
+
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === totalPages;
 
@@ -76,33 +76,39 @@ export default function Pagination({
     <div className={`w-full h-10 relative ${className}`}>
       <div className="w-full h-10 px-5 py-2.5 inline-flex justify-between items-center">
         {/* Page Info */}
-        <div className={`text-center justify-start text-gray-950 font-normal font-['SUIT'] ${isTablet ? 'text-lg' : 'text-base'}`}>
+        <div
+          className={`text-center justify-start text-gray-950 font-normal font-['SUIT'] ${isTablet ? "text-lg" : "text-base"}`}
+        >
           {currentPage} of {totalPages}
         </div>
-        
+
         {/* Navigation Buttons */}
         <div className="flex justify-start items-center gap-7">
           {/* Prev Button */}
-          <div 
+          <div
             className={`flex justify-start items-center gap-1.5 cursor-pointer ${
               isFirstPage ? "opacity-50" : "hover:opacity-80"
             }`}
             onClick={handlePrevPage}
           >
             <ArrowIcon direction="left" disabled={isFirstPage} />
-            <div className={`text-center justify-start ${isFirstPage ? "text-gray-500" : "text-gray-950"} font-normal font-['SUIT'] ${isTablet ? 'text-lg' : 'text-base'}`}>
+            <div
+              className={`text-center justify-start ${isFirstPage ? "text-gray-500" : "text-gray-950"} font-normal font-['SUIT'] ${isTablet ? "text-lg" : "text-base"}`}
+            >
               Prev
             </div>
           </div>
-          
+
           {/* Next Button */}
-          <div 
+          <div
             className={`flex justify-start items-center gap-[5px] cursor-pointer ${
               isLastPage ? "opacity-50" : "hover:opacity-80"
             }`}
             onClick={handleNextPage}
           >
-            <div className={`text-center justify-start text-gray-950 font-normal font-['SUIT'] ${isTablet ? 'text-lg' : 'text-base'}`}>
+            <div
+              className={`text-center justify-start text-gray-950 font-normal font-['SUIT'] ${isTablet ? "text-lg" : "text-base"}`}
+            >
               Next
             </div>
             <ArrowIcon direction="right" disabled={isLastPage} />
@@ -111,4 +117,4 @@ export default function Pagination({
       </div>
     </div>
   );
-} 
+}
