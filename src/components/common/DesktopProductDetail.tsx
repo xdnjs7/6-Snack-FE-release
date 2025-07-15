@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import ArrowIcon from "@/components/svg/ArrowIcon";
+import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import QuantityDropdown from "./QuantityDropdown";
 import MenuDropdown from "./MenuDropdown";
 import PlusToggleIconSvg from "@/components/svg/PlusToggleIconSvg";
@@ -23,7 +23,7 @@ export default function TabletProductDetail() {
           <div className="flex items-center pb-5 gap-1.5">
             <p className="font-normal text-base/[20px] text-primary-200 tracking-tight">음료</p>
             <div>
-              <ArrowIcon direction="right" className="w-4 h-4 text-primary-100" />
+              <ArrowIconSvg direction="right" className="w-4 h-4 text-primary-100" />
             </div>
             <p className="font-normal text-base/[20px] text-primary-950 tracking-tight">청량 ∙ 탄산 음료 </p>
           </div>

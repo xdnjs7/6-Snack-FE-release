@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ArrowIcon from "@/components/svg/ArrowIcon";
+import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 
 type TQuantityDropdownProps = {
   selectedQuantity: number;
@@ -30,7 +30,7 @@ export default function QuantityDropdown({
           <div className="justify-center text-primary-950 text-base/[20px] font-normal tracking-tight">
             {selectedQuantity}
           </div>
-          <ArrowIcon
+          <ArrowIconSvg
             direction="down"
             className="w-6 h-6 p-[4px] text-primary-950"
             onClick={() => setShowDropdown(!showDropdown)}
