@@ -11,10 +11,12 @@ import { TMemberItem } from "@/types/meberList.types";
 import ProductList from "@/components/common/ProductList";
 import Toast from "@/components/common/Toast";
 import RequestList from "@/components/common/RequestList";
+import GlobalHeader from "@/components/layout/GlobalHeader";
 import SubCategoryItem from "@/components/common/SubCategoryItem";
 import Card from "@/components/ui/Card";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 import SearchBar from "@/components/ui/SearchBar";
+import Badge from "@/components/ui/Badge";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -164,6 +166,22 @@ export default function ComponentsPreviewPage() {
           <h2 className="text-lg font-semibold bg-blue-100">[컴포넌트 이름] 컴포넌트</h2>
           {/* 아래 예시처럼 본인 컴포넌트 불러오기 */}
           {/* <SearchBar /> */}
+        </div>
+      </div>
+      <div>
+        <div className="flex">
+          <div className="w-18">
+            <Badge type="request" />
+          </div>
+          <div className="w-19">
+            <Badge type="rejected" />
+            <Badge type="approved" />
+            <Badge type="pending" />
+          </div>
+          <div className="w-18">
+            <Badge type="admin" />
+            <Badge type="user" />
+          </div>
         </div>
       </div>
     </div>
