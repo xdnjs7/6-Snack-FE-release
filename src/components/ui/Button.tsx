@@ -43,7 +43,7 @@ const buttonStyleMap: Record<TButtonType, TButtonStyle> = {
   },
 };
 
-function Button({ type, label = "label", onClick, textClassName = "" }: TButtonProps) {
+export default function Button({ type, label = "label", onClick, textClassName = "" }: TButtonProps) {
   const style = buttonStyleMap[type];
 
   if (!style) {
@@ -61,7 +61,7 @@ function Button({ type, label = "label", onClick, textClassName = "" }: TButtonP
     style.outline,
     style.font,
     "rounded-sm inline-flex justify-center items-center",
-    isDisabled ? "cursor-not-allowed" : "cursor-pointer"
+    isDisabled ? "cursor-default" : "cursor-pointer",
   );
 
   return (
@@ -70,5 +70,3 @@ function Button({ type, label = "label", onClick, textClassName = "" }: TButtonP
     </button>
   );
 }
-
-export default Button;
