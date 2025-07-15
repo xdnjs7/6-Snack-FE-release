@@ -1,10 +1,10 @@
 import React from "react";
 import clsx from "clsx";
 import Image, { StaticImageData } from "next/image";
-import IcRejected from "@/assets/icons/ic_x.svg";
+import XIconSvg from "@/svg/XIcon";
 import IcPending from "@/assets/icons/ic_time.svg";
-import IcApproved from "@/assets/icons/ic_check.svg";
 import { TBadgeProps, TBadgeType } from "@/types/Badge.types";
+import CheckIconSvg from "@/svg/CheckIcon";
 
 const badgeStyleMap: Record<
   TBadgeType,
@@ -30,13 +30,11 @@ const badgeStyleMap: Record<
     bg: "bg-sky-100",
     text: "승인",
     textColor: "text-sky-500",
-    iconSrc: IcApproved,
   },
   rejected: {
     bg: "bg-red-100",
     text: "거절",
     textColor: "text-red",
-    iconSrc: IcRejected,
   },
   admin: {
     bg: "bg-primary-600",
@@ -64,11 +62,20 @@ export const Badge = ({ type }: TBadgeProps) => {
           : "w-full h-7 px-2 py-1.5",
       )}
     >
-      {iconSrc && (
+      {type === "rejected" ? (
+        <div className="w-3.5 h-3.5">
+          <XIconSvg stroke="white" className="w-full h-full" bgColor="red" />
+        </div>
+      ) : type === "approved" ? (
+        <div className="w-3.5 h-3.5">
+          <CheckIconSvg stroke="white" bgColor="#0EA5E9" className="w-full h-full" />
+        </div>
+      ) : iconSrc ? (
         <div className="w-3.5 h-3.5 relative">
           <Image src={iconSrc} alt={`${text} 아이콘`} fill style={{ objectFit: "contain" }} />
         </div>
-      )}
+      ) : null}
+
       <span className={clsx("font-bold font-suit", SmallBadge ? "text-xs sm:text-sm" : "text-sm", textColor)}>
         {text}
       </span>
