@@ -32,7 +32,7 @@ export default function MenuDropdown({ onEdit, onDelete, className = "" }: TMenu
 
       {/* 드롭다운 메뉴 */}
       {showDropdown && (
-        <div className="absolute top-0 right-6 bg-white border border-primary-200 rounded-md shadow-lg z-10 w-[95px]">
+        <div className="absolute top-0 right-6 md:left-6 bg-white border border-primary-200 rounded-md shadow-lg z-10 w-[95px]">
           <div className="py-1">
             <div
               className="h-12 px-4 py-2 flex justify-start items-center gap-1 hover:bg-primary-50 cursor-pointer"
