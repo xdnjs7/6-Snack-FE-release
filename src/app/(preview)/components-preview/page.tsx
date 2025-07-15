@@ -10,6 +10,7 @@ import Dropdown from "@/components/common/DropDown";
 import { TMemberItem } from "@/types/meberList.types";
 import ProductList from "@/components/common/ProductList";
 import Toast from "@/components/common/Toast";
+import Button from "@/components/ui/Button";
 import RequestList from "@/components/common/RequestList";
 import GlobalHeader from "@/components/layout/GlobalHeader";
 import SubCategoryItem from "@/components/common/SubCategoryItem";
@@ -122,6 +123,46 @@ export default function ComponentsPreviewPage() {
           <h2 className="text-lg font-semibold bg-blue-100">SearchBar 컴포넌트</h2>
           <SearchBar />
         </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">Badge 컴포넌트</h2>
+          <div className="flex">
+            <div className="w-18">
+              <Badge type="request" />
+            </div>
+            <div className="w-19">
+              <Badge type="rejected" />
+              <Badge type="approved" />
+              <Badge type="pending" />
+            </div>
+            <div className="w-18">
+              <Badge type="admin" />
+              <Badge type="user" />
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">Button 컴포넌트</h2>
+          <div className="flex gap-5">
+            <div className="flex flex-col w-96 gap-1">
+              <Button type="black" label="Black 버튼" />
+              <Button type="primary" label="Primary 버튼" />
+              <Button type="lightDisabled" label="LightDisabled 버튼" />
+            </div>
+            <div className="flex flex-col w-96 gap-1">
+              <Button type="whiteOutline" label="White Outline 버튼" />
+              <Button type="light" label="Light 버튼" />
+              <Button type="whiteDisabled" label="whiteDisabled 버튼" />
+            </div>
+            <Button
+              type="primary"
+              label="Primary textClassName"
+              textClassName="text-lg font-semibold w-24 h-10 flex items-center justify-center"
+            />
+          </div>
+        </div>
+
       </div>
 
       <p className="mb-4 font-bold text-xl bg-violet-100">이지수</p>
@@ -166,22 +207,6 @@ export default function ComponentsPreviewPage() {
           <h2 className="text-lg font-semibold bg-blue-100">[컴포넌트 이름] 컴포넌트</h2>
           {/* 아래 예시처럼 본인 컴포넌트 불러오기 */}
           {/* <SearchBar /> */}
-        </div>
-      </div>
-      <div>
-        <div className="flex">
-          <div className="w-18">
-            <Badge type="request" />
-          </div>
-          <div className="w-19">
-            <Badge type="rejected" />
-            <Badge type="approved" />
-            <Badge type="pending" />
-          </div>
-          <div className="w-18">
-            <Badge type="admin" />
-            <Badge type="user" />
-          </div>
         </div>
       </div>
     </div>
