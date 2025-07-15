@@ -25,10 +25,8 @@ export default function MobileProductDetail() {
           </div>
           <p className="font-normal text-sm text-primary-950 tracking-tight">청량 ∙ 탄산 음료 </p>
         </div>
-        <div className="w-full flex justify-center">
-          <div className="relative w-full max-w-[496px] aspect-square">
-            <Image src={img_coke_zero} alt="코카콜라 제로" fill className="object-contain" />
-          </div>
+        <div className="self-center relative w-full max-w-[328px] aspect-square">
+          <Image src={img_coke_zero} alt="코카콜라 제로" fill className="object-contain" />
         </div>
       </div>
 

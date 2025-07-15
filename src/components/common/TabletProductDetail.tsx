@@ -25,10 +25,8 @@ export default function TabletProductDetail() {
           </div>
           <p className="font-normal text-base text-primary-950 tracking-tight">청량 ∙ 탄산 음료 </p>
         </div>
-        <div className="w-full flex justify-center">
-          <div className="relative w-full max-w-[600px] aspect-square">
-            <Image src={img_coke_zero} alt="코카콜라 제로" fill className="object-contain" />
-          </div>
+        <div className="relative self-center w-full max-w-[496px] aspect-square">
+          <Image src={img_coke_zero} alt="코카콜라 제로" fill className="object-contain" />
         </div>
       </div>
 
@@ -37,8 +35,8 @@ export default function TabletProductDetail() {
         {/* 상품정보 wrapper */}
         <div className="self-stretch inline-flex justify-between items-start">
           {/* 타이틀, 구매횟수, 가격 */}
-          <div className="inline-flex flex-col justify-start items-start gap-3">
-            <div className="flex flex-col justify-center items-start gap-3">
+          <div className="inline-flex flex-col justify-start items-start gap-2">
+            <div className="flex justify-center items-start gap-2">
               <div className="text-black text-xl font-normal">코카콜라 제로</div>
               <div className="text-secondary-500 text-base font-bold">29회 구매</div>
             </div>
