@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { TPaginationProps } from "../../types/pagination.types";
-import ArrowIcon from "../svg/ArrowIcon";
+import ArrowIcon from "../svg/ArrowIcon.svg";
 
 /**
  * 페이지네이션 컴포넌트

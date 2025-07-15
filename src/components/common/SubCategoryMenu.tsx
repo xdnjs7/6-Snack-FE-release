@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ArrowIcon from "../svg/ArrowIcon";
+import ArrowIcon from "../svg/ArrowIcon.svg";
 import { TCategoryItem, TSubCategoryMenuProps } from "../../types/subCategoryMenu.types";
 
 /**
