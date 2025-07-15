@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProductCancel = () => (
+const CancelBtn = () => (
   <svg width="216" height="64" viewBox="0 0 216 64" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="0.5" y="0.5" width="215" height="63" rx="1.5" fill="white" />
     <rect x="0.5" y="0.5" width="215" height="63" rx="1.5" stroke="#B3B3B3" />
@@ -11,4 +11,4 @@ const ProductCancel = () => (
   </svg>
 );
 
-export default ProductCancel;
+export default CancelBtn;
