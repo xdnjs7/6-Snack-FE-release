@@ -3,19 +3,16 @@ import Mobile from "./Mobile";
 import Tablet from "./Tablet";
 import Desktop from "./Desktop";
 import Image from "next/image";
-import ChevronIcon from "@/components/svg/ChevronIconSvg";
+
 import { useState } from "react";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 import ic_like_normal from "@/assets/icons/ic_like_normal.svg";
 import ic_menu from "@/assets/icons/ic_menu.svg";
 import ArrowIcon from "../svg/ArrowIcon";
+import QuantityDropdown from "./QuantityDropdown";
 
 export default function ProductDetail() {
-  const [showQuantityDropdown, setShowQuantityDropdown] = useState(false);
   const [selectedQuantity, setSelectedQuantity] = useState(16);
-
-  // 0-100까지의 숫자 배열 생성 (드롭다운)
-  const quantityOptions = Array.from({ length: 101 }, (_, i) => i);
   return (
     <div>
       <Mobile>
@@ -27,7 +24,7 @@ export default function ProductDetail() {
             <div className="pt-3.5 pb-2.5 flex justify-start items-center gap-1">
               <p className="font-normal text-sm text-primary-300 tracking-tight">음료</p>
               <div>
-                <ArrowIcon direction="right" className="w-3 h-3 text-primary-100"/>
+                <ArrowIcon direction="right" className="w-3 h-3 text-primary-100" />
               </div>
               <p className="font-normal text-sm text-primary-950 tracking-tight">청량 ∙ 탄산 음료 </p>
             </div>
@@ -54,50 +51,9 @@ export default function ProductDetail() {
 
               {/* (상품수량, 드롭다운) 메뉴 */}
               <div className="flex items-start gap-3.5">
-                <div className="flex justify-center items-center gap-3.5">
-                  {/* 수량 */}
-                  <div className=" text-primary-950 text-base font-normal">수량</div>
-                  {/* 드롭다운 */}
-                  <div className="relative flex justify-start items-center w-25 p-3.5 bg-white rounded-sm border border-primary-300">
-                    <div className="flex-1 self-stretch flex justify-end items-center gap-1 ">
-                      <div className="justify-center text-neutral-800 text-base font-normal">{selectedQuantity}</div>
-                      <ArrowIcon
-                        direction="down"
-                        className="w-4 h-4 p-[1px] text-primary-950"
-                        onClick={() => setShowQuantityDropdown(!showQuantityDropdown)}
-                      />
-
-                      {/* 드롭다운 */}
-                      {showQuantityDropdown && (
-                        <div className="absolute top-full right-0 mt-1 bg-white border border-primary-200 rounded-md shadow-lg z-10 w-25">
-                          <div
-                            className="overflow-y-auto py-2"
-                            style={{
-                              maxHeight: "128px",
-                              scrollbarWidth: "thin",
-                              scrollbarColor: "#d1d5db #f3f4f6",
-                            }}
-                          >
-                            {quantityOptions.map((quantity) => (
-                              <div
-                                key={quantity}
-                                className="px-3 py-1 hover:bg-primary-50 cursor-pointer text-center"
-                                onClick={() => {
-                                  setSelectedQuantity(quantity);
-                                  setShowQuantityDropdown(false);
-                                }}
-                              >
-                                {quantity}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                <QuantityDropdown selectedQuantity={selectedQuantity} onQuantityChange={setSelectedQuantity} />
                 {/* 메뉴 버튼 */}
-                <div className="w-6 h-6 relative  inline-flex flex-col justify-start items-start">
+                <div className="w-6 h-6 relative inline-flex flex-col justify-start items-start">
                   <Image src={ic_menu} alt="더보기 메뉴" fill className="object-contain" />
                 </div>
               </div>
@@ -122,7 +78,7 @@ export default function ProductDetail() {
                 <div className="self-stretch inline-flex justify-between items-center">
                   <div className="justify-start text-neutral-800 text-base font-bold font-['SUIT']">구매혜택</div>
                   {/* + Or - 버튼 */}
-                
+
                   <p>5포인트 적립 예정</p>
                 </div>
               </div>
