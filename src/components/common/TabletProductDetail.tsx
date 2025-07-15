@@ -9,7 +9,9 @@ import ic_like_normal from "@/assets/icons/ic_like_normal.svg";
 
 export default function TabletProductDetail() {
   const [selectedQuantity, setSelectedQuantity] = useState(16);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isBenefitOpen, setIsBenefitOpen] = useState(false);
+  const [isDeliveryMethodOpen, setIsDeliveryMethodOpen] = useState(false);
+  const [isDeliveryFeeOpen, setIsDeliveryFeeOpen] = useState(false);
 
   return (
     <div className="w-full flex flex-col justify-center items-center px-8">
@@ -69,32 +71,37 @@ export default function TabletProductDetail() {
           <div className="self-stretch py-8 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
             <div className="self-stretch inline-flex justify-between items-center">
               <div className="text-primary-950 text-lg font-bold">구매혜택</div>
-              <PlusToggleIconSvg isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+              <PlusToggleIconSvg isOpen={isBenefitOpen} onClick={() => setIsBenefitOpen(!isBenefitOpen)} />
             </div>
-            {isOpen && <div className="text-primary-600 text-base font-normal tracking-tight">5포인트 적립 예정</div>}
+            {isBenefitOpen && (
+              <div className="text-primary-600 text-base font-normal tracking-tight">5포인트 적립 예정</div>
+            )}
           </div>
 
           {/* 배송방법 */}
           <div className="self-stretch py-8 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
             <div className="self-stretch inline-flex justify-between items-center">
               <div className="text-primary-950 text-lg font-bold">배송 방법</div>
-              <PlusToggleIconSvg isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+              <PlusToggleIconSvg
+                isOpen={isDeliveryMethodOpen}
+                onClick={() => setIsDeliveryMethodOpen(!isDeliveryMethodOpen)}
+              />
             </div>
-            {isOpen && <div className="text-primary-600 text-base font-normal tracking-tight">택배</div>}
+            {isDeliveryMethodOpen && <div className="text-primary-600 text-base font-normal tracking-tight">택배</div>}
           </div>
 
           {/* 배송비 */}
           <div className="self-stretch py-8 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
             <div className="self-stretch inline-flex justify-between items-center">
               <div className="text-primary-950 text-lg font-bold">배송비</div>
-              <PlusToggleIconSvg isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+              <PlusToggleIconSvg isOpen={isDeliveryFeeOpen} onClick={() => setIsDeliveryFeeOpen(!isDeliveryFeeOpen)} />
             </div>
-            {isOpen && (
+            {isDeliveryFeeOpen && (
               <div className="text-primary-600 text-base font-normal tracking-tight">
                 3,000원 (50,000원 이상 무료배송)
               </div>
             )}
-            {isOpen && (
+            {isDeliveryFeeOpen && (
               <div className="text-primary-400 text-base font-normal tracking-tight">도서산간 배송비 추가</div>
             )}
           </div>
