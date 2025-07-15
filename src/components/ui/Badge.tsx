@@ -1,10 +1,10 @@
 import React from "react";
 import clsx from "clsx";
 import Image, { StaticImageData } from "next/image";
-import XIconSvg from "@/svg/XIcon";
 import IcPending from "@/assets/icons/ic_time.svg";
 import { TBadgeProps, TBadgeType } from "@/types/Badge.types";
-import CheckIconSvg from "@/svg/CheckIcon";
+import CheckIconSvg from "@/components/svg/CheckIcon";
+import XIconSvg from "@/components/svg/XIcon";
 
 const badgeStyleMap: Record<
   TBadgeType,

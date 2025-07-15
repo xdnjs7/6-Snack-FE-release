@@ -28,18 +28,18 @@ const buttonStyleMap: Record<TButtonType, TButtonStyle> = {
   whiteOutline: {
     bg: "bg-white",
     padding: "px-4 py-3",
-    outline: "outline outline-1 outline-offset-[-1px] outline-primary-400",
+    outline: "outline outline-primary-400",
   },
   light: {
     bg: "bg-primary-300",
     padding: "px-4 py-3",
-    outline: "outline outline-1 outline-offset-[-1px] outline-primary-400",
+    outline: "outline outline-primary-400",
   },
   whiteDisabled: {
     bg: "bg-white",
     textColor: "text-primary-400",
-    padding: "p-4",
-    outline: "outline outline-1 outline-offset-[-1px] outline-primary-300",
+    padding: "px-4 py-3",
+    outline: "outline  outline-primary-300",
   },
 };
 
