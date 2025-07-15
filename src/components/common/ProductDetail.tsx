@@ -3,16 +3,17 @@ import Mobile from "./Mobile";
 import Tablet from "./Tablet";
 import Desktop from "./Desktop";
 import Image from "next/image";
-import ChevronIcon from "@/svg/ChevronIcon";
+import ChevronIcon from "@/svg/ChevronIconSvg";
 import { useState } from "react";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 import ic_like_normal from "@/assets/icons/ic_like_normal.svg";
+import ArrowIcon from "@/svg/ArrowIcon";
 
 export default function ProductDetail() {
   const [showQuantityDropdown, setShowQuantityDropdown] = useState(false);
   const [selectedQuantity, setSelectedQuantity] = useState(16);
 
-  // 0-100까지의 숫자 배열 생성
+  // 0-100까지의 숫자 배열 생성 (드롭다운)
   const quantityOptions = Array.from({ length: 101 }, (_, i) => i);
   return (
     <div>
@@ -117,6 +118,8 @@ export default function ProductDetail() {
                 </div>
               </div>
               <div>구매혜택</div>
+              {/* arrowIcon test */}
+              <ArrowIcon direction="left"/>
               <div className="border-t-primary-100">배송방법</div>
               <div className="border-t-primary-100">배송비</div>
             </div>
