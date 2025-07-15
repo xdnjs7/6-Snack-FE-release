@@ -18,11 +18,11 @@ import Card from "@/components/ui/Card";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 import SearchBar from "@/components/ui/SearchBar";
 import Badge from "@/components/ui/Badge";
-import ProductEditForm from "@/components/common/ProductEditForm";
-import ProductRegistrationForm from "@/components/common/ProductRegistrationForm";
-import Input from "@/components/common/Input";
-import ConfirmationModal from "@/components/common/ConfirmationModal";
-import RequestListItem from "@/components/common/RequestListItem";
+import SubCategoryMenu from "@/components/common/SubCategoryMenu";
+import SideMenu from "@/components/common/SideMenu";
+import Pagination from "@/components/common/Pagination";
+import { TCategoryItem } from "@/types/subCategoryMenu.types";
+import { TSideMenuItem } from "@/types/sideMenu.types";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -30,7 +30,8 @@ export default function ComponentsPreviewPage() {
   const [budget] = useState(60000);
   const categoryOptions = ["음료", "과자", "아이스크림", "도시락", "라면", "사탕", "초콜릿", "떡볶이", "비빔밥"];
   const [isToastVisible, setIsToastVisible] = useState(false);
-  const [inputValue, setInputValue] = useState<string>("");
+  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+  const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
 
   const [members, setMembers] = useState<TMemberItem[]>([
     {
@@ -265,15 +266,67 @@ export default function ComponentsPreviewPage() {
       <p className="mb-4 font-bold text-xl bg-violet-100">장원빈</p>
       <div className="rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] p-6">
         <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[컴포넌트 이름] 컴포넌트</h2>
-          {/* 아래 예시처럼 본인 컴포넌트 불러오기 */}
-          {/* <SearchBar /> */}
+          <h2 className="text-lg font-semibold bg-blue-100">SubCategoryMenu 컴포넌트</h2>
+          <div className="h-96 border border-gray-200 rounded-lg overflow-hidden">
+            <SubCategoryMenu
+              categories={[
+                {
+                  id: 1,
+                  name: "스낵",
+                  children: [
+                    { id: 11, name: "과자", parentId: 1, href: "/products/snack/cookies" },
+                    { id: 12, name: "쿠키", parentId: 1, href: "/products/snack/cookies" },
+                    { id: 13, name: "파이", parentId: 1, href: "/products/snack/pie" },
+                  ]
+                },
+                {
+                  id: 2,
+                  name: "음료",
+                  children: [
+                    { id: 21, name: "청량/탄산음료", parentId: 2, href: "/products/beverage/soda" },
+                    { id: 22, name: "과즙음료", parentId: 2, href: "/products/beverage/juice" },
+                  ]
+                }
+              ]}
+              currentPath="/preview"
+              onItemClick={(item) => console.log("Clicked:", item)}
+            />
+          </div>
         </div>
 
         <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[컴포넌트 이름] 컴포넌트</h2>
-          {/* 아래 예시처럼 본인 컴포넌트 불러오기 */}
-          {/* <SearchBar /> */}
+          <h2 className="text-lg font-semibold bg-blue-100">SideMenu 컴포넌트</h2>
+          <div className="relative">
+            <button
+              onClick={() => setIsSideMenuOpen(true)}
+              className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors"
+            >
+              사이드 메뉴 열기
+            </button>
+            <SideMenu
+              items={[
+                { id: "product-list", label: "상품 리스트", href: "/products" },
+                { id: "purchase-requests", label: "구매 요청 내역", href: "/purchase-requests" },
+                { id: "mypage", label: "마이페이지", href: "/mypage" },
+              ]}
+              isOpen={isSideMenuOpen}
+              currentPath="/products"
+              onItemClick={(item) => console.log("Clicked:", item)}
+              onClose={() => setIsSideMenuOpen(false)}
+            />
+          </div>
+        </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">Pagination 컴포넌트</h2>
+          <div className="flex flex-col items-center gap-4">
+            <Pagination
+              currentPage={currentPaginationPage}
+              totalPages={10}
+              onPageChange={setCurrentPaginationPage}
+            />
+            <div>현재 페이지: {currentPaginationPage}</div>
+          </div>
         </div>
       </div>
     </div>

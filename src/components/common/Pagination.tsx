@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { TPaginationProps } from "../../types/pagination.types";
-import ArrowIcon from "../svg/ArrowIcon";
+import ArrowIconSvg from "../svg/ArrowIconSvg";
 
 /**
  * 페이지네이션 컴포넌트
@@ -91,7 +91,7 @@ export default function Pagination({
             }`}
             onClick={handlePrevPage}
           >
-            <ArrowIcon direction="left" disabled={isFirstPage} />
+            <ArrowIconSvg direction="left" disabled={isFirstPage} />
             <div
               className={`text-center justify-start ${isFirstPage ? "text-gray-500" : "text-gray-950"} font-normal font-['SUIT'] ${isTablet ? "text-lg" : "text-base"}`}
             >
@@ -111,7 +111,7 @@ export default function Pagination({
             >
               Next
             </div>
-            <ArrowIcon direction="right" disabled={isLastPage} />
+            <ArrowIconSvg direction="right" disabled={isLastPage} />
           </div>
         </div>
       </div>

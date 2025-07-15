@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ArrowIcon from "../svg/ArrowIcon";
+import ArrowIconSvg from "../svg/ArrowIconSvg";
 import { TCategoryItem, TSubCategoryMenuProps } from "../../types/subCategoryMenu.types";
 
 /**
@@ -127,7 +127,7 @@ export default function SubCategoryMenu({
           </div>
 
           {hasSubItems && (
-            <ArrowIcon
+            <ArrowIconSvg
               direction={isExpanded ? "down" : "up"}
               className="w-3 h-3 text-gray-300 transition-transform duration-200"
             />
