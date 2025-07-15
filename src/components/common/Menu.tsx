@@ -1,6 +1,6 @@
 import React from "react";
 import BudgetIconSvg from "../svg/BudgetIconSvg";
-import UserIconSvg from "../svg/UserIconSvg";
+import FilledUserIconSvg from "../svg/FilledUserIconSvg";
 
 type TMenuProps = {
   icon: "user" | "budget";
@@ -13,11 +13,11 @@ export default function Menu({ icon, text, isActive = false, onClick }: TMenuPro
   const renderIcon = () => {
     switch (icon) {
       case "user":
-        return <UserIconSvg isActive={isActive} />;
+        return <FilledUserIconSvg isActive={isActive} />;
       case "budget":
         return <BudgetIconSvg isActive={isActive} />;
       default:
-        return <UserIconSvg isActive={isActive} />;
+        return <FilledUserIconSvg isActive={isActive} />;
     }
   };
 

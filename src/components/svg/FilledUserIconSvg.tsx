@@ -5,7 +5,7 @@ type TFilledUserIconSvgProps = {
   onClick?: () => void;
   isActive?: boolean;
 };
-export default function UserIconSvg({ className = "", onClick, isActive = false }: TFilledUserIconSvgProps) {
+export default function FilledUserIconSvg({ className = "", onClick, isActive = false }: TFilledUserIconSvgProps) {
   return (
     <svg
       width="20"
