@@ -19,7 +19,7 @@ export default function MobileProductDetail() {
       <div className="w-full flex flex-col justify-center items-start gap-7.5">
         {/* 카테고리 */}
         <div className="pt-3.5 pb-2.5 flex justify-start items-center gap-1">
-          <p className="font-normal text-sm text-primary-300 tracking-tight">음료</p>
+          <p className="font-normal text-sm text-primary-200 tracking-tight">음료</p>
           <div>
             <ArrowIcon direction="right" className="w-3 h-3 text-primary-100" />
           </div>

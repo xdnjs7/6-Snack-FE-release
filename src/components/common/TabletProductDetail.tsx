@@ -14,16 +14,19 @@ export default function TabletProductDetail() {
   const [isDeliveryFeeOpen, setIsDeliveryFeeOpen] = useState(false);
 
   return (
-    <div className="w-full flex flex-col justify-center items-center px-8">
+    <div className="w-full flex flex-col justify-center items-center">
       {/* 카테고리 + 이미지 wrapper */}
-      <div className="w-full flex flex-col justify-center items-start gap-8">
-        {/* 카테고리 */}
-        <div className="pt-4 pb-3 flex justify-start items-center gap-1.5">
-          <p className="font-normal text-base text-primary-300 tracking-tight">음료</p>
-          <div>
-            <ArrowIcon direction="right" className="w-4 h-4 text-primary-100" />
+      <div className="w-full flex flex-col justify-center items-start gap-7.5">
+        {/* 카테고리 wrapper*/}
+        <div className="flex h-16 w-full border-b border-primary-100">
+          {/* 카테고리 컨텐트 */}
+          <div className="flex items-center pb-5 gap-1.5">
+            <p className="font-normal text-base text-primary-200 tracking-tight">음료</p>
+            <div>
+              <ArrowIcon direction="right" className="w-4 h-4 text-primary-100" />
+            </div>
+            <p className="font-normal text-base text-primary-950 tracking-tight">청량 ∙ 탄산 음료 </p>
           </div>
-          <p className="font-normal text-base text-primary-950 tracking-tight">청량 ∙ 탄산 음료 </p>
         </div>
         <div className="relative self-center w-full max-w-[496px] aspect-square">
           <Image src={img_coke_zero} alt="코카콜라 제로" fill className="object-contain" />
