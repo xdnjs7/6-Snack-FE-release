@@ -47,7 +47,7 @@ export default function TabletProductDetail() {
           </div>
 
           {/* (상품수량, 드롭다운) (메뉴) */}
-          <div className="flex items-start gap-4">
+          <div className="flex items-start gap-5">
             <QuantityDropdown selectedQuantity={selectedQuantity} onQuantityChange={setSelectedQuantity} />
             <MenuDropdown onEdit={() => console.log("상품 수정")} onDelete={() => console.log("상품 삭제")} />
           </div>
@@ -69,7 +69,7 @@ export default function TabletProductDetail() {
           </div>
 
           {/* 구매혜택 */}
-          <div className="self-stretch py-8 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
+          <div className="self-stretch py-10 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
             <div className="self-stretch inline-flex justify-between items-center">
               <div className="text-primary-950 text-lg/[22px] font-bold tracking-tight">구매혜택</div>
               <PlusToggleIconSvg isOpen={isBenefitOpen} onClick={() => setIsBenefitOpen(!isBenefitOpen)} />
@@ -78,7 +78,7 @@ export default function TabletProductDetail() {
           </div>
 
           {/* 배송방법 */}
-          <div className="self-stretch py-8 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
+          <div className="self-stretch py-10 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
             <div className="self-stretch inline-flex justify-between items-center">
               <div className="text-primary-950 text-lg/[22px] font-bold tracking-tight">배송 방법</div>
               <PlusToggleIconSvg
@@ -90,7 +90,7 @@ export default function TabletProductDetail() {
           </div>
 
           {/* 배송비 */}
-          <div className="self-stretch py-8 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
+          <div className="self-stretch py-10 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
             <div className="self-stretch inline-flex justify-between items-center">
               <div className="text-primary-950 text-lg/[22px] font-bold tracking-tight">배송비</div>
               <PlusToggleIconSvg isOpen={isDeliveryFeeOpen} onClick={() => setIsDeliveryFeeOpen(!isDeliveryFeeOpen)} />

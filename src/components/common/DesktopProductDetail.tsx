@@ -8,24 +8,24 @@ import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 import ic_like_normal from "@/assets/icons/ic_like_normal.svg";
 
 export default function TabletProductDetail() {
-  const [selectedQuantity, setSelectedQuantity] = useState(16);
+  const [selectedQuantity, setSelectedQuantity] = useState(0);
   const [isBenefitOpen, setIsBenefitOpen] = useState(false);
   const [isDeliveryMethodOpen, setIsDeliveryMethodOpen] = useState(false);
   const [isDeliveryFeeOpen, setIsDeliveryFeeOpen] = useState(false);
 
   return (
-    <div className="w-full flex flex-col justify-center items-center">
+    <div className="max-w-[1180px] w-full flex flex-col justify-center items-center">
       {/* 카테고리 + (이미지 & 상품정보) wrapper */}
       <div className="w-full flex flex-col justify-center items-start gap-7.5">
         {/* 카테고리 wrapper*/}
         <div className="flex h-16 w-full border-b border-primary-100">
           {/* 카테고리 컨텐트 */}
           <div className="flex items-center pb-5 gap-1.5">
-            <p className="font-normal text-base text-primary-200 tracking-tight">음료</p>
+            <p className="font-normal text-base/[20px] text-primary-200 tracking-tight">음료</p>
             <div>
               <ArrowIcon direction="right" className="w-4 h-4 text-primary-100" />
             </div>
-            <p className="font-normal text-base text-primary-950 tracking-tight">청량 ∙ 탄산 음료 </p>
+            <p className="font-normal text-base/[20px] text-primary-950 tracking-tight">청량 ∙ 탄산 음료 </p>
           </div>
         </div>
 
@@ -36,20 +36,20 @@ export default function TabletProductDetail() {
             <Image src={img_coke_zero} alt="코카콜라 제로" fill className="object-contain" />
           </div>
           {/* (상품 정보) (장바구니담기부터 아래 부분) wrapper  */}
-          <div className="flex flex-col justify-center items-center w-full gap-10 pt-8">
+          <div className="flex flex-col justify-start items-center w-full gap-7.5 pt-8">
             {/* 상품정보 wrapper */}
             <div className="self-stretch inline-flex justify-between items-start">
               {/* 타이틀, 구매횟수, 가격 */}
               <div className="inline-flex flex-col justify-start items-start gap-2">
                 <div className="flex justify-center items-start gap-2">
-                  <div className="text-black text-xl font-normal">코카콜라 제로</div>
-                  <div className="text-secondary-500 text-base font-bold">29회 구매</div>
+                  <div className="text-black text-lg/[22px] font-normal tracking-tight">코카콜라 제로</div>
+                  <div className="text-secondary-500 text-sm/[17px] font-bold tracking-tight">29회 구매</div>
                 </div>
-                <div className="text-black text-xl font-extrabold">2,000원</div>
+                <div className="text-black text-lg/[22px] font-extrabold tracking-tight">2,000원</div>
               </div>
 
               {/* (상품수량, 드롭다운) (메뉴) */}
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-5">
                 <QuantityDropdown selectedQuantity={selectedQuantity} onQuantityChange={setSelectedQuantity} />
                 <MenuDropdown onEdit={() => console.log("상품 수정")} onDelete={() => console.log("상품 삭제")} />
               </div>
@@ -71,7 +71,7 @@ export default function TabletProductDetail() {
               </div>
 
               {/* 구매혜택 */}
-              <div className="self-stretch py-8 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
+              <div className="self-stretch py-10 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
                 <div className="self-stretch inline-flex justify-between items-center">
                   <div className="text-primary-950 text-lg font-bold">구매혜택</div>
                   <PlusToggleIconSvg isOpen={isBenefitOpen} onClick={() => setIsBenefitOpen(!isBenefitOpen)} />
@@ -82,7 +82,7 @@ export default function TabletProductDetail() {
               </div>
 
               {/* 배송방법 */}
-              <div className="self-stretch py-8 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
+              <div className="self-stretch py-10 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
                 <div className="self-stretch inline-flex justify-between items-center">
                   <div className="text-primary-950 text-lg font-bold">배송 방법</div>
                   <PlusToggleIconSvg
@@ -96,7 +96,7 @@ export default function TabletProductDetail() {
               </div>
 
               {/* 배송비 */}
-              <div className="self-stretch py-8 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
+              <div className="self-stretch py-10 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-2">
                 <div className="self-stretch inline-flex justify-between items-center">
                   <div className="text-primary-950 text-lg font-bold">배송비</div>
                   <PlusToggleIconSvg
