@@ -21,6 +21,7 @@ import Badge from "@/components/ui/Badge";
 import ProductModal from "@/components/common/ProductEditForm";
 import ProductEditForm from "@/components/common/ProductEditForm";
 import ProductRegistrationForm from "@/components/common/ProductRegistrationForm";
+import Input from "@/components/common/Input";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -28,6 +29,7 @@ export default function ComponentsPreviewPage() {
   const [budget] = useState(60000);
   const categoryOptions = ["음료", "과자", "아이스크림", "도시락", "라면", "사탕", "초콜릿", "떡볶이", "비빔밥"];
   const [isToastVisible, setIsToastVisible] = useState(false);
+  const [inputValue, setInputValue] = useState<string>("");
 
   const [members, setMembers] = useState<TMemberItem[]>([
     {
@@ -189,6 +191,11 @@ export default function ComponentsPreviewPage() {
           <ProductEditForm />
           <h2 className="text-lg font-semibold bg-blue-100">[상품 등록 모달]</h2>
           <ProductRegistrationForm />
+          <h2 className="text-lg font-semibold bg-blue-100">[Input]</h2>
+          <div>
+            <Input value={inputValue} onChange={setInputValue} unit="원" label="floating label" />
+            <p>현재 입력된 값: {inputValue}</p>
+          </div>
         </div>
 
         <div className="space-y-4 mb-4">
