@@ -12,6 +12,7 @@ import ProductList from "@/components/common/ProductList";
 import Toast from "@/components/common/Toast";
 import RequestList from "@/components/common/RequestList";
 import SubCategoryItem from "@/components/common/SubCategoryItem";
+import GlobalHeader from "@/components/layout/GlobalHeader";
 import Card from "@/components/ui/Card";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 import SearchBar from "@/components/ui/SearchBar";
