@@ -14,6 +14,9 @@ export default function MobileHeader() {
   // 인증 관련 페이지 경로 (login, signup) - 비회원도 접근가능
   const isAuthRoute = pathname === "/login" || pathname === "/signup";
 
+  // 개발용 임시경로 - 개발완료후 삭제예정
+  const isPreviewRoute = pathname === "/components-preview";
+
   // 보호된 페이지 경로 (main app)
   const isProtectedRoute =
     pathname.startsWith("/products") ||
@@ -69,17 +72,53 @@ export default function MobileHeader() {
     );
   }
 
-  // 기본 헤더 (개발용 - 모든 페이지에서 보임)
-  return (
-    <header className="block sm:hidden">
-      <div className="w-full h-14 flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px]">
-        <div className="relative w-[102.75px] h-[44px]">
-          <Image src={img_logo} alt="스낵 로고" fill className="object-contain" />
-        </div>
-        <div className="relative w-6 h-6">
-          <Image src={ic_hamburger_menu} alt="메뉴" fill className="object-contain" />
-        </div>
+  // 임시 개발용 - 개발 완료후 삭제예정
+  if (isPreviewRoute) {
+    return (
+      <div>
+        <h2>비회원에게 허용된 루트에서 보이는 헤더 </h2>
+        <header className="block sm:hidden">
+          <div className="w-full h-14 flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px]">
+            <div className="relative w-[102.75px] h-[44px]">
+              <Image src={img_logo} alt="스낵 로고" fill className="object-contain" />
+            </div>
+            <div className="relative w-6 h-6">
+              <Image src={ic_hamburger_menu} alt="메뉴" fill className="object-contain" />
+            </div>
+          </div>
+        </header>
+        <h2>보호된 루트에서 보이는 헤더 (로그인한 유저)</h2>
+        <header className="block sm:hidden">
+          <div className="w-full h-14 flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px]">
+            <div className="relative w-[102.75px] h-[44px]">
+              <Image src={img_logo} alt="스낵 로고" fill className="object-contain" />
+            </div>
+
+            {/* 카테고리 dropdown 버튼 */}
+            <div className="flex gap-1 items-center">
+              <p className="font-bold">음료</p>
+              <div className="relative w-[20px] h-[20px]">
+                <Image
+                  src={ic_chevron_down}
+                  alt="아래 화살표"
+                  fill
+                  className="object-contain brightness-0 opacity-40"
+                />
+              </div>
+            </div>
+
+            {/* 장바구니 + 메뉴 영역 */}
+            <div className="flex gap-5 items-center">
+              <div className="relative w-[24px] h-[24px]">
+                <Image src={ic_cart} alt="장바구니" fill className="object-contain" />
+              </div>
+              <div className="relative w-6 h-6">
+                <Image src={ic_hamburger_menu} alt="메뉴" fill className="object-contain" />
+              </div>
+            </div>
+          </div>
+        </header>
       </div>
-    </header>
-  );
+    );
+  }
 }
