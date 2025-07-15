@@ -3,11 +3,12 @@ import Mobile from "./Mobile";
 import Tablet from "./Tablet";
 import Desktop from "./Desktop";
 import Image from "next/image";
-import ChevronIcon from "@/svg/ChevronIconSvg";
+import ChevronIcon from "@/components/svg/ChevronIconSvg";
 import { useState } from "react";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 import ic_like_normal from "@/assets/icons/ic_like_normal.svg";
-import ArrowIcon from "@/svg/ArrowIcon";
+import ic_menu from "@/assets/icons/ic_menu.svg";
+import ArrowIcon from "../svg/ArrowIcon";
 
 export default function ProductDetail() {
   const [showQuantityDropdown, setShowQuantityDropdown] = useState(false);
@@ -26,22 +27,23 @@ export default function ProductDetail() {
             <div className="pt-3.5 pb-2.5 flex justify-start items-center gap-1">
               <p className="font-normal text-sm text-primary-300 tracking-tight">음료</p>
               <div>
-                <ChevronIcon direction="right" color="var(--color-primary-100)"></ChevronIcon>
+                <ArrowIcon direction="right" className="w-3 h-3 text-primary-100"/>
               </div>
               <p className="font-normal text-sm text-primary-950 tracking-tight">청량 ∙ 탄산 음료 </p>
             </div>
             {/* 이미지 */}
-            <div className="w-full flex justify-center">
+            {/* <div className="w-full flex justify-center">
               <div className="relative w-full max-w-[496px] aspect-square">
                 <Image src={img_coke_zero} alt="코카콜라 제로" fill className="object-contain" />
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* (상품 정보) (장바구니담기부터 아래 부분) wrapper  */}
           <div className="flex flex-col justify-center items-center w-full gap-8 pt-7.5">
-            {/* 상품정보 -  */}
+            {/* 상품정보 wrapper */}
             <div className="self-stretch inline-flex justify-between items-start">
+              {/* 타이틀, 구매횟수, 가격 */}
               <div className="inline-flex flex-col justify-start items-start gap-2">
                 <div className="flex flex-col justify-center items-start gap-2">
                   <div className="text-black text-lg font-normal">코카콜라 제로</div>
@@ -50,17 +52,18 @@ export default function ProductDetail() {
                 <div className="text-black text-lg font-extrabold">2,000원</div>
               </div>
 
-              {/* 상품수량, 드롭다운, 메뉴 */}
+              {/* (상품수량, 드롭다운) 메뉴 */}
               <div className="flex items-start gap-3.5">
                 <div className="flex justify-center items-center gap-3.5">
+                  {/* 수량 */}
                   <div className=" text-primary-950 text-base font-normal">수량</div>
+                  {/* 드롭다운 */}
                   <div className="relative flex justify-start items-center w-25 p-3.5 bg-white rounded-sm border border-primary-300">
                     <div className="flex-1 self-stretch flex justify-end items-center gap-1 ">
                       <div className="justify-center text-neutral-800 text-base font-normal">{selectedQuantity}</div>
-                      <ChevronIcon
+                      <ArrowIcon
                         direction="down"
-                        color="var(--color-primary-950)"
-                        className="w-6 h-6"
+                        className="w-4 h-4 p-[1px] text-primary-950"
                         onClick={() => setShowQuantityDropdown(!showQuantityDropdown)}
                       />
 
@@ -93,12 +96,9 @@ export default function ProductDetail() {
                     </div>
                   </div>
                 </div>
-                <div className="w-6 h-6 relative overflow-hidden">
-                  <div className="w-[3px] h-4 left-[10.50px] top-[3.50px] absolute inline-flex flex-col justify-start items-start gap-1">
-                    <div className="self-stretch h-[3px] relative bg-neutral-800" />
-                    <div className="self-stretch h-[3px] relative bg-neutral-800" />
-                    <div className="self-stretch h-[3px] relative bg-neutral-800" />
-                  </div>
+                {/* 메뉴 버튼 */}
+                <div className="w-6 h-6 relative  inline-flex flex-col justify-start items-start">
+                  <Image src={ic_menu} alt="더보기 메뉴" fill className="object-contain" />
                 </div>
               </div>
             </div>
@@ -111,15 +111,26 @@ export default function ProductDetail() {
                   <div className="text-center justify-center text-primary-50 text-base font-bold">장바구니 담기</div>
                 </div>
                 {/* 좋아요버튼 */}
-                <div className="h-16 px-4 py-3 bg-white rounded-sm border-1 border-gray-300 inline-flex justify-center items-center">
-                  <div className="relative w-4 h-4">
+                <div className="h-16 w-16 px-4 py-3 bg-white rounded-sm border-1 border-gray-300 inline-flex justify-center items-center">
+                  <div className="relative w-[25px] h-[22.5px]">
                     <Image src={ic_like_normal} alt="좋아요 버튼" fill className="object-contain" />
                   </div>
                 </div>
               </div>
-              <div>구매혜택</div>
-              {/* arrowIcon test */}
-              <ArrowIcon direction="left"/>
+              {/* 구매혜택  + 토글 안했을때 */}
+              <div className="self-stretch py-7 border-b border-neutral-200 inline-flex flex-col justify-center items-start gap-1.5">
+                <div className="self-stretch inline-flex justify-between items-center">
+                  <div className="justify-start text-neutral-800 text-base font-bold font-['SUIT']">구매혜택</div>
+                  {/* + Or - 버튼 */}
+                
+                  <p>5포인트 적립 예정</p>
+                </div>
+              </div>
+
+              <div>
+                <p></p>
+              </div>
+
               <div className="border-t-primary-100">배송방법</div>
               <div className="border-t-primary-100">배송비</div>
             </div>
