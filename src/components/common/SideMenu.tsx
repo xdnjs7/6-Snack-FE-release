@@ -1,7 +1,7 @@
 "use client";
 
 import { TSideMenuProps, TSideMenuItem } from "../../types/sideMenu.types";
-import XIcon from "../svg/XIcon.svg";
+import XIconSvg from "../svg/XIconSvg";
 
 /**
  * 사이드 메뉴 컴포넌트
@@ -67,7 +67,7 @@ export default function SideMenu({ items, isOpen, currentPath, onItemClick, onCl
         className={`absolute right-0 top-0 w-[255px] h-full bg-white/90 backdrop-blur-lg flex flex-col items-end gap-5 p-6 ${className}`}
       >
         {/* Close Button */}
-        <XIcon className="w-6 h-6" onClick={onClose} />
+        <XIconSvg className="w-6 h-6" onClick={onClose} />
 
         {/* Menu Items */}
         <div className="self-stretch flex flex-col justify-start items-center gap-3">

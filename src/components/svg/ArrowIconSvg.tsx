@@ -7,7 +7,7 @@ type TArrowIconProps = {
   disabled?: boolean;
 };
 
-export default function ArrowIcon({ direction, className = "", onClick, disabled = false }: TArrowIconProps) {
+export default function ArrowIconSvg({ direction, className = "", onClick, disabled = false }: TArrowIconProps) {
   return (
     <svg
       width="8"
