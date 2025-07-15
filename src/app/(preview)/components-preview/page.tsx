@@ -11,8 +11,10 @@ import { TMemberItem } from "@/types/meberList.types";
 import ProductList from "@/components/common/ProductList";
 import Toast from "@/components/common/Toast";
 import RequestList from "@/components/common/RequestList";
+import GlobalHeader from "@/components/layout/GlobalHeader";
 import Card from "@/components/ui/Card";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
+import SearchBar from "@/components/ui/SearchBar";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -96,6 +98,9 @@ export default function ComponentsPreviewPage() {
         <RequestList />
       </div>
       <Card name="코카콜라 제로" purchaseCount={29} price={3000} imageUrl={img_coke_zero} />
+      <div className="w-full">
+        <SearchBar />
+      </div>
     </div>
   );
 }
