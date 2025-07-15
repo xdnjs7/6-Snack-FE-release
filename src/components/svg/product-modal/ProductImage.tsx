@@ -1,6 +1,6 @@
 import React from "react";
 
-function ProductImage() {
+function ProductImageSvg() {
   return (
     <div>
       <svg
@@ -65,4 +65,4 @@ function ProductImage() {
   );
 }
 
-export default ProductImage;
+export default ProductImageSvg;
