@@ -23,6 +23,7 @@ import SideMenu from "@/components/common/SideMenu";
 import Pagination from "@/components/common/Pagination";
 import { TCategoryItem } from "@/types/subCategoryMenu.types";
 import { TSideMenuItem } from "@/types/sideMenu.types";
+import ProductDetail from "@/components/common/ProductDetail";
 import Menu from "@/components/common/Menu";
 import TabMenu from "@/components/common/TabMenu";
 import InviteMemberModal from "@/components/common/InviteMemberModal";
@@ -187,15 +188,13 @@ export default function ComponentsPreviewPage() {
       <p className="mb-4 font-bold text-xl bg-violet-100">이지수</p>
       <div className="rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] p-6">
         <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[컴포넌트 이름] 컴포넌트</h2>
-          {/* 아래 예시처럼 본인 컴포넌트 불러오기 */}
-          {/* <SearchBar /> */}
+          <h2 className="text-lg font-semibold bg-blue-100">[GlobalHeader] 헤더 컴포넌트</h2>
+          <GlobalHeader />
         </div>
 
         <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[컴포넌트 이름] 컴포넌트</h2>
-          {/* 아래 예시처럼 본인 컴포넌트 불러오기 */}
-          {/* <SearchBar /> */}
+          <h2 className="text-lg font-semibold bg-blue-100">[ProductDetail] 제품상세 컴포넌트</h2>
+          <ProductDetail />
         </div>
 
         <div className="space-y-4 mb-4">
