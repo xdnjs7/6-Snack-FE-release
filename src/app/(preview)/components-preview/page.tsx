@@ -23,8 +23,6 @@ import SideMenu from "@/components/common/SideMenu";
 import Pagination from "@/components/common/Pagination";
 import { TCategoryItem } from "@/types/subCategoryMenu.types";
 import { TSideMenuItem } from "@/types/sideMenu.types";
-import Menu from "@/components/common/Menu";
-import TabMenu from "@/components/common/TabMenu";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
