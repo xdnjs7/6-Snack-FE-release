@@ -3,7 +3,6 @@ import Mobile from "./Mobile";
 import Tablet from "./Tablet";
 import Desktop from "./Desktop";
 import MobileProductDetail from "./MobileProductDetail";
-import TabletProductDetail from "./TabletProductDetail";
 import DesktopProductDetail from "./DesktopProductDetail";
 
 export default function ProductDetail() {
@@ -13,7 +12,7 @@ export default function ProductDetail() {
         <MobileProductDetail />
       </Mobile>
       <Tablet>
-        <TabletProductDetail />
+        <MobileProductDetail />
       </Tablet>
       <Desktop>
         <DesktopProductDetail />
