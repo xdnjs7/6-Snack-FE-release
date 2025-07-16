@@ -5,7 +5,7 @@ import { TButtonStyle, TButtonType } from "@/types/button.types";
 type TButtonProps = {
   type: TButtonType;
   label?: string;
-  textClassName?: string;
+  className?: string;
   onClick?: () => void;
 };
 
@@ -20,30 +20,30 @@ const buttonStyleMap: Record<TButtonType, TButtonStyle> = {
     textColor: "text-white",
     padding: "px-4 py-3",
   },
-  lightDisabled: {
+  grayDisabled: {
     bg: "bg-primary-300",
-    textColor: "text-primary-400",
+    textColor: "text-primary-100",
     padding: "px-4 py-3",
   },
-  whiteOutline: {
+  white: {
     bg: "bg-white",
     padding: "px-4 py-3",
-    outline: "outline outline-primary-400",
+    border: "border border-primary-300",
   },
-  light: {
-    bg: "bg-primary-300",
+  gray: {
+    bg: "bg-primary-200",
     padding: "px-4 py-3",
-    outline: "outline outline-primary-400",
+    border: "border border-primary-300",
   },
   whiteDisabled: {
     bg: "bg-white",
     textColor: "text-primary-400",
     padding: "px-4 py-3",
-    outline: "outline  outline-primary-300",
+    border: "border border-primary-300",
   },
 };
 
-export default function Button({ type, label = "label", onClick, textClassName = "" }: TButtonProps) {
+export default function Button({ type, label = "label", onClick, className = "" }: TButtonProps) {
   const style = buttonStyleMap[type];
 
   if (!style) {
@@ -51,22 +51,22 @@ export default function Button({ type, label = "label", onClick, textClassName =
     return null;
   }
 
-  const disabledTypes: TButtonType[] = ["whiteDisabled", "lightDisabled"];
+  const disabledTypes: TButtonType[] = ["whiteDisabled", "grayDisabled"];
   const isDisabled = disabledTypes.includes(type);
 
-  const buttonClass = clsx(
+  const baseStyle = clsx(
     style.bg,
     style.textColor,
     style.padding ?? "",
-    style.outline,
+    style.border,
     style.font,
-    "rounded-sm inline-flex justify-center items-center",
+    "rounded-[2px] inline-flex justify-center outline-none items-center text-base font-normal md:font-bold",
     isDisabled ? "cursor-default" : "cursor-pointer",
   );
 
   return (
-    <button className={buttonClass} disabled={isDisabled} onClick={onClick}>
-      <span className={clsx(textClassName)}>{label}</span>
+    <button className={clsx(baseStyle, className)} disabled={isDisabled} onClick={onClick}>
+      {label}
     </button>
   );
 }

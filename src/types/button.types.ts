@@ -1,10 +1,10 @@
-export type TButtonType = "primary" | "black" | "light" | "whiteOutline" | "lightDisabled" | "whiteDisabled";
+export type TButtonType = "primary" | "black" | "gray" | "white" | "grayDisabled" | "whiteDisabled";
 
 export type TButtonStyle = {
   bg: string;
   textColor?: string;
   padding: string;
-  outline?: string;
+  border?: string;
   font?: string;
   size?: string;
 };
