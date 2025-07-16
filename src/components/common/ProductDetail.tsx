@@ -6,6 +6,7 @@ import MenuDropdown from "./MenuDropdown";
 import PlusToggleIconSvg from "@/components/svg/PlusToggleIconSvg";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 import ic_like_normal from "@/assets/icons/ic_like_normal.svg";
+import Button from "../ui/Button";
 
 export default function ProductDetail() {
   const [selectedQuantity, setSelectedQuantity] = useState(0);
@@ -58,12 +59,12 @@ export default function ProductDetail() {
             {/* (장바구니 담기 + 좋아요 버튼), 구매혜택, 배송방법, 배송비 wrapper*/}
             <div className="flex flex-col justify-center items-center w-full">
               <div className="flex gap-[14px] sm:gap-4 w-full">
-                {/* 장바구니 */}
-                <div className="h-16 sm:h-18 w-full px-4 sm:px-6 py-3 sm:py-4 bg-primary-950 rounded-sm inline-flex justify-center items-center">
-                  <div className="text-center justify-center text-primary-50 text-base sm:text-lg font-bold">
-                    장바구니 담기
-                  </div>
-                </div>
+                {/* 장바구니 버튼 */}
+                <Button
+                  type="primary"
+                  label="장바구니 담기"
+                  className="h-16 sm:h-18 w-full sm:px-6 sm:py-4 bg-primary-950 inline-flex sm:text-lg font-bold text-primary-50 text-center "
+                />
                 {/* 좋아요버튼 */}
                 <div className="h-16 w-16 sm:h-18 sm:w-18 px-4 py-3 sm:py-4 bg-white rounded-sm border-1 border-gray-300 inline-flex justify-center items-center">
                   <div className="relative w-[25px] h-[22.5px] sm:w-[28px] sm:h-[25px]">
