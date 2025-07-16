@@ -1,17 +1,16 @@
-"use client"; // This directive MUST be at the very top of this file
+"use client";
 
 import React, { useState, FormEvent, ChangeEvent } from "react";
 import clsx from "clsx";
 
-// Budget data type definition
-interface BudgetData {
+type TBudgetData = {
   monthlyBudget: number | "";
   expectedMinistry: number | "";
-}
+};
 
 const BudgetForm = () => {
   // State to manage form input values
-  const [budgetData, setBudgetData] = useState<BudgetData>({
+  const [budgetData, setBudgetData] = useState<TBudgetData>({
     monthlyBudget: "",
     expectedMinistry: "",
   });
@@ -40,8 +39,6 @@ const BudgetForm = () => {
       return;
     }
 
-    // Here, you would typically send data to an API
-    // For example:
     // fetch('/api/update-budget', {
     //   method: 'POST',
     //   headers: {
