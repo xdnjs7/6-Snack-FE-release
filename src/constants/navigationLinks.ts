@@ -9,7 +9,7 @@ export type TNavLink = {
 export const navLinks: TNavLink[] = [
   { name: "랜딩", path: "/" },
   { name: "회원가입", path: "/signup" },
-  { name: "최고관리자 회원가입", path: "/signup/supre-admin" },
+  { name: "최고관리자 회원가입", path: "/signup/super-admin" },
   { name: "로그인", path: "/login" },
   { name: "상품 리스트", path: "/products" },
   { name: "상품 상세", path: "/products/:productId" },
