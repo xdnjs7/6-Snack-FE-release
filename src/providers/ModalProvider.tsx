@@ -1,7 +1,7 @@
 "use client";
 
 import { TChildrenProps } from "@/types/children.types";
-import React, { createContext, ReactElement, useContext, useState } from "react";
+import React, { createContext, ReactElement, useContext, useEffect, useRef, useState } from "react";
 
 type TModalContext = {
   openModal: (component: ReactElement) => void;
@@ -22,6 +22,7 @@ export const useModal = () => {
 
 export default function ModalProvider({ children }: TChildrenProps) {
   const [modal, setModal] = useState<ReactElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   const openModal = (component: ReactElement) => {
     setModal(component);
@@ -33,10 +34,38 @@ export default function ModalProvider({ children }: TChildrenProps) {
     document.body.style.overflow = "auto";
   };
 
+  useEffect(() => {
+    if (!modal) return;
+
+    const escCloseModal = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    };
+
+    document.addEventListener("keydown", escCloseModal);
+
+    return () => {
+      document.removeEventListener("keydown", escCloseModal);
+    };
+  }, [modal]);
+
   return (
     <ModalContext.Provider value={{ openModal, closeModal }}>
       {children}
-      {modal && <div className="fixed inset-0 bg-white/60 backdrop-blur-[5px]">{modal}</div>}
+      {modal && (
+        <div
+          ref={modalRef}
+          onClick={(e) => {
+            if (modalRef.current && e.target === modalRef.current) {
+              closeModal();
+            }
+          }}
+          className="fixed inset-0 bg-white/60 backdrop-blur-[5px]"
+        >
+          {modal}
+        </div>
+      )}
     </ModalContext.Provider>
   );
 }
