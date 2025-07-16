@@ -13,7 +13,7 @@ export const navLinks: TNavLink[] = [
   { name: "로그인", path: "/login" },
   { name: "상품 리스트", path: "/products" },
   { name: "상품 상세", path: "/products/:productId" },
-  { name: "상품 등록 내역", path: "/my/products/registered" },
+  { name: "상품 등록 내역", path: "/my/products" },
   { name: "장바구니", path: "/cart" },
   { name: "구매 요청 내역", path: "/my/order-list" },
   { name: "구매 요청 상세", path: "/my/order-list/:orderId" },
