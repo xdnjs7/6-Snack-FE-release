@@ -1,0 +1,42 @@
+"use client";
+
+import { TChildrenProps } from "@/types/children.types";
+import React, { createContext, ReactElement, useContext, useState } from "react";
+
+type TModalContext = {
+  openModal: (component: ReactElement) => void;
+  closeModal: () => void;
+};
+
+const ModalContext = createContext<TModalContext | null>(null);
+
+export const useModal = () => {
+  const context = useContext(ModalContext);
+
+  if (!context) {
+    throw new Error("useModal은 ModalProvider 안에서 사용해야 합니다!");
+  }
+
+  return context;
+};
+
+export default function ModalProvider({ children }: TChildrenProps) {
+  const [modal, setModal] = useState<ReactElement | null>(null);
+
+  const openModal = (component: ReactElement) => {
+    setModal(component);
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeModal = () => {
+    setModal(null);
+    document.body.style.overflow = "auto";
+  };
+
+  return (
+    <ModalContext.Provider value={{ openModal, closeModal }}>
+      {children}
+      {modal && <div className="fixed inset-0 bg-white/60 backdrop-blur-[5px]">{modal}</div>}
+    </ModalContext.Provider>
+  );
+}
