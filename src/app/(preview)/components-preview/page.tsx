@@ -21,8 +21,8 @@ import Badge from "@/components/ui/Badge";
 import SubCategoryMenu from "@/components/common/SubCategoryMenu";
 import SideMenu from "@/components/common/SideMenu";
 import Pagination from "@/components/common/Pagination";
-import { TCategoryItem } from "@/types/subCategoryMenu.types";
-import { TSideMenuItem } from "@/types/sideMenu.types";
+import OrderManageModal from "@/components/common/OrderManageModal";
+import { useModal } from "@/providers/ModalProvider";
 import ProductDetail from "@/components/common/ProductDetail";
 import Menu from "@/components/common/Menu";
 import TabMenu from "@/components/common/TabMenu";
@@ -62,6 +62,7 @@ export default function ComponentsPreviewPage() {
   };
 
   const [sort, setSort] = useState("");
+  const { openModal } = useModal();
 
   const handleShowToast = () => {
     setIsToastVisible(true);
@@ -133,6 +134,11 @@ export default function ComponentsPreviewPage() {
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">RequestList 컴포넌트</h2>
           <RequestList />
+        </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">OrderManageModal 컴포넌트</h2>
+          <Button type="black" label="열기" onClick={() => openModal(<OrderManageModal />)} />
         </div>
       </div>
 
