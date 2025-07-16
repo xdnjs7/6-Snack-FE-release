@@ -57,7 +57,8 @@ body {
 
 .animate-slide {
   animation: slide 30s linear infinite;
-  
+}
+
 @layer utilities {
   .scrollbar-hide {
     scrollbar-width: none;
