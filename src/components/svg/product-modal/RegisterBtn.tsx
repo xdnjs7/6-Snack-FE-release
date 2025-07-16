@@ -1,6 +1,6 @@
 import React from "react";
 
-const RegisterBtn = () => (
+const RegisterBtnSvg = () => (
   <svg width="216" height="64" viewBox="0 0 216 64" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="216" height="64" rx="2" fill="#222222" />
     <path
@@ -10,4 +10,4 @@ const RegisterBtn = () => (
   </svg>
 );
 
-export default RegisterBtn;
+export default RegisterBtnSvg;
