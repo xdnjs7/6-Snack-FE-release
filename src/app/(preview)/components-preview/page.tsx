@@ -23,6 +23,8 @@ import SideMenu from "@/components/common/SideMenu";
 import Pagination from "@/components/common/Pagination";
 import { TCategoryItem } from "@/types/subCategoryMenu.types";
 import { TSideMenuItem } from "@/types/sideMenu.types";
+import Menu from "@/components/common/Menu";
+import TabMenu from "@/components/common/TabMenu";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -169,7 +171,6 @@ export default function ComponentsPreviewPage() {
             />
           </div>
         </div>
-
       </div>
 
       <p className="mb-4 font-bold text-xl bg-violet-100">이지수</p>
@@ -184,6 +185,24 @@ export default function ComponentsPreviewPage() {
           <h2 className="text-lg font-semibold bg-blue-100">[컴포넌트 이름] 컴포넌트</h2>
           {/* 아래 예시처럼 본인 컴포넌트 불러오기 */}
           {/* <SearchBar /> */}
+        </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">[컴포넌트 이름] 컴포넌트</h2>
+          {/* 아래 예시처럼 본인 컴포넌트 불러오기 */}
+          {/* <SearchBar /> */}
+          <div className="flex flex-col gap-2">
+            <h2>Menu - 메뉴 컴포넌트 (예산관리/회원관리 페이지 )</h2>
+            <Menu icon="user" text="회원관리" isActive={false} />
+            <Menu icon="user" text="회원관리" isActive={true} />
+            <Menu icon="budget" text="예산관리" isActive={false} />
+            <Menu icon="budget" text="예산관리" isActive={true} />
+          </div>
+          <div className="flex flex-col gap-2">
+            <h2>TabMenu - 탭 메뉴 컴포넌트</h2>
+            <TabMenu isUserTabActive={true} />
+            <TabMenu isUserTabActive={false} />
+          </div>
         </div>
       </div>
 
@@ -216,7 +235,7 @@ export default function ComponentsPreviewPage() {
                     { id: 11, name: "과자", parentId: 1, href: "/products/snack/cookies" },
                     { id: 12, name: "쿠키", parentId: 1, href: "/products/snack/cookies" },
                     { id: 13, name: "파이", parentId: 1, href: "/products/snack/pie" },
-                  ]
+                  ],
                 },
                 {
                   id: 2,
@@ -224,8 +243,8 @@ export default function ComponentsPreviewPage() {
                   children: [
                     { id: 21, name: "청량/탄산음료", parentId: 2, href: "/products/beverage/soda" },
                     { id: 22, name: "과즙음료", parentId: 2, href: "/products/beverage/juice" },
-                  ]
-                }
+                  ],
+                },
               ]}
               currentPath="/preview"
               onItemClick={(item) => console.log("Clicked:", item)}
@@ -259,11 +278,7 @@ export default function ComponentsPreviewPage() {
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">Pagination 컴포넌트</h2>
           <div className="flex flex-col items-center gap-4">
-            <Pagination
-              currentPage={currentPaginationPage}
-              totalPages={10}
-              onPageChange={setCurrentPaginationPage}
-            />
+            <Pagination currentPage={currentPaginationPage} totalPages={10} onPageChange={setCurrentPaginationPage} />
             <div>현재 페이지: {currentPaginationPage}</div>
           </div>
         </div>
