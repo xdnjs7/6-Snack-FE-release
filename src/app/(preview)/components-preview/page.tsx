@@ -24,6 +24,13 @@ import Pagination from "@/components/common/Pagination";
 import { TCategoryItem } from "@/types/subCategoryMenu.types";
 import { TSideMenuItem } from "@/types/sideMenu.types";
 import ProductDetail from "@/components/common/ProductDetail";
+import Menu from "@/components/common/Menu";
+import TabMenu from "@/components/common/TabMenu";
+import ProductEditForm from "@/components/common/ProductEditForm";
+import ProductRegistrationForm from "@/components/common/ProductRegistrationForm";
+import RequestListItem from "@/components/common/RequestListItem";
+import Input from "@/components/common/Input";
+import ConfirmationModal from "@/components/common/ConfirmationModal";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -33,6 +40,7 @@ export default function ComponentsPreviewPage() {
   const [isToastVisible, setIsToastVisible] = useState(false);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
+  const [inputValue, setInputValue] = useState("");
 
   const [members, setMembers] = useState<TMemberItem[]>([
     {
