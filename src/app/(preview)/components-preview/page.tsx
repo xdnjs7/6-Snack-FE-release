@@ -157,17 +157,17 @@ export default function ComponentsPreviewPage() {
             <div className="flex flex-col w-96 gap-1">
               <Button type="black" label="Black 버튼" />
               <Button type="primary" label="Primary 버튼" />
-              <Button type="lightDisabled" label="LightDisabled 버튼" />
+              <Button type="grayDisabled" label="grayDisabled 버튼" />
             </div>
             <div className="flex flex-col w-96 gap-1">
-              <Button type="whiteOutline" label="White Outline 버튼" />
-              <Button type="light" label="Light 버튼" />
+              <Button type="white" label="White 버튼" />
+              <Button type="gray" label="gray 버튼" />
               <Button type="whiteDisabled" label="whiteDisabled 버튼" />
             </div>
             <Button
               type="primary"
               label="Primary textClassName"
-              textClassName="text-lg font-semibold w-24 h-10 flex items-center justify-center"
+              className="text-2xl font-semibold w-100 h-100 flex flex-col items-center justify-start"
             />
           </div>
         </div>
