@@ -31,6 +31,7 @@ import ProductRegistrationForm from "@/components/common/ProductRegistrationForm
 import RequestListItem from "@/components/common/RequestListItem";
 import Input from "@/components/common/Input";
 import ConfirmationModal from "@/components/common/ConfirmationModal";
+import DeleteAccountConfirmModal from "@/components/common/DeleteAccountConfirmModal";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -202,25 +203,30 @@ export default function ComponentsPreviewPage() {
         </div>
 
         <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[ProductDetail] 제품상세 컴포넌트</h2>
+          <h2 className="text-lg font-semibold bg-blue-100">[ProductDetail] 컴포넌트</h2>
           <ProductDetail />
         </div>
 
         <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[컴포넌트 이름] 컴포넌트</h2>
-          {/* 아래 예시처럼 본인 컴포넌트 불러오기 */}
-          {/* <SearchBar /> */}
+          <h2 className="text-lg font-semibold bg-blue-100">[DeleteAccountConfirmModal] 컴포넌트</h2>
+          <DeleteAccountConfirmModal />
+        </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">[TabMenu] 컴포넌트</h2>
           <div className="flex flex-col gap-2">
-            <h2>Menu - 메뉴 컴포넌트 (예산관리/회원관리 페이지 )</h2>
+            <TabMenu isUserTabActive={true} />
+            <TabMenu isUserTabActive={false} />
+          </div>
+        </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">[Menu] 컴포넌트</h2>
+          <div className="flex flex-col gap-2">
             <Menu icon="user" text="회원관리" isActive={false} />
             <Menu icon="user" text="회원관리" isActive={true} />
             <Menu icon="budget" text="예산관리" isActive={false} />
             <Menu icon="budget" text="예산관리" isActive={true} />
-          </div>
-          <div className="flex flex-col gap-2">
-            <h2>TabMenu - 탭 메뉴 컴포넌트</h2>
-            <TabMenu isUserTabActive={true} />
-            <TabMenu isUserTabActive={false} />
           </div>
         </div>
       </div>
