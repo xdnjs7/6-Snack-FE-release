@@ -81,12 +81,14 @@ const SignUpForm = () => {
           "pb-[40px]",
           "pl-[60px]",
           "rounded-[2px]",
-          "gap-[20px]",
           "bg-[--color-white]",
           "shadow-[0px_0px_40px_0px_#0000001A]",
+          "flex",
+          "flex-col",
+          "gap-[20px]",
         )}
       >
-        <div>
+        <div className="flex flex-col gap-[10px]">
           <h2
             className={clsx(
               "font-suit",
@@ -115,7 +117,7 @@ const SignUpForm = () => {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-[24px]">
           {formFields.map((field) => (
             <div key={field.id}>
               <label htmlFor={field.id} className="sr-only">
