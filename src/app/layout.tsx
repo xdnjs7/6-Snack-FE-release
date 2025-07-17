@@ -6,6 +6,7 @@ import DevNavBar from "@/components/preview/DevNavBar";
 import { TChildrenProps } from "@/types/children.types";
 import GlobalHeader from "@/components/layout/GlobalHeader";
 import Providers from "./Providers";
+import GeneralLayout from "@/components/layout/GeneralLayout";
 
 const suit = localFont({
   src: "../assets/fonts/suit_variable.woff2",
@@ -21,14 +22,16 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: TChildrenProps) {
   return (
     <html lang="ko">
-      <body className={`${suit.variable}`}>
+      <body className={`${suit.variable} min-h-screen flex flex-col`}>
         <Providers>
           {/* Header, Footer 추가 (필요하다면) */}
           <GlobalHeader />
 
           {/* 개발용 네비게이션 바 작업완료 후 삭제*/}
           <DevNavBar />
-          <main>{children}</main>
+          <main className="relative flex-1">
+            <GeneralLayout>{children}</GeneralLayout>
+          </main>
         </Providers>
       </body>
     </html>
