@@ -21,8 +21,18 @@ import Badge from "@/components/ui/Badge";
 import SubCategoryMenu from "@/components/common/SubCategoryMenu";
 import SideMenu from "@/components/common/SideMenu";
 import Pagination from "@/components/common/Pagination";
-import { TCategoryItem } from "@/types/subCategoryMenu.types";
-import { TSideMenuItem } from "@/types/sideMenu.types";
+import OrderManageModal from "@/components/common/OrderManageModal";
+import { useModal } from "@/providers/ModalProvider";
+import ProductDetail from "@/components/common/ProductDetail";
+import Menu from "@/components/common/Menu";
+import TabMenu from "@/components/common/TabMenu";
+import ProductEditForm from "@/components/common/ProductEditForm";
+import ProductRegistrationForm from "@/components/common/ProductRegistrationForm";
+import RequestListItem from "@/components/common/RequestListItem";
+import Input from "@/components/common/Input";
+import ConfirmationModal from "@/components/common/ConfirmationModal";
+import InviteMemberModal from "@/components/common/InviteMemberModal";
+import DeleteAccountConfirmModal from "@/components/common/DeleteAccountConfirmModal";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -32,6 +42,8 @@ export default function ComponentsPreviewPage() {
   const [isToastVisible, setIsToastVisible] = useState(false);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
+  const [inputValue, setInputValue] = useState("");
+  const { openModal, closeModal } = useModal();
 
   const [members, setMembers] = useState<TMemberItem[]>([
     {
@@ -67,7 +79,7 @@ export default function ComponentsPreviewPage() {
   };
 
   return (
-    <div className="max-w-[1440px] p-6 pb-[60px] space-y-6 bg-white min-h-screen">
+    <div className="max-w-[1440px] pt-6 pb-[60px] space-y-6 bg-white min-h-screen">
       <h1 className="text-2xl font-bold">🧪 공통 컴포넌트 모음</h1>
 
       <p className="mb-4 font-bold text-xl bg-violet-100">조성빈</p>
@@ -123,7 +135,12 @@ export default function ComponentsPreviewPage() {
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">RequestList 컴포넌트</h2>
-          <RequestList />
+          <RequestList onClick={() => {}} />
+        </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">OrderManageModal 컴포넌트</h2>
+          <Button type="black" label="열기" onClick={() => openModal(<OrderManageModal />)} />
         </div>
       </div>
 
@@ -163,17 +180,17 @@ export default function ComponentsPreviewPage() {
             <div className="flex flex-col w-96 gap-1">
               <Button type="black" label="Black 버튼" />
               <Button type="primary" label="Primary 버튼" />
-              <Button type="lightDisabled" label="LightDisabled 버튼" />
+              <Button type="grayDisabled" label="grayDisabled 버튼" />
             </div>
             <div className="flex flex-col w-96 gap-1">
-              <Button type="whiteOutline" label="White Outline 버튼" />
-              <Button type="light" label="Light 버튼" />
+              <Button type="white" label="White 버튼" />
+              <Button type="gray" label="gray 버튼" />
               <Button type="whiteDisabled" label="whiteDisabled 버튼" />
             </div>
             <Button
               type="primary"
               label="Primary textClassName"
-              textClassName="text-lg font-semibold w-24 h-10 flex items-center justify-center"
+              className="text-2xl font-bold w-100 h-100 flex flex-col items-center justify-start  "
             />
           </div>
         </div>
@@ -182,32 +199,35 @@ export default function ComponentsPreviewPage() {
       <p className="mb-4 font-bold text-xl bg-violet-100">이지수</p>
       <div className="rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] p-6">
         <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[컴포넌트 이름] 컴포넌트</h2>
-          {/* 아래 예시처럼 본인 컴포넌트 불러오기 */}
-          {/* <SearchBar /> */}
+          <h2 className="text-lg font-semibold bg-blue-100">[GlobalHeader] 헤더 컴포넌트</h2>
+          <GlobalHeader />
         </div>
 
         <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[컴포넌트 이름] 컴포넌트</h2>
-          {/* 아래 예시처럼 본인 컴포넌트 불러오기 */}
-          {/* <SearchBar /> */}
+          <h2 className="text-lg font-semibold bg-blue-100">[ProductDetail] 컴포넌트</h2>
+          <ProductDetail />
         </div>
 
         <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[컴포넌트 이름] 컴포넌트</h2>
-          {/* 아래 예시처럼 본인 컴포넌트 불러오기 */}
-          {/* <SearchBar /> */}
+          <h2 className="text-lg font-semibold bg-blue-100">[DeleteAccountConfirmModal] 컴포넌트</h2>
+          <DeleteAccountConfirmModal />
+        </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">[TabMenu] 컴포넌트</h2>
           <div className="flex flex-col gap-2">
-            <h2>Menu - 메뉴 컴포넌트 (예산관리/회원관리 페이지 )</h2>
+            <TabMenu isUserTabActive={true} />
+            <TabMenu isUserTabActive={false} />
+          </div>
+        </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">[Menu] 컴포넌트</h2>
+          <div className="flex flex-col gap-2">
             <Menu icon="user" text="회원관리" isActive={false} />
             <Menu icon="user" text="회원관리" isActive={true} />
             <Menu icon="budget" text="예산관리" isActive={false} />
             <Menu icon="budget" text="예산관리" isActive={true} />
-          </div>
-          <div className="flex flex-col gap-2">
-            <h2>TabMenu - 탭 메뉴 컴포넌트</h2>
-            <TabMenu isUserTabActive={true} />
-            <TabMenu isUserTabActive={false} />
           </div>
         </div>
       </div>
@@ -340,6 +360,31 @@ export default function ComponentsPreviewPage() {
           <div className="flex flex-col items-center gap-4">
             <Pagination currentPage={currentPaginationPage} totalPages={10} onPageChange={setCurrentPaginationPage} />
             <div>현재 페이지: {currentPaginationPage}</div>
+          </div>
+        </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">InviteMemberModal 컴포넌트</h2>
+          <div className="flex flex-col items-center gap-4">
+            <button
+              onClick={() => {
+                openModal(
+                  <InviteMemberModal
+                    onCancel={closeModal}
+                    onSubmit={(data) => {
+                      console.log("회원 초대 등록:", data);
+                      console.log("이름:", data.name);
+                      console.log("이메일:", data.email);
+                      console.log("권한:", data.role);
+                      closeModal();
+                    }}
+                  />,
+                );
+              }}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+            >
+              회원 초대 모달 열기
+            </button>
           </div>
         </div>
       </div>

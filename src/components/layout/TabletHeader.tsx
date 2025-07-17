@@ -1,4 +1,7 @@
+"use client";
+
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import img_logo from "@/assets/images/img_logo.webp";
 import ic_lock from "@/assets/icons/ic_lock.svg";
@@ -11,8 +14,11 @@ import React from "react";
 export default function TabletHeader() {
   const pathname = usePathname();
 
-  // 인증 관련 페이지 경로 (login, signup) - 비회원도 접근가능
-  const isAuthRoute = pathname === "/login" || pathname === "/signup";
+  // 비보호된 페이지 경로 (메인페이지, login, signup) - 비회원도 접근가능
+  const unprotectedRoute = pathname === "/" || pathname === "/login" || pathname === "/signup";
+
+  // 개발용 임시경로 - 개발완료후 삭제예정
+  const isPreviewRoute = pathname === "/components-preview";
 
   // 보호된 페이지 경로 (main app)
   const isProtectedRoute =
@@ -24,33 +30,33 @@ export default function TabletHeader() {
     pathname.startsWith("/budgets") ||
     pathname.startsWith("/users");
 
-  if (isAuthRoute) {
+  if (unprotectedRoute) {
     return (
       <header className="hidden sm:block md:hidden">
         {/* 헤더 wrapper */}
         <div className="w-full h-25 flex justify-between items-center overflow-hidden px-[24px] py-[32px]">
           {/* 스낵 로고 */}
-          <div className="relative w-[102.75px] h-[44px]">
+          <Link href="/" className="relative w-[102.75px] h-[44px]">
             <Image src={img_logo} alt="스낵 로고" fill className="object-contain" />
-          </div>
+          </Link>
 
           {/* 로그인 + 기업담당자 회원가입 부분 */}
           <div className="flex items-center gap-10">
             {/* 로그인 */}
-            <div className="flex items-center gap-1">
+            <Link href="/login" className="flex items-center gap-1">
               <div className="relative w-[24px] h-[24px]">
                 <Image src={ic_lock} alt="스낵 로고" fill className="object-contain" />
               </div>
               <p className="font-normal text-primary-950">로그인</p>
-            </div>
+            </Link>
 
             {/* 기업담당자 회원가입 */}
-            <div className="flex gap-1 items-center">
+            <Link href="/signup/super-admin" className="flex gap-1 items-center">
               <div className="relative w-[24px] h-[24px]">
                 <Image src={ic_manager} alt="스낵 로고" fill className="object-contain" />
               </div>
               <p className="font-normal text-primary-950">기업 담당자 회원가입</p>
-            </div>
+            </Link>
           </div>
         </div>
       </header>
@@ -58,42 +64,119 @@ export default function TabletHeader() {
   }
 
   if (isProtectedRoute) {
-    <header className="hidden sm:block md:hidden">
-      {/* 헤더 wrapper */}
-      <div className="w-full h-25 flex justify-between items-center overflow-hidden px-[24px] py-[28px]">
-        {/* 스낵 로고 */}
-        <div className="relative w-[102.75px] h-[44px]">
-          <Image src={img_logo} alt="스낵 로고" fill className="object-contain" />
-        </div>
-
-        {/* (장바구니, 프로파일, 로그아웃) (메뉴) */}
-        <div className="flex items-center gap-10">
-          <div className="flex items-center">
-            {/* 장바구니 */}
-            <div className="flex items-center gap-1">
-              <div className="relative w-[24px] h-[24px]">
-                <Image src={ic_cart} alt="장바구니" fill className="object-contain" />
-              </div>
-            </div>
-            {/* 프로필 */}
-            <div className="flex gap-1 mx-5 items-center">
-              <div className="relative w-[24px] h-[24px]">
-                <Image src={ic_profile} alt="프로필" fill className="object-contain" />
-              </div>
-            </div>
-
-            {/* 로그아웃 */}
-            <div className="flex gap-1 ml-5 items-center">
-              <p className="font-normal text-primary-950">로그아웃</p>
-            </div>
+    return (
+      <header className="hidden sm:block md:hidden">
+        {/* 헤더 wrapper */}
+        <div className="w-full h-25 flex justify-between items-center overflow-hidden px-[24px] py-[28px]">
+          {/* 스낵 로고 */}
+          <div className="relative w-[102.75px] h-[44px]">
+            <Image src={img_logo} alt="스낵 로고" fill className="object-contain" />
           </div>
 
-          {/* 메뉴 */}
-          <div className="relative w-6 h-6">
-            <Image src={ic_hamburger_menu} alt="메뉴" fill className="object-contain" />
+          {/* (장바구니, 프로파일, 로그아웃) (메뉴) */}
+          <div className="flex items-center gap-10">
+            <div className="flex items-center">
+              {/* 장바구니 */}
+              <div className="flex items-center gap-1">
+                <div className="relative w-[24px] h-[24px]">
+                  <Image src={ic_cart} alt="장바구니" fill className="object-contain" />
+                </div>
+              </div>
+              {/* 프로필 */}
+              <div className="flex gap-1 mx-5 items-center">
+                <div className="relative w-[24px] h-[24px]">
+                  <Image src={ic_profile} alt="프로필" fill className="object-contain" />
+                </div>
+              </div>
+
+              {/* 로그아웃 */}
+              <div className="flex gap-1 ml-5 items-center">
+                <p className="font-normal text-primary-950">로그아웃</p>
+              </div>
+            </div>
+
+            {/* 메뉴 */}
+            <div className="relative w-6 h-6">
+              <Image src={ic_hamburger_menu} alt="메뉴" fill className="object-contain" />
+            </div>
           </div>
         </div>
+      </header>
+    );
+  }
+
+  // 임시 개발용 - 개발 완료후 삭제예정
+  if (isPreviewRoute) {
+    return (
+      <div>
+        <h2>비회원에게 허용된 루트에서 보이는 헤더</h2>
+        <header className="hidden sm:block md:hidden">
+          {/* 헤더 wrapper */}
+          <div className="w-full h-25 flex justify-between items-center overflow-hidden px-[24px] py-[32px]">
+            {/* 스낵 로고 */}
+            <div className="relative w-[102.75px] h-[44px]">
+              <Image src={img_logo} alt="스낵 로고" fill className="object-contain" />
+            </div>
+
+            {/* 로그인 + 기업담당자 회원가입 부분 */}
+            <div className="flex items-center gap-10">
+              {/* 로그인 */}
+              <div className="flex items-center gap-1">
+                <div className="relative w-[24px] h-[24px]">
+                  <Image src={ic_lock} alt="스낵 로고" fill className="object-contain" />
+                </div>
+                <p className="font-normal text-primary-950">로그인</p>
+              </div>
+
+              {/* 기업담당자 회원가입 */}
+              <div className="flex gap-1 items-center">
+                <div className="relative w-[24px] h-[24px]">
+                  <Image src={ic_manager} alt="스낵 로고" fill className="object-contain" />
+                </div>
+                <p className="font-normal text-primary-950">기업 담당자 회원가입</p>
+              </div>
+            </div>
+          </div>
+        </header>
+        <h2>보호된 루트에서 보이는 헤더 (로그인한 유저)</h2>
+        <header className="hidden sm:block md:hidden">
+          {/* 헤더 wrapper */}
+          <div className="w-full h-25 flex justify-between items-center overflow-hidden px-[24px] py-[28px]">
+            {/* 스낵 로고 */}
+            <div className="relative w-[102.75px] h-[44px]">
+              <Image src={img_logo} alt="스낵 로고" fill className="object-contain" />
+            </div>
+
+            {/* (장바구니, 프로파일, 로그아웃) (메뉴) */}
+            <div className="flex items-center gap-10">
+              <div className="flex items-center">
+                {/* 장바구니 */}
+                <div className="flex items-center gap-1">
+                  <div className="relative w-[24px] h-[24px]">
+                    <Image src={ic_cart} alt="장바구니" fill className="object-contain" />
+                  </div>
+                </div>
+                {/* 프로필 */}
+                <div className="flex gap-1 mx-5 items-center">
+                  <div className="relative w-[24px] h-[24px]">
+                    <Image src={ic_profile} alt="프로필" fill className="object-contain" />
+                  </div>
+                </div>
+
+                {/* 로그아웃 */}
+                <div className="flex gap-1 ml-5 items-center">
+                  <p className="font-normal text-primary-950">로그아웃</p>
+                </div>
+              </div>
+
+              {/* 메뉴 */}
+              <div className="relative w-6 h-6">
+                <Image src={ic_hamburger_menu} alt="메뉴" fill className="object-contain" />
+              </div>
+            </div>
+          </div>
+        </header>
       </div>
-    </header>;
+    );
   }
 }

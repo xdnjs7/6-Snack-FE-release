@@ -58,7 +58,7 @@ export const Badge = ({ type }: TBadgeProps) => {
         "rounded-full inline-flex justify-center items-center gap-1",
         bg,
         SmallBadge
-          ? "w-[52px] h-5 px-2.5 py-1 text-xs sm:w-full sm:h-7 sm:px-2 sm:py-1.5 sm:text-sm"
+          ? "w-[52px] h-5 px-2.5 py-1 text-xs md:w-full md:h-7 md:px-2 md:py-1.5 md:text-sm"
           : "w-full h-7 px-2 py-1.5",
       )}
     >
@@ -76,7 +76,7 @@ export const Badge = ({ type }: TBadgeProps) => {
         </div>
       ) : null}
 
-      <span className={clsx("font-bold font-suit", SmallBadge ? "text-xs sm:text-sm" : "text-sm", textColor)}>
+      <span className={clsx("font-bold font-suit", SmallBadge ? "text-xs md:text-sm" : "text-sm", textColor)}>
         {text}
       </span>
     </div>
