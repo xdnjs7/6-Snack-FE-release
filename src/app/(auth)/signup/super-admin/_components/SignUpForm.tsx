@@ -5,6 +5,8 @@ import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import Image from "next/image";
+import img_logo from "@/assets/images/img_logo.webp";
 
 const signUpSchema = z
   .object({
@@ -43,15 +45,6 @@ const SignUpForm = () => {
     console.log("폼 데이터:", data);
 
     try {
-      // 여기에 실제 백엔드 API 호출 코드를 넣으세요.
-      // fetch('/api/signup', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(data),
-      // });
-
       await new Promise((resolve) => setTimeout(resolve, 1000));
       alert("회원가입이 완료되었습니다!");
     } catch (error) {
@@ -75,98 +68,121 @@ const SignUpForm = () => {
   ];
 
   return (
-    <div
-      className={clsx(
-        "w-full",
-        "px-4",
-        "py-8",
-        "sm:px-8",
-        "sm:py-12",
-        "md:px-16",
-        "md:py-16",
-        "max-w-xs",
-        "sm:max-w-md",
-        "md:max-w-lg",
-        "bg-[--color-white]",
-        "rounded-lg",
-        "shadow-none",
-        "sm:shadow-md",
-      )}
-    >
-      <h1>Snack</h1>
-
-      <div>
-        <h2>기업 담당자 회원가입</h2>
-        <p>* 그룹 내 유저는 기업 담당자의 초대 메일을 통해 가입이 가능합니다.</p>
+    <div>
+      <div className="flex justify-center items-center h-16">
+        <Image src={img_logo} alt="우리 회사 로고" width={344.276611328125} height={97.32713317871094} priority />
       </div>
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {formFields.map((field) => (
-          <div key={field.id}>
-            <label htmlFor={field.id} className="sr-only">
-              {field.label}
-            </label>
-            <input
-              type={field.type}
-              id={field.id}
-              placeholder={field.label}
-              {...register(field.name as keyof TSignUpForm)}
-              className={clsx(
-                "w-full",
-                "p-3",
-                "border",
-                "border-[--color-primary-200]",
-                "rounded-md",
-                "focus:outline-none",
-                "focus:ring-2",
-                "focus:ring-[--color-secondary-500]",
-                "placeholder-[--color-primary-400]",
-                "text-[--color-primary-900]",
-                "text-base",
-                errors[field.name as keyof TSignUpForm] && "border-red-500",
-              )}
-            />
-            {errors[field.name as keyof TSignUpForm] && (
-              <p className="text-red-500 text-sm mt-1">{errors[field.name as keyof TSignUpForm]?.message}</p>
+      <div
+        className={clsx(
+          "w-[600px]",
+          "h-[734px]",
+          "pt-[40px]",
+          "pr-[60px]",
+          "pb-[40px]",
+          "pl-[60px]",
+          "rounded-[2px]",
+          "gap-[20px]",
+          "bg-[--color-white]",
+          "shadow-[0px_0px_40px_0px_#0000001A]",
+        )}
+      >
+        <div>
+          <h2
+            className={clsx(
+              "font-suit",
+              "font-bold",
+              "text-[24px]",
+              "leading-tight",
+              "tracking-tighter",
+              "text-left",
+              "align-middle",
             )}
-          </div>
-        ))}
+          >
+            기업 담당자 회원가입
+          </h2>
+          <p
+            className={clsx(
+              "font-suit",
+              "font-normal",
+              "text-[16px]",
+              "leading-tight",
+              "tracking-tighter",
+              "text-left",
+              "align-middle",
+            )}
+          >
+            * 그룹 내 유저는 기업 담당자의 초대 메일을 통해 가입이 가능합니다.
+          </p>
+        </div>
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className={clsx(
-            "w-full",
-            "py-3",
-            "bg-[--color-primary-950]",
-            "text-[--color-white]",
-            "font-semibold",
-            "rounded-md",
-            "hover:bg-[--color-primary-800]",
-            "transition-colors",
-            "duration-200",
-            "mt-6",
-            isSubmitting && "opacity-70 cursor-not-allowed",
-          )}
-        >
-          {isSubmitting ? "가입 중..." : "가입하기"}
-        </button>
-      </form>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {formFields.map((field) => (
+            <div key={field.id}>
+              <label htmlFor={field.id} className="sr-only">
+                {field.label}
+              </label>
+              <input
+                type={field.type}
+                id={field.id}
+                placeholder={field.label}
+                {...register(field.name as keyof TSignUpForm)}
+                className={clsx(
+                  "w-full",
+                  "p-3",
+                  "border",
+                  "border-[--color-primary-200]",
+                  "rounded-md",
+                  "focus:outline-none",
+                  "focus:ring-2",
+                  "focus:ring-[--color-secondary-500]",
+                  "placeholder-[--color-primary-400]",
+                  "text-[--color-primary-900]",
+                  "text-base",
+                  errors[field.name as keyof TSignUpForm] && "border-red-500",
+                )}
+              />
+              {errors[field.name as keyof TSignUpForm] && (
+                <p className="text-red-500 text-sm mt-1">{errors[field.name as keyof TSignUpForm]?.message}</p>
+              )}
+            </div>
+          ))}
 
-      <p className={clsx("text-center", "mt-6", "text-sm", "text-[--color-primary-700]")}>
-        이미 계정이 있으신가요?{" "}
-        <a
-          href="/login"
-          className={clsx(
-            "text-[--color-primary-950]",
-            "font-semibold",
-            "underline",
-            "hover:text-[--color-primary-700]",
-          )}
-        >
-          로그인
-        </a>
-      </p>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={clsx(
+              "w-full",
+              "py-3",
+              "bg-[--color-primary-950]",
+              "text-[--color-white]",
+              "font-semibold",
+              "rounded-md",
+              "hover:bg-[--color-primary-800]",
+              "transition-colors",
+              "duration-200",
+              "mt-6",
+              isSubmitting && "opacity-70 cursor-not-allowed",
+            )}
+          >
+            {isSubmitting ? "가입 중..." : "가입하기"}
+          </button>
+        </form>
+
+        <p className={clsx("text-center", "mt-6", "text-sm", "text-[--color-primary-700]")}>
+          이미 계정이 있으신가요?{" "}
+          <a
+            href="/login"
+            className={clsx(
+              "text-[--color-primary-950]",
+              "font-semibold",
+              "underline",
+              "hover:text-[--color-primary-700]",
+            )}
+          >
+            로그인
+          </a>
+        </p>
+      </div>
     </div>
   );
 };
