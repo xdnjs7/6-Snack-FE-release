@@ -189,7 +189,7 @@ export default function ComponentsPreviewPage() {
             <Button
               type="primary"
               label="Primary textClassName"
-              className="text-2xl font-semibold w-100 h-100 flex flex-col items-center justify-start"
+              className="text-2xl font-bold w-100 h-100 flex flex-col items-center justify-start  "
             />
           </div>
         </div>
