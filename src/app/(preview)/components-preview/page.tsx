@@ -32,7 +32,6 @@ import RequestListItem from "@/components/common/RequestListItem";
 import Input from "@/components/common/Input";
 import ConfirmationModal from "@/components/common/ConfirmationModal";
 import InviteMemberModal from "@/components/common/InviteMemberModal";
-import { useModal } from "@/providers/ModalProvider";
 import DeleteAccountConfirmModal from "@/components/common/DeleteAccountConfirmModal";
 
 export default function ComponentsPreviewPage() {
@@ -66,7 +65,6 @@ export default function ComponentsPreviewPage() {
   };
 
   const [sort, setSort] = useState("");
-  const { openModal } = useModal();
 
   const handleShowToast = () => {
     setIsToastVisible(true);
@@ -380,7 +378,7 @@ export default function ComponentsPreviewPage() {
                       console.log("권한:", data.role);
                       closeModal();
                     }}
-                  />
+                  />,
                 );
               }}
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
