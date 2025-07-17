@@ -8,8 +8,8 @@ import AuthenticatedHeader from "./AuthenticatedHeader";
 export default function Header() {
   const pathname = usePathname();
 
-  // 비보호된 페이지 경로 (랜딩 페이지) - 비회원도 접근가능, **/components-preview는 개발 후 지우기 **
-  const isUnprotectedRoute = pathname === "/" || pathname.startsWith("/components-preview");
+  // 비보호된 페이지 경로 (랜딩 페이지) - 비회원도 접근가능)
+  const isUnprotectedRoute = pathname === "/"
   // 유저
   const isAuthRoute = pathname.startsWith("/login") || pathname.startsWith("/signup");
 
@@ -23,6 +23,9 @@ export default function Header() {
     pathname.startsWith("/budgets") ||
     pathname.startsWith("/users");
 
+  // **개발용 삭제예정**
+  const isPreviewRoute = pathname.startsWith("/components-preview");
+  
   if (isAuthRoute) {
     return null;
   }
@@ -33,6 +36,16 @@ export default function Header() {
 
   if (isProtectedRoute) {
     return <AuthenticatedHeader />;
+  }
+
+  // **개발용 삭제예정**
+  if (isPreviewRoute) {
+    return (
+      <div>
+        <GuestHeader />
+        <AuthenticatedHeader/>
+      </div>
+    );
   }
 
   return null;
