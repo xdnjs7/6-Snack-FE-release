@@ -70,30 +70,30 @@ const SignUpForm = () => {
   return (
     <div>
       <div className="flex justify-center items-center h-16">
-        <Image src={img_logo} alt="우리 회사 로고" width={344.276611328125} height={97.32713317871094} priority />
+        <Image src={img_logo} alt="우리 회사 로고" width={344} height={97} priority />
       </div>
       <div
         className={clsx(
-          "w-[600px]",
-          "h-[734px]",
-          "pt-[40px]",
-          "pr-[60px]",
-          "pb-[40px]",
-          "pl-[60px]",
+          "w-150",
+          "h-183.5",
+          "pt-10",
+          "pr-15",
+          "pb-10",
+          "pl-15",
           "rounded-[2px]",
           "bg-[--color-white]",
           "shadow-[0px_0px_40px_0px_#0000001A]",
           "flex",
           "flex-col",
-          "gap-[20px]",
+          "gap-5",
         )}
       >
-        <div className="flex flex-col gap-[10px]">
+        <div className="flex flex-col gap-2.5">
           <h2
             className={clsx(
               "font-suit",
               "font-bold",
-              "text-[24px]",
+              "text-6",
               "leading-tight",
               "tracking-tighter",
               "text-left",
@@ -106,7 +106,7 @@ const SignUpForm = () => {
             className={clsx(
               "font-suit",
               "font-normal",
-              "text-[16px]",
+              "text-4",
               "leading-tight",
               "tracking-tighter",
               "text-left",
@@ -117,7 +117,7 @@ const SignUpForm = () => {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-[24px]">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           {formFields.map((field) => (
             <div key={field.id}>
               <label htmlFor={field.id} className="sr-only">
@@ -162,7 +162,6 @@ const SignUpForm = () => {
               "hover:bg-[--color-primary-800]",
               "transition-colors",
               "duration-200",
-              // "mt-6",
               isSubmitting && "opacity-70 cursor-not-allowed",
             )}
           >
