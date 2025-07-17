@@ -14,7 +14,7 @@ function Order() {
 
   const { visibleCount } = useOrderVisibleCount();
 
-  const dummyRequests = Array.from({ length: 0 }, (_, i) => i + 1);
+  const dummyRequests = Array.from({ length: 50 }, (_, i) => i + 1);
   const startIdx = (currentPaginationPage - 1) * visibleCount;
   const visibleRequests = dummyRequests.slice(startIdx, startIdx + visibleCount);
   const totalPages = Math.ceil(dummyRequests.length / visibleCount);
