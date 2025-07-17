@@ -30,7 +30,7 @@ export default function ProductList() {
       </div>
       <Desktop>
         <div className="flex justify-center w-full">
-          <div className="flex justify-start items-center max-w-[1352px] h-[100px] px-[40px] gap-[80px] border-b-[1px] border-primary-100">
+          <div className="flex justify-start items-center w-full h-[100px] px-[40px] gap-[80px] border-b-[1px] border-[#e6e6e6]">
             <div className="flex justify-start items-center w-[320px] h-[40px] gap-[20px]">
               <div className="flex justify-center items-center w-[40px] h-[40px] px-[12px] rounded-[2px] bg-primary-50">
                 <div className="relative w-[16px] h-[27.77px]">
@@ -42,7 +42,7 @@ export default function ProductList() {
             <p className="w-[180px] font-normal text-[16px]/[20px] tracking-tight text-primary-950">2024. 07. 04</p>
             <p className="w-[180px] font-normal text-[16px]/[20px] tracking-tight text-primary-950">청량 • 탄산음료</p>
             <p className="w-[160px] font-normal text-[16px]/[20px] tracking-tight text-primary-950">2,000원</p>
-            <p className="font-normal text-[16px]/[20px] tracking-tight text-primary-950">www.codeit.kr</p>
+            <p className="w-[160px] font-normal text-[16px]/[20px] tracking-tight text-primary-950">www.codeit.kr</p>
           </div>
         </div>
       </Desktop>
