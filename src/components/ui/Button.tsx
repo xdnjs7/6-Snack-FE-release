@@ -28,18 +28,18 @@ const buttonStyleMap: Record<TButtonType, TButtonStyle> = {
   white: {
     bg: "bg-white",
     padding: "px-4 py-3",
-    border: "border border-primary-300",
+    border: "outline-1 outline-primary-300",
   },
   gray: {
     bg: "bg-primary-200",
     padding: "px-4 py-3",
-    border: "border border-primary-300",
+    border: "outline-1 outline-primary-300",
   },
   whiteDisabled: {
     bg: "bg-white",
     textColor: "text-primary-400",
     padding: "px-4 py-3",
-    border: "border border-primary-300",
+    border: "outline-1 outline-primary-300",
   },
 };
 
@@ -60,7 +60,7 @@ export default function Button({ type, label = "label", onClick, className = "" 
     style.padding ?? "",
     style.border,
     style.font,
-    "rounded-[2px] inline-flex justify-center outline-none items-center text-base font-normal md:font-bold",
+    "rounded-[2px] inline-flex justify-center items-center text-base",
     isDisabled ? "cursor-default" : "cursor-pointer",
   );
 
