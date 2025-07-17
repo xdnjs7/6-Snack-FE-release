@@ -1,5 +1,6 @@
 import React from "react";
 import Mobile from "./Mobile";
+import Button from "../ui/Button";
 
 const data = {
   createdAt: "2024. 07. 04",
@@ -8,12 +9,16 @@ const data = {
   requester: "김스낵",
 };
 
-export default function RequestList() {
+type TRequestListProps = {
+  onClick: () => void;
+};
+
+export default function RequestList({ onClick }: TRequestListProps) {
   return (
     <>
       <Mobile>
         <div className="border-b-[1px] border-primary-100">
-          <div className="flex flex-col w-[327px] h-[144px] gap-[20px] my-[24px]">
+          <div className="flex flex-col min-w-[327px] h-[144px] gap-[20px] my-[24px]">
             <div className="flex flex-col justify-center gap-[10px]">
               <div className="flex justify-between items-center pr-[4px]">
                 <div className="font-bold text-[14px]/[17px] tracking-tight">{data.createdAt}</div>
@@ -29,14 +34,19 @@ export default function RequestList() {
                 <div className="font-extrabold text-[20px]/[25px] tracking-tight text-primary-950">{data.price}</div>
               </div>
             </div>
-            <div className="flex gap-[8px]">
-              {/* @De-cal TODO: 추후 Button 컴포넌트 완성되면 대체 */}
-              <button className="flex justify-center items-center border-[1px] border-primary-300 w-[160px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight">
-                반려
-              </button>
-              <button className="flex justify-center items-center bg-primary-950 text-white w-[160px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight ">
-                승인
-              </button>
+            <div className="w-full justify-between flex gap-[8px]">
+              <Button
+                type="white"
+                label="반려"
+                onClick={onClick}
+                className="w-full flex justify-center items-center border-[1px] border-primary-300 min-w-[160px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
+              />
+              <Button
+                type="black"
+                label="승인"
+                onClick={onClick}
+                className="w-full flex justify-center items-center bg-primary-950 text-white min-w-[160px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
+              />
             </div>
           </div>
         </div>
@@ -61,13 +71,18 @@ export default function RequestList() {
             </div>
           </div>
           <div className="flex justify-center items-center gap-[8px]">
-            {/* @De-cal TODO: 추후 Button 컴포넌트 완성되면 대체 */}
-            <button className="flex justify-center items-center border-[1px] border-primary-300 w-[80px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight">
-              반려
-            </button>
-            <button className="flex justify-center items-center bg-primary-950 text-white w-[80px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight ">
-              승인
-            </button>
+            <Button
+              type="white"
+              label="반려"
+              onClick={onClick}
+              className="flex justify-center items-center border-[1px] border-primary-300 w-[80px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
+            />
+            <Button
+              type="black"
+              label="승인"
+              onClick={onClick}
+              className="flex justify-center items-center bg-primary-950 text-white w-[80px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
+            />
           </div>
         </div>
       </div>

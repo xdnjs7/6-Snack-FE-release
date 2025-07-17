@@ -79,7 +79,7 @@ export default function ComponentsPreviewPage() {
   };
 
   return (
-    <div className="max-w-[1440px] p-6 pb-[60px] space-y-6 bg-white min-h-screen">
+    <div className="max-w-[1440px] pt-6 pb-[60px] space-y-6 bg-white min-h-screen">
       <h1 className="text-2xl font-bold">🧪 공통 컴포넌트 모음</h1>
 
       <p className="mb-4 font-bold text-xl bg-violet-100">조성빈</p>
@@ -135,7 +135,7 @@ export default function ComponentsPreviewPage() {
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">RequestList 컴포넌트</h2>
-          <RequestList />
+          <RequestList onClick={() => {}} />
         </div>
 
         <div className="space-y-4 mb-4">
@@ -378,7 +378,7 @@ export default function ComponentsPreviewPage() {
                       console.log("권한:", data.role);
                       closeModal();
                     }}
-                  />
+                  />,
                 );
               }}
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
