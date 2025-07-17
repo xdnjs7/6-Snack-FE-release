@@ -32,7 +32,6 @@ import RequestListItem from "@/components/common/RequestListItem";
 import Input from "@/components/common/Input";
 import ConfirmationModal from "@/components/common/ConfirmationModal";
 import InviteMemberModal from "@/components/common/InviteMemberModal";
-import { useModal } from "@/providers/ModalProvider";
 import DeleteAccountConfirmModal from "@/components/common/DeleteAccountConfirmModal";
 
 export default function ComponentsPreviewPage() {
@@ -66,7 +65,6 @@ export default function ComponentsPreviewPage() {
   };
 
   const [sort, setSort] = useState("");
-  const { openModal } = useModal();
 
   const handleShowToast = () => {
     setIsToastVisible(true);
