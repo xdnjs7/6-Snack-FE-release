@@ -59,7 +59,7 @@ export default function ProfileComponent() {
   }
 
   return (
-    <div className="w-full sm:w-[600px] sm:px-14 sm:rounded-sm sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] sm:outline-offset-[-1px]  py-10 px-6 inline-flex flex-col justify-center items-start gap-5">
+    <div className="w-full sm:w-[600px] sm:px-14 sm:rounded-sm sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] sm:outline-offset-[-1px] py-10 inline-flex flex-col justify-center items-start gap-5">
       <div>
         <div className="text-center justify-center text-xl font-bold font-suit">내 프로필 변경</div>
       </div>

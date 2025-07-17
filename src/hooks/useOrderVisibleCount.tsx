@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export default function useResponsiveVisibleCount() {
+export default function useOrderVisibleCount() {
   const [visibleCount, setVisibleCount] = useState(3);
 
   useEffect(() => {
@@ -11,12 +11,12 @@ export default function useResponsiveVisibleCount() {
       const md = parseInt(getComputedStyle(root).getPropertyValue("--breakpoint-md"));
       const width = window.innerWidth;
 
+      // 갯수 설정
       const breakpointConfig = [
         { width: md, count: 6 },
         { width: sm, count: 8 },
         { width: 0, count: 3 },
       ];
-
       const matched = breakpointConfig.find(({ width: bpWidth }) => width >= bpWidth);
       setVisibleCount(matched?.count || 3);
     };
@@ -26,5 +26,5 @@ export default function useResponsiveVisibleCount() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  return visibleCount;
+  return { visibleCount};
 }
