@@ -25,7 +25,7 @@ function Order() {
         <div className="text-black text-base font-bold">구매 요청 관리</div>
         <Dropdown value={sort} onChange={setSort} />
       </div>
-      <div className="space-y-4 mb-4 flex flex-col items-center">
+      <div className="space-y-4 mb-4 flex flex-col ">
         {visibleRequests.length > 0 ? (
           <>
             {visibleRequests.map((id) => (
