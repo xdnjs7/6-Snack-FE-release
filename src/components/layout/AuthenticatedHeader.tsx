@@ -8,14 +8,16 @@ import ic_chevron_down from "@/assets/icons/ic_chevron_down.svg";
 import ic_cart from "@/assets/icons/ic_cart.svg";
 import ProfileAvatar from "../common/ProfileAvatar";
 import VerticalBarIconSvg from "../svg/VerticalBarIconSvg";
+import Link from "next/link";
+import SnackIconSvg from "../svg/SnackIconSvg";
 
 export default function AuthenticatedHeader() {
   return (
     <header className="w-full h-14 sm:h-25 md:h-[90px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] sm:px-[24px] sm:py-[28px] md:px-[100px] md:py-[32px]">
       <div className="flex items-center justify-center md:gap-10">
-        <div className="relative w-[102.75px] h-[44px]">
-          <Image src={img_logo} alt="스낵 로고" fill className="object-contain" />
-        </div>
+        <Link href="/">
+          <SnackIconSvg className="w-[102.75px] h-[44px]" />
+        </Link>
         {/* nav - 상품 리스트, 구매요청내역, 상품등록내역, 구매요청관리, 구매내역확인, 관리  */}
         <div className="hidden md:block">
           <nav className="flex items-center justify-center gap-[30px]">
