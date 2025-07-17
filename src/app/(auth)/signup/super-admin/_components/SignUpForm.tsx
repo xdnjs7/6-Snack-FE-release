@@ -154,7 +154,7 @@ const SignUpForm = () => {
             disabled={isSubmitting}
             className={clsx(
               "w-full",
-              "py-3",
+              "py-4",
               "bg-[--color-primary-950]",
               "text-[--color-white]",
               "font-semibold",
@@ -162,7 +162,7 @@ const SignUpForm = () => {
               "hover:bg-[--color-primary-800]",
               "transition-colors",
               "duration-200",
-              "mt-6",
+              // "mt-6",
               isSubmitting && "opacity-70 cursor-not-allowed",
             )}
           >
