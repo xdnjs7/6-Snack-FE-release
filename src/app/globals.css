@@ -45,3 +45,36 @@ html {
 body {
   font-family: var(--font-suit), Arial, Helvetica, sans-serif;
 }
+
+@keyframes slide {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-slide {
+  animation: slide 30s linear infinite;
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    display: block;
+    width: 6px; /* Chrome, Safari, Opera */
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary-200);
+    border-radius: 4px;
+  }
+}

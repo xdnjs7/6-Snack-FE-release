@@ -21,8 +21,8 @@ import Badge from "@/components/ui/Badge";
 import SubCategoryMenu from "@/components/common/SubCategoryMenu";
 import SideMenu from "@/components/common/SideMenu";
 import Pagination from "@/components/common/Pagination";
-import { TCategoryItem } from "@/types/subCategoryMenu.types";
-import { TSideMenuItem } from "@/types/sideMenu.types";
+import OrderManageModal from "@/components/common/OrderManageModal";
+import { useModal } from "@/providers/ModalProvider";
 import ProductDetail from "@/components/common/ProductDetail";
 import Menu from "@/components/common/Menu";
 import TabMenu from "@/components/common/TabMenu";
@@ -33,7 +33,7 @@ import Input from "@/components/common/Input";
 import ConfirmationModal from "@/components/common/ConfirmationModal";
 import InviteMemberModal from "@/components/common/InviteMemberModal";
 import { useModal } from "@/providers/ModalProvider";
-
+import DeleteAccountConfirmModal from "@/components/common/DeleteAccountConfirmModal";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -66,6 +66,7 @@ export default function ComponentsPreviewPage() {
   };
 
   const [sort, setSort] = useState("");
+  const { openModal } = useModal();
 
   const handleShowToast = () => {
     setIsToastVisible(true);
@@ -138,6 +139,11 @@ export default function ComponentsPreviewPage() {
           <h2 className="text-lg font-semibold bg-blue-100">RequestList 컴포넌트</h2>
           <RequestList />
         </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">OrderManageModal 컴포넌트</h2>
+          <Button type="black" label="열기" onClick={() => openModal(<OrderManageModal />)} />
+        </div>
       </div>
 
       <p className="mb-4 font-bold text-xl bg-violet-100">김우주</p>
@@ -186,7 +192,7 @@ export default function ComponentsPreviewPage() {
             <Button
               type="primary"
               label="Primary textClassName"
-              className="text-2xl font-semibold w-100 h-100 flex flex-col items-center justify-start"
+              className="text-2xl font-bold w-100 h-100 flex flex-col items-center justify-start  "
             />
           </div>
         </div>
@@ -200,25 +206,30 @@ export default function ComponentsPreviewPage() {
         </div>
 
         <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[ProductDetail] 제품상세 컴포넌트</h2>
+          <h2 className="text-lg font-semibold bg-blue-100">[ProductDetail] 컴포넌트</h2>
           <ProductDetail />
         </div>
 
         <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[컴포넌트 이름] 컴포넌트</h2>
-          {/* 아래 예시처럼 본인 컴포넌트 불러오기 */}
-          {/* <SearchBar /> */}
+          <h2 className="text-lg font-semibold bg-blue-100">[DeleteAccountConfirmModal] 컴포넌트</h2>
+          <DeleteAccountConfirmModal />
+        </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">[TabMenu] 컴포넌트</h2>
           <div className="flex flex-col gap-2">
-            <h2>Menu - 메뉴 컴포넌트 (예산관리/회원관리 페이지 )</h2>
+            <TabMenu isUserTabActive={true} />
+            <TabMenu isUserTabActive={false} />
+          </div>
+        </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">[Menu] 컴포넌트</h2>
+          <div className="flex flex-col gap-2">
             <Menu icon="user" text="회원관리" isActive={false} />
             <Menu icon="user" text="회원관리" isActive={true} />
             <Menu icon="budget" text="예산관리" isActive={false} />
             <Menu icon="budget" text="예산관리" isActive={true} />
-          </div>
-          <div className="flex flex-col gap-2">
-            <h2>TabMenu - 탭 메뉴 컴포넌트</h2>
-            <TabMenu isUserTabActive={true} />
-            <TabMenu isUserTabActive={false} />
           </div>
         </div>
       </div>

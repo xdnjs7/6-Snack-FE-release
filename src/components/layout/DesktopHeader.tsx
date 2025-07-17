@@ -2,6 +2,7 @@
 
 import React from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import img_logo from "@/assets/images/img_logo.webp";
 import ic_lock from "@/assets/icons/ic_lock.svg";
@@ -13,8 +14,8 @@ import ic_like_normal from "@/assets/icons/ic_like_normal.svg";
 export default function DesktopHeader() {
   const pathname = usePathname();
 
-  // 인증 관련 페이지 경로 (login, signup) - 비회원도 접근가능
-  const isAuthRoute = pathname === "/login" || pathname === "/signup";
+  // 비보호된 페이지 경로 (메인페이지, login, signup) - 비회원도 접근가능
+  const unprotectedRoute = pathname === "/" || pathname === "/login" || pathname === "/signup";
 
   // 개발용 임시경로 - 개발완료후 삭제예정
   const isPreviewRoute = pathname === "/components-preview";
@@ -29,33 +30,33 @@ export default function DesktopHeader() {
     pathname.startsWith("/budgets") ||
     pathname.startsWith("/users");
 
-  if (isAuthRoute) {
+  if (unprotectedRoute) {
     return (
       <header className="hidden md:block">
         {/* 헤더 wrapper */}
         <div className="w-full h-[90px] flex justify-between items-center overflow-hidden px-[100px] py-[32px]">
           {/* 스낵 로고 */}
-          <div className="relative w-[102.75px] h-[44px]">
+          <Link href="/" className="relative w-[102.75px] h-[44px]">
             <Image src={img_logo} alt="스낵 로고" fill className="object-contain" />
-          </div>
+          </Link>
 
           {/* 로그인 + 기업담당자 회원가입 부분 */}
           <div className="flex items-center gap-10">
             {/* 로그인 */}
-            <div className="flex items-center gap-1">
+            <Link href="/login" className="flex items-center gap-1">
               <div className="relative w-[24px] h-[24px]">
                 <Image src={ic_lock} alt="스낵 로고" fill className="object-contain" />
               </div>
               <p className="font-normal text-primary-950">로그인</p>
-            </div>
+            </Link>
 
             {/* 기업담당자 회원가입 */}
-            <div className="flex gap-1 items-center">
+            <Link href="/signup/super-admin" className="flex gap-1 items-center">
               <div className="relative w-[24px] h-[24px]">
                 <Image src={ic_manager} alt="스낵 로고" fill className="object-contain" />
               </div>
               <p className="font-normal text-primary-950">기업 담당자 회원가입</p>
-            </div>
+            </Link>
           </div>
         </div>
       </header>
