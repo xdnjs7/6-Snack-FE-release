@@ -1,7 +1,6 @@
 import Image from "next/image";
 import React, { Fragment, MouseEvent, useState } from "react";
 import ic_chevron_down_gray from "@/assets/icons/ic_chevron_down_gray.svg";
-import ic_chevron_up_gray from "@/assets/icons/ic_chevron_up_gray.svg";
 import clsx from "clsx";
 
 const parentCategory = ["스낵", "음료", "생수", "간편식", "신선식"] as const;
@@ -40,23 +39,26 @@ export default function SubCategoryItem() {
             onClick={(e) => handleClick(e, parent)}
             className={clsx(
               isActiveParentCategory === parent && "border-t-2 border-primary-950",
-              "group/parent flex justify-between items-center w-[180px] h-[50px] p-[14px] cursor-pointer",
+              "group/parent hover:bg-primary-50/50 transition-colors duration-200 flex justify-between items-center w-[180px] h-[50px] p-[14px] cursor-pointer",
             )}
           >
             <p
               className={clsx(
                 isActiveParentCategory === parent ? "font-bold" : "font-normal",
-                "group-hover/parent:font-bold text-[16px]/[20px] tracking-tight text-primary-950",
+                "group-hover/parent:font-bold transition-all text-[16px]/[20px] tracking-tight text-primary-950",
               )}
             >
               {parent}
             </p>
             <div className="relative w-[16px] h-[16px]">
               <Image
-                src={isActiveParentCategory === parent ? ic_chevron_up_gray : ic_chevron_down_gray}
+                src={ic_chevron_down_gray}
                 alt="드롭다운"
                 fill
-                className="object-cover"
+                className={clsx(
+                  isActiveParentCategory === parent && "rotate-180",
+                  "object-cover transition-transform duration-250",
+                )}
               />
             </div>
           </button>
@@ -67,14 +69,14 @@ export default function SubCategoryItem() {
                   id="children"
                   key={`${children}_${id}`}
                   onClick={(e) => handleClick(e, children)}
-                  className="group/children flex justify-between items-center w-[180px] h-[50px] py-[10px] px-[30px] cursor-pointer"
+                  className="group/children hover:bg-primary-50/60 transition-all duration-200 flex justify-between items-center w-[180px] h-[50px] py-[10px] px-[30px] cursor-pointer"
                 >
                   <p
                     className={clsx(
                       isActiveChildrenCategory === children
                         ? "font-bold text-primary-950"
                         : "font-normal text-primary-500",
-                      "group-hover/children:text-primary-950 text-[16px]/[20px] tracking-tight",
+                      "group-hover/children:text-primary-950 transition-all text-[16px]/[20px] tracking-tight",
                     )}
                   >
                     {children}
