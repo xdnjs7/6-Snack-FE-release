@@ -3,7 +3,7 @@
 // 작업 완료시 삭제 필수!!
 // 해당 페이지에 본인이 작업한 공통 컴포넌트 넣어서 테스트하면 좋을거같아요!
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import TextArea from "@/components/common/TextArea";
 import MemberList from "@/components/common/MemberList";
 import Dropdown from "@/components/common/DropDown";
@@ -153,7 +153,9 @@ export default function ComponentsPreviewPage() {
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">SearchBar 컴포넌트</h2>
-          <SearchBar />
+          <Suspense>
+            <SearchBar />
+          </Suspense>
         </div>
 
         <div className="space-y-4 mb-4">
