@@ -29,7 +29,7 @@ const Dropdown = ({ options = [], value, onChange }: TDropdownProps) => {
       {/* 드롭다운 버튼 */}
       <div
         className={`h-11 px-4 py-2.5 bg-white border border-primary-100 ${
-          isOpen ? "border-b-0 rounded-t" : "rounded"
+          isOpen ? "border-b-0" : "border"
         } flex justify-between items-center cursor-pointer`}
         onClick={() => setIsOpen((prev) => !prev)}
       >
