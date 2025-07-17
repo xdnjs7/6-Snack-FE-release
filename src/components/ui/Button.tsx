@@ -60,7 +60,7 @@ export default function Button({ type, label = "label", onClick, className = "" 
     style.padding ?? "",
     style.border,
     style.font,
-    "rounded-[2px] inline-flex justify-center items-center text-base font-normal md:font-bold",
+    "rounded-[2px] inline-flex justify-center items-center text-base",
     isDisabled ? "cursor-default" : "cursor-pointer",
   );
 
