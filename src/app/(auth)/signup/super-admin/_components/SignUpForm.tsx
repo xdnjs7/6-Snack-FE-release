@@ -20,9 +20,7 @@ const signUpSchema = z
       .regex(/[^a-zA-Z0-9]/, "비밀번호는 특수문자를 포함해야 합니다."),
     passwordConfirm: z.string().min(1, "비밀번호 확인을 입력해주세요."),
     companyName: z.string().min(1, "회사명을 입력해주세요."),
-    companyNumber: z
-      .string()
-      .regex(/^\d{3}-\d{2}-\d{5}$/, "유효한 사업자 번호 형식(예: 123-45-67890)으로 입력해주세요."),
+    companyNumber: z.string().regex(/^\d{10}$/, "10자리 사업자 번호 형식으로 입력해주세요."),
   })
   .refine((data) => data.password === data.passwordConfirm, {
     message: "비밀번호와 비밀번호 확인이 일치하지 않습니다.",
