@@ -2,6 +2,7 @@
 
 import React from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import img_logo from "@/assets/images/img_logo.webp";
 import ic_hamburger_menu from "@/assets/icons/ic_hamburger_menu.svg";
@@ -11,8 +12,8 @@ import ic_cart from "@/assets/icons/ic_cart.svg";
 export default function MobileHeader() {
   const pathname = usePathname();
 
-  // 인증 관련 페이지 경로 (login, signup) - 비회원도 접근가능
-  const isAuthRoute = pathname === "/login" || pathname === "/signup";
+  // 비보호된 페이지 경로 (메인페이지, login, signup) - 비회원도 접근가능
+  const unprotectedRoute = pathname === "/" || pathname === "/login" || pathname === "/signup";
 
   // 개발용 임시경로 - 개발완료후 삭제예정
   const isPreviewRoute = pathname === "/components-preview";
@@ -27,13 +28,13 @@ export default function MobileHeader() {
     pathname.startsWith("/budgets") ||
     pathname.startsWith("/users");
 
-  if (isAuthRoute) {
+  if (unprotectedRoute) {
     return (
       <header className="block sm:hidden">
         <div className="w-full h-14 flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px]">
-          <div className="relative w-[102.75px] h-[44px]">
+          <Link href="/" className="relative w-[102.75px] h-[44px]">
             <Image src={img_logo} alt="스낵 로고" fill className="object-contain" />
-          </div>
+          </Link>
           <div className="relative w-6 h-6">
             <Image src={ic_hamburger_menu} alt="메뉴" fill className="object-contain" />
           </div>
