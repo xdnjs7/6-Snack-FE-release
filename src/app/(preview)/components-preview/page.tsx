@@ -27,7 +27,7 @@ import Menu from "@/components/common/Menu";
 import TabMenu from "@/components/common/TabMenu";
 import ProductEditForm from "@/components/common/ProductEditForm";
 import ProductRegistrationForm from "@/components/common/ProductRegistrationForm";
-import RequestListItem from "@/components/common/RequestListItem";
+import MyRequestList from "@/components/common/MyRequestList";
 import Input from "@/components/common/Input";
 import ConfirmationModal from "@/components/common/ConfirmationModal";
 import InviteMemberModal from "@/components/common/InviteMemberModal";
@@ -79,7 +79,7 @@ export default function ComponentsPreviewPage() {
   };
 
   return (
-    <div className="max-w-[1440px] p-6 pb-[60px] space-y-6 bg-white min-h-screen">
+    <div className="max-w-[1440px] pt-6 pb-[60px] space-y-6 bg-white min-h-screen">
       <h1 className="text-2xl font-bold">🧪 공통 컴포넌트 모음</h1>
 
       <p className="mb-4 font-bold text-xl bg-violet-100">조성빈</p>
@@ -135,7 +135,7 @@ export default function ComponentsPreviewPage() {
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">RequestList 컴포넌트</h2>
-          <RequestList />
+          <RequestList onClick={() => {}} />
         </div>
 
         <div className="space-y-4 mb-4">
@@ -240,7 +240,7 @@ export default function ComponentsPreviewPage() {
           <h2 className="text-lg font-semibold bg-blue-100">[상품 등록 모달]</h2>
           <ProductRegistrationForm />
           <h2 className="text-lg font-semibold bg-blue-100">[My Request List(요청 취소 가능)]</h2>
-          <RequestListItem
+          <MyRequestList
             requestDate="2024. 07. 04"
             productName="코카콜라 제로"
             price={1900}

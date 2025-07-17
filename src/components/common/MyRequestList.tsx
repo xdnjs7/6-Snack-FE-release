@@ -5,7 +5,7 @@ type TRequestListItemProps = {
   requestDate: string; // 요청 날짜 (예: "2024. 07. 04")
   productName: string; // 상품명 (예: "코카콜라 제로" 또는 "코카콜라 제로 외 1건")
   price: number; // 가격 (예: 1900)
-  status: "대기중" | "요청취소"; // 요청 상태 (현재는 '대기중'만 보이므로 확장 가능성 고려)
+  status: "대기중" | "요청취소" | "요청완료"; // 요청 상태 (현재는 '대기중'만 보이므로 확장 가능성 고려)
   onRequestCancel: () => void; // '요청 취소' 버튼 클릭 시 실행될 함수
 };
 
