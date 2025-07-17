@@ -13,9 +13,10 @@ import React from "react";
 
 export default function TabletHeader() {
   const pathname = usePathname();
-
-  // 비보호된 페이지 경로 (메인페이지, login, signup) - 비회원도 접근가능
-  const unprotectedRoute = pathname === "/" || pathname === "/login" || pathname === "/signup";
+  // 비보호된 페이지 경로 (랜딩 페이지) - 비회원도 접근가능
+  const isUnprotectedRoute = pathname === "/";
+  // 유저
+  const isAuthRoute = pathname === "/login" || pathname === "/signup";
 
   // 보호된 페이지 경로 (main app)
   const isProtectedRoute =
@@ -27,7 +28,10 @@ export default function TabletHeader() {
     pathname.startsWith("/budgets") ||
     pathname.startsWith("/users");
 
-  if (unprotectedRoute) {
+  if (isAuthRoute) {
+    return null;
+  }
+  if (isUnprotectedRoute) {
     return (
       <header className="hidden sm:block md:hidden">
         {/* 헤더 wrapper */}

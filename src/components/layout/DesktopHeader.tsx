@@ -13,12 +13,10 @@ import ic_like_normal from "@/assets/icons/ic_like_normal.svg";
 
 export default function DesktopHeader() {
   const pathname = usePathname();
-
-  // 비보호된 페이지 경로 (메인페이지, login, signup) - 비회원도 접근가능
-  const unprotectedRoute = pathname === "/" || pathname === "/login" || pathname === "/signup";
-
-  // 개발용 임시경로 - 개발완료후 삭제예정
-  // const isPreviewRoute = pathname === "/components-preview";
+  // 비보호된 페이지 경로 (랜딩 페이지) - 비회원도 접근가능
+  const isUnprotectedRoute = pathname === "/";
+  // 유저
+  const isAuthRoute = pathname === "/login" || pathname === "/signup";
 
   // 보호된 페이지 경로 (main app)
   const isProtectedRoute =
@@ -30,7 +28,10 @@ export default function DesktopHeader() {
     pathname.startsWith("/budgets") ||
     pathname.startsWith("/users");
 
-  if (unprotectedRoute) {
+  if (isAuthRoute) {
+    return null;
+  }
+  if (isUnprotectedRoute) {
     return (
       <header className="hidden md:block">
         {/* 헤더 wrapper */}

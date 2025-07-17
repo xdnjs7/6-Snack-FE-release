@@ -12,8 +12,10 @@ import ic_cart from "@/assets/icons/ic_cart.svg";
 export default function MobileHeader() {
   const pathname = usePathname();
 
-  // 비보호된 페이지 경로 (메인페이지, login, signup) - 비회원도 접근가능
-  const unprotectedRoute = pathname === "/" || pathname === "/login" || pathname === "/signup";
+  // 비보호된 페이지 경로 (랜딩 페이지) - 비회원도 접근가능
+  const isUnprotectedRoute = pathname === "/";
+  // 유저
+  const isAuthRoute = pathname === "/login" || pathname === "/signup";
 
   // 보호된 페이지 경로 (main app)
   const isProtectedRoute =
@@ -25,7 +27,11 @@ export default function MobileHeader() {
     pathname.startsWith("/budgets") ||
     pathname.startsWith("/users");
 
-  if (unprotectedRoute) {
+  if (isAuthRoute) {
+    return null;
+  }
+
+  if (isUnprotectedRoute) {
     return (
       <header className="block sm:hidden">
         <div className="w-full h-14 flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px]">
