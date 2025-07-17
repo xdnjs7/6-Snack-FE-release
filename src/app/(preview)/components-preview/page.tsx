@@ -31,6 +31,8 @@ import ProductRegistrationForm from "@/components/common/ProductRegistrationForm
 import RequestListItem from "@/components/common/RequestListItem";
 import Input from "@/components/common/Input";
 import ConfirmationModal from "@/components/common/ConfirmationModal";
+import InviteMemberModal from "@/components/common/InviteMemberModal";
+import { useModal } from "@/providers/ModalProvider";
 import DeleteAccountConfirmModal from "@/components/common/DeleteAccountConfirmModal";
 
 export default function ComponentsPreviewPage() {
@@ -42,6 +44,7 @@ export default function ComponentsPreviewPage() {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
   const [inputValue, setInputValue] = useState("");
+  const { openModal, closeModal } = useModal();
 
   const [members, setMembers] = useState<TMemberItem[]>([
     {
@@ -359,6 +362,31 @@ export default function ComponentsPreviewPage() {
           <div className="flex flex-col items-center gap-4">
             <Pagination currentPage={currentPaginationPage} totalPages={10} onPageChange={setCurrentPaginationPage} />
             <div>현재 페이지: {currentPaginationPage}</div>
+          </div>
+        </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">InviteMemberModal 컴포넌트</h2>
+          <div className="flex flex-col items-center gap-4">
+            <button
+              onClick={() => {
+                openModal(
+                  <InviteMemberModal
+                    onCancel={closeModal}
+                    onSubmit={(data) => {
+                      console.log("회원 초대 등록:", data);
+                      console.log("이름:", data.name);
+                      console.log("이메일:", data.email);
+                      console.log("권한:", data.role);
+                      closeModal();
+                    }}
+                  />
+                );
+              }}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+            >
+              회원 초대 모달 열기
+            </button>
           </div>
         </div>
       </div>
