@@ -1,12 +1,11 @@
 "use client";
 
-import Desktop from "@/components/common/Desktop";
-import ProductDetail from "@/components/common/DesktopProductDetail";
+import ProductDetail from "@/components/common/ProductDetail";
 import SubCategoryMenu from "@/components/common/SubCategoryMenu";
 
 export default function ProductDetailPage() {
   return (
-    <div className="max-w-screen-xl mx-auto flex gap-6 px-4 py-10">
+    <div className="w-full flex gap-6 px-6 py-10">
       {/* 사이드 카테고리 메뉴 */}
       <SubCategoryMenu
         categories={[
