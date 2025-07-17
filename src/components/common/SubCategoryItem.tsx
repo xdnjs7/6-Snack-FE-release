@@ -1,7 +1,6 @@
 import Image from "next/image";
 import React, { Fragment, MouseEvent, useState } from "react";
 import ic_chevron_down_gray from "@/assets/icons/ic_chevron_down_gray.svg";
-import ic_chevron_up_gray from "@/assets/icons/ic_chevron_up_gray.svg";
 import clsx from "clsx";
 
 const parentCategory = ["스낵", "음료", "생수", "간편식", "신선식"] as const;
