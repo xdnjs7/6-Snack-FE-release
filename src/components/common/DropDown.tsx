@@ -46,7 +46,7 @@ const Dropdown = ({ options = [], value, onChange }: TDropdownProps) => {
 
       {/* 드롭다운 메뉴 */}
       {isOpen && (
-        <div className="absolute w-full z-10 bg-white border border-primary-200 border-t-0 rounded-b max-h-[300px] overflow-y-auto">
+        <div className="absolute w-full z-10 bg-white border border-primary-100 border-t-0 rounded-b max-h-[300px] overflow-y-auto">
           {menuOptions.map((option) => (
             <div
               key={option}
