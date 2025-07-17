@@ -12,7 +12,6 @@ import ProductList from "@/components/common/ProductList";
 import Toast from "@/components/common/Toast";
 import Button from "@/components/ui/Button";
 import RequestList from "@/components/common/RequestList";
-import GlobalHeader from "@/components/layout/GlobalHeader";
 import SubCategoryItem from "@/components/common/SubCategoryItem";
 import Card from "@/components/ui/Card";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
@@ -33,6 +32,7 @@ import Input from "@/components/common/Input";
 import ConfirmationModal from "@/components/common/ConfirmationModal";
 import InviteMemberModal from "@/components/common/InviteMemberModal";
 import DeleteAccountConfirmModal from "@/components/common/DeleteAccountConfirmModal";
+import Header from "@/components/layout/Header";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -199,8 +199,8 @@ export default function ComponentsPreviewPage() {
       <p className="mb-4 font-bold text-xl bg-violet-100">이지수</p>
       <div className="rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] p-6">
         <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[GlobalHeader] 헤더 컴포넌트</h2>
-          <GlobalHeader />
+          <h2 className="text-lg font-semibold bg-blue-100">[Header] 컴포넌트</h2>
+          <Header />
         </div>
 
         <div className="space-y-4 mb-4">
