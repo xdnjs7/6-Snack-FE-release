@@ -11,7 +11,7 @@ import SnackIconSvg from "../svg/SnackIconSvg";
 
 export default function GuestHeader() {
   return (
-    <header className="w-full h-14 sm:h-25 md:h-[90px] sm:px-[24px] sm:py-[32px] md:px-[100px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px]">
+    <header className="w-full h-14 sm:h-25 md:h-[90px] sm:px-[24px] sm:py-[32px] md:px-[100px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg">
       <Link href="/">
         <SnackIconSvg className="w-[102.75px] h-[44px]" />
       </Link>

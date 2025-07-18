@@ -14,7 +14,7 @@ import LikeIconSvg from "../svg/LikeIconSvg";
 
 export default function AuthenticatedHeader() {
   return (
-    <header className="w-full h-14 sm:h-25 md:h-[90px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] sm:px-[24px] sm:py-[28px] md:px-[100px] md:py-[32px]">
+    <header className="w-full h-14 sm:h-25 md:h-[90px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] sm:px-[24px] sm:py-[28px] md:px-[100px] md:py-[32px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg">
       <div className="flex items-center justify-center md:gap-10">
         <Link href="/">
           <SnackIconSvg className="w-[102.75px] h-[44px]" />
@@ -61,10 +61,12 @@ export default function AuthenticatedHeader() {
       {/* 장바구니 + 메뉴 영역 */}
       <div className="flex items-center gap-5 sm:gap-10 md:gap-7.5">
         <div className="hidden md:block">
-          <div className="flex items-center justify-center p-1 gap-0.5">
-            <LikeIconSvg />
-            <p className="text-sm/[17px] tracking-tight">찜목록</p>
-          </div>
+          <Link href="/wishlist">
+            <div className="flex items-center justify-center p-1 gap-0.5">
+              <LikeIconSvg className="pointer-events-none" />
+              <p className="text-primary-950 text-sm/[17px] tracking-tight">찜목록</p>
+            </div>
+          </Link>
         </div>
         <div className="flex items-center sm:gap-5">
           <Link href="/cart">
@@ -82,7 +84,7 @@ export default function AuthenticatedHeader() {
           <VerticalBarIconSvg className="hidden sm:block text-primary-100" />
           <p className="hidden sm:block font-normal text-primary-950">로그아웃</p>
         </div>
-        <div className="relative w-6 h-6">
+        <div className="relative w-6 h-6 md:hidden">
           <Image src={ic_hamburger_menu} alt="메뉴" fill className="object-contain" />
         </div>
       </div>
