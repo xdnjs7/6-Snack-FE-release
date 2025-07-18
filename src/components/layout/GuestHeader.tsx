@@ -13,7 +13,7 @@ export default function GuestHeader() {
   return (
     <header className="w-full h-14 sm:h-25 md:h-[90px] sm:px-[24px] sm:py-[32px] md:px-[100px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px]">
       <Link href="/">
-      <SnackIconSvg className="w-[102.75px] h-[44px]"/>
+        <SnackIconSvg className="w-[102.75px] h-[44px]" />
       </Link>
       <div className="sm:hidden relative w-6 h-6">
         <Image src={ic_hamburger_menu} alt="메뉴" fill className="object-contain" />
