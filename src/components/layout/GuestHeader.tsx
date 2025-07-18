@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import img_logo from "@/assets/images/img_logo.webp";
 import ic_hamburger_menu from "@/assets/icons/ic_hamburger_menu.svg";
 import ic_lock from "@/assets/icons/ic_lock.svg";
 import ic_manager from "@/assets/icons/ic_manager.svg";
