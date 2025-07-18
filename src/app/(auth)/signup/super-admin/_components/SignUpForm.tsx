@@ -7,25 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Image from "next/image";
 import img_logo from "@/assets/images/img_logo.webp";
-
-const signUpSchema = z
-  .object({
-    name: z.string().min(1, "이름(기업 담당자)을 입력해주세요."),
-    id: z.string().min(1, "아이디를 입력해주세요."),
-    password: z
-      .string()
-      .min(8, "비밀번호는 최소 8자 이상이어야 합니다.")
-      .regex(/[a-zA-Z]/, "비밀번호는 영문자를 포함해야 합니다.")
-      .regex(/[0-9]/, "비밀번호는 숫자를 포함해야 합니다.")
-      .regex(/[^a-zA-Z0-9]/, "비밀번호는 특수문자를 포함해야 합니다."),
-    passwordConfirm: z.string().min(1, "비밀번호 확인을 입력해주세요."),
-    companyName: z.string().min(1, "회사명을 입력해주세요."),
-    companyNumber: z.string().regex(/^\d{10}$/, "10자리 사업자 번호 형식으로 입력해주세요."),
-  })
-  .refine((data) => data.password === data.passwordConfirm, {
-    message: "비밀번호와 비밀번호 확인이 일치하지 않습니다.",
-    path: ["passwordConfirm"],
-  });
+import { adminSignUp } from "@/app/actions/adminSignup";
+import { signUpSchema } from "@/lib/schemas/signUpSchema";
 
 type TSignUpForm = z.infer<typeof signUpSchema>;
 
@@ -33,6 +16,7 @@ const SignUpForm = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<TSignUpForm>({
     resolver: zodResolver(signUpSchema),
@@ -42,18 +26,42 @@ const SignUpForm = () => {
     console.log("폼이 제출되었습니다!");
     console.log("폼 데이터:", data);
 
+    // FormData 객체 생성 및 데이터 추가
+    const formData = new FormData();
+    formData.append("email", data.id); // 클라이언트의 'id'를 백엔드의 'email'로 매핑
+    formData.append("name", data.name);
+    formData.append("password", data.password);
+    formData.append("confirmPassword", data.passwordConfirm);
+    formData.append("companyName", data.companyName);
+    formData.append("bizNumber", data.companyNumber); // 클라이언트의 'companyNumber'를 백엔드의 'bizNumber'로 매핑
+
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      alert("회원가입이 완료되었습니다!");
+      // 서버 액션 호출
+      const result = await adminSignUp(formData);
+
+      if (result?.error) {
+        console.error("회원가입 실패:", result.error);
+        // 예시: 백엔드가 "Email already exists" 에러를 반환할 경우
+        if (result.error.includes("Email already exists")) {
+          // 백엔드의 실제 에러 메시지에 따라 조건 조정
+          setError("id", { type: "manual", message: "이미 사용 중인 이메일입니다." });
+        } else if (result.error.includes("Invalid business number")) {
+          // 다른 예시
+          setError("companyNumber", { type: "manual", message: "유효하지 않은 사업자 번호입니다." });
+        } else {
+          // 위에서 처리되지 않은 일반적인 오류
+          console.log(`회원가입 중 오류가 발생했습니다: ${result.error}`);
+        }
+      }
     } catch (error) {
-      console.error("Error:", error);
-      alert("회원가입 중 오류가 발생했습니다.");
+      console.error("예상치 못한 오류:", error);
+      console.log("회원가입 중 예상치 못한 오류가 발생했습니다.");
     }
   };
 
   const formFields = [
     { id: "name", label: "이름(기업 담당자)을 입력해주세요", type: "text", name: "name" },
-    { id: "id", label: "아이디를 입력해주세요", type: "text", name: "id" },
+    { id: "id", label: "아이디(이메일)를 입력해주세요", type: "email", name: "id" },
     { id: "password", label: "비밀번호를 입력해주세요", type: "password", name: "password" },
     {
       id: "passwordConfirm",
