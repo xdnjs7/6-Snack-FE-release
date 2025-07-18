@@ -61,7 +61,7 @@ export default function AuthenticatedHeader() {
       {/* 장바구니 + 메뉴 영역 */}
       <div className="flex items-center gap-5 sm:gap-10 md:gap-7.5">
         <div className="hidden md:block">
-          <div className="flex p-1 gap-0.5">
+          <div className="flex items-center justify-center p-1 gap-0.5">
             <LikeIconSvg />
             <p className="text-sm/[17px] tracking-tight">찜목록</p>
           </div>
