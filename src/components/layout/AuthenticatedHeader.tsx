@@ -41,7 +41,7 @@ export default function AuthenticatedHeader() {
             </Link>
 
             {/* 최고관리자에게만 보임 - AuthProvider 사용하여 분기처리 예정 */}
-            <Link href="/" className="px-2.5">
+            <Link href="/manage/users" className="px-2.5">
               <p className="font-normal text-primary-950">관리</p>
             </Link>
           </nav>
