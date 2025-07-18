@@ -16,30 +16,32 @@ const buttonStyleMap: Record<TButtonType, TButtonStyle> = {
     padding: "px-4 py-3",
   },
   black: {
-    bg: "bg-black",
+    bg: "bg-primary-950",
     textColor: "text-white",
     padding: "px-4 py-3",
   },
   grayDisabled: {
-    bg: "bg-primary-300",
-    textColor: "text-primary-100",
+    bg: "bg-primary-100",
+    textColor: "text-primary-300",
     padding: "px-4 py-3",
   },
   white: {
     bg: "bg-white",
+    textColor: "text-primary-950",
     padding: "px-4 py-3",
     border: "outline-1 outline-primary-300",
   },
   gray: {
     bg: "bg-primary-200",
+    textColor: "text-primary-950",
     padding: "px-4 py-3",
     border: "outline-1 outline-primary-300",
   },
   whiteDisabled: {
     bg: "bg-white",
-    textColor: "text-primary-400",
+    textColor: "text-primary-200",
     padding: "px-4 py-3",
-    border: "outline-1 outline-primary-300",
+    border: "outline-1 outline-primary-100",
   },
 };
 
