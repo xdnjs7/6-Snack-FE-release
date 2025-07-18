@@ -74,7 +74,7 @@ export default function Pagination({
 
   return (
     <div className={`w-full h-10 relative ${className}`}>
-      <div className="w-full h-10 px-5 py-2.5 inline-flex justify-between items-center">
+      <div className="w-full h-10 inline-flex justify-between items-center">
         {/* Page Info */}
         <div
           className={`text-center justify-start text-gray-950 font-normal font-['SUIT'] ${isTablet ? "text-lg" : "text-base"}`}

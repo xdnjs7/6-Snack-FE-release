@@ -3,7 +3,7 @@
 // 작업 완료시 삭제 필수!!
 // 해당 페이지에 본인이 작업한 공통 컴포넌트 넣어서 테스트하면 좋을거같아요!
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import TextArea from "@/components/common/TextArea";
 import MemberList from "@/components/common/MemberList";
 import Dropdown from "@/components/common/DropDown";
@@ -12,7 +12,6 @@ import ProductList from "@/components/common/ProductList";
 import Toast from "@/components/common/Toast";
 import Button from "@/components/ui/Button";
 import RequestList from "@/components/common/RequestList";
-import GlobalHeader from "@/components/layout/GlobalHeader";
 import SubCategoryItem from "@/components/common/SubCategoryItem";
 import Card from "@/components/ui/Card";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
@@ -28,11 +27,12 @@ import Menu from "@/components/common/Menu";
 import TabMenu from "@/components/common/TabMenu";
 import ProductEditForm from "@/components/common/ProductEditForm";
 import ProductRegistrationForm from "@/components/common/ProductRegistrationForm";
-import RequestListItem from "@/components/common/RequestListItem";
+import MyRequestList from "@/components/common/MyRequestList";
 import Input from "@/components/common/Input";
 import ConfirmationModal from "@/components/common/ConfirmationModal";
 import InviteMemberModal from "@/components/common/InviteMemberModal";
 import DeleteAccountConfirmModal from "@/components/common/DeleteAccountConfirmModal";
+import Header from "@/components/layout/Header";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -153,7 +153,9 @@ export default function ComponentsPreviewPage() {
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">SearchBar 컴포넌트</h2>
-          <SearchBar />
+          <Suspense>
+            <SearchBar />
+          </Suspense>
         </div>
 
         <div className="space-y-4 mb-4">
@@ -199,8 +201,8 @@ export default function ComponentsPreviewPage() {
       <p className="mb-4 font-bold text-xl bg-violet-100">이지수</p>
       <div className="rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] p-6">
         <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[GlobalHeader] 헤더 컴포넌트</h2>
-          <GlobalHeader />
+          <h2 className="text-lg font-semibold bg-blue-100">[Header] 컴포넌트</h2>
+          <Header />
         </div>
 
         <div className="space-y-4 mb-4">
@@ -240,7 +242,7 @@ export default function ComponentsPreviewPage() {
           <h2 className="text-lg font-semibold bg-blue-100">[상품 등록 모달]</h2>
           <ProductRegistrationForm />
           <h2 className="text-lg font-semibold bg-blue-100">[My Request List(요청 취소 가능)]</h2>
-          <RequestListItem
+          <MyRequestList
             requestDate="2024. 07. 04"
             productName="코카콜라 제로"
             price={1900}

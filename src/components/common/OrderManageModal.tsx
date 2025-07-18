@@ -85,9 +85,9 @@ export default function OrderManageModal() {
         <div className="flex flex-col justify-center items-center w-full max-w-[480px] mb-[46px] gap-[32px] sm:mb-[36px]">
           <div className="flex flex-col justify-center items-center w-full p-[20px] pb-[30px] gap-[20px] rounded-[2px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.12)]">
             <div className="flex flex-col items-center overflow-auto scrollbar w-full h-[160px] sm:h-[180px]">
-              {order.products.map((product) => {
+              {order.products.map((product, i) => {
                 return (
-                  <div className="flex justify-between items-center w-full py-[20px] pr-[8px] border-b-1 border-primary-100">
+                  <div key={`${product}_${i}`} className="flex justify-between items-center w-full py-[20px] pr-[8px] border-b-1 border-primary-100">
                     <div className="flex justify-center items-center gap-[12px] sm:gap-[20px]">
                       <div className="flex justify-center items-center w-[40px] h-[40px]">
                         <div className="relative w-[20px] h-[34.71px]">
