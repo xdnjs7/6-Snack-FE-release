@@ -13,12 +13,16 @@ import SnackIconSvg from "../svg/SnackIconSvg";
 import LikeIconSvg from "../svg/LikeIconSvg";
 import HamburgerMenuIconSvg from "../svg/HamburgerMenuIconSvg";
 import SideMenu from "../common/SideMenu";
+import MobileCategoryMenu from "../common/MobileCategoryMenu";
 import { usePathname } from "next/navigation";
 import { TSideMenuItem } from "@/types/sideMenu.types";
 import { useRouter } from "next/navigation";
+import ArrowIconSvg from "../svg/ArrowIconSvg";
 
 export default function AuthenticatedHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState("snack");
   const pathname = usePathname();
   const router = useRouter();
 
@@ -34,9 +38,24 @@ export default function AuthenticatedHeader() {
     { id: "profile", label: "마이 페이지", href: "/profile" },
   ];
 
+  const categoryItems = [
+    { id: "snack", label: "스낵" },
+    { id: "beverage", label: "음료" },
+    { id: "water", label: "생수" },
+    { id: "convenience", label: "간편식" },
+    { id: "fresh", label: "신선식" },
+    { id: "coffee", label: "원두커피" },
+    { id: "supplies", label: "비품" },
+  ];
+
   // 햄버거 메뉴버튼 클릭 핸들러
   const handleMenuClick = () => {
     setIsMenuOpen(true);
+  };
+
+  // 카테고리 메뉴 열기 핸들러
+  const handleCategoryMenuClick = () => {
+    setIsCategoryMenuOpen(true);
   };
 
   // 사이드바 메뉴에서 nav 선택시 핸들러
@@ -45,6 +64,13 @@ export default function AuthenticatedHeader() {
       router.push(item.href);
       setIsMenuOpen(false);
     }
+  };
+
+  // 카테고리 아이템 클릭 핸들러
+  const handleCategoryItemClick = (item: any) => {
+    setCurrentCategory(item.id);
+    setIsCategoryMenuOpen(false);
+    // 여기에 category별 product 검색결과 보여주기
   };
   return (
     <header className="w-full h-14 sm:h-25 md:h-[90px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] sm:px-[24px] sm:py-[28px] md:px-[100px] md:py-[32px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg">
@@ -85,9 +111,11 @@ export default function AuthenticatedHeader() {
       <div className="block sm:hidden">
         <div className="flex gap-1 items-center">
           <p className="font-bold">음료</p>
-          <div className="relative w-[20px] h-[20px]">
-            <Image src={ic_chevron_down} alt="아래 화살표" fill className="object-contain brightness-0 opacity-40" />
-          </div>
+          <ArrowIconSvg
+            direction={isCategoryMenuOpen ? "up" : "down"}
+            onClick={handleCategoryMenuClick}
+            className="w-5 h-5 p-0.5"
+          />
         </div>
       </div>
 
@@ -127,6 +155,14 @@ export default function AuthenticatedHeader() {
           onItemClick={handleItemClick}
           onClose={() => setIsMenuOpen(false)}
           className=""
+        />
+
+        <MobileCategoryMenu
+          items={categoryItems}
+          isOpen={isCategoryMenuOpen}
+          currentCategory={currentCategory}
+          onItemClick={handleCategoryItemClick}
+          onClose={() => setIsCategoryMenuOpen(false)}
         />
       </div>
     </header>

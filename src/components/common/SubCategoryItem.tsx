@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import React, { Fragment, MouseEvent, useState } from "react";
 import ic_chevron_down_gray from "@/assets/icons/ic_chevron_down_gray.svg";
