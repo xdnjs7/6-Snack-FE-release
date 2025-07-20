@@ -65,13 +65,13 @@ export default function SideMenu({ items, isOpen, currentPath, onItemClick, onCl
 
       {/* Side Menu */}
       <div
-        className={`absolute right-0 top-0 w-[255px] h-full bg-white/90 backdrop-blur-lg flex flex-col items-end gap-5 p-6 ${className}`}
+        className={`absolute right-0 top-0 w-[255px] h-full bg-white/90 backdrop-blur-lg flex flex-col items-end gap-5 px-6 pt-[16px] ${className}`}
       >
         {/* Close Button */}
         <XIconSvg className="w-6 h-6" onClick={onClose} />
 
         {/* Menu Items */}
-        <div className="self-stretch flex flex-col justify-start items-center gap-3">
+        <div className="self-stretch flex flex-col justify-start items-center gap-[13px]">
           {items.map((item) => {
             const isActive = isCurrentPage(item);
             return (
@@ -82,8 +82,8 @@ export default function SideMenu({ items, isOpen, currentPath, onItemClick, onCl
                 onClick={() => onItemClick?.(item)}
               >
                 <div
-                  className={`justify-start text-base font-['SUIT'] transition-all duration-200 ${
-                    isActive ? "text-zinc-800 font-extrabold" : "text-neutral-600 font-normal group-hover:font-bold"
+                  className={`justify-start text-base transition-all duration-200 ${
+                    isActive ? "text-primary-900 font-extrabold" : "text-primary-700 font-normal group-hover:font-bold"
                   }`}
                 >
                   {item.label}
