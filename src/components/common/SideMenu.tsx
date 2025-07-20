@@ -2,6 +2,7 @@
 
 import { TSideMenuProps, TSideMenuItem } from "../../types/sideMenu.types";
 import XIconSvg from "../svg/XIconSvg";
+import { createPortal } from "react-dom";
 
 /**
  * 사이드 메뉴 컴포넌트
@@ -57,8 +58,8 @@ export default function SideMenu({ items, isOpen, currentPath, onItemClick, onCl
     return currentPath === item.href;
   };
 
-  return (
-    <div className="fixed inset-0 z-50">
+  const sideMenuContent = (
+    <div className="fixed inset-0 z-[9999]">
       {/* Background Overlay */}
       <div className="absolute inset-0 bg-black/20" onClick={onClose} />
 
@@ -94,4 +95,11 @@ export default function SideMenu({ items, isOpen, currentPath, onItemClick, onCl
       </div>
     </div>
   );
+
+  // Portal을 사용하여 body에 직접 렌더링
+  if (typeof window !== "undefined") {
+    return createPortal(sideMenuContent, document.body);
+  }
+
+  return sideMenuContent;
 }
