@@ -1,22 +1,53 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ic_hamburger_menu from "@/assets/icons/ic_hamburger_menu.svg";
 import ic_lock from "@/assets/icons/ic_lock.svg";
 import ic_manager from "@/assets/icons/ic_manager.svg";
 import SnackIconSvg from "../svg/SnackIconSvg";
+import { usePathname, useRouter } from "next/navigation";
+import { TSideMenuItem } from "@/types/sideMenu.types";
+import HamburgerMenuIconSvg from "../svg/HamburgerMenuIconSvg";
+import SideMenu from "../common/SideMenu";
 
 export default function GuestHeader() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const menuItems = [
+    { id: "login", label: "로그인", href: "/login" },
+    { id: "super-admin-signup", label: "기업 담당자 회원가입", href: "/signup/super-admin" },
+  ];
+
+  // 햄버거 메뉴버튼 클릭 핸들러
+  const handleMenuClick = () => {
+    setIsMenuOpen(true);
+  };
+
+  // 사이드바 메뉴에서 nav 선택시 핸들러
+  const handleItemClick = (item: TSideMenuItem) => {
+    if (item.href) {
+      router.push(item.href);
+      setIsMenuOpen(false);
+    }
+  };
   return (
     <header className="w-full h-14 sm:h-25 md:h-[90px] sm:px-[24px] sm:py-[32px] md:px-[100px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg">
       <Link href="/">
         <SnackIconSvg className="w-[102.75px] h-[44px]" />
       </Link>
-      <div className="sm:hidden relative w-6 h-6">
-        <Image src={ic_hamburger_menu} alt="메뉴" fill className="object-contain" />
-      </div>
+      <HamburgerMenuIconSvg className="md:hidden text-primary-400" onClick={handleMenuClick} />
+
+      <SideMenu
+        items={menuItems}
+        isOpen={isMenuOpen}
+        currentPath={pathname}
+        onItemClick={handleItemClick}
+        onClose={() => setIsMenuOpen(false)}
+      />
       {/* tablet */}
       {/* 로그인 + 기업담당자 회원가입 부분 */}
       <div className="hidden sm:block">

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import img_logo from "@/assets/images/img_logo.webp";
 import ic_hamburger_menu from "@/assets/icons/ic_hamburger_menu.svg";
@@ -11,8 +11,41 @@ import VerticalBarIconSvg from "../svg/VerticalBarIconSvg";
 import Link from "next/link";
 import SnackIconSvg from "../svg/SnackIconSvg";
 import LikeIconSvg from "../svg/LikeIconSvg";
+import HamburgerMenuIconSvg from "../svg/HamburgerMenuIconSvg";
+import SideMenu from "../common/SideMenu";
+import { usePathname } from "next/navigation";
+import { TSideMenuItem } from "@/types/sideMenu.types";
+import { useRouter } from "next/navigation";
 
 export default function AuthenticatedHeader() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const menuItems = [
+    { id: "products", label: "상품 리스트", href: "/products" },
+    { id: "my-order-list", label: "구매 요청 내역", href: "/my/order-list" },
+    { id: "my-products", label: "상품 등록 내역", href: "/my/products" },
+    // 관리자
+    { id: "order-manage", label: "구매 요청 관리", href: "/order-manage" },
+    { id: "order-history", label: "구매 내역 확인", href: "/order-history" },
+    // 최고 관리자
+    { id: "manage-users", label: "관리", href: "/manage/users" },
+    { id: "profile", label: "마이 페이지", href: "/profile" },
+  ];
+
+  // 햄버거 메뉴버튼 클릭 핸들러
+  const handleMenuClick = () => {
+    setIsMenuOpen(true);
+  };
+
+  // 사이드바 메뉴에서 nav 선택시 핸들러
+  const handleItemClick = (item: TSideMenuItem) => {
+    if (item.href) {
+      router.push(item.href);
+      setIsMenuOpen(false);
+    }
+  };
   return (
     <header className="w-full h-14 sm:h-25 md:h-[90px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] sm:px-[24px] sm:py-[28px] md:px-[100px] md:py-[32px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg">
       <div className="flex items-center justify-center md:gap-10">
@@ -84,9 +117,17 @@ export default function AuthenticatedHeader() {
           <VerticalBarIconSvg className="hidden sm:block text-primary-100" />
           <p className="hidden sm:block font-normal text-primary-950">로그아웃</p>
         </div>
-        <div className="relative w-6 h-6 md:hidden">
-          <Image src={ic_hamburger_menu} alt="메뉴" fill className="object-contain" />
-        </div>
+        {/* 여기에 menu 누를시 SideMenu 화면 옆에 나오도록 */}
+        <HamburgerMenuIconSvg className="md:hidden text-primary-400" onClick={handleMenuClick} />
+
+        <SideMenu
+          items={menuItems}
+          isOpen={isMenuOpen}
+          currentPath={pathname}
+          onItemClick={handleItemClick}
+          onClose={() => setIsMenuOpen(false)}
+          className=""
+        />
       </div>
     </header>
   );
