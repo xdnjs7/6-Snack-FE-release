@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import SnackIconSvg from "@/components/svg/SnackIconSvg";
 import Button from "@/components/ui/Button";
+// import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
+// import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
 import Link from "next/link";
 import { useAuth } from "@/providers/AuthProvider";
 
@@ -71,7 +73,9 @@ export default function LoginPage() {
               required
             />
           </form>
-
+            {/* <VisibilityOffIconSvg className="absolute right-[4px] bottom-[8px] z-10" fill="#555555" />
+            <VisibilityOnIconSvg className="absolute right-[4px] bottom-[8px]" fill="#555555" /> */}
+          </div>
           <Button
             type={isLoading ? "grayDisabled" : "primary"}
             label={isLoading ? "로그인 중..." : "로그인"}
