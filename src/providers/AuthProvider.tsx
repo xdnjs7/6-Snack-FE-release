@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { getUserApi, updateUserApi } from "@/lib/api/user.api";
+import { getUserApi } from "@/lib/api/user.api";
 import { loginApi, logoutApi, registerApi } from "@/lib/api/auth.api";
 
 export type User = {
@@ -36,7 +36,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     try {
       const userData = await getUserApi();
       setUser(userData);
-    } catch (error) {
+    } catch {
       setUser(null);
     }
   };
@@ -55,9 +55,11 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     setUser(null);
   };
 
-  const updateUser = async (userData: Partial<User>) => {
-    const updatedUser = await updateUserApi(userData);
-    setUser(updatedUser);
+  // eslint-disable-next-line no-unused-vars
+  const updateUser = async (_userData: Partial<User>) => {
+    // const updatedUser = await updateUserApi(userData);
+    // setUser(updatedUser);
+    // updateUserApi가 구현되어 있지 않으므로 임시로 아무 동작도 하지 않음
   };
 
   useEffect(() => {
