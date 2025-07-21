@@ -3,7 +3,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 export const cookieFetch = async (path: string, options: RequestInit = {}) => {
   const method = options.method || 'GET';
   console.log(`🌐 API 요청: ${method} ${API_BASE_URL}${path}`);
-  
+
   const response = await fetch(`${API_BASE_URL}${path}`, {
     credentials: "include",
     cache: "no-store",

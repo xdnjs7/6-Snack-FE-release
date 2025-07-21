@@ -47,6 +47,7 @@ export default function GuestHeader() {
         onItemClick={handleItemClick}
         onClose={() => setIsMenuOpen(false)}
       />
+
       {/* tablet */}
       {/* 로그인 + 기업담당자 회원가입 부분 */}
       <div className="hidden sm:block">
