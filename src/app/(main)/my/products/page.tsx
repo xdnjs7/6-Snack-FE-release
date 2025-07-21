@@ -20,7 +20,7 @@ export default function MyProductsPage() {
   };
 
   return (
-    <>
+    <div className="md:px-[24px]">
       <div className="flex justify-between items-center pb-[20px] md:mt-[80px] md:pb-[40px]">
         <p className="font-bold text-[18px]/[22px] tracking-tight text-primary-950">상품 등록 내역</p>
         <Dropdown value="정렬" onChange={handleSort} />
@@ -44,6 +44,6 @@ export default function MyProductsPage() {
         <ProductList />
       </div>
       <Pagination currentPage={currentPage} totalPages={4} onPageChange={setCurrentPage} />
-    </>
+    </div>
   );
 }
