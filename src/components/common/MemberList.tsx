@@ -28,7 +28,34 @@ const MemberList = ({ id, name, email, role, onClickChangeRole, onClickDeleteUse
             <div className="text-primary-950 text-base">{email}</div>
           </div>
         </div>
-        <MenuDropdown onEdit={() => console.log("상품 수정")} onDelete={() => console.log("상품 삭제")} />
+        <MenuDropdown
+          menuType="member"
+          onEdit={() => {
+            openModal(
+              <InviteMemberModal
+                onCancel={closeModal}
+                onSubmit={(data) => {
+                  console.log("회원 초대 등록:", data);
+                  console.log("이름:", data.name);
+                  console.log("이메일:", data.email);
+                  console.log("권한:", data.role);
+                  closeModal();
+                }}
+              />,
+            );
+          }}
+          onDelete={() =>
+            openModal(
+              <DeleteAccountConfirmModal
+                onCancel={closeModal}
+                onConfirm={() => {
+                  onClickDeleteUser?.(id);
+                  closeModal();
+                }}
+              />,
+            )
+          }
+        />
       </div>
 
       {/* 데스크탑 & 태블릿 레이아웃 */}
