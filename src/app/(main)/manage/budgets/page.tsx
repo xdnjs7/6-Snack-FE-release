@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
+import { getBudgets, patchBudgets } from "@/lib/api/budgets.api";
 
 const budgetSchema = z.object({
   currentMonthBudget: z.string().optional(),
@@ -22,14 +23,45 @@ const ManageBudgetsPage: React.FC<BudgetManagementProps> = ({ className }) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<BudgetInputs>({
     resolver: zodResolver(budgetSchema),
   });
 
-  const onSubmit = (data: BudgetInputs) => {
-    console.log("제출된 예산:", data);
-    // 실제 예산 업데이트 로직 구현
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    const fetchBudgets = async () => {
+      setLoading(true);
+      try {
+        const data = await getBudgets();
+        setValue("currentMonthBudget", data.currentMonthBudget?.toString() ?? "");
+        setValue("nextMonthBudget", data.monthlyBudget?.toString() ?? "");
+      } catch (e) {
+        // 에러 처리 필요시 추가
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBudgets();
+  }, [setValue]);
+
+  const onSubmit = async (formData: BudgetInputs) => {
+    setLoading(true);
+    setSuccess(false);
+    try {
+      await patchBudgets({
+        currentMonthBudget: Number(formData.currentMonthBudget) || 0,
+        monthlyBudget: Number(formData.nextMonthBudget) || 0,
+      });
+      setSuccess(true);
+    } catch (e) {
+      // 에러 처리 필요시 추가
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -86,9 +118,11 @@ const ManageBudgetsPage: React.FC<BudgetManagementProps> = ({ className }) => {
           <button
             type="submit"
             className="w-full bg-color-primary-900 text-color-white font-semibold rounded-md py-2 hover:bg-color-primary-800 focus:outline-none focus:ring-2 focus:ring-color-secondary-500 focus:ring-offset-2"
+            disabled={loading}
           >
-            수정하기
+            {loading ? "저장 중..." : "수정하기"}
           </button>
+          {success && <p className="text-green-600 mt-2">예산이 성공적으로 수정되었습니다.</p>}
         </div>
       </form>
     </div>
