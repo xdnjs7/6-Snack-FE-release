@@ -8,33 +8,10 @@ import img_logo from "@/assets/images/img_logo.webp";
 import SnackIconSvg from "@/components/svg/SnackIconSvg";
 
 export default function SignUpPage() {
-  // AuthProvider 사용 예시:
-  // import { useAuth } from "@/providers/AuthProvider";
-  // const { user, isLoading, login, logout, updateUser } = useAuth();
-  //
-  // if (isLoading) return <div>Loading...</div>;
-  // if (!user) return <div>로그인이 필요합니다</div>;
-  //
-  // UserResponse {
-  // user: {
-  //   id: string;
-  //   email: string;
-  //   name: string;
-  //   role: string;
-  //   cartItemCount: number; // 추가
-  //   company: {
-  //     id: number;
-  //     name: string;
-  //   };
-  // }
 
-  // TODO: getInviteApi 구현후 대체해야함
+  // Frontend Feature TOdo: getInviteApi 구현후 아래 data 대체해야함, inviteId, 
   const user = {
-    id: "temp-user-123",
-    email: "test@example.com",
     name: "김철수",
-    role: "user",
-    cartItemCount: 0,
     company: {
       id: 1,
       name: "테스트 회사",
