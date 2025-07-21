@@ -76,7 +76,7 @@ export default function User() {
       <div className="w-full flex justify-center">
         <Button
           type="black"
-          label="회원 초대"
+          label="회원 초대하기"
           className="mt-6 w-full h-16 justify-center items-center sm:hidden"
           onClick={() => {
             openModal(

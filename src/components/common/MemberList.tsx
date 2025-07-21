@@ -4,6 +4,7 @@ import DeleteAccountConfirmModal from "./DeleteAccountConfirmModal";
 import { useModal } from "@/providers/ModalProvider";
 import InviteMemberModal from "./InviteMemberModal";
 import MenuDropdown from "./MenuDropdown";
+import Mobile from "./Mobile";
 
 type TMemberListProps = TMemberItem & {
   onClickChangeRole?: (id: string, currentRole: TMemberItem["role"]) => void;
