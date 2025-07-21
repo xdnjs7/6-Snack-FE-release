@@ -31,61 +31,66 @@ export default function SubCategoryItem() {
   };
 
   return (
-    <div className="flex flex-col justify-start w-[180px] gap-[4px]">
-      {parentCategory.map((parent, id) => (
-        <Fragment key={`${parent}_${id}`}>
-          <button
-            id="parent"
-            onClick={(e) => handleClick(e, parent)}
-            className={clsx(
-              isActiveParentCategory === parent && "border-t-2 border-primary-950",
-              "group/parent hover:bg-primary-50/50 transition-colors duration-200 flex justify-between items-center w-[180px] h-[50px] p-[14px] cursor-pointer",
-            )}
-          >
-            <p
+    <>
+      <div className="w-[180px] h-[42px] py-[10px] px-[14px] mb-[10px] font-bold text-[18px]/[22px] tracking-tight text-primary-950">
+        카테고리
+      </div>
+      <div className="flex flex-col justify-start w-[180px] gap-[4px]">
+        {parentCategory.map((parent, id) => (
+          <Fragment key={`${parent}_${id}`}>
+            <button
+              id="parent"
+              onClick={(e) => handleClick(e, parent)}
               className={clsx(
-                isActiveParentCategory === parent ? "font-bold" : "font-normal",
-                "group-hover/parent:font-bold transition-all text-[16px]/[20px] tracking-tight text-primary-950",
+                isActiveParentCategory === parent && "border-t-2 border-primary-950",
+                "group/parent hover:bg-primary-50/50 transition-colors duration-200 flex justify-between items-center w-[180px] h-[50px] p-[14px] cursor-pointer",
               )}
             >
-              {parent}
-            </p>
-            <div className="relative w-[16px] h-[16px]">
-              <Image
-                src={ic_chevron_down_gray}
-                alt="드롭다운"
-                fill
+              <p
                 className={clsx(
-                  isActiveParentCategory === parent && "rotate-180",
-                  "object-cover transition-transform duration-250",
+                  isActiveParentCategory === parent ? "font-bold" : "font-normal",
+                  "group-hover/parent:font-bold transition-all text-[16px]/[20px] tracking-tight text-primary-950",
                 )}
-              />
-            </div>
-          </button>
-          {isActiveParentCategory === parent &&
-            childrenCategory[parent].map((children, id) => {
-              return (
-                <button
-                  id="children"
-                  key={`${children}_${id}`}
-                  onClick={(e) => handleClick(e, children)}
-                  className="group/children hover:bg-primary-50/60 transition-all duration-200 flex justify-between items-center w-[180px] h-[50px] py-[10px] px-[30px] cursor-pointer"
-                >
-                  <p
-                    className={clsx(
-                      isActiveChildrenCategory === children
-                        ? "font-bold text-primary-950"
-                        : "font-normal text-primary-500",
-                      "group-hover/children:text-primary-950 transition-all text-[16px]/[20px] tracking-tight",
-                    )}
+              >
+                {parent}
+              </p>
+              <div className="relative w-[16px] h-[16px]">
+                <Image
+                  src={ic_chevron_down_gray}
+                  alt="드롭다운"
+                  fill
+                  className={clsx(
+                    isActiveParentCategory === parent && "rotate-180",
+                    "object-cover transition-transform duration-250",
+                  )}
+                />
+              </div>
+            </button>
+            {isActiveParentCategory === parent &&
+              childrenCategory[parent].map((children, id) => {
+                return (
+                  <button
+                    id="children"
+                    key={`${children}_${id}`}
+                    onClick={(e) => handleClick(e, children)}
+                    className="group/children hover:bg-primary-50/60 transition-all duration-200 flex justify-between items-center w-[180px] h-[50px] py-[10px] px-[30px] cursor-pointer"
                   >
-                    {children}
-                  </p>
-                </button>
-              );
-            })}
-        </Fragment>
-      ))}
-    </div>
+                    <p
+                      className={clsx(
+                        isActiveChildrenCategory === children
+                          ? "font-bold text-primary-950"
+                          : "font-normal text-primary-500",
+                        "group-hover/children:text-primary-950 transition-all text-[16px]/[20px] tracking-tight",
+                      )}
+                    >
+                      {children}
+                    </p>
+                  </button>
+                );
+              })}
+          </Fragment>
+        ))}
+      </div>
+    </>
   );
 }
