@@ -1,6 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import { TButtonStyle, TButtonType } from "@/types/button.types";
+import { twMerge } from "tailwind-merge";
 
 type TButtonProps = {
   type: TButtonType;
@@ -16,32 +17,30 @@ const buttonStyleMap: Record<TButtonType, TButtonStyle> = {
     padding: "px-4 py-3",
   },
   black: {
-    bg: "bg-primary-950",
+    bg: "bg-black",
     textColor: "text-white",
     padding: "px-4 py-3",
   },
   grayDisabled: {
-    bg: "bg-primary-100",
-    textColor: "text-primary-300",
+    bg: "bg-primary-300",
+    textColor: "text-primary-100",
     padding: "px-4 py-3",
   },
   white: {
     bg: "bg-white",
-    textColor: "text-primary-950",
     padding: "px-4 py-3",
-    border: "outline-1 outline-primary-300",
+    border: "border-1 border-primary-300",
   },
   gray: {
     bg: "bg-primary-200",
-    textColor: "text-primary-950",
     padding: "px-4 py-3",
-    border: "outline-1 outline-primary-300",
+    border: "border-1 border-primary-300",
   },
   whiteDisabled: {
     bg: "bg-white",
-    textColor: "text-primary-200",
+    textColor: "text-primary-400",
     padding: "px-4 py-3",
-    border: "outline-1 outline-primary-100",
+    border: "border-1 border-primary-300",
   },
 };
 
@@ -62,12 +61,12 @@ export default function Button({ type, label = "label", onClick, className = "" 
     style.padding ?? "",
     style.border,
     style.font,
-    "rounded-[2px] inline-flex justify-center items-center text-base",
+    "rounded-[2px] inline-flex justify-center items-center text-base h-[40px]",
     isDisabled ? "cursor-default" : "cursor-pointer",
   );
 
   return (
-    <button className={clsx(baseStyle, className)} disabled={isDisabled} onClick={onClick}>
+    <button className={twMerge(baseStyle, className)} disabled={isDisabled} onClick={onClick}>
       {label}
     </button>
   );
