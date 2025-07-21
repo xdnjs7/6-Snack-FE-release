@@ -4,10 +4,3 @@ import { cookieFetch } from "./fetchClient.api";
 export const getUserApi = async () => {
   return cookieFetch("/users/me");
 };
-
-// export const updateUserApi = async (userData: any) => {
-//   return cookieFetch("/users/update", {
-//     method: "PUT",
-//     body: JSON.stringify(userData),
-//   });
-// };
