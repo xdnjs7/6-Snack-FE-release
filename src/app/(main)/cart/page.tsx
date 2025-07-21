@@ -1,11 +1,10 @@
 "use client";
 
 import React from "react";
-import ic_chevron_right_gray from "@/assets/icons/ic_chevron_right_gray.svg";
-import Image from "next/image";
 import CartItem from "./_components/CartItem";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
+import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 
 export default function CartPage() {
   return (
@@ -14,13 +13,9 @@ export default function CartPage() {
         <div className="flex flex-col gap-[40px] mt-[20px] sm:gap-[70px] sm:mt-[60px] md:mt-[80px]">
           <div className="flex flex-col justify-center items-center gap-[10px] font-bold text-[16px]/[20px] tracking-tight sm:flex-row sm:gap-[20px] sm:text-[18px]/[22px]">
             <p className="text-primary-950">1. Shopping Cart</p>
-            <div className="hidden sm:block relative w-[24px] h-[24px]">
-              <Image src={ic_chevron_right_gray} alt="화살표" fill className="object-cover" />
-            </div>
+            <ArrowIconSvg direction="right" className="hidden sm:block relative w-[24px] h-[24px] text-primary-300" />
             <p className="text-primary-300">2. Order</p>
-            <div className="hidden sm:block relative w-[24px] h-[24px]">
-              <Image src={ic_chevron_right_gray} alt="화살표" fill className="object-cover" />
-            </div>
+            <ArrowIconSvg direction="right" className="hidden sm:block relative w-[24px] h-[24px] text-primary-300" />
             <p className="text-primary-300">3. Order Confirmed</p>
           </div>
 
