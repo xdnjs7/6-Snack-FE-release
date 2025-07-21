@@ -3,8 +3,8 @@
 import React from "react";
 import SnackIconSvg from "@/components/svg/SnackIconSvg";
 import Button from "@/components/ui/Button";
-import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
-import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
+// import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
+// import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
 import Link from "next/link";
 
 export default function LoginPage() {
@@ -34,7 +34,7 @@ export default function LoginPage() {
               onChange={() => {}}
             />
             {/* <VisibilityOffIconSvg className="absolute right-[4px] bottom-[8px] z-10" fill="#555555" />
-        <VisibilityOnIconSvg className="absolute right-[4px] bottom-[8px]" fill="#555555" /> */}
+            <VisibilityOnIconSvg className="absolute right-[4px] bottom-[8px]" fill="#555555" /> */}
           </div>
           <Button
             type="grayDisabled"

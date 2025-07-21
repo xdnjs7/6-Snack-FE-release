@@ -33,6 +33,7 @@ import ConfirmationModal from "@/components/common/ConfirmationModal";
 import InviteMemberModal from "@/components/common/InviteMemberModal";
 import DeleteAccountConfirmModal from "@/components/common/DeleteAccountConfirmModal";
 import Header from "@/components/layout/Header";
+import CartItem from "@/app/(main)/cart/_components/CartItem";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -141,6 +142,11 @@ export default function ComponentsPreviewPage() {
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">OrderManageModal 컴포넌트</h2>
           <Button type="black" label="열기" onClick={() => openModal(<OrderManageModal />)} />
+        </div>
+
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">CartItem 컴포넌트</h2>
+          <CartItem />
         </div>
       </div>
 
