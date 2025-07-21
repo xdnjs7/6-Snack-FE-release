@@ -224,7 +224,20 @@ export default function ComponentsPreviewPage() {
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">[DeleteAccountConfirmModal] 컴포넌트</h2>
-          <DeleteAccountConfirmModal />
+          <Button
+            type="black"
+            label="회원삭제 모달 버튼"
+            onClick={() =>
+              openModal(
+                <DeleteAccountConfirmModal
+                  onCancel={closeModal}
+                  onConfirm={() => {
+                    closeModal();
+                  }}
+                />,
+              )
+            }
+          />
         </div>
 
         <div className="space-y-4 mb-4">
