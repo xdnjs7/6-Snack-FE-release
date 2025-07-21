@@ -1,6 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import { TButtonStyle, TButtonType } from "@/types/button.types";
+import { twMerge } from "tailwind-merge";
 
 type TButtonProps = {
   type: TButtonType;
@@ -28,18 +29,18 @@ const buttonStyleMap: Record<TButtonType, TButtonStyle> = {
   white: {
     bg: "bg-white",
     padding: "px-4 py-3",
-    border: "outline-1 outline-primary-300",
+    border: "border-1 border-primary-300",
   },
   gray: {
     bg: "bg-primary-200",
     padding: "px-4 py-3",
-    border: "outline-1 outline-primary-300",
+    border: "border-1 border-primary-300",
   },
   whiteDisabled: {
     bg: "bg-white",
     textColor: "text-primary-400",
     padding: "px-4 py-3",
-    border: "outline-1 outline-primary-300",
+    border: "border-1 border-primary-300",
   },
 };
 
@@ -60,12 +61,12 @@ export default function Button({ type, label = "label", onClick, className = "" 
     style.padding ?? "",
     style.border,
     style.font,
-    "rounded-[2px] inline-flex justify-center items-center text-base",
+    "rounded-[2px] inline-flex justify-center items-center text-base h-[40px]",
     isDisabled ? "cursor-default" : "cursor-pointer",
   );
 
   return (
-    <button className={clsx(baseStyle, className)} disabled={isDisabled} onClick={onClick}>
+    <button className={twMerge(baseStyle, className)} disabled={isDisabled} onClick={onClick}>
       {label}
     </button>
   );
