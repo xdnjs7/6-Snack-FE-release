@@ -8,7 +8,7 @@ import Button from "@/components/ui/Button";
 export default function OrderPage() {
   return (
     <div className="flex flex-col justify-center items-center w-full">
-      <div className="w-full max-w-[1200px]">
+      <div className="w-full max-w-[1200px] md:px-[24px]">
         <div className="flex flex-col gap-[40px] mt-[20px] sm:gap-[70px] sm:mt-[60px] md:mt-[80px]">
           <div className="flex flex-col justify-center items-center gap-[10px] font-bold text-[16px]/[20px] tracking-tight sm:flex-row sm:gap-[20px] sm:text-[18px]/[22px]">
             <p className="text-primary-300">1. Shopping Cart</p>
