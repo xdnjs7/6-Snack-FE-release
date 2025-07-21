@@ -5,6 +5,23 @@ import { redirect } from "next/navigation";
 
 type TSignupResponse = {
   message: string;
+  user: {
+    id: string;
+    email: string;
+    role: string;
+  };
+  company: {
+    id: number;
+    name: string;
+  };
+  monthlyBudget: {
+    id: number;
+    year: string;
+    month: string;
+    currentMonthExpense: number;
+    currentMonthBudget: number;
+    monthlyBudget: number;
+  };
   // 백엔드 동작에서 기대하는 것: token, user_id 등등 들어갈 수 있음
 };
 
@@ -96,8 +113,8 @@ export async function adminSignUp(formData: FormData) {
     const data: TSignupResponse = await response.json();
     console.log("Signup successful:", data);
 
-    // 성공시 동작 - 메인 랜딩페이지로 리다이렉트
-    redirect("/");
+    // 성공시 동작 - 로그인 페이지로 리다이렉트
+    redirect("/login");
   } catch (error) {
     // NEXT_REDIRECT는 정상적인 리다이렉트이므로 오류로 처리하지 않음
     if (error instanceof Error && error.message.includes("NEXT_REDIRECT")) {

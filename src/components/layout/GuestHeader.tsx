@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import img_logo from "@/assets/images/img_logo.webp";
+
 import ic_hamburger_menu from "@/assets/icons/ic_hamburger_menu.svg";
 import ic_lock from "@/assets/icons/ic_lock.svg";
 import ic_manager from "@/assets/icons/ic_manager.svg";
@@ -12,9 +12,18 @@ import SnackIconSvg from "../svg/SnackIconSvg";
 export default function GuestHeader() {
   return (
     <header className="w-full h-14 sm:h-25 md:h-[90px] sm:px-[24px] sm:py-[32px] md:px-[100px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px]">
-      <Link href="/">
-        <SnackIconSvg className="w-[102.75px] h-[44px]" />
-      </Link>
+      <div className="flex items-center gap-10">
+        <Link href="/">
+          <SnackIconSvg className="w-[102.75px] h-[44px]" />
+        </Link>
+        {/* 상품 목록 링크 - 비로그인 사용자도 접근 가능 */}
+        <div className="hidden md:block">
+          <Link href="/products" className="px-2.5">
+            <p className="font-normal text-primary-950">상품 목록</p>
+          </Link>
+        </div>
+      </div>
+
       <div className="sm:hidden relative w-6 h-6">
         <Image src={ic_hamburger_menu} alt="메뉴" fill className="object-contain" />
       </div>
