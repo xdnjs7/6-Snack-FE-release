@@ -2,9 +2,14 @@ import React from "react";
 import Button from "../ui/Button";
 import ExclamationMarkIconSvg from "../svg/ExclamationMarkIconSvg";
 
-export default function DeleteAccountConfirmModal() {
+type TDeleteModalProps = {
+  onCancel: () => void;
+  onConfirm: () => void;
+};
+
+export default function DeleteAccountConfirmModal({ onCancel, onConfirm }: TDeleteModalProps) {
   return (
-    <div>
+    <div className="fixed inset-0 z-50 flex justify-center items-center">
       <div className="w-[327px] sm:w-[512px] px-7.5 pt-10 pb-7.5 bg-white rounded-md shadow-lg inline-flex flex-col justify-center items-center gap-9">
         <div className="flex flex-col justify-start items-center gap-2">
           <div className="justify-center text-black text-lg font-bold">계정 탈퇴</div>
@@ -35,11 +40,13 @@ export default function DeleteAccountConfirmModal() {
             type="white"
             label="더 생각해볼게요"
             className="h-[50px] sm:h-[64px] flex-1 text-sm/[17px] sm:text-base/[20px] font-bold tracking-tight"
+            onClick={onCancel}
           />
           <Button
             type="black"
             label="탈퇴시키기"
             className="bg-primary-950 h-[50px] sm:h-[64px] flex-1 text-sm/[17px] sm:text-base/[20px] font-bold tracking-tight"
+            onClick={onConfirm}
           />
         </div>
       </div>

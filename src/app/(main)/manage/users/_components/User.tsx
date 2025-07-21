@@ -35,10 +35,40 @@ export default function User() {
 
   return (
     <div>
-      <div className="mt-[20px] mb-3 self-stretch justify-center text-lg font-bold ">회원 관리</div>
+      <div className=" flex  justify-between items-center sm:mt-15 md:mt-[21px]">
+        <div className="mt-[20px] mb-3 self-stretch justify-center text-lg font-bold  md:text-2xl">회원 관리</div>
+        <Button
+          type="black"
+          label="회원 초대하기"
+          className="w-50 h-16 hidden sm:block"
+          onClick={() => {
+            openModal(
+              <InviteMemberModal
+                onCancel={closeModal}
+                onSubmit={(data) => {
+                  console.log("회원 초대 등록:", data);
+                  console.log("이름:", data.name);
+                  console.log("이메일:", data.email);
+                  console.log("권한:", data.role);
+                  closeModal();
+                }}
+              />,
+            );
+          }}
+        />
+      </div>
       <Suspense>
         <SearchBar />
       </Suspense>
+      <div className="w-full mt-10 self-stretch p-5 border-t border-b border-neutral-200 hidden sm:flex justify-start items-center gap-8">
+        <div className="px-14 flex justify-start items-center mr-2">
+          <div className="justify-center text-zinc-500 text-base font-bold">이름</div>
+        </div>
+        <div className="flex-1 justify-center text-zinc-500 text-base font-bold">메일</div>
+        <div className="w-20 text-center justify-center text-zinc-500 text-base font-bold">권한</div>
+        <div className="w-48 text-center justify-center text-zinc-500 text-base font-bold">비고</div>
+      </div>
+
       {paginateMembers.map((member) => (
         <MemberList key={member.id} {...member} onClickDeleteUser={handleDeleteUser} />
       ))}
@@ -47,7 +77,7 @@ export default function User() {
         <Button
           type="black"
           label="회원 초대"
-          className="mt-6 w-full h-16 justify-center items-center"
+          className="mt-6 w-full h-16 justify-center items-center sm:hidden"
           onClick={() => {
             openModal(
               <InviteMemberModal

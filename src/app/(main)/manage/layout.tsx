@@ -26,23 +26,23 @@ export default function ManagePageLayout({ children }: { children: React.ReactNo
           />
         </div>
       </div>
-      <Desktop>
-        <div className=" absolute top-[80px] left-[260px] flex flex-col gap-1">
-          <Menu
-            icon="user"
-            text="회원 관리"
-            isActive={pathname === "/manage/users"}
-            onClick={() => handleMenuClick("/manage/users")}
-          />
-          <Menu
-            icon="budget"
-            text="예산 관리"
-            isActive={pathname === "/manage/budgets"}
-            onClick={() => handleMenuClick("/manage/budgets")}
-          />
-        </div>
-      </Desktop>
-         <div>
+      <div className="flex md:pt-[80px] gap-16">
+        <Desktop>
+          <div className="flex flex-col gap-1">
+            <Menu
+              icon="user"
+              text="회원 관리"
+              isActive={pathname === "/manage/users"}
+              onClick={() => handleMenuClick("/manage/users")}
+            />
+            <Menu
+              icon="budget"
+              text="예산 관리"
+              isActive={pathname === "/manage/budgets"}
+              onClick={() => handleMenuClick("/manage/budgets")}
+            />
+          </div>
+        </Desktop>
         {children}
       </div>
     </div>
