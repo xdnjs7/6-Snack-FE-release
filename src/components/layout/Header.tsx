@@ -8,14 +8,15 @@ import AuthenticatedHeader from "./AuthenticatedHeader";
 export default function Header() {
   const pathname = usePathname();
 
+
   // 비보호된 페이지 경로 (랜딩 페이지) - 비회원도 접근가능)
-  const isUnprotectedRoute = pathname === "/";
+  const isUnprotectedRoute = pathname === "/" || pathname === "/signup";
+
   // 유저
-  const isAuthRoute = pathname.startsWith("/login") || pathname.startsWith("/signup");
+  const isAuthRoute = pathname.startsWith("/login");
 
   // 보호된 페이지 경로 (main app)
   const isProtectedRoute =
-    pathname.startsWith("/products") ||
     pathname.startsWith("/cart") ||
     pathname.startsWith("/my") ||
     pathname.startsWith("/order") ||
