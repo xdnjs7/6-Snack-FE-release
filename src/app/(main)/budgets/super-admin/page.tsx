@@ -1,7 +1,7 @@
 import React from "react";
 
-function BudgetsSuperAdminPage() {
+function BudgetsManagePage() {
   return <div>예산관리페이지</div>;
 }
 
-export default BudgetsSuperAdminPage;
+export default BudgetsManagePage;
