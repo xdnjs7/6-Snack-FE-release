@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import ic_chevron_down from "@/assets/icons/ic_chevron_down.svg";
 import Image from "next/image";
+import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
+import clsx from "clsx";
 
 type TCartItemQuantityDropdownProps = {
   value: number;
@@ -22,12 +24,10 @@ export default function CartItemQuantityDropdown({ value, onClick }: TCartItemQu
     <>
       <div
         onClick={handleQuantityDropdown}
-        className="flex justify-end items-center h-[40px] pl-[24px] gap-[4px] cursor-pointer"
+        className="relative flex justify-end items-center h-[40px] pl-[24px] gap-[4px] cursor-pointer"
       >
         <p className="font-bold text-[14px]/[17px] tracking-tight text-primary-950 sm:text-[16px]/[20px]">{value}</p>
-        <div className="relative w-[20px] h-[20px] sm:w-[24px] sm:h-[24px]">
-          <Image src={ic_chevron_down} alt="아래 화살표" fill className="object-cover" />
-        </div>
+        <ArrowIconSvg direction="down" className="w-[20px] h-[20px] text-primary-950 sm:w-[24px] sm:h-[24px]" />
       </div>
 
       {isQuantityDropdownVisible && (
