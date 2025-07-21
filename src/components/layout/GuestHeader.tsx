@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import ic_hamburger_menu from "@/assets/icons/ic_hamburger_menu.svg";
 import ic_lock from "@/assets/icons/ic_lock.svg";
 import ic_manager from "@/assets/icons/ic_manager.svg";
 import SnackIconSvg from "../svg/SnackIconSvg";

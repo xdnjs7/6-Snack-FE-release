@@ -2,9 +2,6 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import img_logo from "@/assets/images/img_logo.webp";
-import ic_hamburger_menu from "@/assets/icons/ic_hamburger_menu.svg";
-import ic_chevron_down from "@/assets/icons/ic_chevron_down.svg";
 import ic_cart from "@/assets/icons/ic_cart.svg";
 import ProfileAvatar from "../common/ProfileAvatar";
 import VerticalBarIconSvg from "../svg/VerticalBarIconSvg";
@@ -18,6 +15,7 @@ import { usePathname } from "next/navigation";
 import { TSideMenuItem } from "@/types/sideMenu.types";
 import { useRouter } from "next/navigation";
 import ArrowIconSvg from "../svg/ArrowIconSvg";
+import { TCategoryItem } from "@/types/subCategoryMenu.types";
 
 export default function AuthenticatedHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -39,13 +37,13 @@ export default function AuthenticatedHeader() {
   ];
 
   const categoryItems = [
-    { id: "snack", label: "스낵" },
-    { id: "beverage", label: "음료" },
-    { id: "water", label: "생수" },
-    { id: "convenience", label: "간편식" },
-    { id: "fresh", label: "신선식" },
-    { id: "coffee", label: "원두커피" },
-    { id: "supplies", label: "비품" },
+    { id: 1, name: "스낵" },
+    { id: 2, name: "음료" },
+    { id: 3, name: "생수" },
+    { id: 4, name: "간편식" },
+    { id: 5, name: "신선식" },
+    { id: 6, name: "원두커피" },
+    { id: 7, name: "비품" },
   ];
 
   // 햄버거 메뉴버튼 클릭 핸들러
@@ -67,8 +65,8 @@ export default function AuthenticatedHeader() {
   };
 
   // 카테고리 아이템 클릭 핸들러
-  const handleCategoryItemClick = (item: any) => {
-    setCurrentCategory(item.id);
+  const handleCategoryItemClick = (item: TCategoryItem) => {
+    setCurrentCategory(item.id.toString());
     setIsCategoryMenuOpen(false);
     // 여기에 category별 product 검색결과 보여주기
   };

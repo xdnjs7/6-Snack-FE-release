@@ -1,14 +1,6 @@
 "use client";
-import Image from "next/image";
-import React, { Fragment, MouseEvent, useState } from "react";
-import clsx from "clsx";
 import { createPortal } from "react-dom";
-
-type TCategoryItem = {
-  id: string;
-  label: string;
-  href?: string;
-};
+import { TCategoryItem } from "@/types/subCategoryMenu.types";
 
 type TMobileCategoryMenuProps = {
   items: TCategoryItem[];
@@ -20,13 +12,13 @@ type TMobileCategoryMenuProps = {
 };
 
 const defaultCategories: TCategoryItem[] = [
-  { id: "snack", label: "스낵" },
-  { id: "beverage", label: "음료" },
-  { id: "water", label: "생수" },
-  { id: "convenience", label: "간편식" },
-  { id: "fresh", label: "신선식" },
-  { id: "coffee", label: "원두커피" },
-  { id: "supplies", label: "비품" },
+  { id: 1, name: "스낵" },
+  { id: 2, name: "음료" },
+  { id: 3, name: "생수" },
+  { id: 4, name: "간편식" },
+  { id: 5, name: "신선식" },
+  { id: 6, name: "원두커피" },
+  { id: 7, name: "비품" },
 ];
 
 export default function MobileCategoryMenu({
@@ -42,7 +34,7 @@ export default function MobileCategoryMenu({
   // 상품리스트 페이지에서 currentCategory값 받아와야함
   const isCurrentCategory = (item: TCategoryItem) => {
     if (!currentCategory || !item.id) return false;
-    return currentCategory === item.id;
+    return currentCategory === item.id.toString();
   };
 
   const categoryMenuContent = (
@@ -67,7 +59,7 @@ export default function MobileCategoryMenu({
                   isActive ? "text-primary-950" : "text-primary-400 group-hover:text-primary-700"
                 }`}
               >
-                {item.label}
+                {item.name}
               </div>
             </div>
           );

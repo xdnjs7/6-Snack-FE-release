@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { TChildrenProps } from "@/types/children.types";
-import { getUserApi } from "@/lib/api/user.api";
+// import { getUserApi } from "@/lib/api/user.api";
 
 // User 타입 정의
 type User = {
@@ -65,7 +65,7 @@ export function AuthProvider({ children }: TChildrenProps) {
   };
 
   // 회원가입 함수
-  const signUp = async (email: string, name: string, password: string, passwordConfirm: string) => {
+  const signUp = async (_email: string, _name: string, _password: string, _passwordConfirm: string) => {
     // TODO: 실제 회원가입 API 호출
     // await signUpApi(inviteId, password, passwordConfirm);
     // inviteId는 params에 있음?
@@ -73,7 +73,7 @@ export function AuthProvider({ children }: TChildrenProps) {
   };
 
   // 로그인 함수
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, _password: string) => {
     try {
       setIsLoading(true);
       // TODO: 실제 로그인 API 호출
