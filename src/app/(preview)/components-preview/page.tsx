@@ -36,6 +36,40 @@ import Header from "@/components/layout/Header";
 import CartItem from "@/app/(main)/cart/_components/CartItem";
 import OrderItem from "@/app/(main)/cart/order/_components/OrderItem";
 
+const categories = {
+  parentCategory: [
+    { id: 1, name: "스낵" },
+    { id: 13, name: "음료" },
+    { id: 23, name: "생수" },
+  ],
+  childrenCategory: {
+    스낵: [
+      { id: 2, name: "과자" },
+      { id: 3, name: "쿠키" },
+      { id: 4, name: "파이" },
+    ],
+    음료: [
+      { id: 14, name: "청량/탄산음료" },
+      { id: 15, name: "과즙음료" },
+      { id: 16, name: "에너지음료" },
+    ],
+    생수: [
+      { id: 24, name: "생수" },
+      { id: 25, name: "스파클링" },
+    ],
+    간편식: [
+      { id: 27, name: "봉지라면" },
+      { id: 28, name: "과일" },
+      { id: 29, name: "컵라면" },
+    ],
+    신선식품: [
+      { id: 41, name: "샐러드" },
+      { id: 42, name: "빵" },
+      { id: 43, name: "햄버거/샌드위치" },
+    ],
+  },
+};
+
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
   const [categoryOption, setCategoryOption] = useState("다른거");
@@ -127,7 +161,7 @@ export default function ComponentsPreviewPage() {
       <div className="rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] p-6">
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">SubCategoryItem 컴포넌트</h2>
-          <SubCategoryItem />
+          <SubCategoryItem categories={categories} />
         </div>
 
         <div className="space-y-4 mb-4">
