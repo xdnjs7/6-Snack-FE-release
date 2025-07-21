@@ -10,7 +10,7 @@ export type TInviteInfo = {
 };
 // 초대 정보 조회
 export const getInviteApi = async (inviteId: string) => {
-  return defaultFetch(`/invites/${inviteId}`);
+  return defaultFetch(`/invite/${inviteId}`);
 };
 
 // 초대를 통한 회원가입
