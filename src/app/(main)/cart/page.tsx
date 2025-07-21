@@ -5,6 +5,7 @@ import ic_chevron_right_gray from "@/assets/icons/ic_chevron_right_gray.svg";
 import Image from "next/image";
 import CartItem from "./_components/CartItem";
 import Button from "@/components/ui/Button";
+import Link from "next/link";
 
 export default function CartPage() {
   return (
@@ -42,12 +43,16 @@ export default function CartPage() {
         </div>
 
         <div className="flex flex-col justify-center items-center w-full gap-[20px] sm:max-w-[300px]">
-          <Button
-            type="white"
-            label="계속 쇼핑하기"
-            className="w-full h-[64px] font-bold tracking-tight text-primary-950"
-          />
-          <Button type="black" label="구매 요청" className="w-full h-[64px] font-bold tracking-tight" />
+          <Link href="/products" className="w-full">
+            <Button
+              type="white"
+              label="계속 쇼핑하기"
+              className="w-full h-[64px] font-bold tracking-tight text-primary-950"
+            />
+          </Link>
+          <Link href="/cart/order" className="w-full">
+            <Button type="black" label="구매 요청" className="w-full h-[64px] font-bold tracking-tight" />
+          </Link>
         </div>
       </div>
     </div>
