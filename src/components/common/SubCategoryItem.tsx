@@ -1,8 +1,7 @@
 "use client";
-import Image from "next/image";
 import React, { Fragment, MouseEvent, useState } from "react";
-import ic_chevron_down_gray from "@/assets/icons/ic_chevron_down_gray.svg";
 import clsx from "clsx";
+import ArrowIconSvg from "../svg/ArrowIconSvg";
 
 type TSubCategoryItemProps = {
   categories: {
@@ -45,7 +44,7 @@ export default function SubCategoryItem({ categories }: TSubCategoryItemProps) {
               onClick={(e) => handleClick(e, parent.name)}
               className={clsx(
                 isActiveParentCategory === parent.name && "border-t-2 border-primary-950",
-                "group/parent hover:bg-primary-50/50 transition-colors duration-200 flex justify-between items-center w-[180px] h-[50px] p-[14px] cursor-pointer",
+                "relative group/parent hover:bg-primary-50/50 transition-colors duration-200 flex justify-between items-center w-[180px] h-[50px] p-[14px] cursor-pointer",
               )}
             >
               <p
@@ -56,17 +55,13 @@ export default function SubCategoryItem({ categories }: TSubCategoryItemProps) {
               >
                 {parent.name}
               </p>
-              <div className="relative w-[16px] h-[16px]">
-                <Image
-                  src={ic_chevron_down_gray}
-                  alt="드롭다운"
-                  fill
-                  className={clsx(
-                    isActiveParentCategory === parent.name && "rotate-180",
-                    "object-cover transition-transform duration-250",
-                  )}
-                />
-              </div>
+              <ArrowIconSvg
+                direction="down"
+                className={clsx(
+                  isActiveParentCategory === parent.name && "rotate-180",
+                  "object-cover transition-transform duration-250 w-[16px] h-[16px] text-primary-300",
+                )}
+              />
             </button>
             {isActiveParentCategory === parent.name &&
               childrenCategory[parent.name].map((children, id) => {
