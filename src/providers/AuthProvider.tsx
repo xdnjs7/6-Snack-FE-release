@@ -35,7 +35,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     try {
       const userData = await getUserApi();
       setUser(userData);
-    } catch (error) {
+    } catch {
       setUser(null);
     }
   };

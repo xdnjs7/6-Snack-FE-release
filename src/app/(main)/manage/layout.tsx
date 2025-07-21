@@ -27,7 +27,7 @@ export default function ManagePageLayout({ children }: { children: React.ReactNo
         </div>
       </div>
       <Desktop>
-        <div className="absolute top-[80px] left-[260px] flex flex-col gap-1">
+        <div className="flex flex-col gap-1">
           <Menu
             icon="user"
             text="회원 관리"
