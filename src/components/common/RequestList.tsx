@@ -70,7 +70,7 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
           <div className="flex justify-center w-full">
             <div className="hidden sm:flex justify-between items-center w-full max-w-[1352px] h-[100px] md:px-[40px]">
               <div className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[100px] md:w-[142px]">
-                {request.createdAt}
+                {DateFormat(request.createdAt)}
               </div>
               <div className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[140px] md:w-[360px]">
                 {request.productName}
