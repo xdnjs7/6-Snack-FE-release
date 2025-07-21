@@ -1,0 +1,133 @@
+import img_coke_zero from "@/assets/images/img_coke_zero.webp";
+
+export const categories = {
+  parentCategory: [
+    { id: 1, name: "스낵" },
+    { id: 13, name: "음료" },
+    { id: 23, name: "생수" },
+  ],
+  childrenCategory: {
+    스낵: [
+      { id: 2, name: "과자" },
+      { id: 3, name: "쿠키" },
+      { id: 4, name: "파이" },
+    ],
+    음료: [
+      { id: 14, name: "청량/탄산음료" },
+      { id: 15, name: "과즙음료" },
+      { id: 16, name: "에너지음료" },
+    ],
+    생수: [
+      { id: 24, name: "생수" },
+      { id: 25, name: "스파클링" },
+    ],
+    간편식: [
+      { id: 27, name: "봉지라면" },
+      { id: 28, name: "과일" },
+      { id: 29, name: "컵라면" },
+    ],
+    신선식품: [
+      { id: 41, name: "샐러드" },
+      { id: 42, name: "빵" },
+      { id: 43, name: "햄버거/샌드위치" },
+    ],
+  },
+};
+
+export const products = {
+  items: [
+    {
+      id: 10,
+      categoryId: 28,
+      creatorId: "user-1",
+      name: "바나나 1kg",
+      price: 3000,
+      imageUrl: img_coke_zero,
+      linkUrl: "https://example.com/banana",
+      createdAt: "2025-01-10T00:00:00.000Z",
+      updatedAt: "2025-01-10T00:00:00.000Z",
+      deletedAt: null,
+      category: {
+        id: 28,
+        name: "과일",
+        parentId: 26,
+      },
+      creator: {
+        id: "user-1",
+        email: "super_admin@codeit.com",
+        name: "최고관리자",
+        password: "$2b$10$PAgMpoIyg2Gc81A9nlEZ3eosM43.aCBtwpl1aBW3chXcB8AMw6cXW",
+        companyId: 1,
+        createdAt: "2024-01-01T00:00:00.000Z",
+        updatedAt: "2025-07-21T14:44:58.887Z",
+        deletedAt: null,
+        hashedRefreshToken: "$2b$10$uw94YG65ii6IyuzgyE03x.l7tflcQGRCIAABAQ667Qk7tfuG8w5Mu",
+        role: "SUPER_ADMIN",
+      },
+    },
+    {
+      id: 6,
+      categoryId: 14,
+      creatorId: "user-1",
+      name: "코카콜라 500ml",
+      price: 1500,
+      imageUrl: img_coke_zero,
+      linkUrl: "https://example.com/coke",
+      createdAt: "2025-01-06T00:00:00.000Z",
+      updatedAt: "2025-01-06T00:00:00.000Z",
+      deletedAt: null,
+      category: {
+        id: 14,
+        name: "청량/탄산음료",
+        parentId: 13,
+      },
+      creator: {
+        id: "user-1",
+        email: "super_admin@codeit.com",
+        name: "최고관리자",
+        password: "$2b$10$PAgMpoIyg2Gc81A9nlEZ3eosM43.aCBtwpl1aBW3chXcB8AMw6cXW",
+        companyId: 1,
+        createdAt: "2024-01-01T00:00:00.000Z",
+        updatedAt: "2025-07-21T14:44:58.887Z",
+        deletedAt: null,
+        hashedRefreshToken: "$2b$10$uw94YG65ii6IyuzgyE03x.l7tflcQGRCIAABAQ667Qk7tfuG8w5Mu",
+        role: "SUPER_ADMIN",
+      },
+    },
+    {
+      id: 4,
+      categoryId: 11,
+      creatorId: "user-1",
+      name: "아몬드 믹스",
+      price: 2500,
+      imageUrl: img_coke_zero,
+      linkUrl: "https://example.com/almond",
+      createdAt: "2025-01-04T00:00:00.000Z",
+      updatedAt: "2025-01-04T00:00:00.000Z",
+      deletedAt: null,
+      category: {
+        id: 11,
+        name: "견과류",
+        parentId: 1,
+      },
+      creator: {
+        id: "user-1",
+        email: "super_admin@codeit.com",
+        name: "최고관리자",
+        password: "$2b$10$PAgMpoIyg2Gc81A9nlEZ3eosM43.aCBtwpl1aBW3chXcB8AMw6cXW",
+        companyId: 1,
+        createdAt: "2024-01-01T00:00:00.000Z",
+        updatedAt: "2025-07-21T14:44:58.887Z",
+        deletedAt: null,
+        hashedRefreshToken: "$2b$10$uw94YG65ii6IyuzgyE03x.l7tflcQGRCIAABAQ667Qk7tfuG8w5Mu",
+        role: "SUPER_ADMIN",
+      },
+    },
+  ],
+  meta: {
+    totalCount: 3,
+    currentPage: 1,
+    itemsPerPage: 10,
+    totalPages: 1,
+  },
+};
