@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Image from "next/image";
 import img_logo from "@/assets/images/img_logo.webp";
-import { adminSignUp } from "@/app/actions/adminSignup";
+import { adminSignUp } from "@/app/actions/adminSignUp";
 import { signUpSchema } from "@/lib/schemas/signUpSchema";
 
 type TSignUpForm = z.infer<typeof signUpSchema>;
@@ -41,21 +41,37 @@ const SignUpForm = () => {
 
       if (result?.error) {
         console.error("회원가입 실패:", result.error);
-        // 예시: 백엔드가 "Email already exists" 에러를 반환할 경우
-        if (result.error.includes("Email already exists")) {
-          // 백엔드의 실제 에러 메시지에 따라 조건 조정
-          setError("id", { type: "manual", message: "이미 사용 중인 이메일입니다." });
-        } else if (result.error.includes("Invalid business number")) {
-          // 다른 예시
-          setError("companyNumber", { type: "manual", message: "유효하지 않은 사업자 번호입니다." });
+
+        // alert창으로 오류 메시지 표시
+        alert(`회원가입 실패: ${result.error}`);
+
+        // 백엔드 에러 메시지에 따른 처리
+        if (result.error.includes("이미 등록된 이메일")) {
+          setError("id", { type: "manual", message: "이미 등록된 이메일입니다." });
+        } else if (result.error.includes("이미 등록된 사업자")) {
+          setError("companyNumber", { type: "manual", message: "이미 등록된 사업자 등록 번호입니다." });
+        } else if (result.error.includes("모두 입력해야 합니다")) {
+          // 일반적인 필수 필드 누락 에러
+          console.log("필수 필드가 누락되었습니다.");
         } else {
-          // 위에서 처리되지 않은 일반적인 오류
+          // 기타 오류
           console.log(`회원가입 중 오류가 발생했습니다: ${result.error}`);
         }
+      } else {
+        // 성공 시 처리 (리다이렉트는 서버 액션에서 처리됨)
+        console.log("회원가입이 성공했습니다!");
+        alert("회원가입이 성공했습니다!");
       }
     } catch (error) {
       console.error("예상치 못한 오류:", error);
       console.log("회원가입 중 예상치 못한 오류가 발생했습니다.");
+
+      // 예상치 못한 오류도 alert로 표시
+      if (error instanceof Error) {
+        alert(`예상치 못한 오류가 발생했습니다: ${error.message}`);
+      } else {
+        alert("예상치 못한 오류가 발생했습니다.");
+      }
     }
   };
 
