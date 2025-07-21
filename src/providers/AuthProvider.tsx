@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { getUserApi, updateUserApi } from "@/lib/api/user.api";
+import { getUserApi } from "@/lib/api/user.api";
 import { loginApi, logoutApi, registerApi } from "@/lib/api/auth.api";
 
 export type User = {
@@ -16,7 +16,6 @@ type AuthContextType = {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
-  updateUser: (user: Partial<User>) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -55,14 +54,9 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     setUser(null);
   };
 
-  const updateUser = async (userData: Partial<User>) => {
-    const updatedUser = await updateUserApi(userData);
-    setUser(updatedUser);
-  };
-
   useEffect(() => {
     getUser();
   }, []);
 
-  return <AuthContext.Provider value={{ user, login, logout, updateUser, register }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, login, logout, register }}>{children}</AuthContext.Provider>;
 }
