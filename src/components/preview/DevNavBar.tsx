@@ -27,6 +27,8 @@ export default function DevNavBar() {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [selectedRole, setSelectedRole] = useState<string | undefined>(undefined);
   const [selectedProgress, setSelectedProgress] = useState<string | undefined>(undefined);
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
+
   const navRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
 
@@ -73,15 +75,21 @@ export default function DevNavBar() {
 
   // 필터 기능
   const filteredNavLinks = useMemo(() => {
-    return navLinks.map((section) => ({
-      ...section,
-      links: section.links.filter((link) => {
-        const matchRole = !selectedRole || link.role === selectedRole;
-        const matchProgress = !selectedProgress || link.progress === selectedProgress;
-        return matchRole && matchProgress;
-      }),
-    }));
-  }, [selectedRole, selectedProgress]);
+    return navLinks
+      .filter((section) => {
+        const matchCategory = !selectedCategory || section.category === selectedCategory;
+        return matchCategory;
+      })
+      .map((section) => ({
+        ...section,
+        links: section.links.filter((link) => {
+          const matchRole = !selectedRole || link.role === selectedRole;
+          const matchProgress = !selectedProgress || link.progress === selectedProgress;
+          return matchRole && matchProgress;
+        }),
+      }))
+      .filter((section) => section.links.length > 0);
+  }, [selectedCategory, selectedRole, selectedProgress]);
 
   // 진행바 기능
   const totalLinks = useMemo(() => {
@@ -98,6 +106,10 @@ export default function DevNavBar() {
     if (totalLinks === 0) return 0;
     return Math.round((completedLinks / totalLinks) * 100);
   }, [totalLinks, completedLinks]);
+
+  const categories = useMemo(() => {
+    return [...new Set(navLinks.map((section) => section.category))];
+  }, []);
 
   return (
     <>
@@ -163,6 +175,26 @@ export default function DevNavBar() {
                   }`}
                 >
                   {stage}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 카테고리 필터 버튼 */}
+          <div className="space-y-2">
+            <h3 className="text-sm font-semibold">📂 카테고리 필터</h3>
+            <div className="flex flex-wrap gap-2 py-1 rounded-lg">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(selectedCategory === category ? undefined : category)}
+                  className={`text-xs px-2 py-1 rounded font-semibold text-black cursor-pointer ${
+                    selectedCategory === category
+                      ? "bg-yellow-200 text-black"
+                      : "bg-white outline-2 outline-primary-100"
+                  }`}
+                >
+                  {category}
                 </button>
               ))}
             </div>
