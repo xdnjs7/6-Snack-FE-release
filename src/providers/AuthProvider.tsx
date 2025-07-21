@@ -1,6 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { TChildrenProps } from "@/types/children.types";
+import { getUserApi } from "@/lib/api/user.api";
 
 // User 타입 정의
 type User = {
@@ -13,7 +15,7 @@ type User = {
     id: number;
     name: string;
   };
-}
+};
 
 // AuthContext 타입 정의
 type AuthContextType = {
@@ -21,65 +23,69 @@ type AuthContextType = {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  updateUser: (userData: Partial<User>) => void;
-}
+  signUp: (email: string, name: string, password: string, passwordConfirm: string) => Promise<void>;
+  getUser: () => Promise<void>;
+  refreshUser: () => Promise<User | null>;
+};
 
 // Context 생성
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// AuthProvider Props 타입
-type AuthProviderProps = {
-  children: ReactNode;
-}
-
-export function AuthProvider({ children }: AuthProviderProps) {
+export function AuthProvider({ children }: TChildrenProps) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 초기 로드 시 사용자 정보 확인
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        // TODO: 실제 API 호출로 교체
-        // const response = await fetch('/api/auth/me');
-        // if (response.ok) {
-        //   const userData = await response.json();
-        //   setUser(userData);
-        // }
+  // 사용자 정보 가져오기
+  const getUser = async () => {
+    try {
+      setIsLoading(true);
+      // TODO: 실제 API 호출로 교체
+      // const { data: userData } = await getUserApi();
+      // setUser(userData);
 
-        // 임시로 로컬스토리지에서 사용자 정보 확인
-        const savedUser = localStorage.getItem("user");
-        if (savedUser) {
-          setUser(JSON.parse(savedUser));
-        }
-      } catch (error) {
-        console.error("Auth check failed:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      // 임시 사용자 데이터 (API 연동 전까지)
+      const mockUser: User = {
+        id: "user-123",
+        email: "test@example.com",
+        name: "김코드",
+        role: "user",
+        cartItemCount: 0,
+        company: {
+          id: 1,
+          name: "테스트 회사",
+        },
+      };
+      setUser(mockUser);
+    } catch (error) {
+      console.error("사용자 정보를 가져오는데 실패했습니다:", error);
+      setUser(null);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    checkAuth();
-  }, []);
+  // 회원가입 함수
+  const signUp = async (email: string, name: string, password: string, passwordConfirm: string) => {
+    // TODO: 실제 회원가입 API 호출
+    // await signUpApi(inviteId, password, passwordConfirm);
+    // inviteId는 params에 있음?
+    await getUser();
+  };
 
   // 로그인 함수
   const login = async (email: string, password: string) => {
     try {
       setIsLoading(true);
       // TODO: 실제 로그인 API 호출
-      // const response = await fetch('/api/auth/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password }),
-      // });
-      // const userData = await response.json();
+      // await loginApi({ email, password });
+      // await getUser(); // 로그인 후 사용자 정보 다시 가져오기
 
       // 임시 로그인 로직
       const mockUser: User = {
         id: "user-123",
         email,
         name: "김철수",
-        role: "user",
+        role: "user", // "user", "admin", "super_admin"
         cartItemCount: 0,
         company: {
           id: 1,
@@ -88,7 +94,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
       };
 
       setUser(mockUser);
-      localStorage.setItem("user", JSON.stringify(mockUser));
     } catch (error) {
       console.error("Login failed:", error);
       throw error;
@@ -98,26 +103,36 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   // 로그아웃 함수
-  const logout = () => {
+  const logout = async () => {
+    // TODO: 실제 로그아웃 API 호출
+    // await logoutApi();
     setUser(null);
-    localStorage.removeItem("user");
   };
 
-  // 사용자 정보 업데이트 함수
-  const updateUser = (userData: Partial<User>) => {
-    if (user) {
-      const updatedUser = { ...user, ...userData };
-      setUser(updatedUser);
-      localStorage.setItem("user", JSON.stringify(updatedUser));
+  // 사용자 정보 새로고침
+  const refreshUser = async () => {
+    try {
+      await getUser();
+      return user;
+    } catch (error) {
+      console.error("사용자 정보 새로고침 실패:", error);
+      return null;
     }
   };
+
+  // 초기 로드 시 사용자 정보 확인
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const value = {
     user,
     isLoading,
     login,
     logout,
-    updateUser,
+    signUp,
+    getUser,
+    refreshUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
