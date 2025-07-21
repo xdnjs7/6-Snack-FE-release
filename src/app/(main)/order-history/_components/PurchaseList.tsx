@@ -1,77 +1,120 @@
 "use client";
 
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import clsx from "clsx";
+import { getAdminOrders } from "../../../../lib/api/order.api";
+
+// API 응답 타입 정의 (예시, 실제 응답에 맞게 수정 필요)
+type AdminOrderApiItem = {
+  id: number | string;
+  requestDate?: string;
+  createdAt?: string;
+  requesterName?: string;
+  requester?: string;
+  itemSummary?: string;
+  item?: string;
+  amount?: number;
+  approvalDate?: string;
+  updatedAt?: string;
+  managerName?: string;
+  manager?: string;
+};
 
 // 구매 내역 아이템 타입 정의
+// (API 응답에 맞게 타입을 수정해야 할 수 있음)
 type TPurchaseItem = {
   id: string;
   requestDate: string;
   requester: string;
-  status: "요청" | "승인"; // 이미지에 '요청'과 '승인' 상태가 보임
+  status: "요청" | "승인";
   item: string;
   amount: string;
   approvalDate: string;
   manager: string;
 };
 
-const DUMMY_PURCHASE_DATA: TPurchaseItem[] = [
-  {
-    id: "1",
-    requestDate: "2025. 07. 01",
-    requester: "김스낵",
-    status: "요청",
-    item: "코카콜라 제로 1캔 외 1건\n총 수량 4개",
-    amount: "21,000",
-    approvalDate: "2024. 07. 04",
-    manager: "김코드",
-  },
-  {
-    id: "2",
-    requestDate: "2025. 07. 01",
-    requester: "김스낵",
-    status: "승인",
-    item: "코카콜라 제로 1캔 외 1건\n총 수량 4개",
-    amount: "21,000",
-    approvalDate: "2024. 07. 04",
-    manager: "김코드",
-  },
-  {
-    id: "3",
-    requestDate: "2025. 07. 01",
-    requester: "김스낵",
-    status: "요청",
-    item: "코카콜라 제로 1캔 외 1건\n총 수량 4개",
-    amount: "21,000",
-    approvalDate: "2024. 07. 04",
-    manager: "김코드",
-  },
-  {
-    id: "4",
-    requestDate: "2025. 07. 01",
-    requester: "김스낵",
-    status: "승인",
-    item: "코카콜라 제로 1캔 외 1건\n총 수량 4개",
-    amount: "21,000",
-    approvalDate: "2024. 07. 04",
-    manager: "김코드",
-  },
-  // 더 많은 더미 데이터 추가 가능
-];
+type AdminOrderApiResponse = {
+  items?: AdminOrderApiItem[];
+  data?: AdminOrderApiItem[];
+  totalCount?: number;
+  total?: number;
+};
+
+const statusMap: Record<string, "요청" | "승인"> = {
+  pending: "요청",
+  approved: "승인",
+};
 
 const PurchaseList: React.FC = () => {
-  const [purchaseItems, setPurchaseItems] = useState<TPurchaseItem[]>(DUMMY_PURCHASE_DATA);
-  const [sortBy, setSortBy] = useState<string>("latest"); // 정렬 기준 상태
+  const [purchaseItems, setPurchaseItems] = useState<TPurchaseItem[]>([]);
+  const [sortBy, setSortBy] = useState<string>("latest");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 4; // 페이지당 항목 수 (이미지 기준)
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const itemsPerPage = 4;
+  const [totalCount, setTotalCount] = useState(0);
 
-  const totalPages = Math.ceil(purchaseItems.length / itemsPerPage);
-  const currentItems = purchaseItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  // API에서 데이터 받아오기
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        // pending, approved 두 상태 모두 조회해서 합침
+        const [pendingRes, approvedRes]: [AdminOrderApiResponse, AdminOrderApiResponse] = await Promise.all([
+          getAdminOrders({
+            status: "pending",
+            offset: (currentPage - 1) * itemsPerPage,
+            limit: itemsPerPage,
+            orderBy: sortBy,
+          }),
+          getAdminOrders({
+            status: "approved",
+            offset: (currentPage - 1) * itemsPerPage,
+            limit: itemsPerPage,
+            orderBy: sortBy,
+          }),
+        ]);
+        // API 응답 구조에 따라 데이터 파싱 필요 (아래는 예시)
+        const parse = (item: AdminOrderApiItem, statusKey: string): TPurchaseItem => ({
+          id: String(item.id),
+          requestDate: item.requestDate || item.createdAt || "-",
+          requester: item.requesterName || item.requester || "-",
+          status: statusMap[statusKey],
+          item: item.itemSummary || item.item || "-",
+          amount: typeof item.amount === "number" ? item.amount.toLocaleString() : "-",
+          approvalDate: item.approvalDate || item.updatedAt || "-",
+          manager: item.managerName || item.manager || "-",
+        });
+        const pendingList = (pendingRes.items || pendingRes.data || []).map((item) => parse(item, "pending"));
+        const approvedList = (approvedRes.items || approvedRes.data || []).map((item) => parse(item, "approved"));
+        setPurchaseItems([...pendingList, ...approvedList]);
+        setTotalCount(
+          (pendingRes.totalCount || pendingRes.total || 0) + (approvedRes.totalCount || approvedRes.total || 0),
+        );
+      } catch (e: unknown) {
+        let msg = "데이터를 불러오지 못했습니다.";
+        if (typeof e === "object" && e !== null && "message" in e) {
+          const err = e as { message?: string };
+          if (typeof err.message === "string") {
+            msg = err.message;
+          }
+        }
+        setError(msg);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortBy, currentPage]);
+
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
+  const currentItems = purchaseItems; // 이미 API에서 페이징된 데이터만 받아옴
 
   const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSortBy(e.target.value);
-    // 실제 정렬 로직은 여기에 구현 (예: purchaseItems.sort(...))
-    console.log("정렬 기준 변경:", e.target.value);
+    setCurrentPage(1); // 정렬 변경 시 1페이지로 이동
   };
 
   const handlePageChange = (page: number) => {
@@ -79,6 +122,13 @@ const PurchaseList: React.FC = () => {
       setCurrentPage(page);
     }
   };
+
+  if (loading) {
+    return <div className="flex items-center justify-center py-16 text-[--color-primary-700]">로딩 중...</div>;
+  }
+  if (error) {
+    return <div className="flex items-center justify-center py-16 text-red-500">{error}</div>;
+  }
 
   return (
     <div
@@ -110,15 +160,12 @@ const PurchaseList: React.FC = () => {
         >
           <option value="latest">정렬</option>
           <option value="oldest">오래된 순</option>
-          {/* 추가 정렬 옵션 */}
         </select>
       </div>
 
       {purchaseItems.length === 0 ? (
-        // 구매 내역이 없을 때
         <div className="flex flex-col items-center justify-center py-16">
           <div className="w-24 h-24 bg-[--color-primary-50] rounded-full flex items-center justify-center mb-6">
-            {/* 아이콘 (간단한 SVG 또는 이모지) */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -137,7 +184,7 @@ const PurchaseList: React.FC = () => {
           <p className="text-lg font-semibold text-[--color-primary-900] mb-2">구매 내역이 없어요</p>
           <p className="text-sm text-[--color-primary-700] mb-6">구매 요청을 승인하고 상품을 주문해보세요</p>
           <button
-            onClick={() => console.log("구매 요청 내역으로 이동")} // 실제 라우팅 로직 추가
+            onClick={() => console.log("구매 요청 내역으로 이동")}
             className={clsx(
               "py-3",
               "px-6",
@@ -154,47 +201,26 @@ const PurchaseList: React.FC = () => {
           </button>
         </div>
       ) : (
-        // 구매 내역이 있을 때 (테이블)
         <div className="overflow-x-auto">
-          {" "}
-          {/* 모바일에서 가로 스크롤 가능하게 */}
           <table className="min-w-full divide-y divide-[--color-primary-100]">
             <thead className="bg-[--color-primary-50]">
               <tr>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider"
-                >
+                <th className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider">
                   구매 요청일
                 </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider"
-                >
+                <th className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider">
                   요청인
                 </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider"
-                >
+                <th className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider">
                   구매 품목
                 </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider"
-                >
+                <th className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider">
                   금액
                 </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider"
-                >
+                <th className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider">
                   구매 승인일
                 </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider"
-                >
+                <th className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider">
                   담당자
                 </th>
               </tr>
@@ -210,7 +236,7 @@ const PurchaseList: React.FC = () => {
                         "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
                         item.status === "요청"
                           ? "bg-[--color-secondary-100] text-[--color-secondary-500]"
-                          : "bg-[--color-primary-50] text-[--color-primary-700]", // 승인 상태는 이미지에 없지만 기본 색상 적용
+                          : "bg-[--color-primary-50] text-[--color-primary-700]",
                       )}
                     >
                       {item.status}
