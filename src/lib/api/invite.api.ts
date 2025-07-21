@@ -1,4 +1,4 @@
-import { cookieFetch } from "./fetchClient.api";
+import { defaultFetch } from "./fetchClient.api";
 
 export type TInviteInfo = {
   id: string;
@@ -10,7 +10,7 @@ export type TInviteInfo = {
 };
 // 초대 정보 조회
 export const getInviteApi = async (inviteId: string) => {
-  return cookieFetch(`/invites/${inviteId}`);
+  return defaultFetch(`/invites/${inviteId}`);
 };
 
 // 초대를 통한 회원가입

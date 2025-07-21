@@ -1,24 +1,19 @@
 "use client";
-import MobileCategoryMenu from "@/components/common/MobileCategoryMenu";
-import SubCategoryItem from "@/components/common/SubCategoryItem";
-import AuthenticatedHeader from "@/components/layout/AuthenticatedHeader";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import img_logo from "@/assets/images/img_logo.webp";
 import SnackIconSvg from "@/components/svg/SnackIconSvg";
 import Link from "next/link";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { getInviteApi, TInviteInfo } from "@/lib/api/invite.api";
 
 // 리액트 훅폼 스키마 정의
 const signUpSchema = z
   .object({
     password: z.string().min(8, "비밀번호는 최소 8자 이상이어야 합니다."),
-    // 개발 거의 완료시 적용
+    // 개발 완료시 다시 포함시켜두기
     // .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])/, "비밀번호는 영문과 숫자를 포함해야 합니다."),
     passwordConfirm: z.string(),
   })
@@ -35,7 +30,7 @@ export default function InviteSignUpPage() {
   const inviteId = params.inviteId as string;
 
   const [isLoading, setIsLoading] = useState(false);
-  const [inviteInfo, setInviteInfo] = useState<TInviteInfo | null >(null);
+  const [inviteInfo, setInviteInfo] = useState<TInviteInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const {
@@ -53,7 +48,7 @@ export default function InviteSignUpPage() {
     const fetchInviteInfo = async () => {
       try {
         setIsLoading(true);
-        const data = await getInviteApi(inviteId);
+        const data: TInviteInfo = await getInviteApi(inviteId);
         setInviteInfo(data);
       } catch (error) {
         setError(error instanceof Error ? error.message : "초대 링크가 유효하지 않습니다.");
@@ -62,21 +57,21 @@ export default function InviteSignUpPage() {
       }
     };
     //  inviteId 정하기
-     if (inviteId) {
-       fetchInviteInfo();
-     }
+    if (inviteId) {
+      fetchInviteInfo();
+    }
   }, [inviteId]);
 
   // react hook form 회원가입 처리
-  
-  // Frontend Feature TOdo: getInviteApi 구현후 아래 data 대체해야함, inviteId,
-  const user = {
-    name: "김철수",
-    company: {
-      id: 1,
-      name: "테스트 회사",
-    },
-  };
+  const onSubmit = async (data:TSignUpFormData) => {
+    // ??
+    if (!inviteInfo) return;
+
+    try {
+      
+    }
+  }
+
   return (
     // top parent
     <div className="flex flex-col items-center justify-center px-[24px] pt-[60px] gap-[46px] sm:px-[72px] sm:pt-[119px] sm:gap-0">
@@ -88,7 +83,7 @@ export default function InviteSignUpPage() {
             <SnackIconSvg className="w-[225.16px] h-[63.64px] sm:w-[344px] sm:h-[97.3px]" />
           </Link>
         </div>
-        <h1>{user.name} 님, 만나서 반갑습니다.</h1>
+        <h1>{inviteInfo?.name} 님, 만나서 반갑습니다.</h1>
         <p>비밀번호를 입력해 회원가입을 완료해주세요.</p>
       </div>
       {/* signup content */}
