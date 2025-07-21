@@ -12,7 +12,7 @@ const MemberList = ({ id, name, email, role, onClickChangeRole, onClickDeleteUse
   return (
     <>
       {/* 모바일 전용 레이아웃 */}
-      <div className="sm:hidden w-80 px-5 py-4 border-b border-[#e6e6e6] flex gap-3">
+      <div className="sm:hidden w-full px-5 py-4 border-b border-[#e6e6e6] flex gap-3">
         <div className="w-12 h-12 bg-primary-50 rounded-full flex justify-center items-center text-black text-sm font-medium">
           {name.slice(0, 1).toUpperCase()}
         </div>

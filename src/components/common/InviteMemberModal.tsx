@@ -23,7 +23,7 @@ export default function InviteMemberModal({ onCancel, onSubmit }: TInviteMemberM
   return (
     <>
       {/* Desktop Layout */}
-      <div className="hidden md:flex items-center justify-center min-h-screen">
+      <div className="hidden sm:flex items-center justify-center min-h-screen">
         <div className="w-[600px] px-14 py-10 bg-white rounded-sm shadow-[0px_0px_40px_0px_rgba(0,0,0,0.1)] inline-flex flex-col justify-start items-center gap-8 relative overflow-visible">
           <div className="flex flex-col justify-start items-start gap-2.5">
             <div className="justify-center text-stone-900 text-lg font-bold font-['SUIT']">회원 초대</div>

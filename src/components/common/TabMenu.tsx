@@ -10,7 +10,7 @@ type TTabMenuProps = {
 
 export default function TabMenu({ isUserTabActive = false, onUserTabClick, onBudgetTabClick }: TTabMenuProps) {
   return (
-    <div className="w-full max-w-[696px] inline-flex justify-start items-start">
+    <div className="w-full  inline-flex justify-start items-start">
       {/* 회원 관리 탭 */}
       <div
         className={`flex-1 px-4 py-3 flex justify-center items-center gap-2 cursor-pointer ${

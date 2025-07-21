@@ -47,9 +47,11 @@ function SearchBar({ placeholder = "이름으로 검색하세요", initialValue 
   }, []);
 
   return (
-    <div className="w-full max-w-[696px] md:py-2 md:py-3 border-b border-zinc-800 flex items-center gap-2 md:gap-3">
+    <div className="w-full py-3 md:py-2 border-b border-zinc-800 flex items-center gap-2 md:gap-3">
       <button onClick={handleSearch} aria-label="검색" type="button" className="w-5 h-5 relative md:w-6 md:h-6">
+        <div className="relative w-[24px] h-[24px]">
         <Image src={IcSearch} alt="검색 아이콘" fill style={{ objectFit: "contain" }} />
+        </div>
       </button>
       <input
         type="text"

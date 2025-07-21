@@ -7,7 +7,7 @@ import TabMenu from "@/components/common/TabMenu";
 import { useRouter, usePathname } from "next/navigation";
 import React from "react";
 
-export default function ManagePageLayout() {
+export default function ManagePageLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -17,7 +17,7 @@ export default function ManagePageLayout() {
 
   return (
     <div>
-      <div className="block md:hidden">
+      <div className="w-full block md:hidden">
         <div className="flex items-center justify-center">
           <TabMenu
             isUserTabActive={pathname === "/manage/users"}
@@ -27,7 +27,7 @@ export default function ManagePageLayout() {
         </div>
       </div>
       <Desktop>
-        <div className="absolute top-[80px] left-[260px] flex flex-col gap-1">
+        <div className=" absolute top-[80px] left-[260px] flex flex-col gap-1">
           <Menu
             icon="user"
             text="회원 관리"
@@ -42,6 +42,9 @@ export default function ManagePageLayout() {
           />
         </div>
       </Desktop>
+         <div>
+        {children}
+      </div>
     </div>
   );
 }
