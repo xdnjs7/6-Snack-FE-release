@@ -72,10 +72,9 @@ export default function LoginPage() {
               type="password"
               required
             />
-          </form>
             {/* <VisibilityOffIconSvg className="absolute right-[4px] bottom-[8px] z-10" fill="#555555" />
             <VisibilityOnIconSvg className="absolute right-[4px] bottom-[8px]" fill="#555555" /> */}
-          </div>
+          </form>
           <Button
             type={isLoading ? "grayDisabled" : "primary"}
             label={isLoading ? "로그인 중..." : "로그인"}
@@ -88,7 +87,6 @@ export default function LoginPage() {
               }
             }}
           />
-
           <div className="flex justify-center items-center gap-[4px]">
             <p className="font-normal text-[16px]/[20px] tracking-tight text-[#999999]">기업 담당자이신가요? </p>
             <Link href="/signup/super-admin">
