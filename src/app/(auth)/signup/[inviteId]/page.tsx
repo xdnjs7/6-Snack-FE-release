@@ -2,9 +2,28 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import SnackIconSvg from "@/components/svg/SnackIconSvg";
 import { useAuth } from "@/providers/AuthProvider";
 import { getInviteApi, signUpWithInviteApi, type InviteInfo } from "@/lib/api/invite.api";
+
+// Zod 스키마 정의
+const signUpSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, "비밀번호는 최소 8자 이상이어야 합니다.")
+      .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])/, "비밀번호는 영문과 숫자를 포함해야 합니다."),
+    passwordConfirm: z.string(),
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: "비밀번호가 일치하지 않습니다.",
+    path: ["passwordConfirm"],
+  });
+
+type SignUpFormData = z.infer<typeof signUpSchema>;
 
 export default function InviteSignUpPage() {
   const params = useParams();
@@ -15,9 +34,16 @@ export default function InviteSignUpPage() {
   const [inviteInfo, setInviteInfo] = useState<InviteInfo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
-    password: "",
-    passwordConfirm: "",
+
+  // react-hook-form 설정
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError: setFormError,
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema),
+    mode: "onChange",
   });
 
   // 초대 정보 가져오기
@@ -94,32 +120,28 @@ export default function InviteSignUpPage() {
   }, [inviteId]);
 
   // 회원가입 처리
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit = async (data: SignUpFormData) => {
     if (!inviteInfo) return;
 
     try {
-      // 비밀번호 확인
-      if (formData.password !== formData.passwordConfirm) {
-        setError("비밀번호가 일치하지 않습니다.");
-        return;
-      }
-
       // TODO: 실제 API 호출로 교체
-      // await signUpWithInviteApi(inviteId, formData.password);
+      // await signUpWithInviteApi(inviteId, data.password);
 
       console.log("회원가입 성공:", {
         email: inviteInfo.email,
         name: inviteInfo.name,
         role: inviteInfo.role,
         companyId: inviteInfo.companyId,
+        password: data.password,
       });
 
       // 회원가입 성공 후 리다이렉트
       // router.push('/login');
     } catch (error) {
-      setError(error instanceof Error ? error.message : "회원가입에 실패했습니다.");
+      setFormError("root", {
+        type: "manual",
+        message: error instanceof Error ? error.message : "회원가입에 실패했습니다.",
+      });
     }
   };
 
@@ -201,7 +223,7 @@ export default function InviteSignUpPage() {
 
       {/* signup form */}
       <div className="flex flex-col w-full max-w-md">
-        <form onSubmit={handleSignUp} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
               비밀번호
@@ -209,11 +231,12 @@ export default function InviteSignUpPage() {
             <input
               type="password"
               id="password"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
+              {...register("password")}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              }`}
             />
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
           </div>
 
           <div>
@@ -223,20 +246,22 @@ export default function InviteSignUpPage() {
             <input
               type="password"
               id="passwordConfirm"
-              value={formData.passwordConfirm}
-              onChange={(e) => setFormData({ ...formData, passwordConfirm: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
+              {...register("passwordConfirm")}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                errors.passwordConfirm ? "border-red-500" : "border-gray-300"
+              }`}
             />
+            {errors.passwordConfirm && <p className="text-red-500 text-sm mt-1">{errors.passwordConfirm.message}</p>}
           </div>
 
-          {error && <div className="text-red-500 text-sm">{error}</div>}
+          {errors.root && <div className="text-red-500 text-sm">{errors.root.message}</div>}
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isSubmitting}
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            회원가입 완료
+            {isSubmitting ? "처리 중..." : "회원가입 완료"}
           </button>
         </form>
       </div>
