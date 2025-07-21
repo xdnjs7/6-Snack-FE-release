@@ -16,7 +16,6 @@ type AuthContextType = {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
-  updateUser: (user: Partial<User>) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -55,16 +54,9 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     setUser(null);
   };
 
-  // eslint-disable-next-line no-unused-vars
-  const updateUser = async (_userData: Partial<User>) => {
-    // const updatedUser = await updateUserApi(userData);
-    // setUser(updatedUser);
-    // updateUserApi가 구현되어 있지 않으므로 임시로 아무 동작도 하지 않음
-  };
-
   useEffect(() => {
     getUser();
   }, []);
 
-  return <AuthContext.Provider value={{ user, login, logout, updateUser, register }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, login, logout, register }}>{children}</AuthContext.Provider>;
 }
