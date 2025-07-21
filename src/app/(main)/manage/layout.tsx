@@ -7,7 +7,7 @@ import TabMenu from "@/components/common/TabMenu";
 import { useRouter, usePathname } from "next/navigation";
 import React from "react";
 
-export default function ManagePageLayout() {
+export default function ManagePageLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -42,6 +42,7 @@ export default function ManagePageLayout() {
           />
         </div>
       </Desktop>
+      <div>{children}</div>
     </div>
   );
 }
