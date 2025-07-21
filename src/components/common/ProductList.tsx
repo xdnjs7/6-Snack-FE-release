@@ -1,7 +1,7 @@
 import Image, { StaticImageData } from "next/image";
 import React, { Fragment } from "react";
 import Desktop from "./Desktop";
-import { formatInTimeZone } from "date-fns-tz";
+import DateFormat from "@/lib/utils/DateFormat.util";
 
 type TCategory = {
   id: number;
@@ -56,9 +56,7 @@ export default function ProductList({ products }: TProductListProps) {
         <Fragment key={`${item}_${i}`}>
           <div className="border-b-[1px] border-primary-100 md:hidden">
             <div className="flex flex-col gap-[10px] w-[327px] h-[120px] mt-[20px] mb-[30px] sm:mt-[30px]">
-              <p className="font-extrabold text-[16px]/[20px]">
-                {formatInTimeZone(item.createdAt, "Asia/Seoul", "yyyy. MM. dd")}
-              </p>
+              <p className="font-extrabold text-[16px]/[20px]">{DateFormat(item.createdAt)}</p>
               <div className="flex gap-[20px]">
                 <div className="flex justify-center items-center w-[90px] h-[90px] p-[24px] rounded-[2px] bg-primary-50">
                   <div className="relative w-[29px] h-[50px]">
@@ -92,7 +90,7 @@ export default function ProductList({ products }: TProductListProps) {
                   <p className="font-normal text-[16px]/[20px] tracking-tight text-primary-950">{item.name}</p>
                 </div>
                 <p className="w-[180px] font-normal text-[16px]/[20px] tracking-tight text-primary-950">
-                  {formatInTimeZone(item.createdAt, "Asia/Seoul", "yyyy. MM. dd")}
+                  {DateFormat(item.createdAt)}
                 </p>
                 <p className="w-[180px] font-normal text-[16px]/[20px] tracking-tight text-primary-950">
                   {item.category.name}

@@ -131,3 +131,32 @@ export const products = {
     totalPages: 1,
   },
 };
+
+export const orderRequests = [
+  {
+    id: 6,
+    userId: "7f0332aa-15de-4fe0-a3ac-ca6c07fccf6a",
+    approver: null,
+    adminMessage: "관리자에게 남길 메시지",
+    requestMessage: "요청 메시지",
+    totalPrice: 23500,
+    createdAt: "2025-07-04T08:29:11.672Z",
+    updatedAt: "2025-07-15T08:29:11.672Z",
+    status: "PENDING",
+    requester: "이팀장",
+    productName: "오리지널 포카칩 외 1건",
+  },
+  {
+    id: 5,
+    userId: "7f0332aa-15de-4fe0-a3ac-ca6c07fccf6a",
+    approver: null,
+    adminMessage: "관리자에게 남길 메시지",
+    requestMessage: "요청 메시지",
+    totalPrice: 50000,
+    createdAt: "2025-07-15T07:43:16.993Z",
+    updatedAt: "2025-07-15T07:43:16.993Z",
+    status: "PENDING",
+    requester: "김인턴",
+    productName: "오리지널 포카칩 외 1건",
+  },
+];
