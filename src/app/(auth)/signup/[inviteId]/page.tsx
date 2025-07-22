@@ -8,11 +8,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { getInviteApi, TInviteInfo } from "@/lib/api/invite.api";
+import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
+import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
+import clsx from "clsx";
+import Button from "@/components/ui/Button";
 
 // 리액트 훅폼 스키마 정의
 const signUpSchema = z
   .object({
-    password: z.string().min(8, "비밀번호는 최소 8자 이상이어야 합니다."),
+    password: z.string().min(8, "8자 이상 입력해주세요."),
     // 개발 완료시 다시 포함시켜두기
     // .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])/, "비밀번호는 영문과 숫자를 포함해야 합니다."),
     passwordConfirm: z.string(),
@@ -32,16 +36,23 @@ export default function InviteSignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [inviteInfo, setInviteInfo] = useState<TInviteInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
     setError: setFormError,
   } = useForm<TSignUpFormData>({
     resolver: zodResolver(signUpSchema),
     mode: "onChange",
   });
+
+  const [passwordInput, passwordConfirmInput] = watch("password", "passwordConfirm");
+  // const passwordInput = watch("password");
+  // const passwordConfirmInput = watch("passwordConfirm");
 
   // 초대 정보 가져오기
   useEffect(() => {
@@ -73,7 +84,7 @@ export default function InviteSignUpPage() {
 
   return (
     // top parent
-    <div className="flex flex-col items-center justify-center gap-[43px] sm:gap-0">
+    <div className="flex flex-col items-center justify-center gap-[46px] sm:gap-0">
       {/* mobile */}
       {/* logo + intro */}
       <div className="flex flex-col items-center justify-center w-full max-w-[480px] pt-[48px] sm:max-w-[600px] sm:py-[160px]">
@@ -91,38 +102,106 @@ export default function InviteSignUpPage() {
           </p>
         </div>
       </div>
-      {/* signup content */}
 
+      {/* signup content - form, register button, link to login */}
       <div className="flex flex-col w-full items-center justify-center">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full mb-[30px]">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full mb-[30px] gap-[20px]">
           {/* 이메일 */}
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col justify-between w-full h-[56px] py-2 px-1 border-b border-primary-200">
             <label className="text-primary-500 text-xs/[15px] font-normal tracking-tight">이메일</label>
-            <input type="email" value={inviteInfo?.email || ""} readOnly className="outline-none" />
+            <input
+              type="email"
+              value={inviteInfo?.email || ""}
+              readOnly
+              className="outline-none text-base/[20px] tracking-tight text-primary-300"
+            />
           </div>
-          {/* 비밀번호 */}
-          <div className="flex flex-col w-full gap-1">
-            <div className="">
-              <label>비밀번호</label>
-              <input type="password" {...register("password")} placeholder="비밀번호를 입력하세요" />
+          {/* 비밀번호 input wrapper*/}
+          <div className="flex flex-col gap-1">
+            <div
+              className={clsx(
+                "flex justify-between items-center w-full h-[56px] py-2 px-1 border-b",
+                errors.password ? "border-error-500" : "border-primary-600",
+              )}
+            >
+              <div className="flex flex-col justify-between items-start gap-[5px]">
+                <label
+                  className={clsx(
+                    "text-primary-500 text-xs/[15px] font-normal tracking-tight",
+                    !passwordInput && "hidden",
+                  )}
+                >
+                  비밀번호
+                </label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  {...register("password")}
+                  placeholder="비밀번호를 입력하세요"
+                  className="text-base/[20px] text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight"
+                />
+              </div>
+              {/* 비밀번호 보임토글 */}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="flex justify-end items-center"
+              >
+                {showPassword ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
+              </button>
             </div>
-            {errors.password && <span>{errors.password.message}</span>}
+            {/* 에러 메세지 */}
+            {errors.password && (
+              <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.password.message}</span>
+            )}
           </div>
-          {/* 비밀번호 확인 */}
-          <div className="flex flex-col w-full">
-            <label>비밀번호 확인</label>
-            <input type="password" {...register("passwordConfirm")} placeholder="비밀번호를 다시 입력하세요" />
-            {errors.passwordConfirm && <span>{errors.passwordConfirm.message}</span>}
+
+          {/* 비밀번호 확인 input wrapper*/}
+          <div className="flex flex-col gap-1">
+            <div className="flex justify-between items-center w-full h-[56px] py-2 px-1 border-b border-primary-600">
+              <div className="flex flex-col justify-between items-start gap-[5px]">
+                <label
+                  className={clsx(
+                    "text-primary-500 text-xs/[15px] font-normal tracking-tight",
+                    !passwordConfirmInput && "hidden",
+                  )}
+                >
+                  비밀번호 확인
+                </label>
+                <input
+                  type={showPasswordConfirm ? "text" : "password"}
+                  {...register("passwordConfirm")}
+                  placeholder="비밀번호를 다시 입력하세요"
+                  className="text-base/[20px] text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight"
+                />
+              </div>
+              {/* 비밀번호 확인 보임토글 */}
+              <button
+                type="button"
+                onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                className="flex items-center"
+              >
+                {showPasswordConfirm ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
+              </button>
+            </div>
+            {/* 에러 메세지 */}
+            {errors.passwordConfirm && (
+              <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.passwordConfirm.message}</span>
+            )}
           </div>
         </form>
-        
-        {/* 공용컴포 button으로 대체해야함 */}
-        <button type="submit" disabled={isSubmitting} className="mb-[30px]">
-          {isSubmitting ? "처리 중..." : "회원가입 완료"}
-        </button>
-        <p>이미 계정이 있으신가요? <span>로그인</span></p>
-      </div>
 
+        <Button
+          type="primary"
+          label={isSubmitting ? "처리 중..." : "가입하기"}
+          className={clsx(
+            "w-full h-[64px] mb-[24px] sm:mb-[30px] bg-primary-950 text-primary-50",
+            isSubmitting ? "bg-primary-100 text-primary-300" : "",
+          )}
+        />
+        <p>
+          이미 계정이 있으신가요? <span>로그인</span>
+        </p>
+      </div>
     </div>
   );
 }
