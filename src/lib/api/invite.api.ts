@@ -12,12 +12,3 @@ export type TInviteInfo = {
 export const getInviteApi = async (inviteId: string) => {
   return defaultFetch(`/invite/${inviteId}`);
 };
-
-// 초대를 통한 회원가입
-// export const signUpWithInviteApi = async (inviteId: string, password: string) => {
-//   return cookieFetch(`/auth/signup/${inviteId}`, {
-//     method: "POST",
-//     // api 명세 확인하고 body content 수정하기
-//     body: JSON.stringify({ password }),
-//   });
-// };
