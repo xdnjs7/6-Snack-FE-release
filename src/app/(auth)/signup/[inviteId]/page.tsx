@@ -73,7 +73,7 @@ export default function InviteSignUpPage() {
 
   return (
     // top parent
-    <div className="flex flex-col items-center justify-center px-[24px] pt-[60px] gap-[46px] sm:px-[72px] sm:pt-[119px] sm:gap-0">
+    <div className="flex flex-col items-center justify-center gap-[43px] sm:gap-0">
       {/* mobile */}
       {/* logo + intro */}
       <div className="flex flex-col items-center justify-center w-full max-w-[480px] pt-[48px] sm:max-w-[600px] sm:py-[160px]">
@@ -83,16 +83,46 @@ export default function InviteSignUpPage() {
           </Link>
         </div>
         <div className="flex flex-col items-center justify-center gap-[10px] ">
-          <h1>{inviteInfo?.name} 님, 만나서 반갑습니다.</h1>
-          <p>비밀번호를 입력해 회원가입을 완료해주세요.</p>
+          <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle ">
+            {inviteInfo?.name} 님, 만나서 반갑습니다.
+          </h1>
+          <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
+            비밀번호를 입력해 회원가입을 완료해주세요.
+          </p>
         </div>
       </div>
       {/* signup content */}
-      <div className="flex flex-col w-full">
-        <form></form>
+
+      <div className="flex flex-col w-full items-center justify-center">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full mb-[30px]">
+          {/* 이메일 */}
+          <div className="flex flex-col w-full">
+            <label className="text-primary-500 text-xs/[15px] font-normal tracking-tight">이메일</label>
+            <input type="email" value={inviteInfo?.email || ""} readOnly className="outline-none" />
+          </div>
+          {/* 비밀번호 */}
+          <div className="flex flex-col w-full gap-1">
+            <div className="">
+              <label>비밀번호</label>
+              <input type="password" {...register("password")} placeholder="비밀번호를 입력하세요" />
+            </div>
+            {errors.password && <span>{errors.password.message}</span>}
+          </div>
+          {/* 비밀번호 확인 */}
+          <div className="flex flex-col w-full">
+            <label>비밀번호 확인</label>
+            <input type="password" {...register("passwordConfirm")} placeholder="비밀번호를 다시 입력하세요" />
+            {errors.passwordConfirm && <span>{errors.passwordConfirm.message}</span>}
+          </div>
+        </form>
+        
+        {/* 공용컴포 button으로 대체해야함 */}
+        <button type="submit" disabled={isSubmitting} className="mb-[30px]">
+          {isSubmitting ? "처리 중..." : "회원가입 완료"}
+        </button>
+        <p>이미 계정이 있으신가요? <span>로그인</span></p>
       </div>
 
-      <div></div>
     </div>
   );
 }
