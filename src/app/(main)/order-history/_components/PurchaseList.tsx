@@ -147,16 +147,8 @@ const PurchaseList: React.FC = () => {
 
   return (
     <div
-      className={clsx(
-        "bg-white",
-        "p-0 sm:p-4 md:p-6",
-        "rounded-lg",
-        "shadow-sm",
-        "w-full",
-        "border",
-        "border-[--color-primary-100]",
-        "overflow-x-auto",
-      )}
+      className={clsx("bg-white", "p-0 sm:p-4 md:p-6", "rounded-lg", "shadow-sm", "w-full", "overflow-x-auto")}
+      style={{ boxShadow: "none", border: "none", background: "none" }}
     >
       {/* 상단: 타이틀 + 정렬 버튼 */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 px-6 pt-6 pb-2">
@@ -256,7 +248,16 @@ const PurchaseList: React.FC = () => {
           ) : (
             <div className="flex flex-col gap-4">
               {currentItems.map((item) => (
-                <div key={item.id} className="bg-neutral-100 rounded-[12px] p-5 flex flex-col gap-3 shadow-sm">
+                <div
+                  key={item.id}
+                  className="bg-neutral-100 rounded-[12px] p-5 flex flex-col gap-3 shadow-sm"
+                  style={{
+                    borderWidth: "1px 0px 1px 0px",
+                    borderStyle: "solid",
+                    borderColor: "#E5E5E5",
+                    width: "100%",
+                  }}
+                >
                   <div className="flex justify-between items-center border-b border-neutral-200 pb-3 mb-2">
                     <div className="text-neutral-800 text-base font-bold font-suit">{item.item}</div>
                     <div className="text-neutral-800 text-lg font-extrabold font-suit">{item.amount}</div>
@@ -298,7 +299,12 @@ const PurchaseList: React.FC = () => {
         <div className="hidden sm:block">
           <table className="min-w-full divide-y divide-[--color-primary-100]">
             <thead className="bg-[--color-primary-50]">
-              <tr>
+              <tr
+                style={{
+                  borderBottom: "1px solid #E5E5E5",
+                  width: "100%",
+                }}
+              >
                 <th className="px-6 py-4 text-left text-base font-bold text-zinc-500 font-suit">구매 요청일</th>
                 <th className="px-6 py-4 text-left text-base font-bold text-zinc-500 font-suit">요청인</th>
                 <th className="px-6 py-4 text-left text-base font-bold text-zinc-500 font-suit">구매 품목</th>
@@ -307,9 +313,18 @@ const PurchaseList: React.FC = () => {
                 <th className="px-6 py-4 text-left text-base font-bold text-zinc-500 font-suit">담당자</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-[--color-primary-100]">
+            <tbody className="bg-white">
               {currentItems.map((item) => (
-                <tr key={item.id} className="h-20 align-middle">
+                <tr
+                  key={item.id}
+                  className="h-20 align-middle"
+                  style={{
+                    borderWidth: "1px 0px 1px 0px",
+                    borderStyle: "solid",
+                    borderColor: "#E5E5E5",
+                    width: "100%",
+                  }}
+                >
                   <td className="px-6 py-4 whitespace-nowrap text-base text-neutral-800 font-normal font-suit">
                     {item.requestDate}
                   </td>
@@ -347,7 +362,8 @@ const PurchaseList: React.FC = () => {
 
       {/* Pagination */}
       <nav
-        className="px-4 py-3 flex items-center justify-between border-t border-[--color-primary-100] sm:px-6"
+        className="px-4 py-3 flex items-center justify-between sm:px-6"
+        style={{ borderTop: "1px solid #E5E5E5", width: "100%" }}
         aria-label="Pagination"
       >
         <div className="flex-1 flex justify-between sm:justify-end items-center">
