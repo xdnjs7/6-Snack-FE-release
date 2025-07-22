@@ -36,7 +36,7 @@ const MemberList = ({ id, name, email, role, onClickChangeRole, onClickDeleteUse
             openModal(
               <InviteMemberModal
                 mode="edit"
-                defaultValues={{ name, email, role }}
+                defaultValues={{ name, email, role, id }}
                 onCancel={closeModal}
                 onSubmit={(data) => {
                   console.log("권한 수정:", data);
@@ -83,7 +83,7 @@ const MemberList = ({ id, name, email, role, onClickChangeRole, onClickDeleteUse
               openModal(
                 <InviteMemberModal
                   mode="edit"
-                  defaultValues={{ name, email, role }}
+                  defaultValues={{ name, email, role, id }}
                   onCancel={closeModal}
                   onSubmit={(data) => {
                     console.log("권한 수정:", data);

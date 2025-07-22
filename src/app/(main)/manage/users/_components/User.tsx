@@ -7,8 +7,9 @@ import Button from "@/components/ui/Button";
 import SearchBar from "@/components/ui/SearchBar";
 import { useModal } from "@/providers/ModalProvider";
 import { TMemberItem } from "@/types/meberList.types";
-import { fetchAllCompanyUsers } from "@/types/companyUser.api";
+import { fetchAllCompanyUsers } from "@/lib/api/companyUser.api";
 import { useSearchParams } from "next/navigation";
+
 
 export default function User() {
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
@@ -90,7 +91,7 @@ export default function User() {
         <Button
           type="black"
           label="회원 초대하기"
-          className="w-50 h-16  sm:hidden"
+          className="w-50 h-16  sm:hidden "
           onClick={() => {
             openModal(
               <InviteMemberModal

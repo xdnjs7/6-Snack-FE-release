@@ -1,4 +1,3 @@
-
 import { cookieFetch } from "@/lib/api/fetchClient.api";
 import { TMemberItem } from "@/types/meberList.types";
 
@@ -7,4 +6,3 @@ export const fetchAllCompanyUsers = async (name?: string): Promise<TMemberItem[]
   const res = await cookieFetch(`/super-admin/users${query}`);
   return res.users;
 };
-

@@ -10,6 +10,7 @@ export interface TInviteMemberModalProps {
   onSubmit: (data: { name: string; email: string; role: UserRole }) => void;  
   mode?: "invite" | "edit"; 
   defaultValues?: {
+    id:string;
     name: string;
     email: string;
     role: UserRole;

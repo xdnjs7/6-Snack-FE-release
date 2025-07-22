@@ -18,11 +18,34 @@ export default function InviteMemberModal({
   const [selectedRole, setSelectedRole] = useState<UserRole>(defaultValues?.role ?? "USER");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleSubmit = () => {
-    if (onSubmit) {
-      onSubmit({ name, email, role: selectedRole });
+const handleSubmit = async () => {
+  if (mode === "edit") {
+    try {
+      // defaultValues가 존재할 때만 진행
+      if (!defaultValues) return;
+
+      const res = await fetch(`/super-admin/users/${defaultValues.id}/role`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", 
+        body: JSON.stringify({ role: selectedRole }),
+      });
+
+      if (!res.ok) throw new Error("권한 수정 실패");
+
+      const data = await res.json();
+      alert(data.message || "권한이 성공적으로 변경되었습니다.");
+      onSubmit?.({ name, email, role: selectedRole });
+    } catch (err: any) {
+      alert(err.message || "권한 수정 중 오류 발생");
     }
-  };
+  } else {
+    onSubmit?.({ name, email, role: selectedRole }); 
+  }
+};
+
 
   return (
     <>
