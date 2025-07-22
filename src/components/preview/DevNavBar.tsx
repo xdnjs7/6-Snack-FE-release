@@ -205,6 +205,7 @@ export default function DevNavBar() {
             onClick={() => {
               setSelectedRole(undefined);
               setSelectedProgress(undefined);
+              setSelectedCategory(undefined);
             }}
             className="w-full text-xs px-2 py-1 rounded bg-red-200 text-black font-semibold cursor-pointer"
           >

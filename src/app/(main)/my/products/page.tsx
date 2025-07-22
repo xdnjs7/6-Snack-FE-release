@@ -1,5 +1,6 @@
 "use client";
 
+import { products } from "@/app/(preview)/components-preview/PreviewMockData";
 import Desktop from "@/components/common/Desktop";
 import Dropdown from "@/components/common/DropDown";
 import Pagination from "@/components/common/Pagination";
@@ -41,7 +42,7 @@ export default function MyProductsPage() {
         <p className="font-bold text-[14px]/[17px] tracking-tight text-primary-950 sm:text-[16px]/[20px] md:hidden">
           총 등록한 상품 {15}개
         </p>
-        <ProductList />
+        <ProductList products={products} />
       </div>
       <Pagination currentPage={currentPage} totalPages={4} onPageChange={setCurrentPage} />
     </div>

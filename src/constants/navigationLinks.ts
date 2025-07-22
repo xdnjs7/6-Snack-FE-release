@@ -62,7 +62,7 @@ export const navLinks: DevNavSection[] = [
     category: "구매 요청",
     links: [
       { name: "구매 요청 관리", path: "/order-manage", role: "관리자", progress: "리팩터링 중" },
-      { name: "구매 요청 관리 상세", path: "/order-manage/:orderId", role: "관리자", progress: "리팩터링 중" },
+      { name: "구매 요청 관리 상세", path: "/order-manage/:orderId", role: "관리자", progress: "시작 전" },
       { name: "구매 내역 확인", path: "/order-history", role: "관리자", progress: "진행 중" },
       { name: "구매 내역 확인 상세", path: "/order-history/:orderId", role: "관리자", progress: "진행 중" },
       { name: "내 구매 요청 내역", path: "/my/order-list", role: "일반유저", progress: "리팩터링 중" },
