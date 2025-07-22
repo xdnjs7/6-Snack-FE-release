@@ -90,121 +90,145 @@ const SignUpForm = () => {
   ];
 
   return (
-    <div>
-      <div className="flex justify-center items-center h-16">
-        <Image src={img_logo} alt="우리 회사 로고" width={344} height={97} priority />
-      </div>
+    <div className="w-full min-h-screen flex items-center justify-center bg-white">
       <div
         className={clsx(
-          "w-150",
-          "h-183.5",
-          "pt-10",
-          "pr-15",
-          "pb-10",
-          "pl-15",
-          "rounded-[2px]",
-          "bg-[--color-white]",
-          "shadow-[0px_0px_40px_0px_#0000001A]",
-          "flex",
-          "flex-col",
-          "gap-5",
+          // 모바일: w-96, 태블릿/데스크탑: w-[600px]
+          "w-96 sm:w-[600px] md:w-[600px] lg:w-[600px]",
+          // 모바일: pt-6, 태블릿/데스크탑: pt-[123px] lg:pt-[97px]
+          "pt-6 sm:pt-[123px] lg:pt-[97px]",
+          "flex flex-col items-center",
+          "relative",
         )}
       >
-        <div className="flex flex-col gap-2.5">
-          <h2
+        {/* 로고 영역 */}
+        <div
+          className={clsx(
+            // 모바일: w-80 h-36, 태블릿/데스크탑: w-[500px] h-52
+            "w-80 h-36 sm:w-[500px] sm:h-52",
+            "relative overflow-hidden mb-6",
+          )}
+        >
+          <div
             className={clsx(
-              "font-suit",
-              "font-bold",
-              "text-6",
-              "leading-tight",
-              "tracking-tighter",
-              "text-left",
-              "align-middle",
+              // 모바일: w-56 h-16, 태블릿/데스크탑: w-80 h-24
+              "w-56 h-16 sm:w-80 sm:h-24",
+              // 모바일: left-[50.92px] top-[38.18px], 태블릿/데스크탑: left-[77.86px] top-[58.40px]
+              "absolute left-[50.92px] top-[38.18px] sm:left-[77.86px] sm:top-[58.40px]",
+              "bg-black rounded",
             )}
           >
-            기업 담당자 회원가입
-          </h2>
-          <p
-            className={clsx(
-              "font-suit",
-              "font-normal",
-              "text-4",
-              "leading-tight",
-              "tracking-tighter",
-              "text-left",
-              "align-middle",
-            )}
-          >
-            * 그룹 내 유저는 기업 담당자의 초대 메일을 통해 가입이 가능합니다.
-          </p>
+            {/* 실제 로고 이미지 */}
+            <Image src={img_logo} alt="우리 회사 로고" fill style={{ objectFit: "contain" }} priority />
+          </div>
         </div>
-
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          {formFields.map((field) => (
-            <div key={field.id}>
-              <label htmlFor={field.id} className="sr-only">
-                {field.label}
-              </label>
-              <input
-                type={field.type}
-                id={field.id}
-                placeholder={field.label}
-                {...register(field.name as keyof TSignUpForm)}
-                className={clsx(
-                  "w-full",
-                  "p-3",
-                  "border",
-                  "border-[--color-primary-200]",
-                  "rounded-md",
-                  "focus:outline-none",
-                  "focus:ring-2",
-                  "focus:ring-[--color-secondary-500]",
-                  "placeholder-[--color-primary-400]",
-                  "text-[--color-primary-900]",
-                  "text-base",
-                  errors[field.name as keyof TSignUpForm] && "border-red-500",
-                )}
-              />
-              {errors[field.name as keyof TSignUpForm] && (
-                <p className="text-red-500 text-sm mt-1">{errors[field.name as keyof TSignUpForm]?.message}</p>
-              )}
+        {/* 폼 컨테이너 */}
+        <div
+          className={clsx(
+            // 모바일: w-80, 태블릿/데스크탑: w-[500px]
+            "w-80 sm:w-[500px]",
+            // 모바일: px-0 py-0, 태블릿/데스크탑: px-14 py-10
+            "px-0 py-0 sm:px-14 sm:py-10",
+            "bg-white rounded-sm",
+            "shadow-none sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)]",
+            "outline-none sm:outline sm:outline-1 sm:outline-offset-[-1px]",
+            "flex flex-col items-start gap-5",
+          )}
+        >
+          {/* 타이틀/설명 */}
+          <div className="flex flex-col items-start gap-2.5 w-full">
+            <div className="text-lg sm:text-2xl font-bold font-suit text-stone-900 text-center w-full">
+              기업 담당자 회원가입
             </div>
-          ))}
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={clsx(
-              "w-full",
-              "py-4",
-              "bg-[--color-primary-950]",
-              "text-[--color-white]",
-              "font-semibold",
-              "rounded-md",
-              "hover:bg-[--color-primary-800]",
-              "transition-colors",
-              "duration-200",
-              isSubmitting && "opacity-70 cursor-not-allowed",
-            )}
-          >
-            {isSubmitting ? "가입 중..." : "가입하기"}
-          </button>
-        </form>
-
-        <p className={clsx("text-center", "mt-6", "text-sm", "text-[--color-primary-700]")}>
-          이미 계정이 있으신가요?{" "}
-          <a
-            href="/login"
-            className={clsx(
-              "text-[--color-primary-950]",
-              "font-semibold",
-              "underline",
-              "hover:text-[--color-primary-700]",
-            )}
-          >
-            로그인
-          </a>
-        </p>
+            <div className="text-sm sm:text-base font-normal font-suit text-stone-500 text-center w-full">
+              * 그룹 내 유저는 기업 담당자의
+              <br className="sm:hidden" />
+              초대 메일을 통해 가입이 가능합니다.
+            </div>
+          </div>
+          {/* 폼 */}
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col items-center gap-6">
+            <div className="w-full flex flex-col gap-7">
+              <div className="w-full flex flex-col gap-8">
+                <div className="w-full flex flex-col gap-5">
+                  {formFields.map((field) => (
+                    <div
+                      key={field.id}
+                      className={clsx(
+                        "self-stretch h-14 px-1 py-2 border-b",
+                        "border-stone-500",
+                        "inline-flex justify-between items-center overflow-hidden",
+                        errors[field.name as keyof TSignUpForm] && "border-red-500",
+                      )}
+                      data-show-eye={field.type === "password"}
+                      data-show-floating-label="true"
+                      data-size="sm"
+                      data-state={errors[field.name as keyof TSignUpForm] ? "error" : "normal"}
+                    >
+                      <input
+                        type={field.type}
+                        id={field.id}
+                        placeholder={field.label}
+                        {...register(field.name as keyof TSignUpForm)}
+                        className={clsx(
+                          "flex-1 bg-transparent outline-none border-none",
+                          "text-zinc-500 text-base font-normal font-suit",
+                          "placeholder:text-zinc-500",
+                        )}
+                        autoComplete={field.type === "password" ? "new-password" : "off"}
+                      />
+                      {/* eye 아이콘 (비밀번호 입력란만) */}
+                      {field.type === "password" && (
+                        <div className="flex items-center gap-2">
+                          <div className="w-4 h-4 relative overflow-hidden">
+                            {/* eye 아이콘(디자인용, 기능X) */}
+                            <div className="w-3.5 h-3 left-[1.19px] top-[2.33px] absolute bg-neutral-600 rounded" />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* 에러 메시지 */}
+              {formFields.map((field) =>
+                errors[field.name as keyof TSignUpForm] ? (
+                  <p key={field.id} className="text-red-500 text-xs mt-1 ml-2">
+                    {errors[field.name as keyof TSignUpForm]?.message}
+                  </p>
+                ) : null,
+              )}
+              {/* 가입하기 버튼 */}
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={clsx(
+                  "self-stretch h-16 p-4",
+                  isSubmitting ? "bg-neutral-200 text-zinc-400" : "bg-neutral-800 text-white",
+                  "rounded-sm inline-flex justify-center items-center",
+                  "text-base font-bold font-suit",
+                  "transition-colors duration-200",
+                  isSubmitting && "opacity-70 cursor-not-allowed",
+                )}
+                data-size="Default"
+                data-state={isSubmitting ? "disabled" : "active"}
+                data-type="filled"
+              >
+                {isSubmitting ? "가입 중..." : "가입하기"}
+              </button>
+            </div>
+            {/* 하단 안내 */}
+            <div className="inline-flex justify-center items-center gap-1 w-full mt-2">
+              <div className="text-neutral-400 text-base font-normal font-suit">이미 계정이 있으신가요?</div>
+              <a
+                href="/login"
+                className="text-neutral-800 text-base font-bold font-suit underline hover:text-neutral-600"
+              >
+                로그인
+              </a>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
