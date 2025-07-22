@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { navLinks } from "@/constants/navigationLinks";
+import { navLinks } from "@/app/(preview)/components-preview/navigationLinks";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 const roleColorMap: Record<string, string> = {
@@ -116,7 +116,7 @@ export default function DevNavBar() {
       <div
         ref={buttonRef}
         onClick={handleDevTool}
-        className="z-100 flex justify-center items-center fixed bottom-5 right-5 w-9.5 h-9.5 rounded-full cursor-pointer font-extrabold text-[18px]/[24px] bg-indigo-200 shadow-lg"
+        className="z-100 flex justify-center items-center fixed bottom-5 right-4.5 w-9.5 h-9.5 rounded-full cursor-pointer font-extrabold text-[18px]/[24px] bg-indigo-700/60 shadow-lg"
       >
         👨🏻‍💻
       </div>
@@ -124,7 +124,7 @@ export default function DevNavBar() {
       {isVisible && (
         <nav
           ref={navRef} // ✅ ref 추가
-          className="z-50 fixed bottom-16 right-5 w-85 max-h-[80vh] overflow-y-auto scrollbar-hide rounded-lg bg-white border border-primary-100 shadow-[0px_0px_40px_0px_rgba(0,0,0,0.12)] p-4 space-y-4"
+          className="z-55 fixed bottom-16 right-5 w-85 max-h-[80vh] overflow-y-auto scrollbar-hide rounded-lg bg-white border border-primary-100 shadow-[0px_0px_40px_0px_rgba(0,0,0,0.12)] p-4 space-y-4"
         >
           <p className="font-bold text-[20px]/[24px] sm:text-[24px]/[24px]">🍪Snack 개발자 도구</p>
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import React from "react";
 import localFont from "next/font/local";
 import "./globals.css";
-import DevNavBar from "@/components/preview/DevNavBar";
+import DevNavBar from "@/app/(preview)/components-preview/DevTools";
 import { TChildrenProps } from "@/types/children.types";
 import Header from "@/components/layout/Header";
 import Providers from "./Providers";
