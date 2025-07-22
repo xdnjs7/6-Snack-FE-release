@@ -142,7 +142,7 @@ export default function InviteSignUpPage() {
                   placeholder="비밀번호를 입력하세요"
                   className={clsx(
                     // 수정해야함!
-                    showPassword ? "text-[16px]/[20px]" : "text-[50px]/[20px]",
+                    showPassword ? "text-[16px]/[20px]" : "text-[20px]/[20px]",
                     "w-full tracking-tight text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight outline-none",
                   )}
                 />
@@ -180,7 +180,7 @@ export default function InviteSignUpPage() {
                   placeholder="비밀번호를 다시 입력하세요"
                   className={clsx(
                     // 수정해야함!
-                    showPassword ? "text-[16px]/[20px]" : "text-[50px]/[20px]",
+                    showPassword ? "text-[16px]/[20px]" : "text-[20px]/[20px]",
                     "w-full tracking-tight text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight outline-none",
                   )}
                 />
@@ -211,7 +211,7 @@ export default function InviteSignUpPage() {
           onClick={isValid && !isSubmitting ? handleSubmit(onSubmit) : undefined}
         />
         <p className="text-primary-500 text-base/[20px] tracking-tight">
-          이미 계정이 있으신가요?{" "}
+          이미 계정이 있으신가요?
           <Link href="/login">
             <span className="text-primary-950 text-base/[20px] tracking-tight font-bold underline decoration-primary-950 underline-offset-2">
               로그인
