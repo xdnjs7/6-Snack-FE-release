@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { getOrderDetail, OrderHistory } from '@/lib/api/orderHistory';
+import { getOrderDetail, OrderHistory } from '@/lib/api/orderHistory.api';
 import ArrowIconSvg from '@/components/svg/ArrowIconSvg';
 
 export default function OrderHistoryDetailPage() {
@@ -94,7 +94,7 @@ export default function OrderHistoryDetailPage() {
     <div className="min-h-screen bg-white">
       {/* Main Content */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-4 sm:pt-6 md:pt-8 flex flex-col justify-start items-start gap-5 sm:gap-6 md:gap-7">
-        <div className="self-stretch justify-center text-neutral-800 text-base sm:text-lg md:text-xl lg:text-2xl font-bold font-['SUIT']">
+        <div className="self-stretch justify-center text-[--color-primary-800] text-base sm:text-lg md:text-xl lg:text-2xl font-bold font-['SUIT']">
           구매 내역 상세
         </div>
 
@@ -105,13 +105,13 @@ export default function OrderHistoryDetailPage() {
               className="inline-flex justify-start items-start gap-1.5 cursor-pointer"
               onClick={() => setIsItemsExpanded(!isItemsExpanded)}
             >
-              <div className="justify-center text-neutral-800 text-sm sm:text-base md:text-lg font-bold font-['SUIT']">구매 품목</div>
-              <div className="justify-center text-neutral-800 text-sm sm:text-base md:text-lg font-normal font-['SUIT']">
+              <div className="justify-center text-[--color-primary-800] text-sm sm:text-base md:text-lg font-bold font-['SUIT']">구매 품목</div>
+              <div className="justify-center text-[--color-primary-800] text-sm sm:text-base md:text-lg font-normal font-['SUIT']">
                 총 {orderData.orderedItems?.length || 0}개
               </div>
               <ArrowIconSvg 
                 direction={isItemsExpanded ? "down" : "right"} 
-                className="w-4 h-4 sm:w-5 sm:h-5 text-neutral-800" 
+                className="w-4 h-4 sm:w-5 sm:h-5 text-[--color-primary-800]" 
               />
             </div>
 
@@ -125,7 +125,7 @@ export default function OrderHistoryDetailPage() {
                         className="self-stretch pr-3 sm:pr-4 md:pr-5 py-3 sm:py-4 md:py-5 border-b border-neutral-200 inline-flex justify-between items-center"
                       >
                       <div className="flex justify-start items-center gap-3 sm:gap-4 md:gap-5">
-                        <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-36 lg:h-36 bg-white shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
+                        <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-36 lg:h-36 bg-[--color-white] shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
                           {item.receipt.imageUrl && (
                             <img 
                               src={item.receipt.imageUrl} 
@@ -136,19 +136,19 @@ export default function OrderHistoryDetailPage() {
                         </div>
                         <div className="inline-flex flex-col justify-center items-start gap-3 sm:gap-5 md:gap-7">
                           <div className="flex flex-col justify-center items-start gap-1.5 sm:gap-2 md:gap-2.5">
-                            <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-medium font-['SUIT']">
+                            <div className="text-center justify-center text-[--color-primary-800] text-xs sm:text-sm md:text-base font-medium font-['SUIT']">
                               {item.receipt.productName}
                             </div>
-                            <div className="justify-start text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+                            <div className="justify-start text-[--color-primary-800] text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
                               {formatPrice(item.receipt.price)}원
                             </div>
                           </div>
-                          <div className="justify-center text-zinc-500 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+                          <div className="justify-center text-[--color-primary-600] text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
                             수량 {item.receipt.quantity}개
                           </div>
                         </div>
                       </div>
-                      <div className="text-center justify-center text-neutral-600 text-sm sm:text-base md:text-lg lg:text-xl font-extrabold font-['SUIT'] leading-loose">
+                      <div className="text-center justify-center text-[--color-primary-600] text-sm sm:text-base md:text-lg lg:text-xl font-extrabold font-['SUIT'] leading-loose">
                         {formatPrice(item.receipt.price * item.receipt.quantity)}원
                       </div>
                     </div>
@@ -158,20 +158,20 @@ export default function OrderHistoryDetailPage() {
                 {/* Order Amount Info */}
                 <div className="self-stretch flex flex-col gap-2 sm:gap-3">
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-neutral-600 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">주문금액</div>
-                    <div className="text-center justify-center text-neutral-600 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+                    <div className="text-center justify-center text-[--color-primary-600] text-xs sm:text-sm md:text-base font-bold font-['SUIT']">주문금액</div>
+                    <div className="text-center justify-center text-[--color-primary-600] text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
                       {formatPrice(calculatedTotal)}원
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-neutral-600 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">배송비</div>
-                    <div className="text-center justify-center text-neutral-600 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+                    <div className="text-center justify-center text-[--color-primary-600] text-xs sm:text-sm md:text-base font-bold font-['SUIT']">배송비</div>
+                    <div className="text-center justify-center text-[--color-primary-600] text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
                       {formatPrice(shippingFee)}원
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-neutral-800 text-sm sm:text-base md:text-lg lg:text-xl font-bold font-['SUIT']">총 주문금액</div>
-                    <div className="text-center justify-center text-neutral-800 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-extrabold font-['SUIT']">
+                    <div className="text-center justify-center text-[--color-primary-800] text-sm sm:text-base md:text-lg lg:text-xl font-bold font-['SUIT']">총 주문금액</div>
+                    <div className="text-center justify-center text-[--color-primary-800] text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-extrabold font-['SUIT']">
                       {formatPrice(finalTotal)}원
                     </div>
                   </div>
