@@ -35,7 +35,7 @@ import DeleteAccountConfirmModal from "@/components/common/DeleteAccountConfirmM
 import Header from "@/components/layout/Header";
 import CartItem from "@/app/(main)/cart/_components/CartItem";
 import OrderItem from "@/app/(main)/cart/order/_components/OrderItem";
-import { categories, products } from "./PreviewMockData";
+import { categories, orderRequests, products } from "./PreviewMockData";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -138,7 +138,11 @@ export default function ComponentsPreviewPage() {
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">RequestList 컴포넌트</h2>
-          <RequestList onClick={() => {}} />
+          <RequestList
+            orderRequests={orderRequests}
+            onClickReject={() => openModal(<OrderManageModal />)}
+            onClickApprove={() => openModal(<OrderManageModal />)}
+          />
         </div>
 
         <div className="space-y-4 mb-4">
