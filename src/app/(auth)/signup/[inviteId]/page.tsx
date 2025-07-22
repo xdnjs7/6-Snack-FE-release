@@ -154,8 +154,8 @@ export default function InviteSignUpPage() {
                   placeholder="비밀번호를 입력하세요"
                   className={clsx(
                     // 수정해야함!
-                    showPassword ? "text-[16px]/[20px]" : "text-[20px]/[20px]",
-                    "w-full tracking-tight text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight outline-none",
+                    showPassword ? "tracking-tight" : "tracking-[0.25em]",
+                    "w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
                   )}
                 />
               </div>
