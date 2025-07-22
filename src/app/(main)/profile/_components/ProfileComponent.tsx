@@ -1,10 +1,13 @@
 "use client";
+
 import Image from "next/image";
 import Button from "@/components/ui/Button";
 import { TButtonType } from "@/types/button.types";
 import React, { useEffect, useState } from "react";
 import IcVisibilityOn from "@/assets/icons/ic_visibility_on.svg";
 import IcVisibilityOff from "@/assets/icons/ic_visibility_off.svg";
+import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
+import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
 
 enum Role {
   USER = "USER",
@@ -13,15 +16,59 @@ enum Role {
 }
 
 async function getUserInfo() {
-  return {
-    company: "코드잇",
-    role: Role.SUPER_ADMIN,
-    name: "김스낵",
-    email: "codeit@demail.com",
-  };
+  const res = await fetch("http://localhost:8080/users/me", {
+    method: "GET",
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error("유저 정보를 불러오지 못했습니다.");
+  const { user } = await res.json();
+  return user;
+}
+
+async function updateSuper(userId: string, company: string, password: string) {
+  const res = await fetch(`http://localhost:8080/super-admin/users/${userId}/company`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      companyName: company,
+      passwordData: {
+        newPassword: password,
+        newPasswordConfirm: password,
+      },
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "회사 정보 업데이트 실패");
+  }
+
+  return await res.json();
+}
+
+async function updatePassword(userId: string, password: string) {
+  const res = await fetch(`http://localhost:8080/users/${userId}/password`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      newPassword: password,
+      newPasswordConfirm: password,
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "비밀번호 변경 실패");
+  }
+  return await res.json();
 }
 
 export default function ProfileComponent() {
+  const [userId, setUserId] = useState("");
   const [company, setCompany] = useState("");
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
@@ -30,18 +77,23 @@ export default function ProfileComponent() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showCheckPw, setShowCheckPw] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isFormValid = password.length > 0 && confirmPassword.length > 0 && password === confirmPassword;
-
   const buttonType: TButtonType = isFormValid ? "black" : "grayDisabled";
 
   useEffect(() => {
     (async () => {
-      const user = await getUserInfo();
-      setCompany(user.company);
-      setRole(user.role as Role);
-      setName(user.name);
-      setEmail(user.email);
+      try {
+        const user = await getUserInfo();
+        setUserId(user.id);
+        setCompany(user.company.name);
+        setRole(user.role);
+        setName(user.name);
+        setEmail(user.email);
+      } catch (err) {
+        console.error("유저 정보 조회 실패:", err);
+      }
     })();
   }, []);
 
@@ -57,6 +109,26 @@ export default function ProfileComponent() {
         return "";
     }
   }
+
+  const handleSubmit = async () => {
+    if (!isFormValid) return;
+    try {
+      setIsSubmitting(true);
+      if (role === Role.SUPER_ADMIN) {
+        await updateSuper(userId, company, password);
+        alert("회사 정보가 변경되었습니다.");
+      } else {
+        await updatePassword(userId, password);
+        alert("비밀번호가 변경되었습니다.");
+      }
+      setPassword("");
+      setConfirmPassword("");
+    } catch (err: any) {
+      alert(err.message || "업데이트 실패");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="w-full sm:w-[600px] sm:px-14 sm:rounded-sm sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] sm:outline-offset-[-1px] py-10 inline-flex flex-col justify-center items-start gap-5">
@@ -121,12 +193,11 @@ export default function ProfileComponent() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-0 bottom-2.5 w-6 h-6"
                 >
-                  <Image
-                    src={showPassword ? IcVisibilityOn : IcVisibilityOff}
-                    alt="비밀번호 보기 토글"
-                    width={24}
-                    height={24}
-                  />
+                  {showPassword ? (
+                    <VisibilityOnIconSvg className="w-6 h-6" />
+                  ) : (
+                    <VisibilityOffIconSvg className="w-6 h-6" />
+                  )}
                 </button>
               </div>
 
@@ -145,12 +216,11 @@ export default function ProfileComponent() {
                   onClick={() => setShowCheckPw((prev) => !prev)}
                   className="absolute right-0 bottom-2.5 w-6 h-6"
                 >
-                  <Image
-                    src={showCheckPw ? IcVisibilityOn : IcVisibilityOff} 
-                    alt="비밀번호 보기 토글"
-                    width={24}
-                    height={24}
-                  />
+                  {showCheckPw ? (
+                    <VisibilityOnIconSvg className="w-6 h-6" />
+                  ) : (
+                    <VisibilityOffIconSvg className="w-6 h-6" />
+                  )}
                 </button>
               </div>
             </div>
@@ -159,12 +229,10 @@ export default function ProfileComponent() {
           {/* 버튼 */}
           <Button
             type={buttonType}
-            label="변경하기"
+            label={isSubmitting ? "변경 중..." : "변경하기"}
             className="self-stretch h-16 p-4"
-            onClick={() => {
-              if (!isFormValid) return;
-              console.log("제출됨:", { company, password });
-            }}
+            onClick={handleSubmit}
+            disabled={!isFormValid || isSubmitting}
           />
         </div>
       </div>
