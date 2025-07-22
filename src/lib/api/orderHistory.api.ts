@@ -1,7 +1,7 @@
 import { cookieFetch } from './fetchClient.api';
 
 // Purchase History Type Definitions (실제 백엔드 응답에 맞춤)
-export interface Receipt {
+export interface Product {
   id: number;
   productName: string;
   price: number;
@@ -9,19 +9,9 @@ export interface Receipt {
   quantity: number;
 }
 
-export interface OrderedItem {
-  id: number;
-  orderId: number;
-  receiptId: number;
-  productId: number;
-  receipt: Receipt;
-}
-
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  role: string;
+export interface Budget {
+  currentMonthBudget: number | null;
+  currentMonthExpense: number | null;
 }
 
 export interface OrderHistory {
@@ -34,8 +24,9 @@ export interface OrderHistory {
   createdAt: string;
   updatedAt: string;
   approver?: string;
-  user: User;
-  orderedItems: OrderedItem[];
+  requester?: string;
+  products: Product[];
+  budget: Budget;
 }
 
 export interface OrderHistoryResponse {
@@ -50,18 +41,20 @@ export interface OrderHistoryListResponse {
   totalPages: number;
 }
 
-// Fetch My Order Requests List
+// 관리자 - 모든 주문 목록 조회
 export const getMyOrders = async (params?: {
   page?: number;
   sort?: string;
+  status?: 'pending' | 'approved' | 'rejected' | 'canceled';
 }): Promise<OrderHistory[]> => {
   try {
     const queryParams = new URLSearchParams();
     if (params?.page) queryParams.append('page', params.page.toString());
     if (params?.sort) queryParams.append('sort', params.sort);
+    if (params?.status) queryParams.append('status', params.status);
     
     const queryString = queryParams.toString();
-    const url = queryString ? `/orders?${queryString}` : '/orders';
+    const url = queryString ? `/admin/orders?${queryString}` : '/admin/orders';
     
     return await cookieFetch(url);
   } catch (error) {
@@ -69,11 +62,21 @@ export const getMyOrders = async (params?: {
   }
 };
 
-// Fetch Order Request Detail
-export const getOrderDetail = async (orderId: string): Promise<OrderHistory> => {
+// 관리자 - 주문 상세 조회
+export const getOrderDetail = async (
+  orderId: string, 
+  status?: 'pending' | 'approved' | 'rejected' | 'canceled'
+): Promise<OrderHistory> => {
   try {
-    const response: OrderHistoryResponse = await cookieFetch(`/orders/${orderId}`);
-    return response.data;
+    const queryParams = new URLSearchParams();
+    if (status) queryParams.append('status', status);
+    
+    const queryString = queryParams.toString();
+    const url = queryString ? `/admin/orders/${orderId}?${queryString}` : `/admin/orders/${orderId}`;
+    
+    // 백엔드에서 직접 OrderHistory 객체를 반환하므로 data 필드 접근 제거
+    const response: OrderHistory = await cookieFetch(url);
+    return response;
   } catch (error) {
     throw error;
   }
