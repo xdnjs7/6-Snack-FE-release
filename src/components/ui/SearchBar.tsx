@@ -14,7 +14,7 @@ function SearchBar({ placeholder = "이름으로 검색하세요", initialValue 
   const [searchText, setSearchText] = useState<string>(initialValue);
 
   useEffect(() => {
-    const q = searchParams.get("q");
+    const q = searchParams.get("name");
     if (q && !initialValue) {
       setSearchText(q);
     }
@@ -25,9 +25,9 @@ function SearchBar({ placeholder = "이름으로 검색하세요", initialValue 
     const params = new URLSearchParams(searchParams.toString());
 
     if (!searchTerm) {
-      params.delete("q");
+      params.delete("name");
     } else {
-      params.set("q", searchTerm);
+      params.set("name", searchTerm);
     }
 
     router.push(`${pathname}?${params.toString()}`);
@@ -47,20 +47,20 @@ function SearchBar({ placeholder = "이름으로 검색하세요", initialValue 
   }, []);
 
   return (
-    <div className="w-full py-3 md:py-2 border-b h-12 border-zinc-800 flex items-center gap-2 ">
-        <button onClick={handleSearch} aria-label="검색" type="button">
-          <div className=" relative w-[24px] h-[24px]">
-            <Image src={IcSearch} alt="검색 아이콘" className="flex justify-center items-center object-contain" fill />
-          </div>
-        </button>
-        <input
-          type="text"
-          placeholder={placeholder}
-          className="flex bg-transparent outline-none text-base md:text-lg text-primary-900 font-normal font-suit placeholder-primary-400"
-          value={searchText}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-        />
+    <div className="w-full py-3 md:py-2 border-b h-12 border-zinc-800 flex items-center gap-2">
+      <button onClick={handleSearch} aria-label="검색" type="button">
+        <div className="relative w-[24px] h-[24px]">
+          <Image src={IcSearch} alt="검색 아이콘" className="flex justify-center items-center object-contain" fill />
+        </div>
+      </button>
+      <input
+        type="text"
+        placeholder={placeholder}
+        className="flex bg-transparent outline-none text-base md:text-lg text-primary-900 font-normal font-suit placeholder-primary-400"
+        value={searchText}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+      />
     </div>
   );
 }
