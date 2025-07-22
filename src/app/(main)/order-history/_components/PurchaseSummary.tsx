@@ -1,87 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import clsx from "clsx";
 import { getBudgets } from "../../../../lib/api/budgets.api";
-
-// 요약 카드 데이터 타입 정의
-// (value, description 등은 동적으로 생성)
-type TSummaryCardProps = {
-  title: string;
-  value: string;
-  description: string;
-  progressBar?: {
-    current: number;
-    total: number;
-  };
-  tooltip?: string;
-};
-
-// 개별 요약 카드 컴포넌트
-const SummaryCard: React.FC<TSummaryCardProps> = ({ title, value, description, progressBar, tooltip }) => {
-  const [showTooltip, setShowTooltip] = useState(false);
-  const progressPercentage = progressBar ? (progressBar.current / progressBar.total) * 100 : 0;
-
-  return (
-    <div
-      className={clsx(
-        "bg-[--color-white]",
-        "p-4",
-        "rounded-lg",
-        "shadow-sm",
-        "flex-1",
-        "min-w-[280px]",
-        "relative",
-        "border",
-        "border-[--color-primary-100]",
-      )}
-      onMouseEnter={() => tooltip && setShowTooltip(true)}
-      onMouseLeave={() => tooltip && setShowTooltip(false)}
-    >
-      <h3 className="text-sm font-medium text-[--color-primary-700] mb-1">{title}</h3>
-      <p className="text-2xl font-bold text-[--color-primary-950] mb-2">{value}</p>
-      <p className="text-xs text-[--color-primary-500] mb-2">{description}</p>
-
-      {progressBar && (
-        <div className="w-full bg-[--color-primary-100] rounded-full h-2">
-          <div
-            className="bg-[--color-secondary-500] h-2 rounded-full"
-            style={{ width: `${progressPercentage}%` }}
-          ></div>
-        </div>
-      )}
-
-      {tooltip && showTooltip && (
-        <div
-          className={clsx(
-            "absolute",
-            "bottom-full",
-            "left-1/2",
-            "-translate-x-1/2",
-            "mb-2",
-            "p-2",
-            "bg-[--color-primary-950]",
-            "text-[--color-white]",
-            "text-xs",
-            "rounded-md",
-            "whitespace-nowrap",
-            "z-10",
-            "before:content-['']",
-            "before:absolute",
-            "before:top-full",
-            "before:left-1/2",
-            "before:-translate-x-1/2",
-            "before:border-8",
-            "before:border-transparent",
-            "before:border-t-[--color-primary-950]",
-          )}
-        >
-          {tooltip}
-        </div>
-      )}
-    </div>
-  );
-};
 
 // 예산/지출/총액 API 응답 타입
 interface BudgetSummaryApi {
@@ -141,32 +61,82 @@ const PurchaseSummary: React.FC = () => {
     return null;
   }
 
-  // 카드별 데이터 가공
-  const summaryData: TSummaryCardProps[] = [
-    {
-      title: "이번 달 예산",
-      value: formatNumber(data.currentMonthBudget),
-      description: `지난 달 예산은 ${formatNumber(data.previousMonthBudget)}였어요`,
-    },
-    {
-      title: "이번 달 지출액",
-      value: formatNumber(data.currentMonthExpense),
-      description: `지난 달 ${formatNumber(data.previousMonthExpense)}`,
-      progressBar: { current: data.currentMonthExpense, total: data.currentMonthBudget },
-      tooltip: `이번 달 남은 예산: ${formatNumber(data.currentMonthBudget - data.currentMonthExpense)}\n지난 달보다 ${(data.currentMonthExpense - data.previousMonthExpense).toLocaleString()}원 ${data.currentMonthExpense - data.previousMonthExpense > 0 ? "더 사용했어요" : "덜 사용했어요"}`,
-    },
-    {
-      title: "올해 총 지출액",
-      value: formatNumber(data.currentYearTotalExpense),
-      description: `올해 작년보다 ${(data.currentYearTotalExpense - data.previousYearTotalExpense).toLocaleString()}원 ${data.currentYearTotalExpense - data.previousYearTotalExpense > 0 ? "더 지출했어요" : "덜 지출했어요"}`,
-    },
-  ];
-
+  // 시안의 카드 레이아웃 및 남은 예산 정보 박스 추가
   return (
-    <div className={clsx("grid", "grid-cols-1", "sm:grid-cols-2", "lg:grid-cols-3", "gap-4", "w-full", "mb-8")}>
-      {summaryData.map((card, index) => (
-        <SummaryCard key={index} {...card} />
-      ))}
+    <div className="w-full flex flex-col gap-4 mb-8">
+      {/* 카드 3개 (모바일: 세로, 태블릿/PC: 가로) */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:gap-5">
+        {/* 이번 달 예산 */}
+        <div className="flex-1 p-5 bg-neutral-100 rounded flex flex-col justify-between items-start gap-2 overflow-hidden min-w-[180px]">
+          <div className="self-stretch flex flex-col gap-2.5">
+            <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">이번 달 예산</div>
+            <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
+              {formatNumber(data.currentMonthBudget)}
+            </div>
+          </div>
+          <div className="text-stone-500 text-sm sm:text-base font-normal font-suit leading-snug">
+            지난 달 예산은 {formatNumber(data.previousMonthBudget)}였어요
+          </div>
+        </div>
+        {/* 이번 달 지출액 */}
+        <div className="flex-1 p-5 bg-neutral-100 rounded flex flex-col justify-between items-start gap-4 overflow-hidden min-w-[180px]">
+          <div className="self-stretch flex flex-col gap-2.5">
+            <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">이번 달 지출액</div>
+            <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
+              {formatNumber(data.currentMonthExpense)}
+            </div>
+          </div>
+          <div className="text-stone-500 text-sm sm:text-base font-normal font-suit">
+            지난 달: {formatNumber(data.previousMonthExpense)}
+          </div>
+          {/* 진행바 */}
+          <div className="self-stretch flex items-center gap-1 sm:gap-2">
+            <div className="flex-1 h-1.5 bg-neutral-300 rounded-md">
+              <div
+                className="h-1.5 bg-blue-500 rounded-md"
+                style={{
+                  width: `${Math.min(100, Math.round((data.currentMonthExpense / (data.currentMonthBudget || 1)) * 100))}%`,
+                }}
+              />
+            </div>
+            <div className="text-neutral-800 text-xs sm:text-sm font-normal font-suit">
+              {data.currentMonthBudget
+                ? `${Math.round((data.currentMonthExpense / data.currentMonthBudget) * 100)}%`
+                : "-"}
+            </div>
+          </div>
+        </div>
+        {/* 올해 총 지출액 */}
+        <div className="flex-1 p-5 bg-neutral-100 rounded flex flex-col justify-between items-start gap-2 overflow-hidden min-w-[180px]">
+          <div className="flex flex-col gap-2.5">
+            <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">올해 총 지출액</div>
+            <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
+              {formatNumber(data.currentYearTotalExpense)}
+            </div>
+          </div>
+          <div className="text-stone-500 text-sm sm:text-base font-normal font-suit leading-snug">
+            {`작년보다 ${(data.currentYearTotalExpense - data.previousYearTotalExpense).toLocaleString()}원 ${data.currentYearTotalExpense - data.previousYearTotalExpense > 0 ? "더 지출했어요" : "덜 지출했어요"}`}
+          </div>
+        </div>
+      </div>
+      {/* 남은 예산 정보 박스 (모바일: 카드 아래, 태블릿/PC: 오른쪽에 띄우기) */}
+      <div className="w-64 p-6 bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden mt-4 sm:mt-0 sm:absolute sm:right-8 sm:top-0">
+        <div className="inline-flex justify-start items-center gap-1">
+          <div className="text-white text-base font-extrabold font-suit">이번 달 남은 예산:</div>
+          <div className="text-white text-base font-extrabold font-suit">
+            {formatNumber(data.currentMonthBudget - data.currentMonthExpense)}
+          </div>
+        </div>
+        <div className="inline-flex justify-start items-center gap-1">
+          <div className="text-white text-sm font-normal font-suit">지난 달 남은 예산:</div>
+          <div className="text-white text-sm font-normal font-suit">
+            {formatNumber(data.previousMonthBudget - data.previousMonthExpense)}
+          </div>
+        </div>
+        <div className="text-white text-sm font-normal font-suit">
+          {`지난 달보다 ${(data.currentMonthExpense - data.previousMonthExpense).toLocaleString()}원 ${data.currentMonthExpense - data.previousMonthExpense > 0 ? "더 사용했어요" : "덜 사용했어요"}`}
+        </div>
+      </div>
     </div>
   );
 };
