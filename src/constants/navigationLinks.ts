@@ -28,7 +28,7 @@ export const navLinks: DevNavSection[] = [
   {
     category: "인증/인가",
     links: [
-      { name: "로그인", path: "/login", role: "비회원", progress: "리팩터링 중" },
+      { name: "로그인", path: "/login", role: "비회원", progress: "완성" },
       { name: "회원가입", path: "/signup", role: "비회원", progress: "진행 중" },
       { name: "최고 관리자 회원가입", path: "/signup/super-admin", role: "비회원", progress: "진행 중" },
     ],
@@ -38,7 +38,7 @@ export const navLinks: DevNavSection[] = [
     links: [
       { name: "회원 관리", path: "/manage/users", role: "최고 관리자", progress: "리팩터링 중" },
       { name: "예산 관리", path: "/manage/budgets", role: "최고 관리자", progress: "진행 중" },
-      { name: "프로필", path: "/profile", role: "일반유저", progress: "리팩터링 중" },
+      { name: "프로필", path: "/profile", role: "일반유저", progress: "완성" },
     ],
   },
   {
