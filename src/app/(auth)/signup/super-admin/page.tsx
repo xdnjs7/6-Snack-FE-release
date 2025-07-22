@@ -109,28 +109,29 @@ const SignUpPage = () => {
             className="relative flex flex-col justify-center items-center w-full gap-[20px] mt-[20px]"
           >
             {formFields.map((field) => (
-              <input
-                key={field.id}
-                type={field.type}
-                id={field.id}
-                placeholder={field.label}
-                {...register(field.name as keyof TSignUpForm)}
-                className={clsx(
-                  "w-full max-w-[480px] h-[56px] py-[8px] px-[4px] outline-none border-b-1 border-primary-600",
-                  "placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
-                  errors[field.name as keyof TSignUpForm] && "border-red-500",
+              <div key={field.id} className="w-full max-w-[480px] relative">
+                <input
+                  type={field.type}
+                  id={field.id}
+                  placeholder={field.label}
+                  {...register(field.name as keyof TSignUpForm)}
+                  className={clsx(
+                    "w-full h-[56px] py-[8px] px-[4px] outline-none border-b-1 border-primary-600",
+                    "placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
+                    errors[field.name as keyof TSignUpForm] && "border-red-500",
+                  )}
+                  autoComplete={field.type === "password" ? "new-password" : "off"}
+                />
+                {errors[field.name as keyof TSignUpForm] && (
+                  <p
+                    className="text-red-500 text-xs absolute left-0 top-full z-10 pointer-events-none bg-white bg-opacity-80 px-2"
+                    style={{ transform: "translateY(2px)" }}
+                  >
+                    {errors[field.name as keyof TSignUpForm]?.message}
+                  </p>
                 )}
-                autoComplete={field.type === "password" ? "new-password" : "off"}
-              />
+              </div>
             ))}
-            {/* 에러 메시지 */}
-            {formFields.map((field) =>
-              errors[field.name as keyof TSignUpForm] ? (
-                <p key={field.id} className="text-red-500 text-xs mt-1 ml-2 w-full max-w-[480px]">
-                  {errors[field.name as keyof TSignUpForm]?.message}
-                </p>
-              ) : null,
-            )}
             {/* 가입하기 버튼 */}
             <button
               type="submit"
