@@ -109,24 +109,21 @@ const SignUpPage = () => {
             className="relative flex flex-col justify-center items-center w-full gap-[20px] mt-[20px]"
           >
             {formFields.map((field) => (
-              <div key={field.id} className="w-full max-w-[480px] relative">
+              <div key={field.id} className="w-full max-w-[480px]">
                 <input
                   type={field.type}
                   id={field.id}
                   placeholder={field.label}
                   {...register(field.name as keyof TSignUpForm)}
                   className={clsx(
-                    "w-full h-[56px] py-[8px] px-[4px] outline-none border-b-1 border-primary-600",
-                    "placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
-                    errors[field.name as keyof TSignUpForm] && "border-red-500",
+                    "w-full h-[56px] py-[8px] px-[4px] outline-none border-b text-neutral-800",
+                    errors[field.name as keyof TSignUpForm] ? "border-red-500" : "border-neutral-200",
+                    "placeholder:text-neutral-400 placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight",
                   )}
                   autoComplete={field.type === "password" ? "new-password" : "off"}
                 />
                 {errors[field.name as keyof TSignUpForm] && (
-                  <p
-                    className="text-red-500 text-xs absolute left-0 top-full z-10 pointer-events-none bg-white bg-opacity-80 px-2"
-                    style={{ transform: "translateY(2px)" }}
-                  >
+                  <p className="text-red-500 text-xs mt-1 leading-tight">
                     {errors[field.name as keyof TSignUpForm]?.message}
                   </p>
                 )}
