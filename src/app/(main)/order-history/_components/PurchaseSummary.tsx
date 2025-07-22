@@ -67,20 +67,46 @@ const PurchaseSummary: React.FC = () => {
       {/* 카드 3개 (모바일: 세로, 태블릿/PC: 가로) */}
       <div className="relative flex flex-col gap-4 sm:flex-row sm:gap-5">
         {/* 이번 달 예산 */}
-        <div className="flex-1 min-h-[140px] flex flex-col justify-between bg-white border border-neutral-200 rounded-[12px] p-5 gap-2.5">
-          <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">이번 달 예산</div>
-          <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
-            {formatNumber(data.currentMonthBudget)}
+        <div
+          className="flex-1 flex flex-col justify-between"
+          style={{
+            width: "414.67px",
+            height: "150px",
+            padding: "30px 40px 30px 30px",
+            gap: "8px",
+            borderRadius: "4px",
+            background: "#F5F5F5",
+            opacity: 1,
+          }}
+        >
+          <div className="flex flex-row items-center justify-between w-full mb-2">
+            <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">이번 달 예산</div>
+            <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
+              {formatNumber(data.currentMonthBudget)}
+            </div>
           </div>
           <div className="text-stone-500 text-sm sm:text-base font-normal font-suit leading-snug mt-auto">
             지난 달 예산은 {formatNumber(data.previousMonthBudget)}였어요
           </div>
         </div>
         {/* 이번 달 지출액 */}
-        <div className="flex-1 min-h-[140px] flex flex-col justify-between bg-white border border-neutral-200 rounded-[12px] p-5 gap-2.5">
-          <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">이번 달 지출액</div>
-          <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
-            {formatNumber(data.currentMonthExpense)}
+        <div
+          className="flex-1 flex flex-col justify-between"
+          style={{
+            width: "414.67px",
+            height: "150px",
+            padding: "30px 40px 30px 30px",
+            gap: "8px",
+            borderRadius: "4px",
+            background: "#F5F5F5",
+            opacity: 1,
+          }}
+        >
+          <div className="flex flex-row items-center justify-between w-full mb-2">
+            <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">이번 달 지출액</div>
+            <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
+              {formatNumber(data.currentMonthExpense)}
+            </div>
           </div>
           <div className="text-stone-500 text-sm sm:text-base font-normal font-suit">
             지난 달: {formatNumber(data.previousMonthExpense)}
@@ -103,10 +129,23 @@ const PurchaseSummary: React.FC = () => {
           </div>
         </div>
         {/* 올해 총 지출액 */}
-        <div className="flex-1 min-h-[140px] flex flex-col justify-between bg-white border border-neutral-200 rounded-[12px] p-5 gap-2.5">
-          <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">올해 총 지출액</div>
-          <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
-            {formatNumber(data.currentYearTotalExpense)}
+        <div
+          className="flex-1 flex flex-col justify-between"
+          style={{
+            width: "414.67px",
+            height: "150px",
+            padding: "30px 40px 30px 30px",
+            gap: "8px",
+            borderRadius: "4px",
+            background: "#F5F5F5",
+            opacity: 1,
+          }}
+        >
+          <div className="flex flex-row items-center justify-between w-full mb-2">
+            <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">올해 총 지출액</div>
+            <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
+              {formatNumber(data.currentYearTotalExpense)}
+            </div>
           </div>
           <div className="text-stone-500 text-sm sm:text-base font-normal font-suit leading-snug mt-auto">{`작년보다 ${(data.currentYearTotalExpense - data.previousYearTotalExpense).toLocaleString()}원 ${data.currentYearTotalExpense - data.previousYearTotalExpense > 0 ? "더 지출했어요" : "덜 지출했어요"}`}</div>
         </div>
