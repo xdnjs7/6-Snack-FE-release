@@ -12,6 +12,7 @@ import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
 import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
 import clsx from "clsx";
 import Button from "@/components/ui/Button";
+import { signUpWithInviteApi } from "@/lib/api/auth.api";
 
 // 리액트 훅폼 스키마 정의
 const signUpSchema = z
@@ -51,8 +52,6 @@ export default function InviteSignUpPage() {
   });
 
   const [passwordInput, passwordConfirmInput] = watch("password", "passwordConfirm");
-  // const passwordInput = watch("password");
-  // const passwordConfirmInput = watch("passwordConfirm");
 
   // 초대 정보 가져오기
   useEffect(() => {
@@ -79,7 +78,11 @@ export default function InviteSignUpPage() {
     if (!inviteInfo) return;
 
     try {
-    } catch (error) {}
+      await signUpWithInviteApi(inviteId, data.password, data.passwordConfirm);
+      router.push("/products");
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "회원가입에 실패했습니다.");
+    }
   };
 
   return (
@@ -120,7 +123,7 @@ export default function InviteSignUpPage() {
           <div className="flex flex-col gap-1">
             <div
               className={clsx(
-                "flex justify-between items-center w-full h-[56px] py-2 px-1 border-b",
+                "relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b",
                 errors.password ? "border-error-500" : "border-primary-600",
               )}
             >
@@ -144,7 +147,7 @@ export default function InviteSignUpPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="flex justify-end items-center"
+                className="absolute right-1 bottom-2"
               >
                 {showPassword ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
               </button>
@@ -157,7 +160,7 @@ export default function InviteSignUpPage() {
 
           {/* 비밀번호 확인 input wrapper*/}
           <div className="flex flex-col gap-1">
-            <div className="flex justify-between items-center w-full h-[56px] py-2 px-1 border-b border-primary-600">
+            <div className="relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b border-primary-600">
               <div className="flex flex-col justify-between items-start gap-[5px]">
                 <label
                   className={clsx(
@@ -178,7 +181,7 @@ export default function InviteSignUpPage() {
               <button
                 type="button"
                 onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
-                className="flex items-center"
+                className="cursor-pointer absolute right-1 bottom-2"
               >
                 {showPasswordConfirm ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
               </button>
@@ -201,9 +204,11 @@ export default function InviteSignUpPage() {
         />
         <p className="text-primary-500 text-base/[20px] tracking-tight">
           이미 계정이 있으신가요?{" "}
-          <span className="text-primary-950 text-base/[20px] tracking-tight font-bold underline decoration-primary-950 underline-offset-2">
-            로그인
-          </span>
+          <Link href="/login">
+            <span className="text-primary-950 text-base/[20px] tracking-tight font-bold underline decoration-primary-950 underline-offset-2">
+              로그인
+            </span>
+          </Link>
         </p>
       </div>
     </div>
