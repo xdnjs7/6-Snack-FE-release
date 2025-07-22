@@ -43,7 +43,3 @@ next-env.d.ts
 
 # .cursor
 .cursor/
-
-# documentation
-Convention.md
-
