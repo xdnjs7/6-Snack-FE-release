@@ -449,43 +449,68 @@ const OrderHistoryPage = () => {
             ) : purchaseListError ? (
               <div className="flex items-center justify-center py-16 text-red-500">{purchaseListError}</div>
             ) : currentItems.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-16">
-                <div className="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center mb-6">
-                  {/* 시안 아이콘 색상 변경 */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-12 h-12 text-blue-400" // Figma 시안: 아이콘 색상 #76B3FF (blue-400)
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 21l-5.25-5.25M5.25 5.25l5.25 5.25"
-                    />
-                  </svg>
+              <>
+                {/* 모바일: sm 미만 */}
+                <div className="block sm:hidden w-full flex justify-center items-center py-16">
+                  <div className="self-stretch inline-flex flex-col justify-start items-center gap-5 w-full">
+                    <div className="w-24 h-24 relative bg-neutral-50 rounded-[100px] overflow-hidden mb-2" />
+                    <div className="self-stretch flex flex-col justify-start items-center gap-10 w-full">
+                      <div className="w-72 flex flex-col justify-start items-center gap-2.5">
+                        <div className="self-stretch text-center justify-center text-neutral-800 text-lg font-extrabold font-['SUIT']">
+                          구매 내역이 없어요
+                        </div>
+                        <div className="self-stretch text-center justify-center text-neutral-700 text-sm font-normal font-['SUIT'] leading-snug">
+                          상품 리스트를 둘러보고
+                          <br />
+                          관리자에게 요청해보세요
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => console.log("구매 요청 내역으로 이동")}
+                        data-size="Default"
+                        data-state="normal"
+                        data-type="filled"
+                        className="self-stretch h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center w-full"
+                      >
+                        <div className="text-center justify-center text-white text-base font-bold font-['SUIT']">
+                          구매 요청 내역으로 이동
+                        </div>
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-lg font-semibold text-neutral-800 mb-2">구매 내역이 없어요</p>
-                <p className="text-sm text-neutral-500 mb-6">구매 요청을 승인하고 상품을 주문해보세요</p>
-                <button
-                  onClick={() => console.log("구매 요청 내역으로 이동")}
-                  className={clsx(
-                    "py-3",
-                    "px-6",
-                    "bg-blue-600", // Figma 시안: 배경색 #2563EB (blue-600)
-                    "text-white", // Figma 시안: 텍스트 색상 #FFFFFF
-                    "font-semibold",
-                    "rounded-md",
-                    "hover:bg-blue-700", // 호버 상태
-                    "transition-colors",
-                    "duration-200",
-                  )}
-                >
-                  구매 요청 내역으로 이동
-                </button>
-              </div>
+                {/* 태블릿/데스크탑: sm 이상 */}
+                <div className="hidden sm:flex w-full justify-center items-center py-24">
+                  <div className="w-80 inline-flex flex-col justify-start items-center gap-7">
+                    <div className="w-24 h-24 relative bg-neutral-50 rounded-[100px] overflow-hidden mb-2" />
+                    <div className="self-stretch flex flex-col justify-start items-center gap-12">
+                      <div className="w-72 flex flex-col justify-start items-center gap-2.5">
+                        <div className="self-stretch text-center justify-center text-neutral-800 text-2xl font-extrabold font-['SUIT']">
+                          구매 내역이 없어요
+                        </div>
+                        <div className="self-stretch text-center justify-center text-neutral-700 text-base font-normal font-['SUIT'] leading-relaxed">
+                          구매 요청을 승인하고
+                          <br />
+                          상품을 주문해보세요
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => console.log("구매 요청 내역으로 이동")}
+                        data-size="Default"
+                        data-state="normal"
+                        data-type="filled"
+                        className="self-stretch h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center"
+                      >
+                        <div className="text-center justify-center text-white text-base font-bold font-['SUIT']">
+                          구매 요청 내역으로 이동
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </>
             ) : (
               <>
                 {/* 모바일: 카드형 */}
