@@ -6,6 +6,7 @@ import RequestList from "@/components/common/RequestList";
 import useOrderVisibleCount from "@/hooks/useOrderVisibleCount";
 import OrderManageModal from "@/components/common/OrderManageModal";
 import { useModal } from "@/providers/ModalProvider";
+import { order, orderRequests } from "@/app/(preview)/components-preview/MockData";
 
 function Order() {
   const [sort, setSort] = useState("");
@@ -29,7 +30,12 @@ function Order() {
         {visibleRequests.length > 0 ? (
           <>
             {visibleRequests.map((id) => (
-              <RequestList key={id} onClick={() => openModal(<OrderManageModal />)} />
+              <RequestList
+                key={id}
+                orderRequests={orderRequests}
+                onClickReject={() => openModal(<OrderManageModal order={order} type="reject" onClick={() => {}} />)}
+                onClickApprove={() => openModal(<OrderManageModal order={order} type="approve" onClick={() => {}} />)}
+              />
             ))}
             <Pagination
               currentPage={currentPaginationPage}
