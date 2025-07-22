@@ -2,27 +2,39 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { getOrderDetail, OrderHistory } from '@/lib/api/orderHistory.api';
+import { getOrderDetail, TOrderHistory, TProduct } from '@/lib/api/orderHistory.api';
 import ArrowIconSvg from '@/components/svg/ArrowIconSvg';
 
-export default function OrderHistoryDetailPage() {
+// 타입 정의
+type TOrderStatus = 'pending' | 'approved' | 'rejected' | 'canceled' | null;
+type TArrowDirection = 'up' | 'down' | 'left' | 'right';
+
+type TOrderHistoryDetailPageProps = {
+  // 현재는 props가 없지만 향후 확장성을 위해 타입 정의
+};
+
+type TStatusTextMap = {
+  [key: string]: string;
+};
+
+export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps) {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const orderId = params.orderId as string;
-  const status = searchParams.get('status') as 'pending' | 'approved' | 'rejected' | 'canceled' | null;
+  const orderId: string = params.orderId as string;
+  const status: TOrderStatus = searchParams.get('status') as TOrderStatus;
 
-  const [orderData, setOrderData] = useState<OrderHistory | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [orderData, setOrderData] = useState<TOrderHistory | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [isItemsExpanded, setIsItemsExpanded] = useState(true);
+  const [isItemsExpanded, setIsItemsExpanded] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchOrderDetail = async () => {
+    const fetchOrderDetail = async (): Promise<void> => {
       try {
         setIsLoading(true);
         console.log('Fetching order detail for:', orderId, 'with status:', status);
-        const data = await getOrderDetail(orderId, status || undefined);
+        const data: TOrderHistory = await getOrderDetail(orderId, status || undefined);
         console.log('Received data:', data);
         setOrderData(data);
       } catch (err) {
@@ -38,20 +50,17 @@ export default function OrderHistoryDetailPage() {
     }
   }, [orderId, status]);
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'PENDING':
-        return '승인 대기';
-      case 'APPROVED':
-        return '구매 승인';
-      case 'REJECTED':
-        return '구매 반려';
-      default:
-        return status;
-    }
+  const getStatusText = (status: string): string => {
+    const statusTextMap: TStatusTextMap = {
+      'PENDING': '승인 대기',
+      'APPROVED': '구매 승인',
+      'REJECTED': '구매 반려'
+    };
+    
+    return statusTextMap[status] || status;
   };
 
-  const formatDate = (dateString: string | undefined | null) => {
+  const formatDate = (dateString: string | undefined | null): string => {
     if (!dateString) return '-';
     try {
       return new Date(dateString).toLocaleDateString('ko-KR', {
@@ -67,7 +76,7 @@ export default function OrderHistoryDetailPage() {
     }
   };
 
-  const formatPrice = (price: number | undefined | null) => {
+  const formatPrice = (price: number | undefined | null): string => {
     if (price === undefined || price === null) return '0';
     return price.toLocaleString('ko-KR');
   };
@@ -88,18 +97,18 @@ export default function OrderHistoryDetailPage() {
     );
   }
 
-  const calculatedTotal = orderData.products?.reduce((sum, item) => 
+  const calculatedTotal: number = orderData.products?.reduce((sum: number, item: TProduct) => 
     sum + (item.price * item.quantity), 0
   ) || 0;
-  const shippingFee = 3000;
-  const finalTotal = calculatedTotal + shippingFee;
+  const shippingFee: number = 3000;
+  const finalTotal: number = calculatedTotal + shippingFee;
 
   return (
     <div className="min-h-screen bg-white">
       {/* Main Content */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-4 sm:pt-6 md:pt-8 flex flex-col justify-start items-start gap-5 sm:gap-6 md:gap-7">
         <div className="self-stretch justify-center text-[--color-primary-800] text-base sm:text-lg md:text-xl lg:text-2xl font-bold font-['SUIT']">
-          관리자 - 구매 내역 상세
+          구매 내역 상세
         </div>
 
         {/* Items Section */}
@@ -123,7 +132,7 @@ export default function OrderHistoryDetailPage() {
               <div className="self-stretch px-3 sm:px-4 md:px-5 pt-3 sm:pt-4 md:pt-5 pb-5 sm:pb-6 md:pb-7 bg-white rounded-sm shadow-[0px_0px_6px_0px_rgba(0,0,0,0.0)] sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline sm:outline-1 sm:outline-neutral-200 flex flex-col justify-start items-start gap-4 sm:gap-5">
                 {/* Items List */}
                                 <div className="self-stretch flex flex-col justify-start items-start">
-                  {orderData.products?.map((item, index) => (
+                  {orderData.products?.map((item: TProduct, index: number) => (
                     <div 
                       key={item.id} 
                       className="self-stretch pr-3 sm:pr-4 md:pr-5 py-3 sm:py-4 md:py-5 border-b border-neutral-200 inline-flex justify-between items-center"

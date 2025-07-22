@@ -1,20 +1,20 @@
 import { cookieFetch } from './fetchClient.api';
 
 // Purchase History Type Definitions (실제 백엔드 응답에 맞춤)
-export interface Product {
+export type TProduct = {
   id: number;
   productName: string;
   price: number;
   imageUrl?: string;
   quantity: number;
-}
+};
 
-export interface Budget {
+export type TBudget = {
   currentMonthBudget: number | null;
   currentMonthExpense: number | null;
-}
+};
 
-export interface OrderHistory {
+export type TOrderHistory = {
   id: number;
   userId: string;
   status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELED';
@@ -25,28 +25,28 @@ export interface OrderHistory {
   updatedAt: string;
   approver?: string;
   requester?: string;
-  products: Product[];
-  budget: Budget;
-}
+  products: TProduct[];
+  budget: TBudget;
+};
 
-export interface OrderHistoryResponse {
+export type TOrderHistoryResponse = {
   message: string;
-  data: OrderHistory;
-}
+  data: TOrderHistory;
+};
 
-export interface OrderHistoryListResponse {
-  orders: OrderHistory[];
+export type TOrderHistoryListResponse = {
+  orders: TOrderHistory[];
   totalCount: number;
   currentPage: number;
   totalPages: number;
-}
+};
 
 // 관리자 - 모든 주문 목록 조회
 export const getMyOrders = async (params?: {
   page?: number;
   sort?: string;
   status?: 'pending' | 'approved' | 'rejected' | 'canceled';
-}): Promise<OrderHistory[]> => {
+}): Promise<TOrderHistory[]> => {
   try {
     const queryParams = new URLSearchParams();
     if (params?.page) queryParams.append('page', params.page.toString());
@@ -66,7 +66,7 @@ export const getMyOrders = async (params?: {
 export const getOrderDetail = async (
   orderId: string, 
   status?: 'pending' | 'approved' | 'rejected' | 'canceled'
-): Promise<OrderHistory> => {
+): Promise<TOrderHistory> => {
   try {
     const queryParams = new URLSearchParams();
     if (status) queryParams.append('status', status);
@@ -74,8 +74,8 @@ export const getOrderDetail = async (
     const queryString = queryParams.toString();
     const url = queryString ? `/admin/orders/${orderId}?${queryString}` : `/admin/orders/${orderId}`;
     
-    // 백엔드에서 직접 OrderHistory 객체를 반환하므로 data 필드 접근 제거
-    const response: OrderHistory = await cookieFetch(url);
+    // 백엔드에서 직접 TOrderHistory 객체를 반환하므로 data 필드 접근 제거
+    const response: TOrderHistory = await cookieFetch(url);
     return response;
   } catch (error) {
     throw error;
