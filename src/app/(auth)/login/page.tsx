@@ -1,46 +1,42 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import SnackIconSvg from "@/components/svg/SnackIconSvg";
 import Button from "@/components/ui/Button";
 // import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
 // import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
 import Link from "next/link";
+import clsx from "clsx";
 import { useAuth } from "@/providers/AuthProvider";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const [body, setBody] = useState<{ email: string; password: string }>({ email: "", password: "" });
+
   const router = useRouter();
   const { login } = useAuth();
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
-  async function handleLogin(formData: FormData) {
-    setIsLoading(true);
-    setError("");
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const id = e.target.id;
+    const value = e.target.value;
 
-    // 유효성 검사
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+    setBody((prev) => ({ ...prev, [id]: value }));
+  };
 
-    if (!email || !password) {
-      setError("이메일과 비밀번호를 입력해주세요.");
-      setIsLoading(false);
-      return;
-    }
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { email, password } = body;
 
     try {
       await login(email, password);
-      // 로그인 성공 시 메인 페이지로 리다이렉트
-      router.push("/");
-      router.refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "로그인 중 오류가 발생했습니다");
-      console.error(err);
-    } finally {
-      setIsLoading(false);
+
+      router.push("/products");
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error(e.message);
+      }
     }
-  }
+  };
 
   return (
     <div className="flex justify-center">
@@ -54,39 +50,49 @@ export default function LoginPage() {
           <p className="mb-[10px] font-bold text-[20px]/[25px] tracking-tight text-[#1f1f1f] sm:mb-[20px] sm:text-[24px]/[30px]">
             로그인
           </p>
-
-          {error && <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">{error}</div>}
-
-          <form action={handleLogin} className="relative flex flex-col justify-center items-center w-full gap-[20px]">
+          <form
+            onSubmit={(e) => handleSubmit(e)}
+            className="relative flex flex-col justify-center items-center w-full gap-[20px]"
+          >
             <input
-              name="email"
-              className="w-full max-w-[480px] h-[56px] py-[8px] px-[4px] outline-none border-b-1 border-primary-600 placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500"
+              id="email"
+              className={clsx(
+                "w-full max-w-[480px] h-[56px] py-[8px] px-[4px] outline-none border-b-1 border-primary-600 placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
+              )}
               placeholder="이메일을 입력해주세요"
               type="email"
-              required
+              value={body.email}
+              onChange={(e) => {
+                handleInputChange(e);
+              }}
             />
+
             <input
-              name="password"
-              className="w-full max-w-[480px] h-[56px] py-[8px] px-[4px] outline-none border-b-1 border-primary-600 placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500"
+              id="password"
+              className={clsx(
+                "w-full max-w-[480px] h-[56px] py-[8px] px-[4px] outline-none border-b-1 border-primary-600 placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
+              )}
               placeholder="비밀번호를 입력해주세요"
               type="password"
-              required
+              value={body.password}
+              onChange={(e) => {
+                handleInputChange(e);
+              }}
             />
+
             {/* <VisibilityOffIconSvg className="absolute right-[4px] bottom-[8px] z-10" fill="#555555" />
-            <VisibilityOnIconSvg className="absolute right-[4px] bottom-[8px]" fill="#555555" /> */}
+        <VisibilityOnIconSvg className="absolute right-[4px] bottom-[8px]" fill="#555555" /> */}
+
+            <Button
+              type={false ? "grayDisabled" : "black"}
+              label="로그인"
+              className={clsx(
+                false && "text-primary-300 bg-primary-100",
+                "w-full mt-[10px] mb-[24px] font-bold text-[16px]/[20px] h-[64px]",
+              )}
+            />
           </form>
-          <Button
-            type={isLoading ? "grayDisabled" : "primary"}
-            label={isLoading ? "로그인 중..." : "로그인"}
-            className="mt-[30px] mb-[24px] font-bold text-[16px]/[20px] h-[64px]"
-            onClick={() => {
-              const form = document.querySelector("form");
-              if (form) {
-                const formData = new FormData(form);
-                handleLogin(formData);
-              }
-            }}
-          />
+
           <div className="flex justify-center items-center gap-[4px]">
             <p className="font-normal text-[16px]/[20px] tracking-tight text-[#999999]">기업 담당자이신가요? </p>
             <Link href="/signup/super-admin">
