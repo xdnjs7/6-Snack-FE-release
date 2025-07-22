@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { getAdminOrders } from "../../../../lib/api/order.api";
 
@@ -53,6 +53,26 @@ const PurchaseList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const itemsPerPage = 4;
   const [totalCount, setTotalCount] = useState(0);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleSortButtonClick = () => setDropdownOpen((prev) => !prev);
+  const handleSortSelect = (value: string) => {
+    setSortBy(value);
+    setCurrentPage(1);
+    setDropdownOpen(false);
+  };
+
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest(".custom-sort-dropdown")) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dropdownOpen]);
 
   // API에서 데이터 받아오기
   useEffect(() => {
@@ -112,11 +132,6 @@ const PurchaseList: React.FC = () => {
   const totalPages = Math.ceil(totalCount / itemsPerPage);
   const currentItems = purchaseItems; // 이미 API에서 페이징된 데이터만 받아옴
 
-  const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSortBy(e.target.value);
-    setCurrentPage(1); // 정렬 변경 시 1페이지로 이동
-  };
-
   const handlePageChange = (page: number) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
@@ -146,31 +161,55 @@ const PurchaseList: React.FC = () => {
       {/* 상단: 타이틀 + 정렬 버튼 */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 px-6 pt-6 pb-2">
         <div className="text-neutral-800 text-lg font-bold font-suit hidden sm:block">구매 내역 확인</div>
-        <button
-          type="button"
-          className={clsx(
-            "w-28 h-11 px-4 py-2.5 bg-white outline outline-1 outline-offset-[-1px] outline-neutral-200 flex justify-between items-center",
-            "text-neutral-800 text-base font-normal font-suit",
-          )}
-          // 실제 드롭다운은 select 유지, 디자인만 버튼처럼
-        >
-          <span>{sortBy === "latest" ? "정렬" : "오래된 순"}</span>
-          <span className="w-4 h-4 ml-2 inline-block">
-            <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 1L8 8L15 1" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </span>
-          <select
-            value={sortBy}
-            onChange={handleSortChange}
-            className="absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer"
-            style={{ appearance: "none" }}
-            aria-label="정렬"
+        <div className="relative custom-sort-dropdown">
+          <button
+            type="button"
+            onClick={handleSortButtonClick}
+            className={clsx(
+              "w-28 h-11 px-4 py-2.5 bg-white outline outline-1 outline-offset-[-1px] outline-neutral-200 flex justify-between items-center",
+              "text-neutral-800 text-base font-normal font-suit",
+              "relative",
+            )}
+            aria-haspopup="listbox"
+            aria-expanded={dropdownOpen}
           >
-            <option value="latest">정렬</option>
-            <option value="oldest">오래된 순</option>
-          </select>
-        </button>
+            <span>{sortBy === "latest" ? "정렬" : "오래된 순"}</span>
+            <span className="w-4 h-4 ml-2 inline-block">
+              <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1L8 8L15 1" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+          </button>
+          {dropdownOpen && (
+            <ul
+              className="absolute left-0 top-full mt-1 w-full bg-white border border-neutral-200 rounded shadow z-10"
+              role="listbox"
+            >
+              <li
+                className={clsx(
+                  "px-4 py-2 hover:bg-gray-100 cursor-pointer",
+                  sortBy === "latest" && "font-bold text-blue-600",
+                )}
+                role="option"
+                aria-selected={sortBy === "latest"}
+                onClick={() => handleSortSelect("latest")}
+              >
+                정렬
+              </li>
+              <li
+                className={clsx(
+                  "px-4 py-2 hover:bg-gray-100 cursor-pointer",
+                  sortBy === "oldest" && "font-bold text-blue-600",
+                )}
+                role="option"
+                aria-selected={sortBy === "oldest"}
+                onClick={() => handleSortSelect("oldest")}
+              >
+                오래된 순
+              </li>
+            </ul>
+          )}
+        </div>
       </div>
 
       {/* 리스트/테이블 */}
