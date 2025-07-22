@@ -127,7 +127,7 @@ export default function InviteSignUpPage() {
                 errors.password ? "border-error-500" : "border-primary-600",
               )}
             >
-              <div className="flex flex-col justify-between items-start gap-[5px]">
+              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
                 <label
                   className={clsx(
                     "text-primary-500 text-xs/[15px] font-normal tracking-tight",
@@ -140,7 +140,11 @@ export default function InviteSignUpPage() {
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
                   placeholder="비밀번호를 입력하세요"
-                  className="text-base/[20px] text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight"
+                  className={clsx(
+                    // 수정해야함!
+                    showPassword ? "text-[16px]/[20px]" : "text-[50px]/[20px]",
+                    "w-full tracking-tight text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight outline-none",
+                  )}
                 />
               </div>
               {/* 비밀번호 보임토글 */}
@@ -161,7 +165,7 @@ export default function InviteSignUpPage() {
           {/* 비밀번호 확인 input wrapper*/}
           <div className="flex flex-col gap-1">
             <div className="relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b border-primary-600">
-              <div className="flex flex-col justify-between items-start gap-[5px]">
+              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
                 <label
                   className={clsx(
                     "text-primary-500 text-xs/[15px] font-normal tracking-tight",
@@ -174,7 +178,11 @@ export default function InviteSignUpPage() {
                   type={showPasswordConfirm ? "text" : "password"}
                   {...register("passwordConfirm")}
                   placeholder="비밀번호를 다시 입력하세요"
-                  className="text-base/[20px] text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight"
+                  className={clsx(
+                    // 수정해야함!
+                    showPassword ? "text-[16px]/[20px]" : "text-[50px]/[20px]",
+                    "w-full tracking-tight text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight outline-none",
+                  )}
                 />
               </div>
               {/* 비밀번호 확인 보임토글 */}
