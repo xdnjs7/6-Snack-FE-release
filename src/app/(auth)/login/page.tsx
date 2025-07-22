@@ -10,8 +10,9 @@ import clsx from "clsx";
 import { useAuth } from "@/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, TLoginFormData } from "@/lib/schemas/login.schema";
+import FormErrorMessage from "./_components/FormErrorMessage";
 
 export default function LoginPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
@@ -23,22 +24,13 @@ export default function LoginPage() {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
-  // Zod 스키마, 유효성 검사
-  const loginSchema = z.object({
-    email: z.string().email({ message: "유효하지 않은 이메일입니다." }),
-    password: z.string().min(8, { message: "유효하지 않은 비밀번호입니다." }),
-  });
-
-  //
-  type TFormData = z.infer<typeof loginSchema>;
-
   // React Hook Form
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
-  } = useForm<TFormData>({
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<TLoginFormData>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
   });
@@ -48,7 +40,7 @@ export default function LoginPage() {
   const hasPasswordValue = watch("password");
 
   // 로그인 함수
-  const onSubmit = async (body: TFormData) => {
+  const onSubmit = async (body: TLoginFormData) => {
     const { email, password } = body;
 
     try {
@@ -108,9 +100,7 @@ export default function LoginPage() {
                   />
                 </div>
 
-                {errors.email && (
-                  <p className="font-normal text-[14px]/[17px] tracking-tight text-error-500">{errors.email.message}</p>
-                )}
+                <FormErrorMessage message={errors.email?.message} />
               </div>
 
               <div className="relative flex flex-col w-full max-w-[480px] gap-[4px]">
@@ -155,19 +145,16 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                {errors.password && (
-                  <p className="font-normal text-[14px]/[17px] tracking-tight text-error-500">
-                    {errors.password.message}
-                  </p>
-                )}
+                <FormErrorMessage message={errors.password?.message} />
               </div>
             </div>
 
             <Button
-              type={false ? "grayDisabled" : "black"}
-              label="로그인"
+              type="black"
+              label={isSubmitting ? "로그인 중..." : "로그인"}
+              disabled={isSubmitting}
               className={clsx(
-                false && "text-primary-300 bg-primary-100",
+                (!isValid || isSubmitting) && "text-primary-300 bg-primary-100 cursor-default",
                 "w-full mb-[24px] font-bold text-[16px]/[20px] h-[64px]",
               )}
             />
