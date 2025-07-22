@@ -94,10 +94,10 @@ const SignUpPage = () => {
         <div className="flex flex-col justify-center max-w-[600px] sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.1)] sm:py-[40px] sm:px-[60px]">
           {/* 타이틀/설명 */}
           <div className="flex flex-col items-start gap-2.5 w-full">
-            <div className="font-bold text-[20px]/[25px] tracking-tight text-[#1f1f1f] sm:text-[24px]/[30px] w-full text-center">
+            <div className="font-bold text-[20px]/[25px] tracking-tight text-[#1f1f1f] sm:text-[24px]/[30px] w-full text-left">
               기업 담당자 회원가입
             </div>
-            <div className="text-[14px] sm:text-[16px] font-normal text-[#999999] w-full text-center">
+            <div className="text-[14px] sm:text-[16px] font-normal text-[#999999] w-full text-left">
               * 그룹 내 유저는 기업 담당자의
               <br className="sm:hidden" />
               초대 메일을 통해 가입이 가능합니다.
