@@ -1,270 +1,216 @@
-// "use client";
+"use client";
+import React, { useEffect, useState } from "react";
+import SnackIconSvg from "@/components/svg/SnackIconSvg";
+import Link from "next/link";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { getInviteApi, TInviteInfo } from "@/lib/api/invite.api";
+import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
+import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
+import clsx from "clsx";
+import Button from "@/components/ui/Button";
+import { signUpWithInviteApi } from "@/lib/api/auth.api";
 
-// import React, { useEffect, useState } from "react";
-// import { useParams, useRouter } from "next/navigation";
-// import { useForm } from "react-hook-form";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { z } from "zod";
-// import SnackIconSvg from "@/components/svg/SnackIconSvg";
-// import { useAuth } from "@/providers/AuthProvider";
-// import { getInviteApi, signUpWithInviteApi, type InviteInfo } from "@/lib/api/invite.api";
+// 리액트 훅폼 스키마 정의
+const signUpSchema = z
+  .object({
+    password: z.string().min(8, "8자 이상 입력해주세요."),
+    // 개발 완료시 다시 포함시켜두기
+    // .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])/, "비밀번호는 영문과 숫자를 포함해야 합니다."),
+    passwordConfirm: z.string(),
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: "비밀번호가 일치하지 않습니다.",
+    path: ["passwordConfirm"],
+  });
 
-// // Zod 스키마 정의
-// const signUpSchema = z
-//   .object({
-//     password: z
-//       .string()
-//       .min(8, "비밀번호는 최소 8자 이상이어야 합니다.")
-//       .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])/, "비밀번호는 영문과 숫자를 포함해야 합니다."),
-//     passwordConfirm: z.string(),
-//   })
-//   .refine((data) => data.password === data.passwordConfirm, {
-//     message: "비밀번호가 일치하지 않습니다.",
-//     path: ["passwordConfirm"],
-//   });
+type TSignUpFormData = z.infer<typeof signUpSchema>;
 
-// type SignUpFormData = z.infer<typeof signUpSchema>;
+export default function InviteSignUpPage() {
+  const params = useParams();
+  const router = useRouter();
+  const inviteId = params.inviteId as string;
 
-// export default function InviteSignUpPage() {
-//   const params = useParams();
-//   const router = useRouter();
-//   const inviteId = params.inviteId as string;
-//   const { signUp } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [inviteInfo, setInviteInfo] = useState<TInviteInfo | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
-//   const [inviteInfo, setInviteInfo] = useState<InviteInfo | null>(null);
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [error, setError] = useState<string | null>(null);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting, isValid },
+    setError: setFormError,
+  } = useForm<TSignUpFormData>({
+    resolver: zodResolver(signUpSchema),
+    mode: "onChange",
+  });
 
-//   // react-hook-form 설정
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors, isSubmitting },
-//     setError: setFormError,
-//   } = useForm<SignUpFormData>({
-//     resolver: zodResolver(signUpSchema),
-//     mode: "onChange",
-//   });
+  const [passwordInput, passwordConfirmInput] = watch("password", "passwordConfirm");
 
-//   // 초대 정보 가져오기
-//   useEffect(() => {
-//     const fetchInviteInfo = async () => {
-//       try {
-//         setIsLoading(true);
-//         // TODO: 실제 API 호출로 교체
-//         // const data = await getInviteApi(inviteId);
-//         // setInviteInfo(data);
+  // 초대 정보 가져오기
+  useEffect(() => {
+    const fetchInviteInfo = async () => {
+      try {
+        setIsLoading(true);
+        const data: TInviteInfo = await getInviteApi(inviteId);
+        setInviteInfo(data);
+      } catch (error) {
+        setError(error instanceof Error ? error.message : "초대 링크가 유효하지 않습니다.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    //  inviteId 정하기
+    if (inviteId) {
+      fetchInviteInfo();
+    }
+  }, [inviteId]);
 
-//         // 임시 데이터 - 테스트용 inviteId들
-//         const testInviteIds = ["test-123", "invite-456", "mock-789"];
+  // react hook form 회원가입 처리
+  const onSubmit = async (data: TSignUpFormData) => {
+    // ??
+    if (!inviteInfo) return;
 
-//         if (!testInviteIds.includes(inviteId)) {
-//           throw new Error("테스트용 inviteId가 아닙니다. test-123, invite-456, mock-789 중 하나를 사용하세요.");
-//         }
+    try {
+      await signUpWithInviteApi(inviteId, data.password, data.passwordConfirm);
+      router.push("/products");
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "회원가입에 실패했습니다.");
+    }
+  };
 
-//         // 다양한 상태 테스트
-//         let mockInviteInfo: InviteInfo;
+  return (
+    // top parent
+    <div className="flex flex-col items-center justify-center gap-[46px] sm:gap-0">
+      {/* mobile */}
+      {/* logo + intro */}
+      <div className="flex flex-col items-center justify-center w-full max-w-[480px] pt-[48px] sm:max-w-[600px] sm:py-[160px]">
+        <div className="flex justify-center w-full h-[140px] py-[38.18px] px-[50.92px]">
+          <Link href="/">
+            <SnackIconSvg className="w-[225.16px] h-[63.64px] sm:w-[344px] sm:h-[97.3px]" />
+          </Link>
+        </div>
+        <div className="flex flex-col items-center justify-center gap-[10px] ">
+          <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle ">
+            {inviteInfo?.name} 님, 만나서 반갑습니다.
+          </h1>
+          <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
+            비밀번호를 입력해 회원가입을 완료해주세요.
+          </p>
+        </div>
+      </div>
 
-//         if (inviteId === "expired-123") {
-//           // 만료된 초대 테스트
-//           mockInviteInfo = {
-//             id: inviteId,
-//             email: "expired@example.com",
-//             name: "만료된 초대",
-//             role: "USER",
-//             companyId: 1,
-//             company: { id: 1, name: "테스트 회사" },
-//             expiresAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1일 전
-//             isUsed: false,
-//           };
-//         } else if (inviteId === "used-123") {
-//           // 이미 사용된 초대 테스트
-//           mockInviteInfo = {
-//             id: inviteId,
-//             email: "used@example.com",
-//             name: "사용된 초대",
-//             role: "USER",
-//             companyId: 1,
-//             company: { id: 1, name: "테스트 회사" },
-//             expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-//             isUsed: true,
-//           };
-//         } else {
-//           // 정상 초대
-//           mockInviteInfo = {
-//             id: inviteId,
-//             email: "invited@example.com",
-//             name: "김철수",
-//             role: "USER",
-//             companyId: 1,
-//             company: {
-//               id: 1,
-//               name: "테스트 회사",
-//             },
-//             expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-//             isUsed: false,
-//           };
-//         }
+      {/* signup content - form, register button, link to login */}
+      <div className="flex flex-col w-full items-center justify-center">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full mb-[30px] gap-[20px]">
+          {/* 이메일 */}
+          <div className="flex flex-col justify-between w-full h-[56px] py-2 px-1 border-b border-primary-200">
+            <label className="text-primary-500 text-xs/[15px] font-normal tracking-tight">이메일</label>
+            <input
+              type="email"
+              value={inviteInfo?.email || ""}
+              readOnly
+              className="outline-none text-base/[20px] tracking-tight text-primary-300"
+            />
+          </div>
+          {/* 비밀번호 input wrapper*/}
+          <div className="flex flex-col gap-1">
+            <div
+              className={clsx(
+                "relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b",
+                errors.password ? "border-error-500" : "border-primary-600",
+              )}
+            >
+              <div className="flex flex-col justify-between items-start gap-[5px]">
+                <label
+                  className={clsx(
+                    "text-primary-500 text-xs/[15px] font-normal tracking-tight",
+                    !passwordInput && "hidden",
+                  )}
+                >
+                  비밀번호
+                </label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  {...register("password")}
+                  placeholder="비밀번호를 입력하세요"
+                  className="text-base/[20px] text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight"
+                />
+              </div>
+              {/* 비밀번호 보임토글 */}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-1 bottom-2"
+              >
+                {showPassword ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
+              </button>
+            </div>
+            {/* 에러 메세지 */}
+            {errors.password && (
+              <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.password.message}</span>
+            )}
+          </div>
 
-//         setInviteInfo(mockInviteInfo);
-//       } catch (error) {
-//         setError(error instanceof Error ? error.message : "초대 링크가 유효하지 않습니다.");
-//       } finally {
-//         setIsLoading(false);
-//       }
-//     };
+          {/* 비밀번호 확인 input wrapper*/}
+          <div className="flex flex-col gap-1">
+            <div className="relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b border-primary-600">
+              <div className="flex flex-col justify-between items-start gap-[5px]">
+                <label
+                  className={clsx(
+                    "text-primary-500 text-xs/[15px] font-normal tracking-tight",
+                    !passwordConfirmInput && "hidden",
+                  )}
+                >
+                  비밀번호 확인
+                </label>
+                <input
+                  type={showPasswordConfirm ? "text" : "password"}
+                  {...register("passwordConfirm")}
+                  placeholder="비밀번호를 다시 입력하세요"
+                  className="text-base/[20px] text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight"
+                />
+              </div>
+              {/* 비밀번호 확인 보임토글 */}
+              <button
+                type="button"
+                onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                className="cursor-pointer absolute right-1 bottom-2"
+              >
+                {showPasswordConfirm ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
+              </button>
+            </div>
+            {/* 에러 메세지 */}
+            {errors.passwordConfirm && (
+              <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.passwordConfirm.message}</span>
+            )}
+          </div>
+        </form>
 
-//     if (inviteId) {
-//       fetchInviteInfo();
-//     }
-//   }, [inviteId]);
-
-//   // 회원가입 처리
-//   const onSubmit = async (data: SignUpFormData) => {
-//     if (!inviteInfo) return;
-
-//     try {
-//       // TODO: 실제 API 호출로 교체
-//       // await signUpWithInviteApi(inviteId, data.password);
-
-//       console.log("회원가입 성공:", {
-//         email: inviteInfo.email,
-//         name: inviteInfo.name,
-//         role: inviteInfo.role,
-//         companyId: inviteInfo.companyId,
-//         password: data.password,
-//       });
-
-//       // 회원가입 성공 후 리다이렉트
-//       // router.push('/login');
-//     } catch (error) {
-//       setFormError("root", {
-//         type: "manual",
-//         message: error instanceof Error ? error.message : "회원가입에 실패했습니다.",
-//       });
-//     }
-//   };
-
-//   if (isLoading) {
-//     return (
-//       <div className="flex flex-col items-center justify-center px-[24px] pt-[60px] gap-[46px] sm:px-[72px] sm:pt-[119px] sm:gap-0">
-//         <div className="flex flex-col items-center justify-center w-full">
-//           <div className="px-[60px] py-[38px]">
-//             <SnackIconSvg className="w-[225px] h-[63px] sm:w-[344px] sm:h-[97px]" />
-//           </div>
-//           <p>초대 정보를 확인 중입니다...</p>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   if (error || !inviteInfo) {
-//     return (
-//       <div className="flex flex-col items-center justify-center px-[24px] pt-[60px] gap-[46px] sm:px-[72px] sm:pt-[119px] sm:gap-0">
-//         <div className="flex flex-col items-center justify-center w-full">
-//           <div className="px-[60px] py-[38px]">
-//             <SnackIconSvg className="w-[225px] h-[63px] sm:w-[344px] sm:h-[97px]" />
-//           </div>
-//           <h1 className="text-red-500 mb-4">오류가 발생했습니다</h1>
-//           <p className="text-gray-600">{error || "초대 정보를 찾을 수 없습니다."}</p>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   if (inviteInfo.isUsed) {
-//     return (
-//       <div className="flex flex-col items-center justify-center px-[24px] pt-[60px] gap-[46px] sm:px-[72px] sm:pt-[119px] sm:gap-0">
-//         <div className="flex flex-col items-center justify-center w-full">
-//           <div className="px-[60px] py-[38px]">
-//             <SnackIconSvg className="w-[225px] h-[63px] sm:w-[344px] sm:h-[97px]" />
-//           </div>
-//           <h1 className="text-red-500 mb-4">이미 사용된 초대 링크입니다</h1>
-//           <p className="text-gray-600">이 초대 링크는 이미 사용되었습니다.</p>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   const isExpired = new Date(inviteInfo.expiresAt) < new Date();
-//   if (isExpired) {
-//     return (
-//       <div className="flex flex-col items-center justify-center px-[24px] pt-[60px] gap-[46px] sm:px-[72px] sm:pt-[119px] sm:gap-0">
-//         <div className="flex flex-col items-center justify-center w-full">
-//           <div className="px-[60px] py-[38px]">
-//             <SnackIconSvg className="w-[225px] h-[63px] sm:w-[344px] sm:h-[97px]" />
-//           </div>
-//           <h1 className="text-red-500 mb-4">만료된 초대 링크입니다</h1>
-//           <p className="text-gray-600">이 초대 링크는 만료되었습니다.</p>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="flex flex-col items-center justify-center px-[24px] pt-[60px] gap-[46px] sm:px-[72px] sm:pt-[119px] sm:gap-0">
-//       {/* logo + intro */}
-//       <div className="flex flex-col items-center justify-center w-full">
-//         <div className="px-[60px] py-[38px]">
-//           <SnackIconSvg className="w-[225px] h-[63px] sm:w-[344px] sm:h-[97px]" />
-//         </div>
-//         <h1 className="text-2xl font-bold mb-2">{inviteInfo.name} 님, 만나서 반갑습니다.</h1>
-//         <p className="text-gray-600 mb-4">비밀번호를 입력해 회원가입을 완료해주세요.</p>
-//         <div className="bg-gray-50 p-4 rounded-lg mb-6">
-//           <p className="text-sm text-gray-600">
-//             <strong>이메일:</strong> {inviteInfo.email}
-//             <br />
-//             <strong>회사:</strong> {inviteInfo.company.name}
-//             <br />
-//             <strong>역할:</strong> {inviteInfo.role}
-//           </p>
-//         </div>
-//       </div>
-
-//       {/* signup form */}
-//       <div className="flex flex-col w-full max-w-md">
-//         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-//           <div>
-//             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-//               비밀번호
-//             </label>
-//             <input
-//               type="password"
-//               id="password"
-//               {...register("password")}
-//               className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-//                 errors.password ? "border-red-500" : "border-gray-300"
-//               }`}
-//             />
-//             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
-//           </div>
-
-//           <div>
-//             <label htmlFor="passwordConfirm" className="block text-sm font-medium text-gray-700 mb-1">
-//               비밀번호 확인
-//             </label>
-//             <input
-//               type="password"
-//               id="passwordConfirm"
-//               {...register("passwordConfirm")}
-//               className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-//                 errors.passwordConfirm ? "border-red-500" : "border-gray-300"
-//               }`}
-//             />
-//             {errors.passwordConfirm && <p className="text-red-500 text-sm mt-1">{errors.passwordConfirm.message}</p>}
-//           </div>
-
-//           {errors.root && <div className="text-red-500 text-sm">{errors.root.message}</div>}
-
-//           <button
-//             type="submit"
-//             disabled={isSubmitting}
-//             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
-//           >
-//             {isSubmitting ? "처리 중..." : "회원가입 완료"}
-//           </button>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// }
+        <Button
+          type="primary"
+          label={isSubmitting ? "처리 중..." : "가입하기"}
+          className={clsx(
+            "w-full h-[64px] mb-[24px] sm:mb-[30px]",
+            isValid && !isSubmitting ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
+          )}
+          onClick={isValid && !isSubmitting ? handleSubmit(onSubmit) : undefined}
+        />
+        <p className="text-primary-500 text-base/[20px] tracking-tight">
+          이미 계정이 있으신가요?{" "}
+          <Link href="/login">
+            <span className="text-primary-950 text-base/[20px] tracking-tight font-bold underline decoration-primary-950 underline-offset-2">
+              로그인
+            </span>
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+}
