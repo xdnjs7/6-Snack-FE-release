@@ -87,17 +87,17 @@ export default function InviteSignUpPage() {
 
   return (
     // top parent
-    <div className="flex flex-col items-center justify-center gap-[46px] sm:gap-0">
+    <div className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[59px] sm:pt-[119px]">
       {/* mobile */}
       {/* logo + intro */}
-      <div className="sm:relative flex flex-col items-center justify-center w-full max-w-[480px] sm:max-w-[600px]">
+      <div className="sm:absolute sm:top-0 flex flex-col items-center justify-center w-full max-w-[480px] sm:max-w-[600px]">
         <div className="flex justify-center items-center w-full sm:max-w-[500px] h-[140px] sm:h-[214px] py-[38.18px] sm:py-[58.4px] px-[50.92px] sm:px-[77.86px]">
           <Link href="/">
             <SnackIconSvg className="w-[225.16px] h-[63.64px] sm:w-[344px] sm:h-[97.3px]" />
           </Link>
         </div>
         <div className="sm:hidden">
-          <div className="flex flex-col items-center justify-center gap-[10px] ">
+          <div className="flex flex-col items-center justify-center gap-[10px]">
             <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle ">
               {inviteInfo?.name} 님, 만나서 반갑습니다.
             </h1>
