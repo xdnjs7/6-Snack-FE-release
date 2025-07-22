@@ -82,121 +82,79 @@ const SignUpPage = () => {
   ];
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-white">
-      <div
-        className={clsx(
-          "w-96 sm:w-[600px] md:w-[600px] lg:w-[600px]",
-          "pt-6 sm:pt-[123px] lg:pt-[97px]",
-          "flex flex-col items-center",
-          "relative",
-        )}
-      >
+    <div className="flex justify-center">
+      <div className="flex flex-col justify-center w-full max-w-[480px] pt-[48px] sm:max-w-[600px] sm:py-[160px]">
         {/* 로고 영역 */}
-        <div className={clsx("w-80 h-36 sm:w-[500px] sm:h-52", "relative overflow-hidden mb-6")}>
-          <div>
-            <Link href="/">
-              <SnackIconSvg className="w-[225.16px] h-[63.64px] sm:w-[344px] sm:h-[97.3px]" />
-            </Link>
-          </div>
+        <div className="flex justify-center w-full h-[140px] py-[38.18px] px-[50.92px] sm:h-auto sm:pb-0">
+          <Link href="/">
+            <SnackIconSvg className="w-[225.16px] h-[63.64px] sm:w-[344px] sm:h-[97.3px]" />
+          </Link>
         </div>
         {/* 폼 컨테이너 */}
-        <div
-          className={clsx(
-            "w-80 sm:w-[500px]",
-            "px-0 py-0 sm:px-14 sm:py-10",
-            "bg-white rounded-sm",
-            "shadow-none sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)]",
-            "outline-none sm:outline sm:outline-1 sm:outline-offset-[-1px]",
-            "flex flex-col items-start gap-5",
-          )}
-        >
+        <div className="flex flex-col justify-center max-w-[600px] sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.1)] sm:py-[40px] sm:px-[60px]">
           {/* 타이틀/설명 */}
           <div className="flex flex-col items-start gap-2.5 w-full">
-            <div className="text-lg sm:text-2xl font-bold font-suit text-stone-900 text-center w-full">
+            <div className="font-bold text-[20px]/[25px] tracking-tight text-[#1f1f1f] sm:text-[24px]/[30px] w-full text-center">
               기업 담당자 회원가입
             </div>
-            <div className="text-sm sm:text-base font-normal font-suit text-stone-500 text-center w-full">
+            <div className="text-[14px] sm:text-[16px] font-normal text-[#999999] w-full text-center">
               * 그룹 내 유저는 기업 담당자의
               <br className="sm:hidden" />
               초대 메일을 통해 가입이 가능합니다.
             </div>
           </div>
           {/* 폼 */}
-          <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col items-center gap-6">
-            <div className="w-full flex flex-col gap-7">
-              <div className="w-full flex flex-col gap-8">
-                <div className="w-full flex flex-col gap-5">
-                  {formFields.map((field) => (
-                    <div
-                      key={field.id}
-                      className={clsx(
-                        "self-stretch h-14 px-1 py-2 border-b",
-                        "border-stone-500",
-                        "inline-flex justify-between items-center overflow-hidden",
-                        errors[field.name as keyof TSignUpForm] && "border-red-500",
-                      )}
-                      data-show-eye={field.type === "password"}
-                      data-show-floating-label="true"
-                      data-size="sm"
-                      data-state={errors[field.name as keyof TSignUpForm] ? "error" : "normal"}
-                    >
-                      <input
-                        type={field.type}
-                        id={field.id}
-                        placeholder={field.label}
-                        {...register(field.name as keyof TSignUpForm)}
-                        className={clsx(
-                          "flex-1 bg-transparent outline-none border-none",
-                          "text-zinc-500 text-base font-normal font-suit",
-                          "placeholder:text-zinc-500",
-                        )}
-                        autoComplete={field.type === "password" ? "new-password" : "off"}
-                      />
-                      {/* eye 아이콘 (비밀번호 입력란만) */}
-                      {field.type === "password" && (
-                        <div className="flex items-center gap-2">
-                          <div className="w-4 h-4 relative overflow-hidden">
-                            <div className="w-3.5 h-3 left-[1.19px] top-[2.33px] absolute bg-neutral-600 rounded" />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* 에러 메시지 */}
-              {formFields.map((field) =>
-                errors[field.name as keyof TSignUpForm] ? (
-                  <p key={field.id} className="text-red-500 text-xs mt-1 ml-2">
-                    {errors[field.name as keyof TSignUpForm]?.message}
-                  </p>
-                ) : null,
-              )}
-              {/* 가입하기 버튼 */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="relative flex flex-col justify-center items-center w-full gap-[20px] mt-[20px]"
+          >
+            {formFields.map((field) => (
+              <input
+                key={field.id}
+                type={field.type}
+                id={field.id}
+                placeholder={field.label}
+                {...register(field.name as keyof TSignUpForm)}
                 className={clsx(
-                  "self-stretch h-16 p-4",
-                  isSubmitting ? "bg-neutral-200 text-zinc-400" : "bg-neutral-800 text-white",
-                  "rounded-sm inline-flex justify-center items-center",
-                  "text-base font-bold font-suit",
-                  "transition-colors duration-200",
-                  isSubmitting && "opacity-70 cursor-not-allowed",
+                  "w-full max-w-[480px] h-[56px] py-[8px] px-[4px] outline-none border-b-1 border-primary-600",
+                  "placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
+                  errors[field.name as keyof TSignUpForm] && "border-red-500",
                 )}
-                data-size="Default"
-                data-state={isSubmitting ? "disabled" : "active"}
-                data-type="filled"
-              >
-                {isSubmitting ? "가입 중..." : "가입하기"}
-              </button>
-            </div>
+                autoComplete={field.type === "password" ? "new-password" : "off"}
+              />
+            ))}
+            {/* 에러 메시지 */}
+            {formFields.map((field) =>
+              errors[field.name as keyof TSignUpForm] ? (
+                <p key={field.id} className="text-red-500 text-xs mt-1 ml-2 w-full max-w-[480px]">
+                  {errors[field.name as keyof TSignUpForm]?.message}
+                </p>
+              ) : null,
+            )}
+            {/* 가입하기 버튼 */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={clsx(
+                "w-full max-w-[480px] h-[64px] mt-[30px] mb-[24px] font-bold text-[16px]/[20px]",
+                isSubmitting ? "bg-neutral-200 text-zinc-400" : "bg-neutral-800 text-white",
+                "rounded-sm inline-flex justify-center items-center transition-colors duration-200",
+                isSubmitting && "opacity-70 cursor-not-allowed",
+              )}
+              data-size="Default"
+              data-state={isSubmitting ? "disabled" : "active"}
+              data-type="filled"
+            >
+              {isSubmitting ? "가입 중..." : "가입하기"}
+            </button>
             {/* 하단 안내 */}
-            <div className="inline-flex justify-center items-center gap-1 w-full mt-2">
-              <div className="text-neutral-400 text-base font-normal font-suit">이미 계정이 있으신가요?</div>
+            <div className="flex justify-center items-center gap-[4px] w-full mt-2">
+              <div className="font-normal text-[16px]/[20px] tracking-tight text-[#999999]">
+                이미 계정이 있으신가요?{" "}
+              </div>
               <a
                 href="/login"
-                className="text-neutral-800 text-base font-bold font-suit underline hover:text-neutral-600"
+                className="font-bold text-[16px]/[20px] tracking-tight text-primary-950 underline hover:text-neutral-600"
               >
                 로그인
               </a>
