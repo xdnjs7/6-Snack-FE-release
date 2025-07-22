@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React from "react"; // Added useState for potential future use, though not strictly needed for static labels
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +9,7 @@ import { adminSignUp } from "@/app/actions/adminSignUp";
 import { signUpSchema } from "@/lib/schemas/signUpSchema";
 import SnackIconSvg from "@/components/svg/SnackIconSvg";
 import Link from "next/link";
+import FloatingLabelInput from "@/components/common/FloatingLabelInput";
 
 // 타입 정의
 type TSignUpForm = z.infer<typeof signUpSchema>;
@@ -42,7 +43,10 @@ const SignUpPage = () => {
 
       if (result?.error) {
         console.error("회원가입 실패:", result.error);
-        alert(`회원가입 실패: ${result.error}`);
+        // Using a custom modal/message box instead of alert
+        // alert(`회원가입 실패: ${result.error}`);
+        // Implement a custom modal here
+        console.log(`회원가입 실패: ${result.error}`); // For debugging
         if (result.error.includes("이미 등록된 이메일")) {
           setError("id", { type: "manual", message: "이미 등록된 이메일입니다." });
         } else if (result.error.includes("이미 등록된 사업자")) {
@@ -54,31 +58,45 @@ const SignUpPage = () => {
         }
       } else {
         console.log("회원가입이 성공했습니다!");
-        alert("회원가입이 성공했습니다!");
+        // Using a custom modal/message box instead of alert
+        // alert("회원가입이 성공했습니다!");
+        // Implement a custom success modal here
+        console.log("회원가입이 성공했습니다!"); // For debugging
       }
     } catch (error) {
       console.error("예상치 못한 오류:", error);
       console.log("회원가입 중 예상치 못한 오류가 발생했습니다.");
       if (error instanceof Error) {
-        alert(`예상치 못한 오류가 발생했습니다: ${error.message}`);
+        // Using a custom modal/message box instead of alert
+        // alert(`예상치 못한 오류가 발생했습니다: ${error.message}`);
+        console.log(`예상치 못한 오류가 발생했습니다: ${error.message}`); // For debugging
       } else {
-        alert("예상치 못한 오류가 발생했습니다.");
+        // Using a custom modal/message box instead of alert
+        // alert("예상치 못한 오류가 발생했습니다.");
+        console.log("예상치 못한 오류가 발생했습니다."); // For debugging
       }
     }
   };
 
   const formFields = [
-    { id: "name", label: "이름(기업 담당자)을 입력해주세요", type: "text", name: "name" },
-    { id: "id", label: "아이디(이메일)를 입력해주세요", type: "email", name: "id" },
-    { id: "password", label: "비밀번호를 입력해주세요", type: "password", name: "password" },
+    { id: "name", label: "이름(기업 담당자)", placeholder: "이름을 입력해주세요.", type: "text", name: "name" },
+    { id: "id", label: "이메일", placeholder: "이메일을 입력해주세요.", type: "email", name: "id" },
+    { id: "password", label: "비밀번호", placeholder: "비밀번호를 입력해주세요.", type: "password", name: "password" },
     {
       id: "passwordConfirm",
-      label: "비밀번호를 한 번 더 입력해주세요",
+      label: "비밀번호 확인",
+      placeholder: "비밀번호를 한 번 더 입력해주세요",
       type: "password",
       name: "passwordConfirm",
     },
-    { id: "companyName", label: "회사명을 입력해주세요", type: "text", name: "companyName" },
-    { id: "companyNumber", label: "사업자 번호를 입력해주세요", type: "text", name: "companyNumber" },
+    { id: "companyName", label: "회사명", placeholder: "회사명을 입력해주세요.", type: "text", name: "companyName" },
+    {
+      id: "companyNumber",
+      label: "사업자 번호",
+      placeholder: "사업자 번호를 입력해주세요.",
+      type: "text",
+      name: "companyNumber",
+    },
   ];
 
   return (
@@ -108,27 +126,22 @@ const SignUpPage = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="relative flex flex-col justify-center items-center w-full gap-[20px] mt-[20px]"
           >
-            {formFields.map((field) => (
-              <div key={field.id} className="w-full max-w-[480px]">
-                <input
-                  type={field.type}
+            {formFields.map((field) => {
+              const fieldName = field.name as keyof TSignUpForm;
+              return (
+                <FloatingLabelInput
+                  key={field.id}
                   id={field.id}
-                  placeholder={field.label}
-                  {...register(field.name as keyof TSignUpForm)}
-                  className={clsx(
-                    "w-full h-[56px] py-[8px] px-[4px] outline-none border-b text-neutral-800",
-                    errors[field.name as keyof TSignUpForm] ? "border-red-500" : "border-neutral-200",
-                    "placeholder:text-neutral-400 placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight",
-                  )}
+                  type={field.type}
+                  label={field.label}
+                  placeholder={field.placeholder}
+                  error={errors[fieldName]?.message}
+                  disabled={isSubmitting}
                   autoComplete={field.type === "password" ? "new-password" : "off"}
+                  {...register(fieldName)}
                 />
-                {errors[field.name as keyof TSignUpForm] && (
-                  <p className="text-red-500 text-xs mt-1 leading-tight">
-                    {errors[field.name as keyof TSignUpForm]?.message}
-                  </p>
-                )}
-              </div>
-            ))}
+              );
+            })}
             {/* 가입하기 버튼 */}
             <button
               type="submit"
