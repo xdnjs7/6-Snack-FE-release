@@ -21,13 +21,15 @@ const OrderHistoryPage = () => {
       )}
     >
       {/* 상단 헤더 (시안: PC/태블릿/모바일 공통) */}
-      <header className="w-full px-6 py-4 sm:px-6 sm:py-7 md:px-24 md:py-8 bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg flex justify-between items-center">
+      <header className="w-full px-6 py-4 sm:px-6 sm:py-7 md:px-24 md:py-8 bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg flex items-center justify-between gap-4 z-10">
         <div className="flex items-center gap-4">
           <div className="w-24 h-11 relative overflow-hidden">
             <div className="w-16 h-5 left-[16px] top-[12px] absolute bg-neutral-800" />
           </div>
         </div>
-        <div className="text-lg sm:text-2xl font-bold font-suit">구매 내역 확인</div>
+        <div className="flex-1 flex justify-center">
+          <div className="text-lg sm:text-2xl font-bold font-suit">구매 내역 확인</div>
+        </div>
         <div className="flex items-center gap-5">
           <div className="w-6 h-6 relative overflow-hidden">
             <div className="w-4 h-3 left-[4.06px] top-[8.30px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-neutral-800" />

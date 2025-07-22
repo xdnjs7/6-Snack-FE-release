@@ -217,20 +217,20 @@ const PurchaseList: React.FC = () => {
           ) : (
             <div className="flex flex-col gap-4">
               {currentItems.map((item) => (
-                <div key={item.id} className="bg-neutral-100 rounded p-4 flex flex-col gap-2">
-                  <div className="flex justify-between items-center border-b border-neutral-200 pb-2 mb-2">
+                <div key={item.id} className="bg-neutral-100 rounded-[12px] p-5 flex flex-col gap-3 shadow-sm">
+                  <div className="flex justify-between items-center border-b border-neutral-200 pb-3 mb-2">
                     <div className="text-neutral-800 text-base font-bold font-suit">{item.item}</div>
-                    <div className="text-neutral-800 text-base font-extrabold font-suit">{item.amount}</div>
+                    <div className="text-neutral-800 text-lg font-extrabold font-suit">{item.amount}</div>
                   </div>
-                  <div className="flex flex-col gap-1">
+                  <div className="flex flex-col gap-2">
                     <div className="flex justify-between items-center">
                       <span className="text-neutral-800 text-sm font-normal font-suit">구매 요청일</span>
                       <span className="text-zinc-800 text-sm font-bold font-suit">{item.requestDate}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-neutral-800 text-sm font-normal font-suit">요청인</span>
-                      <span className="text-zinc-800 text-sm font-bold font-suit flex items-center gap-2">
-                        {item.requester}
+                      <span className="flex items-center gap-2">
+                        <span className="text-zinc-800 text-sm font-bold font-suit">{item.requester}</span>
                         <span
                           className={clsx(
                             "px-2 py-1 rounded-[100px] text-xs font-bold font-suit",
@@ -260,49 +260,45 @@ const PurchaseList: React.FC = () => {
           <table className="min-w-full divide-y divide-[--color-primary-100]">
             <thead className="bg-[--color-primary-50]">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider">
-                  구매 요청일
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider">
-                  요청인
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider">
-                  구매 품목
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider">
-                  금액
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider">
-                  구매 승인일
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-[--color-primary-700] uppercase tracking-wider">
-                  담당자
-                </th>
+                <th className="px-6 py-4 text-left text-base font-bold text-zinc-500 font-suit">구매 요청일</th>
+                <th className="px-6 py-4 text-left text-base font-bold text-zinc-500 font-suit">요청인</th>
+                <th className="px-6 py-4 text-left text-base font-bold text-zinc-500 font-suit">구매 품목</th>
+                <th className="px-6 py-4 text-left text-base font-bold text-zinc-500 font-suit">금액</th>
+                <th className="px-6 py-4 text-left text-base font-bold text-zinc-500 font-suit">구매 승인일</th>
+                <th className="px-6 py-4 text-left text-base font-bold text-zinc-500 font-suit">담당자</th>
               </tr>
             </thead>
-            <tbody className="bg-[--color-white] divide-y divide-[--color-primary-100]">
+            <tbody className="bg-white divide-y divide-[--color-primary-100]">
               {currentItems.map((item) => (
-                <tr key={item.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-[--color-primary-900]">{item.requestDate}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-[--color-primary-900]">
-                    {item.requester}{" "}
-                    <span
-                      className={clsx(
-                        "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
-                        item.status === "요청"
-                          ? "bg-[--color-secondary-100] text-[--color-secondary-500]"
-                          : "bg-[--color-primary-50] text-[--color-primary-700]",
-                      )}
-                    >
-                      {item.status}
+                <tr key={item.id} className="h-20 align-middle">
+                  <td className="px-6 py-4 whitespace-nowrap text-base text-neutral-800 font-normal font-suit">
+                    {item.requestDate}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-base text-neutral-800 font-normal font-suit">
+                    <span className="flex items-center gap-2">
+                      <span>{item.requester}</span>
+                      <span
+                        className={clsx(
+                          "px-2 py-1 rounded-[100px] text-xs font-bold font-suit",
+                          item.status === "요청" ? "bg-blue-50 text-blue-500" : "bg-gray-100 text-gray-500",
+                        )}
+                      >
+                        {item.status}
+                      </span>
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-pre-wrap text-sm text-[--color-primary-900]">{item.item}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-[--color-primary-900]">{item.amount}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-[--color-primary-900]">
+                  <td className="px-6 py-4 whitespace-pre-wrap text-base text-neutral-800 font-normal font-suit">
+                    {item.item}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-base text-neutral-800 font-extrabold font-suit">
+                    {item.amount}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-base text-neutral-800 font-normal font-suit">
                     {item.approvalDate}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-[--color-primary-900]">{item.manager}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-base text-neutral-800 font-normal font-suit">
+                    {item.manager}
+                  </td>
                 </tr>
               ))}
             </tbody>
