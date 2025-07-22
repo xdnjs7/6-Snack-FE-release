@@ -374,8 +374,15 @@ const PurchaseList: React.FC = () => {
               currentPage === 1 && "opacity-50 cursor-not-allowed",
             )}
           >
-            <span className="w-6 h-6 relative inline-block">
-              <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <span className="w-6 h-6 flex items-center justify-center">
+              <svg
+                width="8"
+                height="14"
+                viewBox="0 0 8 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="block mx-auto my-auto"
+              >
                 <path d="M7 13L1 7L7 1" stroke="#A3A3A3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </span>
@@ -390,8 +397,15 @@ const PurchaseList: React.FC = () => {
             )}
           >
             Next
-            <span className="w-6 h-6 relative inline-block">
-              <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <span className="w-6 h-6 flex items-center justify-center">
+              <svg
+                width="8"
+                height="14"
+                viewBox="0 0 8 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="block mx-auto my-auto"
+              >
                 <path d="M1 1L7 7L1 13" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </span>
