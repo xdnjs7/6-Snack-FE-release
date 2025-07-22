@@ -38,7 +38,7 @@ export default function GuestHeader() {
       <Link href="/">
         <SnackIconSvg className="w-[102.75px] h-[44px]" />
       </Link>
-      <HamburgerMenuIconSvg className="md:hidden text-primary-400" onClick={handleMenuClick} />
+      <HamburgerMenuIconSvg className="sm:hidden text-primary-400" onClick={handleMenuClick} />
 
       <SideMenu
         items={menuItems}

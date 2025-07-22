@@ -1,3 +1,5 @@
+import { cookieFetch } from "./fetchClient.api";
+
 export const loginApi = async (email: string, password: string) => {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
   const response = await fetch(`${BASE_URL}/auth/login`, {
@@ -27,3 +29,25 @@ export const registerApi = async (_name: string, _email: string, _password: stri
   throw new Error("일반 회원가입은 초대 링크가 필요합니다");
 };
 
+export type TSignUpWithInviteResponse = {
+  message: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+    role: string;
+  };
+};
+export const signUpWithInviteApi = async (
+  inviteId: string,
+  password: string,
+  passwordConfirm: string,
+): Promise<TSignUpWithInviteResponse> => {
+  return cookieFetch(`/auth/signup/${inviteId}`, {
+    method: "POST",
+    body: JSON.stringify({
+      password,
+      passwordConfirm,
+    }),
+  });
+};
