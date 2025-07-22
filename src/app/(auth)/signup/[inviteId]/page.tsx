@@ -43,7 +43,7 @@ export default function InviteSignUpPage() {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
     setError: setFormError,
   } = useForm<TSignUpFormData>({
     resolver: zodResolver(signUpSchema),
@@ -194,12 +194,16 @@ export default function InviteSignUpPage() {
           type="primary"
           label={isSubmitting ? "처리 중..." : "가입하기"}
           className={clsx(
-            "w-full h-[64px] mb-[24px] sm:mb-[30px] bg-primary-950 text-primary-50",
-            isSubmitting ? "bg-primary-100 text-primary-300" : "",
+            "w-full h-[64px] mb-[24px] sm:mb-[30px]",
+            isValid && !isSubmitting ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
           )}
+          onClick={isValid && !isSubmitting ? handleSubmit(onSubmit) : undefined}
         />
-        <p>
-          이미 계정이 있으신가요? <span>로그인</span>
+        <p className="text-primary-500 text-base/[20px] tracking-tight">
+          이미 계정이 있으신가요?{" "}
+          <span className="text-primary-950 text-base/[20px] tracking-tight font-bold underline decoration-primary-950 underline-offset-2">
+            로그인
+          </span>
         </p>
       </div>
     </div>
