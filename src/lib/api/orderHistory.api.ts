@@ -9,6 +9,55 @@ export type TProduct = {
   quantity: number;
 };
 
+// 내 구매 요청 상세 조회용 타입 (실제 API 응답 구조)
+export type TReceipt = {
+  id: number;
+  productName: string;
+  price: number;
+  imageUrl: string;
+  quantity: number;
+};
+
+export type TOrderedItem = {
+  id: number;
+  orderId: number;
+  receiptId: number;
+  productId: number;
+  receipt: TReceipt;
+};
+
+export type TUser = {
+  id: string;
+  email: string;
+  name: string;
+  password: string;
+  companyId: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  hashedRefreshToken: string;
+  role: string;
+};
+
+export type TMyOrderDetail = {
+  id: number;
+  userId: string;
+  approver: string | null;
+  adminMessage: string | null;
+  requestMessage: string | null;
+  totalPrice: number;
+  createdAt: string;
+  updatedAt: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELED';
+  user: TUser;
+  orderedItems: TOrderedItem[];
+};
+
+export type TMyOrderDetailResponse = {
+  message: string;
+  data: TMyOrderDetail;
+};
+
 export type TBudget = {
   currentMonthBudget: number | null;
   currentMonthExpense: number | null;
@@ -77,6 +126,16 @@ export const getOrderDetail = async (
     // 백엔드에서 직접 TOrderHistory 객체를 반환하므로 data 필드 접근 제거
     const response: TOrderHistory = await cookieFetch(url);
     return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 내 구매 요청 상세 조회
+export const getMyOrderDetail = async (orderId: string): Promise<TMyOrderDetail> => {
+  try {
+    const response: TMyOrderDetailResponse = await cookieFetch(`/orders/${orderId}`);
+    return response.data;
   } catch (error) {
     throw error;
   }

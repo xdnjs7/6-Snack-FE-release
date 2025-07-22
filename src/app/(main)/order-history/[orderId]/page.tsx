@@ -135,7 +135,7 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
                   {orderData.products?.map((item: TProduct, index: number) => (
                     <div 
                       key={item.id} 
-                      className="self-stretch pr-3 sm:pr-4 md:pr-5 py-3 sm:py-4 md:py-5 border-b border-neutral-200 inline-flex justify-between items-center"
+                      className="self-stretch py-3 sm:py-4 md:py-5 md:pr-5 border-b border-neutral-200 inline-flex justify-between items-center"
                     >
                       <div className="flex justify-start items-center gap-3 sm:gap-4 md:gap-5">
                         <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-36 lg:h-36 bg-[--color-white] shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
@@ -156,12 +156,12 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
                               {formatPrice(item.price)}원
                             </div>
                           </div>
-                          <div className="justify-center text-[--color-primary-600] text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+                          <div className="justify-center text-gray-500 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
                             수량 {item.quantity}개
                           </div>
                         </div>
                       </div>
-                      <div className="text-center justify-center text-[--color-primary-600] text-sm sm:text-base md:text-lg lg:text-xl font-extrabold font-['SUIT'] leading-loose">
+                      <div className="text-center justify-center text-gray-700 text-sm sm:text-base md:text-lg lg:text-xl font-extrabold font-['SUIT'] leading-loose">
                         {formatPrice(item.price * item.quantity)}원
                       </div>
                     </div>
@@ -171,14 +171,14 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
                 {/* Order Amount Info */}
                 <div className="self-stretch flex flex-col gap-2 sm:gap-3">
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-[--color-primary-600] text-xs sm:text-sm md:text-base font-bold font-['SUIT']">주문금액</div>
-                    <div className="text-center justify-center text-[--color-primary-600] text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+                    <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">주문금액</div>
+                    <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
                       {formatPrice(calculatedTotal)}원
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-[--color-primary-600] text-xs sm:text-sm md:text-base font-bold font-['SUIT']">배송비</div>
-                    <div className="text-center justify-center text-[--color-primary-600] text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+                    <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">배송비</div>
+                    <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
                       {formatPrice(shippingFee)}원
                     </div>
                   </div>
