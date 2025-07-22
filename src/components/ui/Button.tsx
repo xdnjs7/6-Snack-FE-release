@@ -8,6 +8,7 @@ type TButtonProps = {
   label?: string;
   className?: string;
   onClick?: () => void;
+   disabled?: boolean;
 };
 
 const buttonStyleMap: Record<TButtonType, TButtonStyle> = {
