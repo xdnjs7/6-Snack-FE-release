@@ -35,7 +35,7 @@ import DeleteAccountConfirmModal from "@/components/common/DeleteAccountConfirmM
 import Header from "@/components/layout/Header";
 import CartItem from "@/app/(main)/cart/_components/CartItem";
 import OrderItem from "@/app/(main)/cart/order/_components/OrderItem";
-import { categories, orderRequests, products } from "./PreviewMockData";
+import { categories, order, orderRequests, products } from "./MockData";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -140,14 +140,18 @@ export default function ComponentsPreviewPage() {
           <h2 className="text-lg font-semibold bg-blue-100">RequestList 컴포넌트</h2>
           <RequestList
             orderRequests={orderRequests}
-            onClickReject={() => openModal(<OrderManageModal />)}
-            onClickApprove={() => openModal(<OrderManageModal />)}
+            onClickReject={() => openModal(<OrderManageModal type="reject" order={order} onClick={() => {}} />)}
+            onClickApprove={() => openModal(<OrderManageModal type="approve" order={order} onClick={() => {}} />)}
           />
         </div>
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">OrderManageModal 컴포넌트</h2>
-          <Button type="black" label="열기" onClick={() => openModal(<OrderManageModal />)} />
+          <Button
+            type="black"
+            label="열기"
+            onClick={() => openModal(<OrderManageModal type="approve" order={order} onClick={() => {}} />)}
+          />
         </div>
 
         <div className="space-y-4 mb-4">
