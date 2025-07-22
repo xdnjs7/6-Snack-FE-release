@@ -2,26 +2,10 @@
 
 import React, { ChangeEvent, useEffect, useState } from "react";
 import clsx from "clsx";
-import { getAdminOrders } from "../../../../lib/api/order.api";
-
-// API 응답 타입 정의 (예시, 실제 응답에 맞게 수정 필요)
-type AdminOrderApiItem = {
-  id: number | string;
-  requestDate?: string;
-  createdAt?: string;
-  requesterName?: string;
-  requester?: string;
-  itemSummary?: string;
-  item?: string;
-  amount?: number;
-  approvalDate?: string;
-  updatedAt?: string;
-  managerName?: string;
-  manager?: string;
-};
+import { useRouter } from "next/navigation";
+import { getMyOrders, OrderHistory } from "../../../../lib/api/orderHistory";
 
 // 구매 내역 아이템 타입 정의
-// (API 응답에 맞게 타입을 수정해야 할 수 있음)
 type TPurchaseItem = {
   id: string;
   requestDate: string;
@@ -33,19 +17,8 @@ type TPurchaseItem = {
   manager: string;
 };
 
-type AdminOrderApiResponse = {
-  items?: AdminOrderApiItem[];
-  data?: AdminOrderApiItem[];
-  totalCount?: number;
-  total?: number;
-};
-
-const statusMap: Record<string, "요청" | "승인"> = {
-  pending: "요청",
-  approved: "승인",
-};
-
 const PurchaseList: React.FC = () => {
+  const router = useRouter();
   const [purchaseItems, setPurchaseItems] = useState<TPurchaseItem[]>([]);
   const [sortBy, setSortBy] = useState<string>("latest");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -60,38 +33,28 @@ const PurchaseList: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        // pending, approved 두 상태 모두 조회해서 합침
-        const [pendingRes, approvedRes]: [AdminOrderApiResponse, AdminOrderApiResponse] = await Promise.all([
-          getAdminOrders({
-            status: "pending",
-            offset: (currentPage - 1) * itemsPerPage,
-            limit: itemsPerPage,
-            orderBy: sortBy,
-          }),
-          getAdminOrders({
-            status: "approved",
-            offset: (currentPage - 1) * itemsPerPage,
-            limit: itemsPerPage,
-            orderBy: sortBy,
-          }),
-        ]);
-        // API 응답 구조에 따라 데이터 파싱 필요 (아래는 예시)
-        const parse = (item: AdminOrderApiItem, statusKey: string): TPurchaseItem => ({
-          id: String(item.id),
-          requestDate: item.requestDate || item.createdAt || "-",
-          requester: item.requesterName || item.requester || "-",
-          status: statusMap[statusKey],
-          item: item.itemSummary || item.item || "-",
-          amount: typeof item.amount === "number" ? item.amount.toLocaleString() : "-",
-          approvalDate: item.approvalDate || item.updatedAt || "-",
-          manager: item.managerName || item.manager || "-",
+        const response = await getMyOrders({
+          page: currentPage,
+          sort: sortBy,
         });
-        const pendingList = (pendingRes.items || pendingRes.data || []).map((item) => parse(item, "pending"));
-        const approvedList = (approvedRes.items || approvedRes.data || []).map((item) => parse(item, "approved"));
-        setPurchaseItems([...pendingList, ...approvedList]);
-        setTotalCount(
-          (pendingRes.totalCount || pendingRes.total || 0) + (approvedRes.totalCount || approvedRes.total || 0),
-        );
+
+        if (response) {
+          const items = response.map((order: OrderHistory): TPurchaseItem => ({
+            id: String(order.id),
+            requestDate: order.createdAt,
+            requester: order.userId,
+            status: order.status === 'PENDING' ? '요청' : '승인',
+            item: order.items.map(item => item.productName).join(', '),
+            amount: order.totalPrice.toLocaleString(),
+            approvalDate: order.updatedAt,
+            manager: order.approver || '-',
+          }));
+          
+          setPurchaseItems(items);
+          setTotalCount(response.length);
+        } else {
+          setError("데이터를 불러오지 못했습니다.");
+        }
       } catch (e: unknown) {
         let msg = "데이터를 불러오지 못했습니다.";
         if (typeof e === "object" && e !== null && "message" in e) {
@@ -227,7 +190,11 @@ const PurchaseList: React.FC = () => {
             </thead>
             <tbody className="bg-[--color-white] divide-y divide-[--color-primary-100]">
               {currentItems.map((item) => (
-                <tr key={item.id}>
+                <tr 
+                  key={item.id}
+                  onClick={() => router.push(`/order-history/${item.id}`)}
+                  className="cursor-pointer hover:bg-[--color-primary-50] transition-colors duration-200"
+                >
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-[--color-primary-900]">{item.requestDate}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-[--color-primary-900]">
                     {item.requester}{" "}
