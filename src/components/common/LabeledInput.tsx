@@ -1,28 +1,16 @@
 import React from "react";
 import clsx from "clsx";
 
-interface FloatingLabelInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface LabeledInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   error?: string;
 }
 
-const FloatingLabelInput = React.forwardRef<HTMLInputElement, FloatingLabelInputProps>(
+const LabeledInput = React.forwardRef<HTMLInputElement, LabeledInputProps>(
   ({ label, error, className, ...props }, ref) => {
     return (
       <div className="w-full max-w-[480px] flex flex-col">
-        <label
-          htmlFor={props.id}
-          className="text-neutral-800 mb-[2px]"
-          style={{
-            fontFamily: "SUIT",
-            fontWeight: 400,
-            fontStyle: "normal",
-            fontSize: "12px",
-            lineHeight: "100%",
-            letterSpacing: "-2.5%",
-            verticalAlign: "middle",
-          }}
-        >
+        <label htmlFor={props.id} className="text-neutral-800 text-xs font-normal mb-[2px] pl-[4px]">
           {label}
         </label>
         <input
@@ -43,6 +31,6 @@ const FloatingLabelInput = React.forwardRef<HTMLInputElement, FloatingLabelInput
   },
 );
 
-FloatingLabelInput.displayName = "FloatingLabelInput";
+LabeledInput.displayName = "LabeledInput";
 
-export default FloatingLabelInput;
+export default LabeledInput;

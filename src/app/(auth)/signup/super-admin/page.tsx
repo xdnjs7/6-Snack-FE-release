@@ -9,7 +9,7 @@ import { adminSignUp } from "@/app/actions/adminSignUp";
 import { signUpSchema } from "@/lib/schemas/signUpSchema";
 import SnackIconSvg from "@/components/svg/SnackIconSvg";
 import Link from "next/link";
-import FloatingLabelInput from "@/components/common/FloatingLabelInput";
+import LabeledInput from "@/components/common/LabeledInput";
 
 // 타입 정의
 type TSignUpForm = z.infer<typeof signUpSchema>;
@@ -129,7 +129,7 @@ const SignUpPage = () => {
             {formFields.map((field) => {
               const fieldName = field.name as keyof TSignUpForm;
               return (
-                <FloatingLabelInput
+                <LabeledInput
                   key={field.id}
                   id={field.id}
                   type={field.type}
