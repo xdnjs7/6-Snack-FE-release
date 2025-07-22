@@ -25,7 +25,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
   errors,
 }) => {
   return (
-    <form onSubmit={onSubmit} className="w-full flex flex-col gap-20 px-6 py-3">
+    <form onSubmit={onSubmit} className="w-full flex flex-col gap-20">
       <div className="self-stretch flex flex-col justify-start items-start gap-12">
         <div className="self-stretch flex flex-col justify-start items-start gap-2">
           <div className="self-stretch text-black text-lg md:text-2xl font-bold font-suit">예산 관리</div>

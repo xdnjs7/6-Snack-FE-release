@@ -65,18 +65,20 @@ const ManageBudgetsPage: React.FC = () => {
   };
 
   return (
-    <BudgetFormUI
-      currentMonthBudget={String((typeof watch === "function" ? watch("currentMonthBudget") : "") || "")}
-      nextMonthBudget={String((typeof watch === "function" ? watch("nextMonthBudget") : "") || "")}
-      onChange={handleUIChange}
-      onSubmit={handleSubmit(onSubmit)}
-      loading={loading}
-      success={success}
-      errors={{
-        currentMonthBudget: errors.currentMonthBudget?.message,
-        nextMonthBudget: errors.nextMonthBudget?.message,
-      }}
-    />
+    <div className="flex flex-1 flex-col justify-center">
+      <BudgetFormUI
+        currentMonthBudget={String((typeof watch === "function" ? watch("currentMonthBudget") : "") || "")}
+        nextMonthBudget={String((typeof watch === "function" ? watch("nextMonthBudget") : "") || "")}
+        onChange={handleUIChange}
+        onSubmit={handleSubmit(onSubmit)}
+        loading={loading}
+        success={success}
+        errors={{
+          currentMonthBudget: errors.currentMonthBudget?.message,
+          nextMonthBudget: errors.nextMonthBudget?.message,
+        }}
+      />
+    </div>
   );
 };
 
