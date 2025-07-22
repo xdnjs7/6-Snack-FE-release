@@ -44,7 +44,8 @@ const OrderHistoryPage = () => {
         </div>
       </header>
       {/* Main Content Area */}
-      <main className={clsx("flex-1", "p-6 sm:p-8 md:p-10", "max-w-[1352px]", "mx-auto", "w-full")}>
+      <main className={clsx("flex-1", "p-6 sm:p-8 md:p-10", "max-w-[1352px]", "mx-auto", "w-full", "relative")}>
+        <div className="text-lg sm:text-2xl font-bold font-suit mb-6">구매 내역 확인</div>
         {/* 요약 카드 컴포넌트 */}
         <PurchaseSummary />
         {/* 구매 내역 리스트/테이블 컴포넌트 */}

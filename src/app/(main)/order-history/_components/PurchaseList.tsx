@@ -151,14 +151,13 @@ const PurchaseList: React.FC = () => {
       style={{ boxShadow: "none", border: "none", background: "none" }}
     >
       {/* 상단: 타이틀 + 정렬 버튼 */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 px-6 pt-6 pb-2">
-        <div className="text-neutral-800 text-lg font-bold font-suit hidden sm:block">구매 내역 확인</div>
+      <div className="flex flex-col sm:flex-row sm:justify-end sm:items-center gap-2 px-6 pt-6 pb-2">
         <div className="relative custom-sort-dropdown">
           <button
             type="button"
             onClick={handleSortButtonClick}
             className={clsx(
-              "w-28 h-11 px-4 py-2.5 bg-white outline outline-1 outline-offset-[-1px] outline-neutral-200 flex justify-between items-center",
+              "w-28 h-11 px-4 py-2.5 bg-white border border-neutral-200 rounded-md flex justify-between items-center",
               "text-neutral-800 text-base font-normal font-suit",
               "relative",
             )}
@@ -171,36 +170,36 @@ const PurchaseList: React.FC = () => {
                 <path d="M1 1L8 8L15 1" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </span>
+            {dropdownOpen && (
+              <ul
+                className="absolute left-0 top-full mt-1 w-full bg-white border border-neutral-200 rounded shadow z-10"
+                role="listbox"
+              >
+                <li
+                  className={clsx(
+                    "px-4 py-2 hover:bg-gray-100 cursor-pointer",
+                    sortBy === "latest" && "font-bold text-blue-600",
+                  )}
+                  role="option"
+                  aria-selected={sortBy === "latest"}
+                  onClick={() => handleSortSelect("latest")}
+                >
+                  정렬
+                </li>
+                <li
+                  className={clsx(
+                    "px-4 py-2 hover:bg-gray-100 cursor-pointer",
+                    sortBy === "oldest" && "font-bold text-blue-600",
+                  )}
+                  role="option"
+                  aria-selected={sortBy === "oldest"}
+                  onClick={() => handleSortSelect("oldest")}
+                >
+                  오래된 순
+                </li>
+              </ul>
+            )}
           </button>
-          {dropdownOpen && (
-            <ul
-              className="absolute left-0 top-full mt-1 w-full bg-white border border-neutral-200 rounded shadow z-10"
-              role="listbox"
-            >
-              <li
-                className={clsx(
-                  "px-4 py-2 hover:bg-gray-100 cursor-pointer",
-                  sortBy === "latest" && "font-bold text-blue-600",
-                )}
-                role="option"
-                aria-selected={sortBy === "latest"}
-                onClick={() => handleSortSelect("latest")}
-              >
-                정렬
-              </li>
-              <li
-                className={clsx(
-                  "px-4 py-2 hover:bg-gray-100 cursor-pointer",
-                  sortBy === "oldest" && "font-bold text-blue-600",
-                )}
-                role="option"
-                aria-selected={sortBy === "oldest"}
-                onClick={() => handleSortSelect("oldest")}
-              >
-                오래된 순
-              </li>
-            </ul>
-          )}
         </div>
       </div>
 
@@ -296,7 +295,7 @@ const PurchaseList: React.FC = () => {
         {/* 태블릿/PC: 테이블형 */}
         <div className="hidden sm:block">
           <table className="min-w-full divide-y divide-[--color-primary-100]">
-            <thead className="bg-[--color-primary-50]">
+            <thead className="bg-white">
               <tr
                 style={{
                   borderTop: "1px solid #E5E5E5",
@@ -363,10 +362,10 @@ const PurchaseList: React.FC = () => {
         style={{ width: "100%" }}
         aria-label="Pagination"
       >
-        <div className="flex-1 flex justify-between sm:justify-end items-center">
-          <div className="text-neutral-800 text-base font-normal font-suit mr-4">
-            {currentPage} of {totalPages}
-          </div>
+        <div className="text-neutral-800 text-base font-normal font-suit">
+          {currentPage} of {totalPages}
+        </div>
+        <div className="flex items-center">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
