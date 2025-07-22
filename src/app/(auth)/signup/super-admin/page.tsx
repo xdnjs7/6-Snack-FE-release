@@ -136,7 +136,7 @@ const SignUpPage = () => {
               type="submit"
               disabled={isSubmitting}
               className={clsx(
-                "w-full max-w-[480px] h-[64px] mt-[30px] mb-[24px] font-bold text-[16px]/[20px]",
+                "w-full max-w-[480px] h-[64px] mt-[8px] mb-[0px] font-bold text-[16px]/[20px]",
                 isSubmitting ? "bg-neutral-200 text-zinc-400" : "bg-neutral-800 text-white",
                 "rounded-sm inline-flex justify-center items-center transition-colors duration-200",
                 isSubmitting && "opacity-70 cursor-not-allowed",
