@@ -252,9 +252,7 @@ const PurchaseList: React.FC = () => {
                   key={item.id}
                   className="bg-neutral-100 rounded-[12px] p-5 flex flex-col gap-3 shadow-sm"
                   style={{
-                    borderWidth: "1px 0px 1px 0px",
-                    borderStyle: "solid",
-                    borderColor: "#E5E5E5",
+                    borderBottom: "1px solid #E5E5E5",
                     width: "100%",
                   }}
                 >
@@ -301,6 +299,7 @@ const PurchaseList: React.FC = () => {
             <thead className="bg-[--color-primary-50]">
               <tr
                 style={{
+                  borderTop: "1px solid #E5E5E5",
                   borderBottom: "1px solid #E5E5E5",
                   width: "100%",
                 }}
@@ -319,9 +318,7 @@ const PurchaseList: React.FC = () => {
                   key={item.id}
                   className="h-20 align-middle"
                   style={{
-                    borderWidth: "1px 0px 1px 0px",
-                    borderStyle: "solid",
-                    borderColor: "#E5E5E5",
+                    borderBottom: "1px solid #E5E5E5",
                     width: "100%",
                   }}
                 >
@@ -363,7 +360,7 @@ const PurchaseList: React.FC = () => {
       {/* Pagination */}
       <nav
         className="px-4 py-3 flex items-center justify-between sm:px-6"
-        style={{ borderTop: "1px solid #E5E5E5", width: "100%" }}
+        style={{ width: "100%" }}
         aria-label="Pagination"
       >
         <div className="flex-1 flex justify-between sm:justify-end items-center">
