@@ -302,6 +302,7 @@ const OrderHistoryPage = () => {
                   borderRadius: "4px", // Figma 시안 border-radius
                   background: "#F5F5F5", // Figma 시안 배경색
                   opacity: 1,
+                  overflow: "visible", // 호버 박스가 잘리지 않도록
                 }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
@@ -338,11 +339,10 @@ const OrderHistoryPage = () => {
                       "hidden sm:flex",
                       "absolute",
                       "left-1/2",
-                      "top-1/2",
+                      "top-full",
                       "-translate-x-1/2",
-                      "-translate-y-1/2",
+                      "mt-2",
                       "w-[calc(100%+40px)]", // Figma 시안: 원본 카드 너비 + 양쪽 20px씩 총 40px 확장
-                      "h-[calc(100%+40px)]", // Figma 시안: 원본 카드 높이 + 위아래 20px씩 총 40px 확장
                       "p-6",
                       "bg-neutral-800", // Figma 시안: 배경색 #3C3C3C
                       "rounded-[12px]", // Figma 시안: border-radius 12px
