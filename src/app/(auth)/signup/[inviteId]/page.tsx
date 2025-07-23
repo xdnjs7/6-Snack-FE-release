@@ -82,7 +82,7 @@ export default function InviteSignUpPage() {
 
     try {
       await signUpWithInviteApi(inviteId, data.password, data.passwordConfirm);
-      router.push("/products");
+      router.push("/login");
     } catch (error) {
       setError(error instanceof Error ? error.message : "회원가입에 실패했습니다.");
     }
