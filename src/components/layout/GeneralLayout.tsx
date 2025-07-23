@@ -7,19 +7,21 @@ import React from "react";
 export default function GeneralLayout({ children }: TChildrenProps) {
   const currentPath = usePathname();
 
-  const isMatchedPath = ["/login", "/signup", "/profile"].some((path) => currentPath.startsWith(path));
+  const isAuthPage = ["/login", "/signup", "/profile"].some((path) => currentPath.startsWith(path));
+
+  const isLandingPage = currentPath === "/";
 
   return (
-    <>
-      {isMatchedPath ? (
-        <div className="flex justify-center items-center px-[24px] pb-[24px] sm:px-[72px] sm:pb-[72px]">
-          <div className="flex flex-col w-full max-w-[1400px]">{children}</div>
-        </div>
-      ) : (
-        <div className="flex justify-center items-center px-[24px] pb-[24px]">
-          <div className="flex flex-col w-full max-w-[1400px]">{children}</div>
-        </div>
-      )}
-    </>
+    <div
+      className={
+        isLandingPage
+          ? ""
+          : isAuthPage
+            ? "flex justify-center items-center px-[24px] pb-[24px] sm:px-[72px] sm:pb-[72px]"
+            : "flex justify-center items-center px-[24px] pb-[24px]"
+      }
+    >
+      <div className={isLandingPage ? "" : "flex flex-col w-full max-w-[1400px]"}>{children}</div>
+    </div>
   );
 }

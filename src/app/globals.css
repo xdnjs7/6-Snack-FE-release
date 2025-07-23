@@ -55,8 +55,20 @@ body {
   }
 }
 
+@keyframes slide-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
 .animate-slide {
-  animation: slide 30s linear infinite;
+  animation: slide 20s linear infinite;
+}
+.animate-slide-reverse {
+  animation: slide-reverse 20s linear infinite;
 }
 
 @layer utilities {
