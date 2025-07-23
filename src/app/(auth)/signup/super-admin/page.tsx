@@ -6,13 +6,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { adminSignUp } from "@/app/actions/adminSignUp";
-import { signUpSchema } from "@/lib/schemas/signUpSchema";
+import { signupSchema } from "@/lib/schemas/signup.schema";
 import SnackIconSvg from "@/components/svg/SnackIconSvg";
 import Link from "next/link";
 import LabeledInput from "@/components/common/LabeledInput";
 
 // 타입 정의
-type TSignUpForm = z.infer<typeof signUpSchema>;
+type TSignUpForm = z.infer<typeof signupSchema>;
 
 const SignUpPage = () => {
   const {
@@ -21,7 +21,7 @@ const SignUpPage = () => {
     setError,
     formState: { errors, isSubmitting },
   } = useForm<TSignUpForm>({
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(signupSchema),
   });
 
   const onSubmit = async (data: TSignUpForm) => {
