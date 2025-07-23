@@ -87,7 +87,7 @@ export default function InviteSignUpPage() {
 
   return (
     // top parent
-    <div className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[59px] sm:pt-[119px]">
+    <div className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[48px] sm:pt-[160px]">
       {/* mobile */}
       {/* logo + intro */}
       <div className="sm:absolute sm:top-0 flex flex-col items-center justify-center w-full max-w-[480px] sm:max-w-[600px]">
