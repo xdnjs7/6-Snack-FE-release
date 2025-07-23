@@ -8,7 +8,7 @@ type TButtonProps = {
   label?: string;
   className?: string;
   onClick?: () => void;
-   disabled?: boolean;
+  disabled?: boolean;
 };
 
 const buttonStyleMap: Record<TButtonType, TButtonStyle> = {
@@ -45,7 +45,7 @@ const buttonStyleMap: Record<TButtonType, TButtonStyle> = {
   },
 };
 
-export default function Button({ type, label = "label", onClick, className = "" }: TButtonProps) {
+export default function Button({ type, label = "label", onClick, className = "", disabled }: TButtonProps) {
   const style = buttonStyleMap[type];
 
   if (!style) {
@@ -67,7 +67,7 @@ export default function Button({ type, label = "label", onClick, className = "" 
   );
 
   return (
-    <button className={twMerge(baseStyle, className)} disabled={isDisabled} onClick={onClick}>
+    <button className={twMerge(baseStyle, className)} disabled={isDisabled || disabled} onClick={onClick}>
       {label}
     </button>
   );
