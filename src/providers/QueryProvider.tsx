@@ -10,7 +10,9 @@ export default function QueryProvider({ children }: TChildrenProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <div className="z-50 fixed bottom-17 right-3.5">
+        <ReactQueryDevtools initialIsOpen={false} buttonPosition="relative" />
+      </div>
       {children}
     </QueryClientProvider>
   );
