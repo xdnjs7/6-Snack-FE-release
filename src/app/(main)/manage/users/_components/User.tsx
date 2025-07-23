@@ -1,4 +1,5 @@
 "use client";
+import React, { useEffect, useMemo, useState, Suspense } from "react";
 import InviteMemberModal from "@/components/common/InviteMemberModal";
 import MemberList from "@/components/common/MemberList";
 import Pagination from "@/components/common/Pagination";
@@ -6,21 +7,19 @@ import Button from "@/components/ui/Button";
 import SearchBar from "@/components/ui/SearchBar";
 import { useModal } from "@/providers/ModalProvider";
 import { TMemberItem } from "@/types/meberList.types";
-import React, { Suspense, useMemo, useState } from "react";
+import { fetchAllCompanyUsers } from "@/lib/api/companyUser.api";
+import { useSearchParams } from "next/navigation";
+import { deleteUserById } from "@/lib/api/superAdmin.api";
 
 export default function User() {
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
   const { openModal, closeModal } = useModal();
-
-  const [members, setMembers] = useState<TMemberItem[]>(
-    Array.from({ length: 23 }, (_, i) => ({
-      id: (i + 1).toString(),
-      name: `유저${i + 1}`,
-      email: `user${i + 1}@example.com`,
-      role: i % 2 === 0 ? "ADMIN" : "USER",
-    })),
-  );
-
+  const [members, setMembers] = useState<TMemberItem[]>([]);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
+  const name = searchParams.get("name") ?? "";
   const MEMVERS_PAGE = 5;
   const totalPages = Math.ceil(members.length / MEMVERS_PAGE);
 
@@ -29,13 +28,40 @@ export default function User() {
     return members.slice(start, start + MEMVERS_PAGE);
   }, [members, currentPaginationPage]);
 
-  const handleDeleteUser = (id: string) => {
-    setMembers((prev) => prev.filter((member) => member.id !== id));
+  const handleDeleteUser = async (userId: string) => {
+    try {
+      setLoading(true);
+      const res = await deleteUserById(userId);
+      alert(res.message);
+
+      setMembers((prev) => prev.filter((member) => member.id !== userId));
+    } catch (error) {
+      alert("유저 삭제에 실패했습니다.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        const { users, nextCursor } = await fetchAllCompanyUsers({ name, limit: 50 });
+        setMembers(users);
+        setNextCursor(nextCursor);
+        setHasMore(!!nextCursor);
+      } catch (error) {
+        alert(error instanceof Error ? error.message : "회원 목록 불러오기 실패");
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [name]);
 
   return (
     <div>
-      <div className=" flex  justify-between items-center sm:mt-15 md:mt-[21px]">
+      <div className="flex justify-between items-center sm:mt-15 md:mt-[21px]">
         <div className="mt-[20px] mb-3 self-stretch justify-center text-lg font-bold  md:text-2xl">회원 관리</div>
         <Button
           type="black"
@@ -47,9 +73,6 @@ export default function User() {
                 onCancel={closeModal}
                 onSubmit={(data) => {
                   console.log("회원 초대 등록:", data);
-                  console.log("이름:", data.name);
-                  console.log("이메일:", data.email);
-                  console.log("권한:", data.role);
                   closeModal();
                 }}
               />,
@@ -57,9 +80,11 @@ export default function User() {
           }}
         />
       </div>
+
       <Suspense>
         <SearchBar />
       </Suspense>
+
       <div className="w-full mt-10 self-stretch p-5 border-t border-b border-neutral-200 hidden sm:flex justify-start items-center gap-8">
         <div className="px-14 flex justify-start items-center mr-2">
           <div className="justify-center text-zinc-500 text-base font-bold">이름</div>
@@ -69,24 +94,26 @@ export default function User() {
         <div className="w-48 text-center justify-center text-zinc-500 text-base font-bold">비고</div>
       </div>
 
-      {paginateMembers.map((member) => (
-        <MemberList key={member.id} {...member} onClickDeleteUser={handleDeleteUser} />
-      ))}
+      {loading ? (
+        <div className="text-center py-10">로딩 중...</div>
+      ) : (
+        paginateMembers.map((member) => <MemberList key={member.id} {...member} onClickDeleteUser={handleDeleteUser} />)
+      )}
+
       <Pagination currentPage={currentPaginationPage} totalPages={totalPages} onPageChange={setCurrentPaginationPage} />
+
       <div className="w-full flex justify-center">
         <Button
           type="black"
           label="회원 초대하기"
-          className="mt-6 w-full h-16 justify-center items-center sm:hidden"
+          className="w-50 h-16  sm:hidden "
           onClick={() => {
             openModal(
               <InviteMemberModal
+                mode="invite"
                 onCancel={closeModal}
                 onSubmit={(data) => {
                   console.log("회원 초대 등록:", data);
-                  console.log("이름:", data.name);
-                  console.log("이메일:", data.email);
-                  console.log("권한:", data.role);
                   closeModal();
                 }}
               />,

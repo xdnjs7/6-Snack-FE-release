@@ -5,6 +5,7 @@ import { useModal } from "@/providers/ModalProvider";
 import InviteMemberModal from "./InviteMemberModal";
 import MenuDropdown from "./MenuDropdown";
 import Mobile from "./Mobile";
+import { Role } from "@/types/InviteMemberModal.types";
 
 type TMemberListProps = TMemberItem & {
   onClickChangeRole?: (id: string, currentRole: TMemberItem["role"]) => void;
@@ -16,9 +17,9 @@ const MemberList = ({ id, name, email, role, onClickChangeRole, onClickDeleteUse
   return (
     <>
       {/* 모바일 전용 레이아웃 */}
-      <div className=" sm:hidden w-full px-5 py-4 border-b border-[#e6e6e6] flex justify-between gap-3">
-        <div className="flex">
-          <div className="w-12 h-12 bg-primary-50 rounded-full flex justify-center items-center text-black text-sm font-medium">
+      <div className=" sm:hidden w-full py-4 border-b border-[#e6e6e6] flex justify-between gap-3">
+        <div className="flex gap-3">
+          <div className="w-12 h-12 bg-primary-50 rounded-full flex justify-center items-center text-black text-sm font-medium ">
             {name.slice(0, 1).toUpperCase()}
           </div>
           <div className="flex flex-col justify-between">
@@ -34,12 +35,11 @@ const MemberList = ({ id, name, email, role, onClickChangeRole, onClickDeleteUse
           onEdit={() => {
             openModal(
               <InviteMemberModal
+                mode="edit"
+                defaultValues={{ name, email, role, id }}
                 onCancel={closeModal}
                 onSubmit={(data) => {
-                  console.log("회원 초대 등록:", data);
-                  console.log("이름:", data.name);
-                  console.log("이메일:", data.email);
-                  console.log("권한:", data.role);
+                  console.log("권한 수정:", data);
                   closeModal();
                 }}
               />,
@@ -48,6 +48,8 @@ const MemberList = ({ id, name, email, role, onClickChangeRole, onClickDeleteUse
           onDelete={() =>
             openModal(
               <DeleteAccountConfirmModal
+                name={name}
+                email={email}
                 onCancel={closeModal}
                 onConfirm={() => {
                   onClickDeleteUser?.(id);
@@ -60,7 +62,7 @@ const MemberList = ({ id, name, email, role, onClickChangeRole, onClickDeleteUse
       </div>
 
       {/* 데스크탑 & 태블릿 레이아웃 */}
-      <div className="hidden sm:inline-flex w-full h-24 px-5 border-b border-[#e6e6e6] justify-start items-center gap-8 ">
+      <div className="hidden sm:inline-flex w-full h-24 border-b border-[#e6e6e6] justify-start items-center gap-8 ">
         <div className="flex justify-start items-center gap-5">
           <div className="w-8 h-8 relative bg-primary-50 rounded-full overflow-hidden">
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-black text-[10px] font-medium">
@@ -78,16 +80,15 @@ const MemberList = ({ id, name, email, role, onClickChangeRole, onClickDeleteUse
 
         <div className="flex gap-2">
           <div
-            className="w-24 px-5 py-2.5 bg-white rounded-sm outline outline-1 outline-offset-[-1px] outline-primary-300 flex justify-center items-center cursor-pointer"
+            className="w-24 px-5 py-2.5 bg-white rounded-sm outline-1 outline-offset-[-1px] outline-primary-300 flex justify-center items-center cursor-pointer"
             onClick={() => {
               openModal(
                 <InviteMemberModal
+                  mode="edit"
+                  defaultValues={{ name, email, role, id }}
                   onCancel={closeModal}
                   onSubmit={(data) => {
-                    console.log("회원 초대 등록:", data);
-                    console.log("이름:", data.name);
-                    console.log("이메일:", data.email);
-                    console.log("권한:", data.role);
+                    console.log("권한 수정:", data);
                     closeModal();
                   }}
                 />,
@@ -101,6 +102,8 @@ const MemberList = ({ id, name, email, role, onClickChangeRole, onClickDeleteUse
             onClick={() =>
               openModal(
                 <DeleteAccountConfirmModal
+                  name={name}
+                  email={email}
                   onCancel={closeModal}
                   onConfirm={() => {
                     onClickDeleteUser?.(id);
