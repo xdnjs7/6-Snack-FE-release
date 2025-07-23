@@ -7,6 +7,7 @@ import { CATEGORIES } from "@/lib/utils/categories.util";
 import { getProducts } from "@/lib/api/product.api";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useMediaQuery } from "react-responsive";
 
 type CategoryData = {
   parentCategory: Array<{ id: number; name: string }>;
@@ -73,15 +74,25 @@ export default function ProductsPage() {
     }
   };
 
-  // 상품 목록 가져오기
+  // useMediaQuery로 화면 크기별 limit 결정
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+  const isDesktop = useMediaQuery({ minWidth: 1024 });
+
+  // 상품 목록 가져오기 - 현재 화면사이즈에 따라 limit, category 까지만 적용, sort 와 cursor 미적용 상태
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
         const categoryId = searchParams.get("category");
+        // 화면 크기에 따라 limit 값 결정
+        let limit = 0;
+        if (isMobile) limit = 4;
+        else if (isTablet) limit = 9;
+        else if (isDesktop) limit = 6;
         const response = await getProducts({
           category: categoryId ? parseInt(categoryId) : undefined,
-          limit: 20,
+          limit,
         });
         setProducts(response.items || []);
       } catch (error) {
@@ -96,7 +107,7 @@ export default function ProductsPage() {
   }, [searchParams]);
 
   return (
-    <div className="">
+    <div className="flex">
       {/* 카테고리 태블릿,데스크탑 */}
       <div className="hidden sm:block">
         <SubCategoryItem categories={categories} />
