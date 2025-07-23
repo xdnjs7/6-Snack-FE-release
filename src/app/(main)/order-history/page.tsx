@@ -268,15 +268,16 @@ const OrderHistoryPage = () => {
               <div
                 className="flex-1 flex flex-col justify-between"
                 style={{
-                  minWidth: "280px", // 모바일 최소 너비
-                  width: "100%", // 기본 100%
-                  maxWidth: "414.67px", // Figma 시안 가로 414.67px
-                  height: "150px", // Figma 시안 높이 150px
-                  padding: "30px 40px 30px 30px", // Figma 시안 padding
+                  width: "414.6666564941406px",
+                  height: "150px",
+                  paddingTop: "30px",
+                  paddingRight: "40px",
+                  paddingBottom: "30px",
+                  paddingLeft: "30px",
                   gap: "8px",
-                  borderRadius: "4px", // Figma 시안 border-radius
-                  background: "#F5F5F5", // Figma 시안 배경색
+                  borderRadius: "4px",
                   opacity: 1,
+                  background: "#F5F5F5",
                 }}
               >
                 <div className="flex flex-row items-center justify-between w-full mb-2">
@@ -293,16 +294,17 @@ const OrderHistoryPage = () => {
               <div
                 className="flex-1 flex flex-col justify-between relative"
                 style={{
-                  minWidth: "280px", // 모바일 최소 너비
-                  width: "100%",
-                  maxWidth: "414.67px", // Figma 시안 가로 414.67px
-                  height: "150px", // Figma 시안 높이 150px
-                  padding: "30px 40px 30px 30px", // Figma 시안 padding
+                  width: "414.6666564941406px",
+                  height: "150px",
+                  paddingTop: "30px",
+                  paddingRight: "40px",
+                  paddingBottom: "30px",
+                  paddingLeft: "30px",
                   gap: "8px",
-                  borderRadius: "4px", // Figma 시안 border-radius
-                  background: "#F5F5F5", // Figma 시안 배경색
+                  borderRadius: "4px",
                   opacity: 1,
-                  overflow: "visible", // 호버 박스가 잘리지 않도록
+                  background: "#F5F5F5",
+                  overflow: "visible",
                 }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
@@ -383,15 +385,16 @@ const OrderHistoryPage = () => {
               <div
                 className="flex-1 flex flex-col justify-between"
                 style={{
-                  minWidth: "280px", // 모바일 최소 너비
-                  width: "100%",
-                  maxWidth: "414.67px", // Figma 시안 가로 414.67px
-                  height: "150px", // Figma 시안 높이 150px
-                  padding: "30px 40px 30px 30px", // Figma 시안 padding
+                  width: "414.6666564941406px",
+                  height: "150px",
+                  paddingTop: "30px",
+                  paddingRight: "40px",
+                  paddingBottom: "30px",
+                  paddingLeft: "30px",
                   gap: "8px",
-                  borderRadius: "4px", // Figma 시안 border-radius
-                  background: "#F5F5F5", // Figma 시안 배경색
+                  borderRadius: "4px",
                   opacity: 1,
+                  background: "#F5F5F5",
                 }}
               >
                 <div className="flex flex-row items-center justify-between w-full mb-2">
