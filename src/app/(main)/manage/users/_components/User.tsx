@@ -9,12 +9,14 @@ import { useModal } from "@/providers/ModalProvider";
 import { TMemberItem } from "@/types/meberList.types";
 import { fetchAllCompanyUsers } from "@/lib/api/companyUser.api";
 import { useSearchParams } from "next/navigation";
-
+import { deleteUserById } from "@/lib/api/superAdmin.api";
 
 export default function User() {
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
   const { openModal, closeModal } = useModal();
   const [members, setMembers] = useState<TMemberItem[]>([]);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
   const name = searchParams.get("name") ?? "";
@@ -26,16 +28,29 @@ export default function User() {
     return members.slice(start, start + MEMVERS_PAGE);
   }, [members, currentPaginationPage]);
 
-  const handleDeleteUser = (id: string) => {
-    setMembers((prev) => prev.filter((member) => member.id !== id));
+  const handleDeleteUser = async (userId: string) => {
+    try {
+      setLoading(true);
+      const res = await deleteUserById(userId);
+      alert(res.message);
+
+      setMembers((prev) => prev.filter((member) => member.id !== userId));
+    } catch (error) {
+      alert("유저 삭제에 실패했습니다.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const users = await fetchAllCompanyUsers(name);
+        const { users, nextCursor } = await fetchAllCompanyUsers({ name, limit: 50 });
         setMembers(users);
+        setNextCursor(nextCursor);
+        setHasMore(!!nextCursor);
       } catch (error) {
         alert(error instanceof Error ? error.message : "회원 목록 불러오기 실패");
       } finally {

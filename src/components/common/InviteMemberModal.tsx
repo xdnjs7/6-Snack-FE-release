@@ -18,34 +18,39 @@ export default function InviteMemberModal({
   const [selectedRole, setSelectedRole] = useState<UserRole>(defaultValues?.role ?? "USER");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-const handleSubmit = async () => {
-  if (mode === "edit") {
-    try {
-      // defaultValues가 존재할 때만 진행
-      if (!defaultValues) return;
+  const handleSubmit = async () => {
+    if (mode === "edit") {
+      try {
+        if (!defaultValues) {
+          alert("defaultValues가 없습니다.");
+          return;
+        }
 
-      const res = await fetch(`/super-admin/users/${defaultValues.id}/role`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", 
-        body: JSON.stringify({ role: selectedRole }),
-      });
+        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080";
+        const res = await fetch(`${baseUrl}/super-admin/users/${defaultValues.id}/role`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ role: selectedRole }),
+        });
 
-      if (!res.ok) throw new Error("권한 수정 실패");
+        if (!res.ok) {
+          const errorBody = await res.text();
+          throw new Error("권한 수정 실패");
+        }
 
-      const data = await res.json();
-      alert(data.message || "권한이 성공적으로 변경되었습니다.");
+        const data = await res.json();
+        alert(data.message || "권한이 성공적으로 변경되었습니다.");
+        onSubmit?.({ name, email, role: selectedRole });
+      } catch (err: any) {
+        alert(err.message || "권한 수정 중 오류 발생");
+      }
+    } else {
       onSubmit?.({ name, email, role: selectedRole });
-    } catch (err: any) {
-      alert(err.message || "권한 수정 중 오류 발생");
     }
-  } else {
-    onSubmit?.({ name, email, role: selectedRole }); 
-  }
-};
-
+  };
 
   return (
     <>
@@ -85,7 +90,7 @@ const handleSubmit = async () => {
                 <div className="relative">
                   <div
                     data-active={isDropdownOpen ? "on" : "off"}
-                    className="w-[480px] h-11 px-4 py-2.5 bg-white outline outline-1 outline-offset-[-1px] outline-neutral-200 inline-flex justify-between items-center cursor-pointer"
+                    className="w-[480px] h-11 px-4 py-2.5 bg-white outline-1 outline-offset-[-1px] outline-neutral-200 inline-flex justify-between items-center cursor-pointer"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
                     <div className="justify-start text-neutral-800 text-base font-normal font-['SUIT']">
@@ -120,7 +125,7 @@ const handleSubmit = async () => {
                 data-size="Default"
                 data-state="normal"
                 data-type="line"
-                className="flex-1 h-16 px-4 py-3 bg-white rounded-sm outline outline-1 outline-offset-[-1px] outline-zinc-400 flex justify-center items-center cursor-pointer hover:bg-gray-50 transition-colors"
+                className="flex-1 h-16 px-4 py-3 bg-white rounded-sm outline-1 outline-offset-[-1px] outline-zinc-400 flex justify-center items-center cursor-pointer hover:bg-gray-50 transition-colors"
                 onClick={onCancel}
               >
                 <div className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT']">
@@ -134,7 +139,9 @@ const handleSubmit = async () => {
                 className="flex-1 h-16 px-4 py-3 bg-neutral-800 rounded-sm flex justify-center items-center cursor-pointer hover:bg-neutral-700 transition-colors"
                 onClick={handleSubmit}
               >
-                <div className="text-center justify-center text-white text-base font-bold font-['SUIT']">등록하기</div>
+                <div className="text-center justify-center text-white text-base font-bold font-['SUIT']">
+                  {mode === "edit" ? "권한 수정" : "초대하기"}
+                </div>
               </button>
             </div>
           </div>
@@ -194,7 +201,7 @@ const handleSubmit = async () => {
             <div className="self-stretch flex flex-col justify-start items-start">
               <div
                 data-active={isDropdownOpen ? "on" : "off"}
-                className="self-stretch h-11 px-4 py-2.5 bg-white outline outline-1 outline-offset-[-1px] outline-neutral-200 inline-flex justify-between items-center cursor-pointer"
+                className="self-stretch h-11 px-4 py-2.5 bg-white outline-1 outline-offset-[-1px] outline-neutral-200 inline-flex justify-between items-center cursor-pointer"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
                 <div className="justify-start text-neutral-800 text-base font-normal font-['SUIT']">
@@ -232,7 +239,7 @@ const handleSubmit = async () => {
               data-size="Default"
               data-state="normal"
               data-type="line"
-              className="flex-1 h-16 px-4 py-3 bg-white rounded-sm outline outline-1 outline-offset-[-1px] outline-zinc-400 flex justify-center items-center cursor-pointer hover:bg-gray-50 transition-colors"
+              className="flex-1 h-16 px-4 py-3 bg-white rounded-sm outline-1 outline-offset-[-1px] outline-zinc-400 flex justify-center items-center cursor-pointer hover:bg-gray-50 transition-colors"
               onClick={onCancel}
             >
               <div className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT']">취소</div>

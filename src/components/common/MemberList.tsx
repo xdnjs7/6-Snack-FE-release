@@ -48,6 +48,8 @@ const MemberList = ({ id, name, email, role, onClickChangeRole, onClickDeleteUse
           onDelete={() =>
             openModal(
               <DeleteAccountConfirmModal
+                name={name}
+                email={email}
                 onCancel={closeModal}
                 onConfirm={() => {
                   onClickDeleteUser?.(id);
@@ -78,7 +80,7 @@ const MemberList = ({ id, name, email, role, onClickChangeRole, onClickDeleteUse
 
         <div className="flex gap-2">
           <div
-            className="w-24 px-5 py-2.5 bg-white rounded-sm outline outline-1 outline-offset-[-1px] outline-primary-300 flex justify-center items-center cursor-pointer"
+            className="w-24 px-5 py-2.5 bg-white rounded-sm outline-1 outline-offset-[-1px] outline-primary-300 flex justify-center items-center cursor-pointer"
             onClick={() => {
               openModal(
                 <InviteMemberModal
@@ -100,6 +102,8 @@ const MemberList = ({ id, name, email, role, onClickChangeRole, onClickDeleteUse
             onClick={() =>
               openModal(
                 <DeleteAccountConfirmModal
+                  name={name}
+                  email={email}
                   onCancel={closeModal}
                   onConfirm={() => {
                     onClickDeleteUser?.(id);
