@@ -1,85 +1,125 @@
+"use client";
+
+import CategoryNavigation from "@/components/common/ProductDetail/CategoryNavigation";
 import SubCategoryItem from "@/components/common/SubCategoryItem";
-import React from "react";
+import ProductGrid from "@/components/common/ProductGrid";
+import { CATEGORIES } from "@/lib/utils/categories.util";
+import { getProducts } from "@/lib/api/product.api";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+
+type CategoryData = {
+  parentCategory: Array<{ id: number; name: string }>;
+  childrenCategory: Record<string, Array<{ id: number; name: string }>>;
+};
+
+type Product = {
+  id: number;
+  categoryId: number;
+  creatorId: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+  linkUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  category: {
+    id: number;
+    name: string;
+    parentId: number;
+  };
+  creator: {
+    id: string;
+    email: string;
+    name: string;
+    role: string;
+  };
+};
 
 export default function ProductsPage() {
-  const categories = {
-    parentCategory: [
-      { id: 1, name: "스낵" },
-      { id: 13, name: "음료" },
-      { id: 23, name: "생수" },
-      { id: 26, name: "간편식" },
-      { id: 40, name: "신선식품" },
-      { id: 46, name: "원두커피" },
-      { id: 50, name: "비품" },
-    ],
-    childrenCategory: {
-      스낵: [
-        { id: 2, name: "과자" },
-        { id: 3, name: "쿠키" },
-        { id: 4, name: "파이" },
-        { id: 5, name: "초콜릿류" },
-        { id: 6, name: "캔디류" },
-        { id: 7, name: "껌류" },
-        { id: 8, name: "비스켓류" },
-        { id: 9, name: "씨리얼바" },
-        { id: 10, name: "젤리류" },
-        { id: 11, name: "견과류" },
-        { id: 12, name: "워터젤리" },
-      ],
-      음료: [
-        { id: 14, name: "청량/탄산음료" },
-        { id: 15, name: "과즙음료" },
-        { id: 16, name: "에너지음료" },
-        { id: 17, name: "이온음료" },
-        { id: 18, name: "유산균음료" },
-        { id: 19, name: "건강음료" },
-        { id: 20, name: "차류" },
-        { id: 21, name: "두유/우유" },
-        { id: 22, name: "커피" },
-      ],
-      생수: [
-        { id: 24, name: "생수" },
-        { id: 25, name: "스파클링" },
-      ],
-      간편식: [
-        { id: 27, name: "봉지라면" },
-        { id: 28, name: "과일" },
-        { id: 29, name: "컵라면" },
-        { id: 30, name: "핫도그 및 소시지" },
-        { id: 31, name: "계란" },
-        { id: 32, name: "죽/스프류" },
-        { id: 33, name: "컵밥류" },
-        { id: 34, name: "시리얼" },
-        { id: 35, name: "반찬류" },
-        { id: 36, name: "면류" },
-        { id: 37, name: "요거트류" },
-        { id: 38, name: "가공안주류" },
-        { id: 39, name: "유제품" },
-      ],
-      신선식품: [
-        { id: 41, name: "샐러드" },
-        { id: 42, name: "빵" },
-        { id: 43, name: "햄버거/샌드위치" },
-        { id: 44, name: "주먹밥/김밥" },
-        { id: 45, name: "도시락" },
-      ],
-      원두커피: [
-        { id: 47, name: "드립커피" },
-        { id: 48, name: "원두" },
-        { id: 49, name: "캡슐커피" },
-      ],
-      비품: [
-        { id: 51, name: "커피/차류" },
-        { id: 52, name: "생활용품" },
-        { id: 53, name: "일회용품" },
-        { id: 54, name: "사무용품" },
-        { id: 55, name: "카페용품" },
-        { id: 56, name: "일회용품(친환경)" },
-      ],
-    },
+  const [categories] = useState<CategoryData>(CATEGORIES);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState<{
+    parent: string;
+    child: string;
+  } | null>(null);
+  const searchParams = useSearchParams();
+
+  // URL 파라미터에서 카테고리 정보 가져오기
+  useEffect(() => {
+    const categoryId = searchParams.get("category");
+    if (categoryId) {
+      // 카테고리 ID로 부모-자식 카테고리 찾기
+      const categoryIdNum = parseInt(categoryId);
+      findCategoryPath(categoryIdNum);
+    } else {
+      setSelectedCategory(null);
+    }
+  }, [searchParams, categories]);
+
+  // 카테고리 ID로 부모-자식 경로 찾기
+  const findCategoryPath = (categoryId: number) => {
+    for (const [parentName, children] of Object.entries(categories.childrenCategory)) {
+      const child = children.find((c) => c.id === categoryId);
+      if (child) {
+        setSelectedCategory({
+          parent: parentName,
+          child: child.name,
+        });
+        return;
+      }
+    }
   };
+
+  // 상품 목록 가져오기
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const categoryId = searchParams.get("category");
+        const response = await getProducts({
+          category: categoryId ? parseInt(categoryId) : undefined,
+          limit: 20,
+        });
+        setProducts(response.items || []);
+      } catch (error) {
+        console.error("상품 로딩 실패:", error);
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [searchParams]);
+
   return (
-    <div><SubCategoryItem categories={categories}/></div>
-   
+    <div className="">
+      {/* 카테고리 태블릿,데스크탑 */}
+      <div className="hidden sm:block">
+        <SubCategoryItem categories={categories} />
+      </div>
+
+      {/* 모바일 하위 카테고리 - 선택된 카테고리가 있을 때만 표시 */}
+      {selectedCategory && (
+        <CategoryNavigation parentCategory={selectedCategory.parent} childCategory={selectedCategory.child} />
+      )}
+
+      {/* 상품 목록 */}
+      <div className="container mx-auto py-6">
+        {loading ? (
+          <div className="flex justify-center items-center py-16">
+            <div className="text-primary-500">로딩 중...</div>
+          </div>
+        ) : (
+          <>
+            {/* 상품 그리드 */}
+            <ProductGrid products={products} />
+          </>
+        )}
+      </div>
+    </div>
   );
 }
