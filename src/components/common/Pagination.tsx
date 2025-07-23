@@ -74,24 +74,28 @@ export default function Pagination({
 
   return (
     <div className={`w-full h-10 relative ${className}`}>
-      <div className="w-full h-10 inline-flex justify-between items-center">
+      <div className="w-full h-10 inline-flex justify-between items-center py-[11.5px]">
         {/* Page Info */}
         <div
-          className={`text-center justify-start text-gray-950 font-normal font-['SUIT'] ${isTablet ? "text-lg" : "text-base"}`}
+          className={`text-center justify-start text-gray-950 font-normal font-['SUIT'] ${isTablet ? "text-xl" : "text-lg"}`}
         >
           {currentPage} of {totalPages}
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex justify-start items-center gap-7">
+        <div className="flex justify-start items-center gap-10">
           {/* Prev Button */}
           <div
-            className={`flex justify-start items-center gap-1.5 cursor-pointer ${
-              isFirstPage ? "opacity-50" : "hover:opacity-80"
+            className={`flex justify-start items-center gap-1.5 ${
+              isFirstPage ? "cursor-default opacity-50" : "cursor-pointer hover:opacity-80"
             }`}
             onClick={handlePrevPage}
           >
-            <ArrowIconSvg direction="left" disabled={isFirstPage} />
+            <ArrowIconSvg 
+              direction="left" 
+              disabled={isFirstPage}
+              className={isFirstPage ? "text-gray-500" : "text-gray-950"}
+            />
             <div
               className={`text-center justify-start ${isFirstPage ? "text-gray-500" : "text-gray-950"} font-normal font-['SUIT'] ${isTablet ? "text-lg" : "text-base"}`}
             >
@@ -101,8 +105,8 @@ export default function Pagination({
 
           {/* Next Button */}
           <div
-            className={`flex justify-start items-center gap-[5px] cursor-pointer ${
-              isLastPage ? "opacity-50" : "hover:opacity-80"
+            className={`flex justify-start items-center gap-[5px] ${
+              isLastPage ? "cursor-default opacity-50" : "cursor-pointer hover:opacity-80"
             }`}
             onClick={handleNextPage}
           >
@@ -111,7 +115,11 @@ export default function Pagination({
             >
               Next
             </div>
-            <ArrowIconSvg direction="right" disabled={isLastPage} />
+            <ArrowIconSvg 
+              direction="right" 
+              disabled={isLastPage}
+              className={isLastPage ? "text-gray-500" : "text-gray-950"}
+            />
           </div>
         </div>
       </div>
