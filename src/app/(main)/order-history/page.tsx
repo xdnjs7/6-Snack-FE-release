@@ -338,14 +338,14 @@ const OrderHistoryPage = () => {
                     className={clsx(
                       "hidden sm:flex",
                       "absolute",
-                      "left-1/2",
+                      "left-[48%]",
                       "top-full",
                       "-translate-x-1/2",
-                      "mt-2",
-                      "w-[calc(100%+40px)]", // Figma 시안: 원본 카드 너비 + 양쪽 20px씩 총 40px 확장
+                      "mt-0",
+                      "w-[calc(80%)]",
                       "p-6",
-                      "bg-neutral-800", // Figma 시안: 배경색 #3C3C3C
-                      "rounded-[12px]", // Figma 시안: border-radius 12px
+                      "bg-neutral-800",
+                      "rounded-[12px]",
                       "flex-col",
                       "justify-center",
                       "items-start",
