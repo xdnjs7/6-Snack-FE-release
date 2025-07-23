@@ -1,4 +1,5 @@
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
+import img_fanta from "@/assets/images/img_fanta.webp";
 
 export const categories = {
   parentCategory: [
@@ -160,3 +161,50 @@ export const orderRequests = [
     productName: "오리지널 포카칩 외 1건",
   },
 ];
+
+export const order = {
+  id: 5,
+  userId: "7f0332aa-15de-4fe0-a3ac-ca6c07fccf6a",
+  approver: null,
+  adminMessage: "관리자에게 남길 메시지",
+  requestMessage: "요청 메시지",
+  totalPrice: 4500,
+  createdAt: "2025-07-15T07:43:16.993Z",
+  updatedAt: "2025-07-15T07:43:16.993Z",
+  status: "PENDING",
+  requester: "관리자",
+  products: [
+    {
+      id: 13,
+      productName: "오리지널 포카칩",
+      price: 1500,
+      imageUrl: img_fanta,
+      quantity: 2,
+    },
+    {
+      id: 14,
+      productName: "코카콜라 500ml",
+      price: 1500,
+      imageUrl: img_coke_zero,
+      quantity: 1,
+    },
+    {
+      id: 14,
+      productName: "코카콜라 500ml",
+      price: 1500,
+      imageUrl: img_coke_zero,
+      quantity: 1,
+    },
+    {
+      id: 14,
+      productName: "코카콜라 500ml",
+      price: 1500,
+      imageUrl: img_coke_zero,
+      quantity: 1,
+    },
+  ],
+  budget: {
+    currentMonthBudget: 50000,
+    currentMonthExpense: 30000,
+  },
+};

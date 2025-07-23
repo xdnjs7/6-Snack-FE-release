@@ -1,6 +1,6 @@
 "use client";
 
-import { products } from "@/app/(preview)/components-preview/PreviewMockData";
+import { products } from "@/app/(preview)/components-preview/MockData";
 import Desktop from "@/components/common/Desktop";
 import Dropdown from "@/components/common/DropDown";
 import Pagination from "@/components/common/Pagination";

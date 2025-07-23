@@ -1,67 +1,55 @@
 import { useModal } from "@/providers/ModalProvider";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import React from "react";
-import img_coke_zero from "@/assets/images/img_coke_zero.webp";
-import img_fanta from "@/assets/images/img_fanta.webp";
 import Button from "../ui/Button";
+import TextArea from "./TextArea";
+import { twMerge } from "tailwind-merge";
 
-const order = {
-  id: 5,
-  userId: "7f0332aa-15de-4fe0-a3ac-ca6c07fccf6a",
-  approver: null,
-  adminMessage: "관리자에게 남길 메시지",
-  requestMessage: "요청 메시지",
-  totalPrice: 4500,
-  createdAt: "2025-07-15T07:43:16.993Z",
-  updatedAt: "2025-07-15T07:43:16.993Z",
-  status: "PENDING",
-  requester: "관리자",
-  products: [
-    {
-      id: 13,
-      productName: "오리지널 포카칩",
-      price: 1500,
-      imageUrl: img_fanta,
-      quantity: 2,
-    },
-    {
-      id: 14,
-      productName: "코카콜라 500ml",
-      price: 1500,
-      imageUrl: img_coke_zero,
-      quantity: 1,
-    },
-    {
-      id: 14,
-      productName: "코카콜라 500ml",
-      price: 1500,
-      imageUrl: img_coke_zero,
-      quantity: 1,
-    },
-    {
-      id: 14,
-      productName: "코카콜라 500ml",
-      price: 1500,
-      imageUrl: img_coke_zero,
-      quantity: 1,
-    },
-  ],
-  budget: {
-    currentMonthBudget: 50000,
-    currentMonthExpense: 30000,
-  },
+type TProducts = {
+  id: number;
+  productName: string;
+  price: number;
+  imageUrl: string | StaticImageData;
+  quantity: number;
+}[];
+
+type TBudget = {
+  currentMonthBudget: number;
+  currentMonthExpense: number;
 };
 
-export default function OrderManageModal() {
+type TOrderManageModalProps = {
+  type: "reject" | "approve";
+  order: {
+    id: number;
+    userId: string;
+    approver: null;
+    adminMessage: string;
+    requestMessage: string;
+    totalPrice: number;
+    createdAt: string;
+    updatedAt: string;
+    status: string;
+    requester: string;
+    products: TProducts;
+    budget: TBudget;
+  };
+  onClick: () => void;
+};
+
+export default function OrderManageModal({ type, order, onClick }: TOrderManageModalProps) {
   const { closeModal } = useModal();
 
   return (
-    <div className="fixed inset-0 bg-white overflow-auto scrollbar-hide shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] sm:w-[600px] sm:h-full sm:max-h-[976px] sm:top-1/2 sm:left-1/2 sm:translate-[-50%] sm:py-[40px] sm:px-[60px]">
-      {/* props에 따라서 구매 요청 승인, 구매 요청 반려 분기처리 
-      헤더, 승인 메시지, 플레이스 홀더, 버튼 */}
+    <div
+      className={twMerge(
+        type === "approve" ? "sm:max-h-[976px]" : "sm:max-h-[882px]",
+        "fixed inset-0 bg-white overflow-auto scrollbar-hide shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] sm:w-[600px] sm:h-full sm:top-1/2 sm:left-1/2 sm:translate-[-50%] sm:py-[40px] sm:px-[60px]",
+      )}
+    >
       <div className="flex justify-center items-center h-[54px] py-[16px] px-[8px] sm:p-0 sm:h-auto">
         <p className="flex justify-center items-center w-[375px] font-bold text-[18px]/[22px] tracking-tight text-[#1f1f1f]">
-          구매 요청 승인
+          {type === "approve" ? "구매 요청 승인" : "구매 요청 반려"}
         </p>
       </div>
 
@@ -82,12 +70,15 @@ export default function OrderManageModal() {
           </div>
         </div>
 
-        <div className="flex flex-col justify-center items-center w-full max-w-[480px] mb-[46px] gap-[32px] sm:mb-[36px]">
+        <div className="flex flex-col justify-center items-center w-full max-w-[480px] mb-[24px] gap-[32px] sm:mb-[36px]">
           <div className="flex flex-col justify-center items-center w-full p-[20px] pb-[30px] gap-[20px] rounded-[2px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.12)]">
             <div className="flex flex-col items-center overflow-auto scrollbar w-full h-[160px] sm:h-[180px]">
               {order.products.map((product, i) => {
                 return (
-                  <div key={`${product}_${i}`} className="flex justify-between items-center w-full py-[20px] pr-[8px] border-b-1 border-primary-100">
+                  <div
+                    key={`${product}_${i}`}
+                    className="flex justify-between items-center w-full py-[20px] pr-[8px] border-b-1 border-primary-100"
+                  >
                     <div className="flex justify-center items-center gap-[12px] sm:gap-[20px]">
                       <div className="flex justify-center items-center w-[40px] h-[40px]">
                         <div className="relative w-[20px] h-[34.71px]">
@@ -145,37 +136,43 @@ export default function OrderManageModal() {
             </div>
           </div>
 
-          <div className="w-full outline-1 outline-primary-100"></div>
+          {type === "approve" && (
+            <>
+              <div className="w-full outline-1 outline-primary-100"></div>
 
-          <div className="flex justify-between items-center w-full">
-            <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-950 sm:text-[18px]/[22px]">
-              남은 예산 금액
-            </p>
-            <p className="font-extrabold text-[20px]/[25px] tracking-tight text-primary-950 sm:text-[24px]/[30px]">
-              {(order.budget.currentMonthBudget - order.budget.currentMonthExpense).toLocaleString("ko-KR")}원
-            </p>
-          </div>
+              <div className="flex justify-between items-center w-full">
+                <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-950 sm:text-[18px]/[22px]">
+                  남은 예산 금액
+                </p>
+                <p className="font-extrabold text-[20px]/[25px] tracking-tight text-primary-950 sm:text-[24px]/[30px]">
+                  {(order.budget.currentMonthBudget - order.budget.currentMonthExpense).toLocaleString("ko-KR")}원
+                </p>
+              </div>
+            </>
+          )}
 
           <div className="flex flex-col justify-center items-start w-full gap-[12px]">
-            <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-950">승인 메시지</p>
-            <textarea
-              id="adminMessage"
+            <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-950">
+              {type === "approve" ? "승인 메시지" : "반려 메시지"}
+            </p>
+            <TextArea
               className="w-full max-w-[480px] h-[140px] p-[24px] rounded-[2px] border-1 border-primary-200 outline-none resize-none placeholder:font-normal placeholder:text-[16px]/[26px] placeholder:tracking-tight placeholder:text-[#929292]"
-              placeholder="승인 메시지를 입력해주세요"
+              placeholder={type === "approve" ? "승인 메시지를 입력해주세요" : "반려 메시지를 입력해주세요"}
             />
           </div>
         </div>
 
         <div className="flex justify-center items-center w-full max-w-[480px] gap-[20px]">
           <Button
+            onClick={() => closeModal()}
             type="white"
             label="취소"
             className="flex justify-center items-center w-full min-w-[153.5px] max-w-[230px] h-[64px] py-[12px] px-[16px] font-bold"
-            onClick={() => closeModal()}
           />
           <Button
+            onClick={onClick}
             type="black"
-            label="승인하기"
+            label={type === "approve" ? "승인하기" : "반려하기"}
             className="flex justify-center items-center w-full min-w-[153.5px] max-w-[230px] h-[64px] py-[12px] px-[16px] font-bold"
           />
         </div>

@@ -112,7 +112,8 @@ export default function AuthenticatedHeader() {
           <ArrowIconSvg
             direction={isCategoryMenuOpen ? "up" : "down"}
             onClick={handleCategoryMenuClick}
-            className="w-5 h-5 p-0.5"
+            className="w-5 h-5 text-black"
+            
           />
         </div>
       </div>
