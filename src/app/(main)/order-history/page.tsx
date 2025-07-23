@@ -265,51 +265,26 @@ const OrderHistoryPage = () => {
             {/* 카드 3개 (모바일: 세로, 태블릿/PC: 가로) */}
             <div className="relative flex flex-col gap-4 sm:flex-row sm:gap-5">
               {/* 이번 달 예산 */}
-              <div
-                className="flex-1 flex flex-col justify-between"
-                style={{
-                  width: "414.6666564941406px",
-                  height: "150px",
-                  paddingTop: "30px",
-                  paddingRight: "40px",
-                  paddingBottom: "30px",
-                  paddingLeft: "30px",
-                  gap: "8px",
-                  borderRadius: "4px",
-                  opacity: 1,
-                  background: "#F5F5F5",
-                }}
-              >
+              <div className="flex-1 flex flex-col justify-between w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-2 rounded-[4px] bg-[#F5F5F5] opacity-100">
                 <div className="flex flex-row items-center justify-between w-full mb-2">
                   <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">이번 달 예산</div>
                   <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
                     {formatNumber(budgetData.currentMonthBudget)}
                   </div>
                 </div>
-                <div className="text-stone-500 text-sm sm:text-base font-normal font-suit leading-snug mt-auto">
-                  지난 달 예산은 {formatNumber(budgetData.previousMonthBudget)}였어요
+                <div className="text-stone-500 text-sm sm:text-base font-normal font-suit leading-snug mt-0">
+                  지난 달 예산은
+                  <br />
+                  {formatNumber(budgetData.previousMonthBudget)}였어요
                 </div>
               </div>
               {/* 이번 달 지출액 */}
               <div
-                className="flex-1 flex flex-col justify-between relative"
-                style={{
-                  width: "414.6666564941406px",
-                  height: "150px",
-                  paddingTop: "30px",
-                  paddingRight: "40px",
-                  paddingBottom: "30px",
-                  paddingLeft: "30px",
-                  gap: "8px",
-                  borderRadius: "4px",
-                  opacity: 1,
-                  background: "#F5F5F5",
-                  overflow: "visible",
-                }}
+                className="flex-1 flex flex-col justify-between relative w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-0 rounded-[4px] bg-[#F5F5F5] opacity-100 overflow-visible"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
               >
-                <div className="flex flex-row items-center justify-between w-full mb-2">
+                <div className="flex flex-row items-center justify-between w-full mb-0">
                   <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">이번 달 지출액</div>
                   <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
                     {formatNumber(budgetData.currentMonthExpense)}
@@ -319,7 +294,7 @@ const OrderHistoryPage = () => {
                   지난 달: {formatNumber(budgetData.previousMonthExpense)}
                 </div>
                 {/* 진행바 */}
-                <div className="w-full flex items-center gap-2 mt-2">
+                <div className="w-full flex items-center gap-0 mt-0">
                   <div className="flex-1 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
                     <div
                       className="h-1.5 bg-blue-500 rounded-md"
@@ -382,28 +357,22 @@ const OrderHistoryPage = () => {
                 )}
               </div>
               {/* 올해 총 지출액 */}
-              <div
-                className="flex-1 flex flex-col justify-between"
-                style={{
-                  width: "414.6666564941406px",
-                  height: "150px",
-                  paddingTop: "30px",
-                  paddingRight: "40px",
-                  paddingBottom: "30px",
-                  paddingLeft: "30px",
-                  gap: "8px",
-                  borderRadius: "4px",
-                  opacity: 1,
-                  background: "#F5F5F5",
-                }}
-              >
+              <div className="flex-1 flex flex-col justify-between w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-2 rounded-[4px] bg-[#F5F5F5] opacity-100">
                 <div className="flex flex-row items-center justify-between w-full mb-2">
                   <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">올해 총 지출액</div>
                   <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
                     {formatNumber(budgetData.currentYearTotalExpense)}
                   </div>
                 </div>
-                <div className="text-stone-500 text-sm sm:text-base font-normal font-suit leading-snug mt-auto">{`작년보다 ${(budgetData.currentYearTotalExpense - budgetData.previousYearTotalExpense).toLocaleString()}원 ${budgetData.currentYearTotalExpense - budgetData.previousYearTotalExpense > 0 ? "더 지출했어요" : "덜 지출했어요"}`}</div>
+                <div className="text-stone-500 text-sm sm:text-base font-normal font-suit leading-snug mt-auto">
+                  {`올해 작년보다`}
+                  <br />
+                  {`${(budgetData.currentYearTotalExpense - budgetData.previousYearTotalExpense).toLocaleString()}원 ${
+                    budgetData.currentYearTotalExpense - budgetData.previousYearTotalExpense > 0
+                      ? "더 지출했어요"
+                      : "덜 지출했어요"
+                  }`}
+                </div>
               </div>
             </div>
             {/* 모바일용 남은 예산 정보 박스 (항상 노출 - 모바일) */}
