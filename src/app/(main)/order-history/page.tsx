@@ -194,7 +194,6 @@ const OrderHistoryPage = () => {
     <div
       className={clsx(
         "min-h-screen",
-        "bg-neutral-50", // Figma 시안: 전체 배경색 #FBFBFB
         "text-neutral-800", // 기본 텍스트 색상
         "font-suit", // 폰트 적용
         "flex",
