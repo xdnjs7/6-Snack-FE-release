@@ -433,7 +433,6 @@ const OrderHistoryPage = () => {
             "shadow-sm",
             "w-full",
             "overflow-x-auto",
-            "border", // Figma 시안: Border 1px #E5E5E5
             "border-neutral-200",
           )}
           style={{ boxShadow: "none", background: "white" }} // 기존 그림자 제거 및 배경색 명시
@@ -663,7 +662,7 @@ const OrderHistoryPage = () => {
                 className={clsx(
                   "flex items-center gap-1.5 px-3 py-2 rounded-md",
                   "text-neutral-500 text-base font-normal font-suit", // Figma 시안: 텍스트 #808080
-                  "bg-white border border-neutral-200", // Figma 시안: 배경 흰색, 테두리 #E5E5E5
+                  "bg-white", // Figma 시안: 배경 흰색, 테두리 #E5E5E5
                   "hover:bg-neutral-100", // Figma 시안: 호버 시 배경 #F5F5F5
                   "transition-colors duration-200",
                   currentPage === 1 && "opacity-50 cursor-not-allowed",
@@ -696,7 +695,7 @@ const OrderHistoryPage = () => {
                 className={clsx(
                   "flex items-center gap-1.5 px-3 py-2 rounded-md",
                   "text-neutral-800 text-base font-normal font-suit", // Figma 시안: 텍스트 #3C3C3C
-                  "bg-white border border-neutral-200", // Figma 시안: 배경 흰색, 테두리 #E5E5E5
+                  "bg-white", // Figma 시안: 배경 흰색, 테두리 #E5E5E5
                   "hover:bg-neutral-100", // Figma 시안: 호버 시 배경 #F5F5F5
                   "transition-colors duration-200 ml-2",
                   currentPage === totalPages && "opacity-50 cursor-not-allowed",
