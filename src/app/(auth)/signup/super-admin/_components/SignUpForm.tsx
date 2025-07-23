@@ -8,9 +8,9 @@ import { z } from "zod";
 import Image from "next/image";
 import img_logo from "@/assets/images/img_logo.webp";
 import { adminSignUp } from "@/app/actions/adminSignUp";
-import { signUpSchema } from "@/lib/schemas/signUpSchema";
+import { signupSchema } from "@/lib/schemas/signup.schema";
 
-type TSignUpForm = z.infer<typeof signUpSchema>;
+type TSignUpForm = z.infer<typeof signupSchema>;
 
 const SignUpForm = () => {
   const {
@@ -19,7 +19,7 @@ const SignUpForm = () => {
     setError,
     formState: { errors, isSubmitting },
   } = useForm<TSignUpForm>({
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(signupSchema),
   });
 
   const onSubmit = async (data: TSignUpForm) => {
