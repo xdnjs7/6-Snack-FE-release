@@ -74,15 +74,15 @@ body {
 @layer utilities {
   .scrollbar-hide {
     scrollbar-width: none;
+  }
 
-    &::-webkit-scrollbar {
-      display: none;
-    }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 
   .scrollbar::-webkit-scrollbar {
     display: block;
-    width: 6px; /* Chrome, Safari, Opera */
+    width: 3px; /* Chrome, Safari, Opera */
   }
 
   .scrollbar::-webkit-scrollbar-thumb {

@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true, // TypeScript 오류도 무시하려면
   },
+  images: {
+    remotePatterns: [{ hostname: "example.com" }],
+  },
 };
 
 export default nextConfig;
