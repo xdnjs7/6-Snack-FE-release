@@ -1,6 +1,6 @@
 "use server";
 
-import { signUpSchema } from "@/lib/schemas/signUpSchema";
+import { signupSchema } from "@/lib/schemas/signup.schema";
 import { redirect } from "next/navigation";
 
 type TSignupResponse = {
@@ -56,7 +56,7 @@ export async function adminSignUp(formData: FormData) {
   });
 
   // Zod 스키마를 사용하여 서버에서 데이터 유효성 검사
-  const parsedData = signUpSchema.safeParse(inputData);
+  const parsedData = signupSchema.safeParse(inputData);
 
   if (!parsedData.success) {
     // 유효성 검사 실패 시, 첫 번째 에러 메시지를 반환

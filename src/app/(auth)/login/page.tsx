@@ -1,30 +1,46 @@
 "use client";
 
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { useState } from "react";
 import SnackIconSvg from "@/components/svg/SnackIconSvg";
 import Button from "@/components/ui/Button";
-// import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
-// import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
+import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
+import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
 import Link from "next/link";
 import clsx from "clsx";
 import { useAuth } from "@/providers/AuthProvider";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, TLoginFormData } from "@/lib/schemas/login.schema";
+import FormErrorMessage from "./_components/FormErrorMessage";
 
 export default function LoginPage() {
-  const [body, setBody] = useState<{ email: string; password: string }>({ email: "", password: "" });
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
   const router = useRouter();
   const { login } = useAuth();
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const id = e.target.id;
-    const value = e.target.value;
-
-    setBody((prev) => ({ ...prev, [id]: value }));
+  const handlePasswordVisible = () => {
+    setIsPasswordVisible(!isPasswordVisible);
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // React Hook Form
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<TLoginFormData>({
+    resolver: zodResolver(loginSchema),
+    mode: "onChange",
+  });
+
+  // label 렌더링
+  const hasEmailValue = watch("email");
+  const hasPasswordValue = watch("password");
+
+  // 로그인 함수
+  const onSubmit = async (body: TLoginFormData) => {
     const { email, password } = body;
 
     try {
@@ -51,44 +67,95 @@ export default function LoginPage() {
             로그인
           </p>
           <form
-            onSubmit={(e) => handleSubmit(e)}
-            className="relative flex flex-col justify-center items-center w-full gap-[20px]"
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col justify-center items-center w-full gap-[30px]"
           >
-            <input
-              id="email"
-              className={clsx(
-                "w-full max-w-[480px] h-[56px] py-[8px] px-[4px] outline-none border-b-1 border-primary-600 placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
-              )}
-              placeholder="이메일을 입력해주세요"
-              type="email"
-              value={body.email}
-              onChange={(e) => {
-                handleInputChange(e);
-              }}
-            />
+            <div className="flex flex-col justify-center items-center w-full gap-[20px]">
+              <div className="flex flex-col w-full max-w-[480px] gap-[4px]">
+                <div
+                  className={clsx(
+                    errors.email ? "border-error-500" : "border-primary-600",
+                    hasEmailValue ? "justify-end" : "justify-center",
+                    "relative flex flex-col h-[56px] py-[8px] pr-[24px] px-[4px] gap-[5px] border-b-1",
+                  )}
+                >
+                  <label
+                    htmlFor="email"
+                    className={clsx(
+                      hasEmailValue ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                      "absolute left-[4px] top-[8px] font-normal text-[12px]/[15px] tracking-tight text-primary-600 transition-all duration-300",
+                    )}
+                  >
+                    이메일
+                  </label>
 
-            <input
-              id="password"
-              className={clsx(
-                "w-full max-w-[480px] h-[56px] py-[8px] px-[4px] outline-none border-b-1 border-primary-600 placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
-              )}
-              placeholder="비밀번호를 입력해주세요"
-              type="password"
-              value={body.password}
-              onChange={(e) => {
-                handleInputChange(e);
-              }}
-            />
+                  <input
+                    {...register("email")}
+                    id="email"
+                    type="email"
+                    placeholder="이메일을 입력해주세요"
+                    className={clsx(
+                      "z-10 w-full max-w-[480px] font-normal text-[16px]/[20px] tracking-tight text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
+                    )}
+                  />
+                </div>
 
-            {/* <VisibilityOffIconSvg className="absolute right-[4px] bottom-[8px] z-10" fill="#555555" />
-        <VisibilityOnIconSvg className="absolute right-[4px] bottom-[8px]" fill="#555555" /> */}
+                <FormErrorMessage message={errors.email?.message} />
+              </div>
+
+              <div className="relative flex flex-col w-full max-w-[480px] gap-[4px]">
+                <div
+                  className={clsx(
+                    errors.password ? "border-error-500" : "border-primary-600",
+                    hasPasswordValue ? "items-end" : " items-center",
+                    "relative flex justify-between h-[56px] gap-[4px] py-[8px] px-[4px] border-b-1",
+                  )}
+                >
+                  <div className="flex flex-col justify-center w-full gap-[5px]">
+                    <label
+                      htmlFor="password"
+                      className={clsx(
+                        hasPasswordValue ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                        "absolute left-[4px] top-[8px] font-normal text-[12px]/[15px] tracking-tight text-primary-600 transition-all duration-300",
+                      )}
+                    >
+                      비밀번호
+                    </label>
+
+                    <input
+                      {...register("password")}
+                      id="password"
+                      type={isPasswordVisible ? "text" : "password"}
+                      placeholder="비밀번호를 입력해주세요"
+                      className={clsx(
+                        isPasswordVisible ? "tracking-tight" : "tracking-[0.25em]",
+                        "z-10 w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
+                      )}
+                    />
+                  </div>
+
+                  <div
+                    onClick={handlePasswordVisible}
+                    className={clsx(
+                      hasPasswordValue ? "opacity-100" : "opacity-0",
+                      "mt-[24px] cursor-pointer transition-all duration-300",
+                    )}
+                  >
+                    {isPasswordVisible ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
+                  </div>
+                </div>
+
+                <FormErrorMessage message={errors.password?.message} />
+              </div>
+            </div>
 
             <Button
-              type={false ? "grayDisabled" : "black"}
-              label="로그인"
+              type="black"
+              label={isSubmitting ? "로그인 중..." : "로그인"}
+              disabled={isSubmitting}
               className={clsx(
-                false && "text-primary-300 bg-primary-100",
-                "w-full mt-[10px] mb-[24px] font-bold text-[16px]/[20px] h-[64px]",
+                (!isValid || isSubmitting) && "text-primary-300 bg-primary-100 cursor-default",
+                "w-full mb-[24px] font-bold text-[16px]/[20px] h-[64px]",
               )}
             />
           </form>
