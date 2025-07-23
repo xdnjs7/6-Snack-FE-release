@@ -1,5 +1,6 @@
 import React from "react";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
+import Image from "next/image";
 
 type Product = {
   id: number;
@@ -39,15 +40,15 @@ export default function ProductGrid({ products }: ProductGridProps) {
       {products.map((product) => (
         <div key={product.id} className="flex flex-col justify-start items-start gap-5">
           <div className="w-full h-[154.5px] px-[120px] py-[73px] round-xs relative bg-primary-50">
-            <img src={img_coke_zero.src} alt={product.name} className="w-32 h-56 object-contain" />
+            <Image src={img_coke_zero.src} alt={product.name} className="object-contain" />
           </div>
           <div className="flex flex-col justify-start items-start gap-2">
             <div className="inline-flex justify-start items-center gap-2">
-              <div className="justify-start text-stone-900 text-lg font-normal font-['SUIT']">{product.name}</div>
+              <div className="justify-start text-stone-900 text-lg font-normal">{product.name}</div>
               {/* 상품 팔린갯수 api 연동되면 가져와야함, 변경예정 */}
-              <div className="justify-center text-blue-500 text-sm font-bold font-['SUIT']">29회 구매</div>
+              <div className="justify-center text-blue-500 text-sm font-bold ">29회 구매</div>
             </div>
-            <div className="justify-start text-stone-900 text-lg font-extrabold font-['SUIT']">
+            <div className="justify-start text-stone-900 text-lg font-extrabold">
               {product.price.toLocaleString("ko-KR")}원
             </div>
           </div>
