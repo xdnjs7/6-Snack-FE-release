@@ -203,8 +203,59 @@ const OrderHistoryPage = () => {
     >
       {/* Main Content Area */}
       <main className={clsx("flex-1", "p-6 sm:p-8 md:p-10", "max-w-[1352px]", "mx-auto", "w-full", "relative")}>
-        <div className="text-lg sm:text-2xl font-bold font-suit mb-6">구매 내역 확인</div>
-
+        <div className="flex flex-row justify-between items-center mb-6">
+          <div className="text-lg sm:text-2xl font-bold font-suit">구매 내역 확인</div>
+          <div className="relative custom-sort-dropdown">
+            <button
+              type="button"
+              onClick={handleSortButtonClick}
+              className={clsx(
+                "w-28 h-11 px-4 py-2.5 bg-white border border-neutral-200 rounded-md flex justify-between items-center",
+                "text-neutral-800 text-base font-normal font-suit",
+                "relative",
+                "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+              )}
+              aria-haspopup="listbox"
+              aria-expanded={dropdownOpen}
+            >
+              <span>{sortBy === "latest" ? "정렬" : "오래된 순"}</span>
+              <span className="w-4 h-4 ml-2 inline-block">
+                <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L8 8L15 1" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+              {dropdownOpen && (
+                <ul
+                  className="absolute left-0 top-full mt-1 w-full bg-white border border-neutral-200 rounded-md shadow-lg z-10"
+                  role="listbox"
+                >
+                  <li
+                    className={clsx(
+                      "px-4 py-2 hover:bg-neutral-100 cursor-pointer",
+                      sortBy === "latest" && "font-bold text-blue-600",
+                    )}
+                    role="option"
+                    aria-selected={sortBy === "latest"}
+                    onClick={() => handleSortSelect("latest")}
+                  >
+                    최신순
+                  </li>
+                  <li
+                    className={clsx(
+                      "px-4 py-2 hover:bg-neutral-100 cursor-pointer",
+                      sortBy === "oldest" && "font-bold text-blue-600",
+                    )}
+                    role="option"
+                    aria-selected={sortBy === "oldest"}
+                    onClick={() => handleSortSelect("oldest")}
+                  >
+                    오래된 순
+                  </li>
+                </ul>
+              )}
+            </button>
+          </div>
+        </div>
         {/* PurchaseSummary 컴포넌트 내용 */}
         {budgetLoading ? (
           <div className="py-8 text-center text-blue-600">예산 정보 로딩 중...</div>
@@ -383,63 +434,7 @@ const OrderHistoryPage = () => {
         >
           {/* 상단: 타이틀 + 정렬 버튼 */}
           <div className="flex flex-col sm:flex-row sm:justify-end sm:items-center gap-2 px-6 pt-6 pb-2">
-            <div className="relative custom-sort-dropdown">
-              <button
-                type="button"
-                onClick={handleSortButtonClick}
-                className={clsx(
-                  "w-28 h-11 px-4 py-2.5 bg-white border border-neutral-200 rounded-md flex justify-between items-center",
-                  "text-neutral-800 text-base font-normal font-suit",
-                  "relative",
-                  "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent", // 포커스 스타일
-                )}
-                aria-haspopup="listbox"
-                aria-expanded={dropdownOpen}
-              >
-                <span>{sortBy === "latest" ? "정렬" : "오래된 순"}</span>
-                <span className="w-4 h-4 ml-2 inline-block">
-                  {/* 드롭다운 아이콘 - 시안과 동일 */}
-                  <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M1 1L8 8L15 1"
-                      stroke="#222"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-                {dropdownOpen && (
-                  <ul
-                    className="absolute left-0 top-full mt-1 w-full bg-white border border-neutral-200 rounded-md shadow-lg z-10" // Figma 시안: rounded-md, shadow-lg
-                    role="listbox"
-                  >
-                    <li
-                      className={clsx(
-                        "px-4 py-2 hover:bg-neutral-100 cursor-pointer", // Figma 시안: hover 배경색 #F5F5F5 (neutral-100)
-                        sortBy === "latest" && "font-bold text-blue-600",
-                      )}
-                      role="option"
-                      aria-selected={sortBy === "latest"}
-                      onClick={() => handleSortSelect("latest")}
-                    >
-                      최신순
-                    </li>
-                    <li
-                      className={clsx(
-                        "px-4 py-2 hover:bg-neutral-100 cursor-pointer", // Figma 시안: hover 배경색 #F5F5F5 (neutral-100)
-                        sortBy === "oldest" && "font-bold text-blue-600",
-                      )}
-                      role="option"
-                      aria-selected={sortBy === "oldest"}
-                      onClick={() => handleSortSelect("oldest")}
-                    >
-                      오래된 순
-                    </li>
-                  </ul>
-                )}
-              </button>
-            </div>
+            {/* 이 부분은 삭제됨, 상단으로 이동 */}
           </div>
 
           {/* 리스트/테이블 */}
