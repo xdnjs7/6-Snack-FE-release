@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const signUpSchema = z
+export const signupSchema = z
   .object({
     name: z.string().min(1, "이름을 입력해주세요."),
     id: z.string().email("유효한 이메일이 아닙니다.").min(1, "이메일을 입력해주세요."),

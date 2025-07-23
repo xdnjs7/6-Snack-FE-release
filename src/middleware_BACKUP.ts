@@ -22,7 +22,8 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/my") ||
     pathname.startsWith("/order-history") ||
     pathname.startsWith("/order-manage") ||
-    pathname.startsWith("/profile");
+    pathname.startsWith("/profile") ||
+    pathname.startsWith("/products");
 
   // 로그인한 사용자가 인증 경로(로그인, 회원가입)에 접근하는 경우
   if (isAuthRoute && isAuthenticated) {

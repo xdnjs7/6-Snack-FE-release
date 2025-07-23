@@ -4,8 +4,6 @@ import Image from "next/image";
 import Button from "@/components/ui/Button";
 import { TButtonType } from "@/types/button.types";
 import React, { useEffect, useState } from "react";
-import IcVisibilityOn from "@/assets/icons/ic_visibility_on.svg";
-import IcVisibilityOff from "@/assets/icons/ic_visibility_off.svg";
 import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
 import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
 import { getUserInfo, updatePassword, updateSuper } from "@/lib/api/profile.api";
