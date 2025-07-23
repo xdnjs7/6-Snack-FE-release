@@ -322,13 +322,20 @@ const OrderHistoryPage = () => {
                     <div
                       className="h-1.5 bg-blue-500 rounded-md"
                       style={{
-                        width: `${Math.min(100, Math.round((budgetData.currentMonthExpense / (budgetData.currentMonthBudget || 1)) * 100))}%`,
+                        width: `${
+                          budgetData.currentMonthExpense > 0 && budgetData.currentMonthBudget > 0
+                            ? Math.max(
+                                1,
+                                Math.round((budgetData.currentMonthExpense / budgetData.currentMonthBudget) * 100),
+                              )
+                            : 0
+                        }%`,
                       }}
                     />
                   </div>
                   <div className="text-neutral-800 text-xs sm:text-sm font-normal font-suit min-w-[32px] text-right">
-                    {budgetData.currentMonthBudget
-                      ? `${Math.round((budgetData.currentMonthExpense / budgetData.currentMonthBudget) * 100)}%`
+                    {budgetData.currentMonthBudget > 0
+                      ? `${budgetData.currentMonthExpense > 0 ? Math.max(1, Math.round((budgetData.currentMonthExpense / budgetData.currentMonthBudget) * 100)) : 0}%`
                       : "-"}
                   </div>
                 </div>
