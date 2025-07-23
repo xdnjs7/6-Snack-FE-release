@@ -16,6 +16,7 @@ import FormErrorMessage from "./_components/FormErrorMessage";
 
 export default function LoginPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
   const router = useRouter();
   const { login } = useAuth();
@@ -44,12 +45,14 @@ export default function LoginPage() {
     const { email, password } = body;
 
     try {
+      setIsDisabled(true);
       await login(email, password);
 
       router.push("/products");
     } catch (e) {
       if (e instanceof Error) {
         console.error(e.message);
+        setIsDisabled(false);
       }
     }
   };
@@ -151,10 +154,10 @@ export default function LoginPage() {
 
             <Button
               type="black"
-              label={isSubmitting ? "로그인 중..." : "로그인"}
-              disabled={isSubmitting}
+              label={isSubmitting || isDisabled ? "로그인 중..." : "로그인"}
+              disabled={!isValid || isSubmitting || isDisabled}
               className={clsx(
-                (!isValid || isSubmitting) && "text-primary-300 bg-primary-100 cursor-default",
+                (!isValid || isSubmitting || isDisabled) && "text-primary-300 bg-primary-100 cursor-default",
                 "w-full mb-[24px] font-bold text-[16px]/[20px] h-[64px]",
               )}
             />
