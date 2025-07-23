@@ -90,27 +90,39 @@ export default function InviteSignUpPage() {
 
   return (
     // top parent
-    <div className="flex flex-col items-center justify-center gap-[46px] sm:gap-0">
+    <div className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[48px] sm:pt-[160px]">
       {/* mobile */}
       {/* logo + intro */}
-      <div className="flex flex-col items-center justify-center w-full max-w-[480px] pt-[48px] sm:max-w-[600px] sm:py-[160px]">
-        <div className="flex justify-center w-full h-[140px] py-[38.18px] px-[50.92px]">
+      <div className="sm:absolute sm:top-0 flex flex-col items-center justify-center w-full max-w-[480px] sm:max-w-[600px]">
+        <div className="flex justify-center items-center w-full sm:max-w-[500px] h-[140px] sm:h-[214px] py-[38.18px] sm:py-[58.4px] px-[50.92px] sm:px-[77.86px]">
           <Link href="/">
             <SnackIconSvg className="w-[225.16px] h-[63.64px] sm:w-[344px] sm:h-[97.3px]" />
           </Link>
         </div>
-        <div className="flex flex-col items-center justify-center gap-[10px] ">
-          <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle ">
-            {inviteInfo?.name} 님, 만나서 반갑습니다.
-          </h1>
-          <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
-            비밀번호를 입력해 회원가입을 완료해주세요.
-          </p>
+        <div className="sm:hidden">
+          <div className="flex flex-col items-center justify-center gap-[10px]">
+            <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle ">
+              {inviteInfo?.name} 님, 만나서 반갑습니다.
+            </h1>
+            <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
+              비밀번호를 입력해 회원가입을 완료해주세요.
+            </p>
+          </div>
         </div>
       </div>
-
       {/* signup content - form, register button, link to login */}
-      <div className="flex flex-col w-full items-center justify-center">
+
+      <div className="sm:absolute sm:w-[600px] sm:top-[152.12px] flex flex-col w-full items-center justify-center sm:items-start sm:px-[60px] sm:py-[40px] sm:bg-white sm:rounded-xs sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)]">
+        <div className="hidden sm:block sm:mb-[20px]">
+          <div className="flex flex-col items-center justify-center gap-[10px]">
+            <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle ">
+              {inviteInfo?.name} 님, 만나서 반갑습니다.
+            </h1>
+            <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
+              비밀번호를 입력해 회원가입을 완료해주세요.
+            </p>
+          </div>
+        </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full mb-[30px] gap-[20px]">
           {/* 이메일 */}
           <div className="flex flex-col justify-between w-full h-[56px] py-2 px-1 border-b border-primary-200">
@@ -130,7 +142,7 @@ export default function InviteSignUpPage() {
                 errors.password ? "border-error-500" : "border-primary-600",
               )}
             >
-              <div className="flex flex-col justify-between items-start gap-[5px]">
+              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
                 <label
                   className={clsx(
                     "text-primary-500 text-xs/[15px] font-normal tracking-tight",
@@ -143,7 +155,11 @@ export default function InviteSignUpPage() {
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
                   placeholder="비밀번호를 입력하세요"
-                  className="text-base/[20px] text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight"
+                  className={clsx(
+                    // 수정해야함!
+                    showPassword ? "tracking-tight" : "tracking-[0.25em]",
+                    "w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
+                  )}
                 />
               </div>
               {/* 비밀번호 보임토글 */}
@@ -164,7 +180,7 @@ export default function InviteSignUpPage() {
           {/* 비밀번호 확인 input wrapper*/}
           <div className="flex flex-col gap-1">
             <div className="relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b border-primary-600">
-              <div className="flex flex-col justify-between items-start gap-[5px]">
+              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
                 <label
                   className={clsx(
                     "text-primary-500 text-xs/[15px] font-normal tracking-tight",
@@ -177,7 +193,11 @@ export default function InviteSignUpPage() {
                   type={showPasswordConfirm ? "text" : "password"}
                   {...register("passwordConfirm")}
                   placeholder="비밀번호를 다시 입력하세요"
-                  className="text-base/[20px] text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight"
+                  className={clsx(
+                    // 수정해야함!
+                    showPassword ? "text-[16px]/[20px]" : "text-[20px]/[20px]",
+                    "w-full tracking-tight text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight outline-none",
+                  )}
                 />
               </div>
               {/* 비밀번호 확인 보임토글 */}
@@ -200,13 +220,13 @@ export default function InviteSignUpPage() {
           type="primary"
           label={isSubmitting ? "처리 중..." : "가입하기"}
           className={clsx(
-            "w-full h-[64px] mb-[24px] sm:mb-[30px]",
+            "w-full h-[64px] mb-[24px]",
             isValid && !isSubmitting ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
           )}
           onClick={isValid && !isSubmitting ? handleSubmit(onSubmit) : undefined}
         />
         <p className="text-primary-500 text-base/[20px] tracking-tight">
-          이미 계정이 있으신가요?{" "}
+          이미 계정이 있으신가요?
           <Link href="/login">
             <span className="text-primary-950 text-base/[20px] tracking-tight font-bold underline decoration-primary-950 underline-offset-2">
               로그인

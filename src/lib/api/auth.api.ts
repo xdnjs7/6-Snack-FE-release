@@ -29,6 +29,12 @@ export const registerApi = async (_name: string, _email: string, _password: stri
   throw new Error("일반 회원가입은 초대 링크가 필요합니다");
 };
 
+export const refreshAccessToken = async () => {
+  return cookieFetch("/auth/refresh-token", {
+    method: "POST",
+  });
+};
+
 export type TSignUpWithInviteResponse = {
   message: string;
   user: {
@@ -38,6 +44,7 @@ export type TSignUpWithInviteResponse = {
     role: string;
   };
 };
+
 export const signUpWithInviteApi = async (
   inviteId: string,
   password: string,
