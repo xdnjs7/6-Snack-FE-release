@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { navLinks } from "@/constants/navigationLinks";
+import { navLinks } from "@/app/(preview)/components-preview/navigationLinks";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 const roleColorMap: Record<string, string> = {
@@ -116,7 +116,7 @@ export default function DevNavBar() {
       <div
         ref={buttonRef}
         onClick={handleDevTool}
-        className="z-100 flex justify-center items-center fixed bottom-5 right-5 w-9.5 h-9.5 rounded-full cursor-pointer font-extrabold text-[18px]/[24px] bg-indigo-200 shadow-lg"
+        className="z-100 flex justify-center items-center fixed bottom-5 right-4.5 w-9.5 h-9.5 rounded-full cursor-pointer font-extrabold text-[18px]/[24px] bg-indigo-700/60 shadow-lg"
       >
         👨🏻‍💻
       </div>

@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import Mobile from "./Mobile";
 import Button from "../ui/Button";
-import DateFormat from "@/lib/utils/DateFormat.util";
+import { formatDate } from "@/lib/utils/formatDate.util";
 
 type TRequestListProps = {
   orderRequests: {
@@ -31,7 +31,7 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
               <div className="flex flex-col min-w-[327px] h-[144px] gap-[20px] my-[24px]">
                 <div className="flex flex-col justify-center gap-[10px]">
                   <div className="flex justify-between items-center pr-[4px]">
-                    <div className="font-bold text-[14px]/[17px] tracking-tight">{DateFormat(request.createdAt)}</div>
+                    <div className="font-bold text-[14px]/[17px] tracking-tight">{formatDate(request.createdAt)}</div>
                     <div className="flex gap-[6px] items-center">
                       <div className="flex justify-center items-center w-[24px] h-[24px] rounded-full py-[6px] px-[5.5px] bg-primary-50 font-medium text-[10px]/[12px] tracking-tight">
                         {request.requester.slice(0, 1)}
@@ -70,7 +70,7 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
           <div className="flex justify-center w-full">
             <div className="hidden sm:flex justify-between items-center w-full max-w-[1352px] h-[100px] md:px-[40px]">
               <div className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[100px] md:w-[142px]">
-                {DateFormat(request.createdAt)}
+                {formatDate(request.createdAt)}
               </div>
               <div className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[140px] md:w-[360px]">
                 {request.productName}
