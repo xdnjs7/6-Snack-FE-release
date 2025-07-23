@@ -29,7 +29,7 @@ export const navLinks: DevNavSection[] = [
     category: "인증/인가",
     links: [
       { name: "로그인", path: "/login", role: "비회원", progress: "리팩터링 중" },
-      { name: "회원가입", path: "/signup", role: "비회원", progress: "진행 중" },
+      { name: "회원가입", path: "/signup", role: "비회원", progress: "완성" },
       { name: "최고 관리자 회원가입", path: "/signup/super-admin", role: "비회원", progress: "진행 중" },
     ],
   },
@@ -44,7 +44,7 @@ export const navLinks: DevNavSection[] = [
   {
     category: "상품",
     links: [
-      { name: "상품 리스트", path: "/products", role: "일반유저", progress: "시작 전" },
+      { name: "상품 리스트", path: "/products", role: "일반유저", progress: "진행 중" },
       { name: "상품 상세", path: "/products/:productId", role: "일반유저", progress: "리팩터링 중" },
       { name: "찜 목록", path: "/my/likes", role: "일반유저", progress: "시작 전" },
       { name: "상품 등록 내역", path: "/my/products", role: "일반유저", progress: "리팩터링 중" },
