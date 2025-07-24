@@ -1,4 +1,4 @@
-import { TGetCartItemsResponse, TToggleCheckItemBody } from "@/types/cart.types";
+import { TGetCartItemsResponse } from "@/types/cart.types";
 import { cookieFetch } from "./fetchClient.api";
 
 // 장바구니 조회
