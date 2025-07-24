@@ -8,6 +8,8 @@ import { getProducts } from "@/lib/api/product.api";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useMediaQuery } from "react-responsive";
+import Button from "@/components/ui/Button";
+import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 
 type CategoryData = {
   parentCategory: Array<{ id: number; name: string }>;
@@ -151,6 +153,15 @@ export default function ProductsPage() {
           <>
             {/* 상품 그리드 */}
             <ProductGrid products={products} />
+            <Button
+              type="white"
+              label={
+                <div className="flex ㅈitems-center gap-2">
+                  더보기
+                  <ArrowIconSvg direction="down" />
+                </div>
+              }
+            />
           </>
         )}
       </div>

@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 
 type TButtonProps = {
   type: TButtonType;
-  label?: string;
+  label?: string | React.ReactNode;
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
