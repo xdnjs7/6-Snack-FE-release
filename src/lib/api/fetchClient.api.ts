@@ -41,32 +41,34 @@ export const cookieFetch = async <T = any>(path: string, options: RequestInit = 
     throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
   }
 
+  if (response.status === 204) {
+    return null as T;
+  }
+
   return response.json() as Promise<T>;
 };
 
 export const defaultFetch = async <T = any>(path: string, options: RequestInit = {}): Promise<T> => {
   const method = options.method || "GET";
-  // 개발 완료후 삭제
   console.log(`🌐 API 요청: ${method} ${API_BASE_URL}${path}`);
 
-  try {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-        ...(options.headers || {}),
-      },
-      ...options,
-    });
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+    ...options,
+  });
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data as T;
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
   }
+
+  if (response.status === 204) {
+    return null as T;
+  }
+  const data = await response.json();
+  return data as T;
 };
