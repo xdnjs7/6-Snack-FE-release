@@ -1,14 +1,14 @@
 import React from "react";
 import PlusToggleIconSvg from "@/components/svg/PlusToggleIconSvg";
 
-type InfoSectionProps = {
+type TInfoSectionProps = {
   title: string;
   isOpen: boolean;
   onToggle: () => void;
   children: React.ReactNode;
 };
 
-export default function InfoSection({ title, isOpen, onToggle, children }: InfoSectionProps) {
+export default function InfoSection({ title, isOpen, onToggle, children }: TInfoSectionProps) {
   return (
     <div className="self-stretch py-7.5 sm:py-10 border-b border-primary-200 inline-flex flex-col justify-center items-start gap-1.5 sm:gap-2">
       <div className="self-stretch inline-flex justify-between items-center">
