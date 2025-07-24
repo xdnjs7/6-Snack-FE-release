@@ -11,7 +11,7 @@ export default function useOrderVisibleCount() {
       const md = parseInt(getComputedStyle(root).getPropertyValue("--breakpoint-md"));
       const width = window.innerWidth;
 
-      // 갯수 설정
+      
       const breakpointConfig = [
         { width: md, count: 6 },
         { width: sm, count: 8 },
