@@ -47,7 +47,6 @@ export default function ProductsPage() {
   // 상태변수 관리할것 -  상품들, 로딩중, 커서(더보기 페이지네이션), 선택된 카테고리
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [isLoadMore, setIsLoadMore] = useState<boolean>(false);
   const [cursor, setCursor] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<{
     parent: string;
@@ -74,6 +73,10 @@ export default function ProductsPage() {
     }
   };
 
+  const handleLoadMore = () => {
+    fetchProducts(true);
+  };
+
   // URL 파라미터에서 카테고리 정보 가져오기
   useEffect(() => {
     const categoryId = searchParams.get("category");
@@ -90,7 +93,7 @@ export default function ProductsPage() {
   }, [searchParams]);
 
   // 상품 목록 가져오기 - 현재 화면사이즈에 따라 limit, category, cursor 적용, sort적용예정
-  const fetchProducts = async () => {
+  const fetchProducts = async (loadMore = false) => {
     setLoading(true);
     try {
       const categoryId = searchParams.get("category");
@@ -103,10 +106,10 @@ export default function ProductsPage() {
       const response = await getProducts({
         category: categoryId ? parseInt(categoryId) : undefined,
         limit,
-        cursor: isLoadMore && cursor ? parseInt(cursor) : undefined,
+        cursor: loadMore && cursor ? parseInt(cursor) : undefined,
       });
-      console.log("API Response:", response);
-      if (isLoadMore) {
+   
+      if (loadMore) {
         // 더보기 페이지네이션을 유저가 클릭한경우
         setProducts((prev) => [...prev, ...(response.items || [])]);
       } else {
@@ -114,8 +117,8 @@ export default function ProductsPage() {
         setProducts(response.items || []);
       }
 
-      // 응답에 nextCursor 값 없으면 null로 초기화
-      setCursor(response.nextCursor || null);
+      // 첫 로딩일때도 nextCursor은 값을 준다 양이 많을때, 없으면 null
+      setCursor(response.nextCursor);
     } catch (error) {
       console.error("상품 로딩 실패:", error);
       setProducts([]);
@@ -126,9 +129,7 @@ export default function ProductsPage() {
 
   // fetchProducts 함수를 호출하는 useEffect
   useEffect(() => {
-    // 화면 크기가 변경되면 더보기 상태 초기화
-    setIsLoadMore(false);
-    fetchProducts();
+    fetchProducts(false);
   }, [searchParams, isMobile, isTablet, isDesktop]);
 
   return (
@@ -156,11 +157,13 @@ export default function ProductsPage() {
             <Button
               type="white"
               label={
-                <div className="flex ㅈitems-center gap-2">
-                  더보기
-                  <ArrowIconSvg direction="down" />
+                <div className="flex items-center justify-center gap-2">
+                  <p>더보기</p>
+                  <ArrowIconSvg direction="down" className="w-5 h-5 text-black" />
                 </div>
               }
+              onClick={handleLoadMore}
+              className="w-full h-[44px] sm:h-[64px] py-[16px] px-[24px] text-sm/[17px] font-medium tracking-tight"
             />
           </>
         )}
