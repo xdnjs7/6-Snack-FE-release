@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { getMyOrderDetail, TMyOrderDetail, TOrderedItem } from '@/lib/api/orderHistory.api';
+import { cookieFetch } from '@/lib/api/fetchClient.api';
 import ArrowIconSvg from '@/components/svg/ArrowIconSvg';
 import Button from '@/components/ui/Button';
 
@@ -29,6 +30,7 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isItemsExpanded, setIsItemsExpanded] = useState<boolean>(true);
+  const [isAddingToCart, setIsAddingToCart] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchOrderDetail = async (): Promise<void> => {
@@ -85,6 +87,46 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
   // 목록으로 돌아가기
   const handleBackToList = () => {
     router.push('/my/order-list');
+  };
+
+  // 장바구니에 상품 추가하는 API 함수
+  const addToCart = async (productId: number, quantity: number): Promise<void> => {
+    try {
+      await cookieFetch('/cart', {
+        method: 'POST',
+        body: JSON.stringify({
+          productId,
+          quantity,
+        }),
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  // 장바구니에 다시 담기
+  const handleAddToCart = async () => {
+    if (!orderData || !orderData.orderedItems) return;
+    
+    try {
+      setIsAddingToCart(true);
+      
+      // 주문 내역의 각 상품을 개별적으로 장바구니에 추가
+      for (const item of orderData.orderedItems) {
+        await addToCart(item.productId, item.receipt.quantity);
+      }
+      
+      // 성공 메시지 표시
+      alert('장바구니에 상품이 추가되었습니다.');
+      
+      // 장바구니 페이지로 이동
+      router.push('/cart');
+    } catch (error) {
+      console.error('장바구니 추가 실패:', error);
+      alert('장바구니에 상품을 추가하는데 실패했습니다.');
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
 
 
@@ -306,9 +348,13 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
             <div className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT']">목록 보기</div>
           </div>
           <div 
-            className="w-[155.5px] sm:w-[338px] md:w-[300px] h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center cursor-pointer hover:bg-neutral-700"
+            className="w-[155.5px] sm:w-[338px] md:w-[300px] h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center cursor-pointer hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleAddToCart}
+            style={{ pointerEvents: isAddingToCart ? 'none' : 'auto' }}
           >
-            <div className="text-center justify-center text-white text-base font-bold font-['SUIT']">장바구니 다시 담기</div>
+            <div className="text-center justify-center text-white text-base font-bold font-['SUIT']">
+              {isAddingToCart ? '처리 중...' : '장바구니 다시 담기'}
+            </div>
           </div>
         </div>
       </div>
