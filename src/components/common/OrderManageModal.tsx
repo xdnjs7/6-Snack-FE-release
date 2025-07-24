@@ -1,44 +1,21 @@
 import { useModal } from "@/providers/ModalProvider";
 import Image, { StaticImageData } from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import Button from "../ui/Button";
 import TextArea from "./TextArea";
 import { twMerge } from "tailwind-merge";
-
-type TProducts = {
-  id: number;
-  productName: string;
-  price: number;
-  imageUrl: string | StaticImageData;
-  quantity: number;
-}[];
-
-type TBudget = {
-  currentMonthBudget: number;
-  currentMonthExpense: number;
-};
+import { TOrder } from "@/types/Order.types";
+import { updateOrderStatus } from "@/lib/api/orderManage.api";
 
 type TOrderManageModalProps = {
   type: "reject" | "approve";
-  order: {
-    id: number;
-    userId: string;
-    approver: null;
-    adminMessage: string;
-    requestMessage: string;
-    totalPrice: number;
-    createdAt: string;
-    updatedAt: string;
-    status: string;
-    requester: string;
-    products: TProducts;
-    budget: TBudget;
-  };
+  order: TOrder;
   onClick: () => void;
 };
 
 export default function OrderManageModal({ type, order, onClick }: TOrderManageModalProps) {
   const { closeModal } = useModal();
+  const [adminMessage, setAdminMessage] = useState("");
 
   return (
     <div
@@ -158,6 +135,8 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
             <TextArea
               className="w-full max-w-[480px] h-[140px] p-[24px] rounded-[2px] border-1 border-primary-200 outline-none resize-none placeholder:font-normal placeholder:text-[16px]/[26px] placeholder:tracking-tight placeholder:text-[#929292]"
               placeholder={type === "approve" ? "승인 메시지를 입력해주세요" : "반려 메시지를 입력해주세요"}
+              value={adminMessage}
+              onChange={(e) => setAdminMessage(e.target.value)}
             />
           </div>
         </div>
@@ -170,7 +149,20 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
             className="flex justify-center items-center w-full min-w-[153.5px] max-w-[230px] h-[64px] py-[12px] px-[16px] font-bold"
           />
           <Button
-            onClick={onClick}
+            onClick={async () => {
+              try {
+                await updateOrderStatus({
+                  orderId: order.id,
+                  status: type === "approve" ? "APPROVED" : "REJECTED",
+                  adminMessage,
+                });
+
+                onClick(); 
+                closeModal();
+              } catch (error) {
+                alert("실패!");
+              }
+            }}
             type="black"
             label={type === "approve" ? "승인하기" : "반려하기"}
             className="flex justify-center items-center w-full min-w-[153.5px] max-w-[230px] h-[64px] py-[12px] px-[16px] font-bold"

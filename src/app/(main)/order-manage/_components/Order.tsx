@@ -6,20 +6,38 @@ import RequestList from "@/components/common/RequestList";
 import useOrderVisibleCount from "@/hooks/useOrderVisibleCount";
 import OrderManageModal from "@/components/common/OrderManageModal";
 import { useModal } from "@/providers/ModalProvider";
-import { order, orderRequests } from "@/app/(preview)/components-preview/MockData";
+import { fetchOrderDetail, fetchPendingOrders } from "@/lib/api/orderManage.api";
+import { TOrder, TOrderSummary } from "@/types/Order.types";
 
-
-function Order() {
+export default function Order() {
   const [sort, setSort] = useState("");
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
   const { openModal } = useModal();
+  const [orderRequests, setOrderRequests] = useState<TOrderSummary[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [totalCount, setTotalCount] = useState(0);
 
   const { visibleCount } = useOrderVisibleCount();
+  const totalPages = Math.ceil(totalCount / visibleCount);
 
-  const dummyRequests = Array.from({ length: 50 }, (_, i) => i + 1);
-  const startIdx = (currentPaginationPage - 1) * visibleCount;
-  const visibleRequests = dummyRequests.slice(startIdx, startIdx + visibleCount);
-  const totalPages = Math.ceil(dummyRequests.length / visibleCount);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const offset = (currentPaginationPage - 1) * visibleCount;
+        const res = await fetchPendingOrders({ offset, limit: visibleCount });
+
+        setOrderRequests(res);
+        setTotalCount(res.length);
+      } catch (err) {
+        console.error("주문 데이터 불러오기 실패", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [currentPaginationPage, visibleCount]);
 
   return (
     <div className="pt-[30px] w-full relative">
@@ -27,17 +45,23 @@ function Order() {
         <div className="text-black text-base font-bold">구매 요청 관리</div>
         <Dropdown value={sort} onChange={setSort} />
       </div>
-      <div className=" flex flex-col ">
-        {visibleRequests.length > 0 ? (
+
+      <div className="flex flex-col">
+        {isLoading ? (
+          <div className="text-center py-12">로딩 중...</div>
+        ) : orderRequests.length > 0 ? (
           <>
-            {visibleRequests.map((id) => (
-              <RequestList
-                key={id}
-                orderRequests={orderRequests}
-                onClickReject={() => openModal(<OrderManageModal order={order} type="reject" onClick={() => {}} />)}
-                onClickApprove={() => openModal(<OrderManageModal order={order} type="approve" onClick={() => {}} />)}
-              />
-            ))}
+            <RequestList
+              orderRequests={orderRequests}
+              onClickReject={async (orderSummary) => {
+                const fullOrder = await fetchOrderDetail(orderSummary.id);
+                openModal(<OrderManageModal order={fullOrder} type="reject" onClick={() => {}} />);
+              }}
+              onClickApprove={async (orderSummary) => {
+                const fullOrder = await fetchOrderDetail(orderSummary.id);
+                openModal(<OrderManageModal order={fullOrder} type="approve" onClick={() => {}} />);
+              }}
+            />
             <Pagination
               currentPage={currentPaginationPage}
               totalPages={totalPages}
@@ -71,5 +95,3 @@ function Order() {
     </div>
   );
 }
-
-export default Order;
