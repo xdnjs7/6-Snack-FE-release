@@ -59,7 +59,7 @@ export default function ProductsPageContent() {
 
   // TanStack Query 사용
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } = useProducts({
-    // 카테고리는 현재 url 쿼리값, Zustand 적용하여 전역관리시 변경필요할수도 
+    // 카테고리는 현재 url 쿼리값, Zustand 적용하여 전역관리시 변경필요할수도
     category: searchParams.get("category") ? parseInt(searchParams.get("category")!) : undefined,
     sort: selectedSort,
     limit: getLimit(),
@@ -125,13 +125,12 @@ export default function ProductsPageContent() {
 
         <div className="flex flex-col sm:flex-row sm:justify-between">
           {/* 모바일, 태블릿, 데스크탑에서 전부 보이는 상위/하위 카테고리 바 */}
-          {selectedCategory && (
-            <CategoryNavigation
-              parentCategory={selectedCategory.parent}
-              childCategory={selectedCategory.child}
-              className="sm:border-b-0"
-            />
-          )}
+
+          <CategoryNavigation
+            parentCategory={selectedCategory?.parent}
+            childCategory={selectedCategory?.child}
+            className="sm:border-b-0"
+          />
           {/* 정렬, 상품등록 버튼 wrapper */}
           <div className="flex items-center justify-between sm:gap-[30px]">
             <Dropdown options={sortOptions.map((option) => option.label)} onChange={handleSortChange} />

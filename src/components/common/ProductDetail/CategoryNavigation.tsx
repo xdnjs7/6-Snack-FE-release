@@ -10,11 +10,6 @@ type CategoryNavigationProps = {
 };
 
 export default function CategoryNavigation({ parentCategory, childCategory, className }: CategoryNavigationProps) {
-  // 카테고리가 선택되지 않았으면 렌더링하지 않음
-  if (!parentCategory || !childCategory) {
-    return null;
-  }
-
   return (
     <div
       className={twMerge(
@@ -24,11 +19,15 @@ export default function CategoryNavigation({ parentCategory, childCategory, clas
         className,
       )}
     >
-      <p className="font-normal text-sm/[17px] sm:text-base/[20px] text-primary-200 tracking-tight">{parentCategory}</p>
+      <p className="font-normal text-sm/[17px] sm:text-base/[20px] text-primary-200 tracking-tight">
+        {parentCategory || "대분류"}
+      </p>
       <div>
         <ArrowIconSvg direction="right" className="w-3 h-3 sm:w-4 sm:h-4 text-primary-100" />
       </div>
-      <p className="font-normal text-sm/[17px] sm:text-base/[20px] text-primary-950 tracking-tight">{childCategory}</p>
+      <p className="font-normal text-sm/[17px] sm:text-base/[20px] text-primary-950 tracking-tight">
+        {childCategory || "소분류"}
+      </p>
     </div>
   );
 }
