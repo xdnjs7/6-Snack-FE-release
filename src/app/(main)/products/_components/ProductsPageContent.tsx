@@ -12,42 +12,19 @@ import Button from "@/components/ui/Button";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { useModal } from "@/providers/ModalProvider";
 import ProductRegistrationForm from "@/components/common/ProductRegistrationForm";
+import { TProduct } from "@/types/product.types";
 
 type CategoryData = {
   parentCategory: Array<{ id: number; name: string }>;
   childrenCategory: Record<string, Array<{ id: number; name: string }>>;
 };
 
-// 스키마 변경시 타입도 변경예정, cumulativeQuantity field 추가예정
-type Product = {
-  id: number;
-  categoryId: number;
-  creatorId: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  linkUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-  category: {
-    id: number;
-    name: string;
-    parentId: number;
-  };
-  creator: {
-    id: string;
-    email: string;
-    name: string;
-    role: string;
-  };
-};
 
 export default function ProductsPageContent() {
   const [categories] = useState<CategoryData>(CATEGORIES);
 
   // 상태변수 관리할것 -  상품들, 로딩중, 커서(더보기 페이지네이션), 선택된 카테고리
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<TProduct[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [cursor, setCursor] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<{
