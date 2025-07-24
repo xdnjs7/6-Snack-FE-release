@@ -1,11 +1,11 @@
 import React from "react";
-import type { Product } from "@/types/product.types";
+import type { Product } from "@/types/productDetail.types";
 
-type Props = {
+type TProps = {
   product: Product;
 };
 
-export default function ProductBasicInfo({ product }: Props) {
+export default function ProductBasicInfo({ product }: TProps) {
   return (
     <div className="inline-flex flex-col justify-start items-start gap-2">
       <div className="flex flex-col sm:flex-row justify-center items-start gap-2">

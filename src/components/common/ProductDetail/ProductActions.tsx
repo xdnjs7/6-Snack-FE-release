@@ -5,7 +5,7 @@ import ConfirmationModal from "@/components/common/ConfirmationModal"; // 모달
 import { deleteProductApi } from "@/lib/api/deleteProduct.api";
 import { useRouter } from "next/navigation";
 
-type ProductActionsProps = {
+type TProductActionsProps = {
   selectedQuantity: number;
   onQuantityChange: (quantity: number) => void;
   canEdit: boolean;
@@ -19,7 +19,7 @@ export default function ProductActions({
   canEdit,
   productId,
   productName,
-}: ProductActionsProps) {
+}: TProductActionsProps) {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
