@@ -31,15 +31,15 @@ const ConfirmationModal: FC<TConfirmationModalProps> = ({
 
   return (
     // 모달 오버레이 (fixed position, 전체 화면, 반투명 배경)
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 font-suit">
+    <div className="fixed inset-0 z-50 flex items-center backdrop-blur-xs justify-center font-suit">
       {/* 모달 내용 컨테이너 */}
-      <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4 sm:mx-0">
+      <div className="bg-white rounded-md p-6 w-full max-w-md mx-4 sm:mx-0">
         {/* Title */}
-        <h2 className="text-lg font-bold text-primary-950 text-center mb-2">
+        <h2 className="text-lg font-bold text-black text-center mb-2">
           {modalTitle} {/* props로 받은 제목 사용 */}
         </h2>
         {/* Confirmation Message */}
-        <p className="text-primary-700 text-center text-sm mb-6">
+        <p className="text-primary-900 text-center text-md mb-6">
           {modalDescription} {/* props로 받은 설명 사용 */}
         </p>
         {/* Product to Delete section */}
@@ -47,29 +47,30 @@ const ConfirmationModal: FC<TConfirmationModalProps> = ({
           {/* Red X Icon */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-red mr-2"
+            className="h-5 w-5 text-white mr-2"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
             strokeWidth={2}
           >
+            <circle cx="12" cy="12" r="12" fill="#4C8AE1" />
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
           {/* Product Name */}
-          <span className="text-red font-bold">{productName}</span>
-          <span className="ml-1 text-red">제거</span>
+          <span className="text-primary-950 font-bold">{productName}</span>
+          <span className="ml-1 text-red"></span>
         </div>
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4">
           <button
             onClick={onCancel}
-            className="w-full sm:w-auto py-2 px-4 border border-primary-300 rounded-md shadow-sm text-sm font-medium text-primary-700 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-300 transition-colors duration-200"
+            className="w-full  py-5 px-10 border border-primary-300  text-sm font-medium text-primary-700 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-300 transition-colors duration-200"
           >
             {cancelButtonText} {/* props로 받은 취소 버튼 텍스트 사용 */}
           </button>
           <button
             onClick={onDelete}
-            className="w-full sm:w-auto py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-900 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-900 transition-colors duration-200"
+            className="w-full  py-5 px-10 border border-transparent  text-sm font-medium text-white bg-primary-900 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-900 transition-colors duration-200"
           >
             {confirmButtonText} {/* props로 받은 확인/삭제 버튼 텍스트 사용 */}
           </button>
