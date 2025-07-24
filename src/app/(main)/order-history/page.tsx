@@ -200,7 +200,17 @@ const OrderHistoryPage = () => {
         <div className="flex flex-row justify-between items-center mb-6">
           <div className="text-lg sm:text-2xl font-bold font-suit">구매 내역 확인</div>
           <div className="relative custom-sort-dropdown">
-            <Dropdown options={["최신순","오래된순"]} onChange={()=>{}} />
+            <Dropdown
+              options={["최신순", "오래된순"]}
+              onChange={(selectedOption: string) => {
+                // 선택된 옵션에 따라 sortBy 상태 업데이트
+                if (selectedOption === "최신순") {
+                  setSortBy("latest");
+                } else if (selectedOption === "오래된순") {
+                  setSortBy("oldest"); // API에서 'oldest' 또는 'asc' 등으로 사용한다면 맞춰야 합니다.
+                }
+              }}
+            />
           </div>
         </div>
         {/* PurchaseSummary 컴포넌트 내용 */}
@@ -247,14 +257,13 @@ const OrderHistoryPage = () => {
                     <div
                       className="h-1.5 bg-blue-500 rounded-md"
                       style={{
-                        width: `${
-                          budgetData.currentMonthExpense > 0 && budgetData.currentMonthBudget > 0
-                            ? Math.max(
-                                1,
-                                Math.round((budgetData.currentMonthExpense / budgetData.currentMonthBudget) * 100),
-                              )
-                            : 0
-                        }%`,
+                        width: `${budgetData.currentMonthExpense > 0 && budgetData.currentMonthBudget > 0
+                          ? Math.max(
+                            1,
+                            Math.round((budgetData.currentMonthExpense / budgetData.currentMonthBudget) * 100),
+                          )
+                          : 0
+                          }%`,
                       }}
                     />
                   </div>
@@ -315,11 +324,10 @@ const OrderHistoryPage = () => {
                 <div className="text-stone-500 text-sm sm:text-base font-normal font-suit leading-snug mt-auto">
                   {`올해 작년보다`}
                   <br />
-                  {`${(budgetData.currentYearTotalExpense - budgetData.previousYearTotalExpense).toLocaleString()}원 ${
-                    budgetData.currentYearTotalExpense - budgetData.previousYearTotalExpense > 0
-                      ? "더 지출했어요"
-                      : "덜 지출했어요"
-                  }`}
+                  {`${(budgetData.currentYearTotalExpense - budgetData.previousYearTotalExpense).toLocaleString()}원 ${budgetData.currentYearTotalExpense - budgetData.previousYearTotalExpense > 0
+                    ? "더 지출했어요"
+                    : "덜 지출했어요"
+                    }`}
                 </div>
               </div>
             </div>
@@ -359,7 +367,7 @@ const OrderHistoryPage = () => {
         >
           {/* 상단: 타이틀 + 정렬 버튼 */}
           {/* <div className="flex flex-col sm:flex-row sm:justify-end sm:items-center gap-2 px-6 pt-6 pb-2"> */}
-            {/* 이 부분은 삭제됨, 상단으로 이동 */}
+          {/* 이 부분은 삭제됨, 상단으로 이동 */}
           {/* </div> */}
 
           {/* 리스트/테이블 */}
