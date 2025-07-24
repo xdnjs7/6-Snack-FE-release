@@ -1,24 +1,75 @@
-import React, { useState, FC, FormEvent, ChangeEvent } from "react";
-import Input from "./Input";
+import React, { useState, FC, FormEvent, ChangeEvent, useEffect } from "react";
+import Input from "./Input"; // Input 컴포넌트 경로 확인
+import Dropdown from "./DropDown";
+import photoIcon from "../../assets/icons/ic_photo.svg";
+import Image from "next/image";
 
-type TProductRegistrationFormProps = Record<string, never>;
+// 상품 데이터를 위한 타입 정의
+export type TProductData = {
+  productName: string;
+  price: string;
+  productLink: string;
+  mainCategory: string;
+  subCategory: string;
+  imageUrl?: string; // 이미지 URL (수정 모드에서 기존 이미지 표시용)
+};
 
-const ProductRegistrationForm: FC<TProductRegistrationFormProps> = () => {
+// ProductRegistrationForm 컴포넌트가 받을 수 있는 프롭스 타입 정의
+type TProductRegistrationFormProps = {
+  onSubmitSuccess?: () => void; // 제출 성공 시 호출될 콜백 함수
+  onCancel?: () => void; // 취소 버튼 클릭 시 호출될 콜백 함수
+  initialData?: TProductData; // 폼을 초기화할 데이터 (편집 모드용)
+};
+
+const ProductRegistrationForm: FC<TProductRegistrationFormProps> = ({
+  onSubmitSuccess,
+  onCancel,
+  initialData,
+}) => {
   const [productName, setProductName] = useState<string>("");
   const [price, setPrice] = useState<string>("");
   const [productLink, setProductLink] = useState<string>("");
   const [mainCategory, setMainCategory] = useState<string>("");
   const [subCategory, setSubCategory] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null); // 이미지 미리보기 URL 상태
+
+  // initialData가 변경될 때마다 폼 필드를 초기화
+  useEffect(() => {
+    if (initialData) {
+      setProductName(initialData.productName);
+      setPrice(initialData.price);
+      setProductLink(initialData.productLink);
+      setMainCategory(initialData.mainCategory);
+      setSubCategory(initialData.subCategory);
+      if (initialData.imageUrl) {
+        setImagePreviewUrl(initialData.imageUrl); // URL로 미리보기 설정
+        // 실제 File 객체가 필요한 경우, 여기서는 File 객체를 생성할 수 없으므로 imageFile은 null로 둠
+        // 또는 initialData.imageFile로 File 객체를 직접 받을 수도 있음
+      }
+    }
+  }, [initialData]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setImageFile(e.target.files[0]);
+      const file = e.target.files[0];
+      setImageFile(file);
+      setImagePreviewUrl(URL.createObjectURL(file)); // 파일 객체로 미리보기 URL 생성
     }
   };
 
   const handleImageRemove = () => {
     setImageFile(null);
+    setImagePreviewUrl(null); // 미리보기 URL도 함께 제거
+  };
+
+  const handleMainCategoryChange = (value: string) => {
+    setMainCategory(value);
+    // 대분류 선택에 따라 소분류 옵션을 변경하는 로직 추가 가능
+  };
+
+  const handleSubCategoryChange = (value: string) => {
+    setSubCategory(value);
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -29,51 +80,51 @@ const ProductRegistrationForm: FC<TProductRegistrationFormProps> = () => {
       productLink,
       mainCategory,
       subCategory,
-      imageFile,
+      imageFile, // 실제 File 객체
     });
     alert("상품이 등록되었습니다!");
+
+    // 폼 초기화
     setProductName("");
     setPrice("");
     setProductLink("");
     setMainCategory("");
     setSubCategory("");
     setImageFile(null);
+    setImagePreviewUrl(null); // 미리보기 URL도 초기화
+
+    // 제출 성공 콜백 호출
+    if (onSubmitSuccess) {
+      onSubmitSuccess();
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-primary-50">
-      <div className="w-[512px] h-[696px] rounded-[6px] p-[30px] bg-white shadow-xl flex flex-col gap-[36px] items-center">
+      <div className="w-[512px] h-[696px] rounded-[6px] p-[30px] bg-white shadow-xl flex flex-col gap-[32px] items-center">
         <h2 className="font-suit font-bold text-[18px] leading-[100%] tracking-[-0.45px] text-primary-950 text-center">
           상품 등록
         </h2>
 
         <div className="flex justify-center items-center relative">
-          {!imageFile ? (
+          {!imagePreviewUrl ? ( // imagePreviewUrl을 기준으로 표시
             <label
               htmlFor="imageUpload"
-              className="w-[140px] h-[140px] flex flex-col items-center justify-center border border-primary-300 rounded-[2px] bg-primary-50 text-primary-400 cursor-pointer hover:bg-primary-100"
+              className="w-[140px] h-[140px] flex flex-col items-center justify-center border border-primary-200 rounded-[2px] text-primary-400 cursor-pointer hover:bg-primary-100"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 mb-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              <span className="text-xs">이미지 등록</span>
-              <input id="imageUpload" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+              <Image src={photoIcon} alt="사진 아이콘" />
+              <input
+                id="imageUpload"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
             </label>
           ) : (
             <>
               <img
-                src={URL.createObjectURL(imageFile)}
+                src={imagePreviewUrl} // imagePreviewUrl 사용
                 alt="Product Preview"
                 className="w-[140px] h-[140px] object-contain border border-primary-300 rounded-[2px]"
               />
@@ -101,51 +152,27 @@ const ProductRegistrationForm: FC<TProductRegistrationFormProps> = () => {
             <label htmlFor="mainCategory" className="sr-only">
               대분류
             </label>
-            <div className="relative">
-              <select
-                id="mainCategory"
-                value={mainCategory}
-                onChange={(e) => setMainCategory(e.target.value)}
-                className="block w-full px-4 py-2 border border-primary-300 rounded-md shadow-sm focus:outline-none focus:ring-secondary-500 focus:border-secondary-500 sm:text-sm appearance-none pr-8"
-              >
-                <option value="">대분류</option>
-                <option value="음료">음료</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-primary-700">
-                <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path
-                    fillRule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-            </div>
+            <Dropdown
+              options={["식품", "음료", "생활용품", "패션", "가전"]} // 예시 대분류 옵션
+              value={mainCategory || "대분류"} // 초기값 또는 선택된 값 표시
+              onChange={handleMainCategoryChange}
+            />
           </div>
           <div>
             <label htmlFor="subCategory" className="sr-only">
               소분류
             </label>
-            <div className="relative">
-              <select
-                id="subCategory"
-                value={subCategory}
-                onChange={(e) => setSubCategory(e.target.value)}
-                className="block w-full px-4 py-2 border border-primary-300 rounded-md shadow-sm focus:outline-none focus:ring-secondary-500 focus:border-secondary-500 sm:text-sm appearance-none pr-8"
-              >
-                <option value="">소분류</option>
-                <option value="청량 · 탄산 음료">청량 · 탄산 음료</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-primary-700">
-                <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path
-                    fillRule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-            </div>
+            <Dropdown
+              options={[
+                "청량 탄산 음료",
+                "과즙음료",
+                "에너지음료",
+                "간편식",
+                "신선식",
+              ]} // 예시 소분류 옵션
+              value={subCategory || "소분류"} // 초기값 또는 선택된 값 표시
+              onChange={handleSubCategoryChange}
+            />
           </div>
         </div>
 
@@ -154,13 +181,23 @@ const ProductRegistrationForm: FC<TProductRegistrationFormProps> = () => {
             type="text"
             id="productName"
             value={productName}
-            onChange={setProductName}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setProductName(e.target.value)}
             placeholder="상품명을 입력해주세요"
+            label="상품명"
+            hasValue={productName.length > 0}
           />
         </div>
 
         <div className="w-full">
-          <Input type="text" id="price" value={price} onChange={setPrice} placeholder="가격을 입력해주세요" />
+          <Input
+            type="text"
+            id="price"
+            value={price}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setPrice(e.target.value)}
+            placeholder="가격을 입력해주세요"
+            label="가격"
+            hasValue={price.length > 0}
+          />
         </div>
 
         <div className="w-full">
@@ -168,15 +205,17 @@ const ProductRegistrationForm: FC<TProductRegistrationFormProps> = () => {
             type="text"
             id="productLink"
             value={productLink}
-            onChange={setProductLink}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setProductLink(e.target.value)}
             placeholder="제품 링크를 입력해주세요"
+            label="제품 링크"
+            hasValue={productLink.length > 0}
           />
         </div>
 
         <div className="flex justify-between w-full">
           <button
             type="button"
-            onClick={() => console.log("취소")}
+            onClick={onCancel || (() => console.log("취소"))} // onCancel 프롭 사용
             className="w-[216px] h-[64px] border border-primary-300 rounded-[2px] py-[12px] px-[16px] text-sm font-medium text-primary-700 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
           >
             취소
