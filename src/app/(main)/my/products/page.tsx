@@ -69,6 +69,8 @@ export default function MyProductsPage() {
       <div className="mx-[-24px] outline-1 outline-[#e6e6e6] md:hidden"></div>
       {isPending ? (
         <div>로딩 중...</div>
+      ) : !products?.items?.length ? (
+        <div>등록된 상품이 없습니다.</div>
       ) : (
         <>
           <Desktop>
@@ -86,7 +88,7 @@ export default function MyProductsPage() {
           </Desktop>
           <div className="flex flex-col gap-[10px] my-[20px] sm:mb-[30px] md:mt-0">
             <p className="font-bold text-[14px]/[17px] tracking-tight text-primary-950 sm:text-[16px]/[20px] md:hidden">
-              총 등록한 상품 {products.items.length}개
+              총 등록한 상품 {products.meta.totalCount}개
             </p>
             <ProductList products={products} />
           </div>
