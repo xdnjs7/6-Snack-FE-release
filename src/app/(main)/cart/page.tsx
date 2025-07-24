@@ -8,6 +8,7 @@ import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { useQuery } from "@tanstack/react-query";
 import { getCartItems } from "@/lib/api/cart.api";
 import { useAuth } from "@/providers/AuthProvider";
+import { TGetCartItemsResponse } from "@/types/cart.types";
 
 export default function CartPage() {
   const { user } = useAuth();
@@ -16,7 +17,7 @@ export default function CartPage() {
     data: cartItems,
     isPending,
     error,
-  } = useQuery({
+  } = useQuery<TGetCartItemsResponse, Error, TGetCartItemsResponse, [string]>({
     queryKey: ["cart"],
     queryFn: getCartItems,
   });

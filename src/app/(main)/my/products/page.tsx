@@ -5,7 +5,7 @@ import Dropdown from "@/components/common/DropDown";
 import Pagination from "@/components/common/Pagination";
 import ProductList from "@/components/common/ProductList";
 import { getMyProducts } from "@/lib/api/product.api";
-import { TMyProductsParams } from "@/types/product.types";
+import { TMyProductsParams, TMyProductsResponse } from "@/types/product.types";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
@@ -31,7 +31,7 @@ export default function MyProductsPage() {
     data: products,
     isPending,
     error,
-  } = useQuery({
+  } = useQuery<TMyProductsResponse, Error, TMyProductsResponse, [string, string, TMyProductsParams]>({
     queryKey: ["my", "products", params],
     queryFn: () => getMyProducts(params),
   });
