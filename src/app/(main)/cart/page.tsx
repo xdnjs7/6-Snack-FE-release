@@ -62,7 +62,7 @@ export default function CartPage() {
                 </p>
               </div>
               <p className="font-normal text-[16px]/[20px] tracking-tight text-[#6b6b6b] mt-[14px] mb-[6px]">
-                주문 상품은 {selectedTotalPrice?.toLocaleString("ko-KR")}원
+                주문 상품은 {selectedTotalPrice?.toLocaleString("ko-KR") ?? 0}원
               </p>
               <p className="font-normal text-[16px]/[20px] tracking-tight text-[#6b6b6b] mb-[6px] sm:mb-[10px]">
                 배송비는 3,000원입니다.
