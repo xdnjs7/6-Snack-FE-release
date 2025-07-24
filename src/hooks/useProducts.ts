@@ -9,10 +9,11 @@ type TUseProductsParams = {
 
 export const useProducts = (params: TUseProductsParams) => {
   return useInfiniteQuery({
+    // params -> category, sort, limit 정보 포함
     queryKey: ["products", params],
     queryFn: ({ pageParam }: { pageParam: number | undefined }) =>
       getProducts({
-        ...params,
+        ...params, 
         cursor: pageParam,
       }),
     initialPageParam: undefined as number | undefined,
