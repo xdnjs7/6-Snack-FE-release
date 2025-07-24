@@ -7,10 +7,9 @@ import useOrderVisibleCount from "@/hooks/useOrderVisibleCount";
 import OrderManageModal from "@/components/common/OrderManageModal";
 import { useModal } from "@/providers/ModalProvider";
 import { fetchOrderDetail, fetchPendingOrders } from "@/lib/api/orderManage.api";
-import { TOrder, TOrderSummary } from "@/types/Order.types";
+import { TOrderSummary } from "@/types/Order.types";
 
 export default function Order() {
-  const [sort, setSort] = useState("");
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
   const { openModal } = useModal();
   const [orderRequests, setOrderRequests] = useState<TOrderSummary[]>([]);
@@ -43,7 +42,7 @@ export default function Order() {
     <div className="pt-[30px] w-full relative">
       <div className="w-full flex justify-between items-center">
         <div className="text-black text-base font-bold">구매 요청 관리</div>
-        <Dropdown value={sort} onChange={setSort} />
+        <Dropdown onChange={(selected) => console.log(selected)} />
       </div>
 
       <div className="flex flex-col">
