@@ -7,8 +7,11 @@ import Link from "next/link";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { useQuery } from "@tanstack/react-query";
 import { getCartItems } from "@/lib/api/cart.api";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function CartPage() {
+  const { user } = useAuth();
+
   const {
     data: cartItems,
     isPending,
@@ -32,10 +35,17 @@ export default function CartPage() {
         <div className="flex flex-col gap-[40px] mt-[20px] sm:gap-[70px] sm:mt-[60px] md:mt-[80px]">
           <div className="flex flex-col justify-center items-center gap-[10px] font-bold text-[16px]/[20px] tracking-tight sm:flex-row sm:gap-[20px] sm:text-[18px]/[22px]">
             <p className="text-primary-950">1. Shopping Cart</p>
+            {user?.role === "USER" && (
+              <>
+                <ArrowIconSvg
+                  direction="right"
+                  className="hidden sm:block relative w-[24px] h-[24px] text-primary-300"
+                />
+                <p className="text-primary-300">2. Order</p>
+              </>
+            )}
             <ArrowIconSvg direction="right" className="hidden sm:block relative w-[24px] h-[24px] text-primary-300" />
-            <p className="text-primary-300">2. Order</p>
-            <ArrowIconSvg direction="right" className="hidden sm:block relative w-[24px] h-[24px] text-primary-300" />
-            <p className="text-primary-300">3. Order Confirmed</p>
+            <p className="text-primary-300">{user?.role === "USER" ? "3. Order Confirmed" : "2. Order Confirmed"}</p>
           </div>
 
           <CartItem cartItems={cartItems} isPending={isPending} />
