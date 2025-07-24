@@ -1,3 +1,4 @@
+import { TMyProductsParams } from "@/types/product.types";
 import { defaultFetch, cookieFetch } from "./fetchClient.api";
 
 // 카테고리 조회
@@ -23,4 +24,10 @@ export const getProducts = async (params?: {
   const url = queryString ? `/products?${queryString}` : "/products";
 
   return defaultFetch(url);
+};
+
+export const getMyProducts = async (params: TMyProductsParams) => {
+  const queryString = new URLSearchParams(params);
+
+  return await cookieFetch(`/my/products?${queryString.toString()}`);
 };
