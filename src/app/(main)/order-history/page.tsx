@@ -270,8 +270,8 @@ const OrderHistoryPage = () => {
                     className={clsx(
                       "hidden sm:flex",
                       "absolute",
-                      "left-[48%]",
-                      "top-full",
+                      "left-[47%]",
+                      "top-32",
                       "-translate-x-1/2",
                       "mt-0",
                       "w-[calc(80%)]",
