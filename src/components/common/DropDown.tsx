@@ -11,7 +11,7 @@ type TDropdownProps = {
   onChange: (value: string) => void;
 };
 
-const defaultOptions = ["최신순", "판매순", "낮은 가격순", "높은 가격순", "높은 할인순"];
+const defaultOptions = ["최신순", "판매순", "낮은 가격순", "높은 가격순"];
 
 const Dropdown = ({ options = [], onChange }: TDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
