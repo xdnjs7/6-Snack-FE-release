@@ -3,7 +3,7 @@ import { refreshAccessToken } from "./auth.api";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
-export const cookieFetch = async (path: string, options: RequestInit = {}) => {
+export const cookieFetch = async <T = any>(path: string, options: RequestInit = {}): Promise<T> => {
   const method = options.method || "GET";
   // 개발 완료후 삭제
   console.log(`🌐 API 요청: ${method} ${API_BASE_URL}${path}`);
@@ -41,10 +41,10 @@ export const cookieFetch = async (path: string, options: RequestInit = {}) => {
     throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
   }
 
-  return response.json();
+  return response.json() as Promise<T>;
 };
 
-export const defaultFetch = async (path: string, options: RequestInit = {}) => {
+export const defaultFetch = async <T = any>(path: string, options: RequestInit = {}): Promise<T> => {
   const method = options.method || "GET";
   // 개발 완료후 삭제
   console.log(`🌐 API 요청: ${method} ${API_BASE_URL}${path}`);
@@ -65,7 +65,7 @@ export const defaultFetch = async (path: string, options: RequestInit = {}) => {
     }
 
     const data = await response.json();
-    return data;
+    return data as T;
   } catch (error) {
     throw error;
   }
