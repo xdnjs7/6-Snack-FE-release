@@ -147,6 +147,7 @@ export default function AuthenticatedHeader() {
         {/* 여기에 menu 누를시 SideMenu 화면 옆에 나오도록 */}
         <HamburgerMenuIconSvg className="md:hidden text-primary-400" onClick={handleMenuClick} />
 
+
         <SideMenu
           items={menuItems}
           isOpen={isMenuOpen}
@@ -156,6 +157,7 @@ export default function AuthenticatedHeader() {
           className=""
         />
 
+        {/* 상품 상세 페이지, 상품 리스트 페이지에서만 모바일버전에서 보임 */}
         <MobileCategoryMenu
           items={categoryItems}
           isOpen={isCategoryMenuOpen}
