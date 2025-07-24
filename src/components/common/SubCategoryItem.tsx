@@ -1,6 +1,7 @@
 "use client";
 import React, { Fragment, MouseEvent, useState } from "react";
 import clsx from "clsx";
+import { useRouter, useSearchParams } from "next/navigation";
 import ArrowIconSvg from "../svg/ArrowIconSvg";
 
 type TSubCategoryItemProps = {
@@ -15,10 +16,16 @@ type TSubCategoryItemProps = {
 export default function SubCategoryItem({ categories }: TSubCategoryItemProps) {
   const [isActiveParentCategory, setIsActiveParentCategory] = useState<string>("");
   const [isActiveChildrenCategory, setIsActiveChildrenCategory] = useState<string>("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const { parentCategory, childrenCategory } = categories;
 
-  const handleClick = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>, category: string): void => {
+  const handleClick = (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    category: string,
+    categoryId?: number,
+  ): void => {
     const id = e.currentTarget.id;
 
     if (id === "parent") {
@@ -26,8 +33,13 @@ export default function SubCategoryItem({ categories }: TSubCategoryItemProps) {
       setIsActiveChildrenCategory("");
     }
 
-    if (id === "children") {
+    if (id === "children" && categoryId) {
       setIsActiveChildrenCategory(category);
+
+      // URL 업데이트
+      const params = new URLSearchParams(searchParams);
+      params.set("category", categoryId.toString());
+      router.push(`/products?${params.toString()}`);
     }
   };
 
@@ -69,7 +81,7 @@ export default function SubCategoryItem({ categories }: TSubCategoryItemProps) {
                   <button
                     id="children"
                     key={`${children}_${id}`}
-                    onClick={(e) => handleClick(e, children.name)}
+                    onClick={(e) => handleClick(e, children.name, children.id)}
                     className="group/children hover:bg-primary-50/60 transition-all duration-200 flex justify-between items-center w-[180px] h-[50px] py-[10px] px-[30px] cursor-pointer"
                   >
                     <p

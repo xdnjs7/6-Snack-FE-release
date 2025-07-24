@@ -8,21 +8,22 @@ import ChevronDownIcon from "@/assets/icons/ic_chevron_down.svg";
 
 type TDropdownProps = {
   options?: string[];
-  value: string;
   onChange: (value: string) => void;
 };
 
 const defaultOptions = ["최신순", "판매순", "낮은 가격순", "높은 가격순", "높은 할인순"];
 
-const Dropdown = ({ options = [], value, onChange }: TDropdownProps) => {
+const Dropdown = ({ options = [], onChange }: TDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [sort, setSort] = useState<string>("정렬");
 
   const handleSelect = (option: string) => {
     onChange(option);
+    setSort(option);
     setIsOpen(false);
   };
 
-  const menuOptions = (options.length > 0 ? options : defaultOptions).filter((option) => option !== value);
+  const menuOptions = options.length === 0 ? defaultOptions : options;
 
   return (
     <div className="relative inline-block w-32">
@@ -33,7 +34,7 @@ const Dropdown = ({ options = [], value, onChange }: TDropdownProps) => {
         } flex justify-between items-center cursor-pointer`}
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <div className="text-primary-950 text-base font-normal whitespace-nowrap">{value ? value : "정렬"}</div>
+        <div className="text-primary-950 text-base font-normal whitespace-nowrap">{sort}</div>
         <div className="w-4 h-4 relative">
           <Image
             src={isOpen ? ChevronUpIcon : ChevronDownIcon}
