@@ -5,8 +5,27 @@ import CartItem from "./_components/CartItem";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
+import { useQuery } from "@tanstack/react-query";
+import { getCartItems } from "@/lib/api/cart.api";
 
 export default function CartPage() {
+  const {
+    data: cartItems,
+    isPending,
+    error,
+  } = useQuery({
+    queryKey: ["cart"],
+    queryFn: getCartItems,
+  });
+
+  if (error) {
+    return <div>에러 발생 : {error.message}</div>;
+  }
+
+  const selectedTotalPrice = cartItems
+    ?.filter((item) => item.isChecked === true)
+    .reduce((totalPrice, item) => totalPrice + item.product.price * item.quantity, 0);
+
   return (
     <div className="flex flex-col justify-center items-center w-full">
       <div className="w-full max-w-[1200px] md:px-[24px]">
@@ -19,7 +38,7 @@ export default function CartPage() {
             <p className="text-primary-300">3. Order Confirmed</p>
           </div>
 
-          <CartItem />
+          <CartItem cartItems={cartItems} isPending={isPending} />
 
           <div className="flex flex-col justify-center items-start gap-[30px] sm:flex-row sm:justify-between sm:items-center">
             <div>
@@ -28,11 +47,11 @@ export default function CartPage() {
                   총 주문금액
                 </p>
                 <p className="font-extrabold text-[24px]/[30px] tracking-tight text-primary-950 sm:text-[30px]/[37px]">
-                  55,000원
+                  {selectedTotalPrice ? (selectedTotalPrice + 3000).toLocaleString("ko-KR") : 0}원
                 </p>
               </div>
               <p className="font-normal text-[16px]/[20px] tracking-tight text-[#6b6b6b] mt-[14px] mb-[6px]">
-                주문 상품은 52,000원
+                주문 상품은 {selectedTotalPrice?.toLocaleString("ko-KR")}원
               </p>
               <p className="font-normal text-[16px]/[20px] tracking-tight text-[#6b6b6b] mb-[6px] sm:mb-[10px]">
                 배송비는 3,000원입니다.
