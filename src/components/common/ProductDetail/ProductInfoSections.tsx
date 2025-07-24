@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import InfoSection from "./InfoSection";
+import type { Product } from "@/types/product.types";
 
-export default function ProductInfoSections() {
+type Props = {
+  product: Product;
+};
+
+export default function ProductInfoSections({ product }: Props) {
   const [isBenefitOpen, setIsBenefitOpen] = useState(false);
   const [isDeliveryMethodOpen, setIsDeliveryMethodOpen] = useState(false);
   const [isDeliveryFeeOpen, setIsDeliveryFeeOpen] = useState(false);
