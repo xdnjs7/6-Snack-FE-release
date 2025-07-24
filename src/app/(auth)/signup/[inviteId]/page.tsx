@@ -14,7 +14,7 @@ import clsx from "clsx";
 import Button from "@/components/ui/Button";
 import { signUpWithInviteApi } from "@/lib/api/auth.api";
 
-// 리액트 훅폼 스키마 정의
+// 리액트 훅폼에 연결할 zod 스키마 정의
 const signUpSchema = z
   .object({
     password: z

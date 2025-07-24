@@ -128,7 +128,9 @@ export default function ComponentsPreviewPage() {
       <div className="rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] p-6">
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">SubCategoryItem 컴포넌트</h2>
-          <SubCategoryItem categories={categories} />
+          <Suspense fallback={<div>로딩 중...</div>}>
+            <SubCategoryItem categories={categories} />
+          </Suspense>
         </div>
 
         <div className="space-y-4 mb-4">
