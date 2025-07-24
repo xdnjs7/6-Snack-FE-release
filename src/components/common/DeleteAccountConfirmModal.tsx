@@ -3,11 +3,12 @@ import Button from "../ui/Button";
 import ExclamationMarkIconSvg from "../svg/ExclamationMarkIconSvg";
 
 type TDeleteModalProps = {
+  name: string;
+  email: string;
   onCancel: () => void;
   onConfirm: () => void;
 };
-
-export default function DeleteAccountConfirmModal({ onCancel, onConfirm }: TDeleteModalProps) {
+export default function DeleteAccountConfirmModal({ name, email, onCancel, onConfirm }: TDeleteModalProps) {
   return (
     <div className="absolute left-1/2 top-1/2 translate-[-50%] w-[327px] sm:w-[512px] px-7.5 pt-10 pb-7.5 bg-white rounded-md shadow-lg inline-flex flex-col justify-center items-center gap-9">
       <div className="flex flex-col justify-start items-center gap-2">
@@ -17,7 +18,9 @@ export default function DeleteAccountConfirmModal({ onCancel, onConfirm }: TDele
           <div className="text-center justify-center">
             {/* 모바일 버전 */}
             <div className="block sm:hidden">
-              <span className="text-gray-900 text-base font-bold leading-relaxed">김스낵(sn@codeit.com)</span>
+              <span className="text-gray-900 text-base font-bold leading-relaxed">
+                {name}({email})
+              </span>
               <span className="text-gray-900 text-base font-normal leading-relaxed">
                 님의
                 <br />
@@ -27,7 +30,9 @@ export default function DeleteAccountConfirmModal({ onCancel, onConfirm }: TDele
 
             {/* 데스크톱 버전  */}
             <div className="hidden sm:block">
-              <span className="text-gray-900 text-base font-bold leading-relaxed">김스낵(sn@codeit.com)</span>
+              <span className="text-gray-900 text-base font-bold leading-relaxed">
+                {name}({email})
+              </span>
               <span className="text-gray-900 text-base font-normal leading-relaxed">님의 계정을 탈퇴시킬까요?</span>
             </div>
           </div>

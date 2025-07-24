@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dropdown from "@/components/common/DropDown";
 import Pagination from "@/components/common/Pagination";
 import RequestList from "@/components/common/RequestList";
@@ -7,6 +7,7 @@ import useOrderVisibleCount from "@/hooks/useOrderVisibleCount";
 import OrderManageModal from "@/components/common/OrderManageModal";
 import { useModal } from "@/providers/ModalProvider";
 import { order, orderRequests } from "@/app/(preview)/components-preview/MockData";
+
 
 function Order() {
   const [sort, setSort] = useState("");
@@ -26,7 +27,7 @@ function Order() {
         <div className="text-black text-base font-bold">구매 요청 관리</div>
         <Dropdown value={sort} onChange={setSort} />
       </div>
-      <div className="space-y-4 mb-4 flex flex-col ">
+      <div className=" flex flex-col ">
         {visibleRequests.length > 0 ? (
           <>
             {visibleRequests.map((id) => (
