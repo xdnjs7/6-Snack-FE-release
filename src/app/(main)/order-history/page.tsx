@@ -5,6 +5,8 @@ import clsx from "clsx";
 import { getAdminOrders } from "@/lib/api/order.api"; // 경로가 맞는지 확인해주세요
 import { getBudgets } from "@/lib/api/budgets.api"; // 경로가 맞는지 확인해주세요
 import Dropdown from "@/components/common/DropDown";
+import fileIcon from "@/assets/icons/ic_file.svg"
+import Image from "next/image";
 
 // API 응답 타입 정의 (예시, 실제 응답에 맞게 수정 필요)
 type AdminOrderApiItem = {
@@ -198,7 +200,7 @@ const OrderHistoryPage = () => {
         <div className="flex flex-row justify-between items-center mb-6">
           <div className="text-lg sm:text-2xl font-bold font-suit">구매 내역 확인</div>
           <div className="relative custom-sort-dropdown">
-            <Dropdown options={["최신순","오래된순"]} value="" onChange={()=>{}} />
+            <Dropdown options={["최신순","오래된순"]} onChange={()=>{}} />
           </div>
         </div>
         {/* PurchaseSummary 컴포넌트 내용 */}
@@ -401,7 +403,9 @@ const OrderHistoryPage = () => {
                 {/* 태블릿/데스크탑: sm 이상 */}
                 <div className="hidden sm:flex w-full justify-center items-center py-24">
                   <div className="w-80 inline-flex flex-col justify-start items-center gap-7">
-                    <div className="w-24 h-24 relative bg-neutral-50 rounded-[100px] overflow-hidden mb-2" />
+                    <div className="flex justify-center w-24 h-24 relative bg-neutral-50 rounded-[100px] overflow-hidden mb-2">
+                      <Image src={fileIcon} alt="빈 문서 아이콘" width={36} height={43} priority />
+                    </div>
                     <div className="self-stretch flex flex-col justify-start items-center gap-12">
                       <div className="w-72 flex flex-col justify-start items-center gap-2.5">
                         <div className="self-stretch text-center justify-center text-neutral-800 text-2xl font-extrabold font-['SUIT']">
