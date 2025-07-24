@@ -102,7 +102,7 @@ export default function ProductsPageContent() {
       }
 
       // 첫 로딩일때도 nextCursor은 값을 준다 양이 많을때, 없으면 null
-      setCursor(response.nextCursor);
+      setCursor(response.nextCursor || null);
     } catch (error) {
       console.error("상품 로딩 실패:", error);
       setProducts([]);

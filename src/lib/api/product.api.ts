@@ -8,7 +8,7 @@ import { defaultFetch, cookieFetch } from "./fetchClient.api";
 
 export type GetProductsResponse = {
   items: TProduct[];
-  nextCursor?: string;
+  nextCursor?: number;
 }
 // 상품 목록 조회
 export const getProducts = async (params?: {
