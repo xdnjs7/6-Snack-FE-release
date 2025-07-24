@@ -18,7 +18,7 @@ const buttonStyleMap: Record<TButtonType, TButtonStyle> = {
     padding: "px-4 py-3",
   },
   black: {
-    bg: "bg-black",
+    bg: "bg-primary-950",
     textColor: "text-white",
     padding: "px-4 py-3",
   },
