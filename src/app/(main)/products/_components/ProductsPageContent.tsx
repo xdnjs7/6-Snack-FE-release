@@ -10,6 +10,8 @@ import { useSearchParams } from "next/navigation";
 import { useMediaQuery } from "react-responsive";
 import Button from "@/components/ui/Button";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
+import { useModal } from "@/providers/ModalProvider";
+import ProductRegistrationForm from "@/components/common/ProductRegistrationForm";
 
 type CategoryData = {
   parentCategory: Array<{ id: number; name: string }>;
@@ -53,6 +55,7 @@ export default function ProductsPageContent() {
     child: string;
   } | null>(null);
   const searchParams = useSearchParams();
+  const { openModal, closeModal } = useModal();
 
   // useMediaQuery로 화면 크기별 limit 결정
   const isMobile = useMediaQuery({ maxWidth: 743 });
@@ -73,6 +76,10 @@ export default function ProductsPageContent() {
     }
   };
 
+  // 상품 등록 모달 열기
+  const handleProductRegistration = () => {
+    openModal(<ProductRegistrationForm />);
+  };
   const handleLoadMore = () => {
     fetchProducts(true);
   };
@@ -163,6 +170,12 @@ export default function ProductsPageContent() {
                 </div>
               }
               onClick={handleLoadMore}
+              className="w-full h-[44px] sm:h-[64px] py-[16px] px-[24px] text-sm/[17px] font-medium tracking-tight"
+            />
+            <Button
+              type="primary"
+              label="상품 등록"
+              onClick={handleProductRegistration}
               className="w-full h-[44px] sm:h-[64px] py-[16px] px-[24px] text-sm/[17px] font-medium tracking-tight"
             />
           </>
