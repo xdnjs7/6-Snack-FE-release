@@ -1,43 +1,37 @@
 import React, { useState, FC, FormEvent, ChangeEvent } from "react";
+import Input from "./Input";
 
-// Define the type for the component's props. Since this form doesn't take props yet,
-// Record<string, never> is used to explicitly indicate no expected properties.
 type TProductRegistrationFormProps = Record<string, never>;
 
 const ProductRegistrationForm: FC<TProductRegistrationFormProps> = () => {
   const [productName, setProductName] = useState<string>("");
   const [price, setPrice] = useState<string>("");
   const [productLink, setProductLink] = useState<string>("");
-  const [mainCategory, setMainCategory] = useState<string>(""); // For "대분류"
-  const [subCategory, setSubCategory] = useState<string>(""); // For "소분류"
-  const [imageFile, setImageFile] = useState<File | null>(null); // For uploaded file
+  const [mainCategory, setMainCategory] = useState<string>("");
+  const [subCategory, setSubCategory] = useState<string>("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
-  // Handles image selection
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setImageFile(e.target.files[0]);
     }
   };
 
-  // Handles image removal
   const handleImageRemove = () => {
     setImageFile(null);
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // In a real application, you would send this data to a backend API.
-    // For example, using FormData for file uploads.
     console.log({
       productName,
       price,
       productLink,
       mainCategory,
       subCategory,
-      imageFile, // This would be sent in a FormData object for actual upload
+      imageFile,
     });
     alert("상품이 등록되었습니다!");
-    // Optionally, reset form fields after submission
     setProductName("");
     setPrice("");
     setProductLink("");
@@ -47,24 +41,17 @@ const ProductRegistrationForm: FC<TProductRegistrationFormProps> = () => {
   };
 
   return (
-    // Replaced bg-gray-100 with bg-primary-50 for a lighter background from your palette
-    <div className="min-h-screen bg-primary-50 flex items-center justify-center p-4">
-      {/* Replaced bg-white with bg-white (explicitly defined) */}
-      <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
-        {/* Replaced text-black (default) with text-primary-950 for explicit deep black */}
-        <h2 className="text-xl font-bold text-center mb-6 text-primary-950">상품 등록</h2>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-primary-50">
+      <div className="w-[512px] h-[696px] rounded-[6px] p-[30px] bg-white shadow-xl flex flex-col gap-[36px] items-center">
+        <h2 className="font-suit font-bold text-[18px] leading-[100%] tracking-[-0.45px] text-primary-950 text-center">
+          상품 등록
+        </h2>
 
-        {/* Product Image Upload Section */}
-        <div className="mb-6 flex justify-center items-center relative">
+        <div className="flex justify-center items-center relative">
           {!imageFile ? (
-            // Placeholder for image upload
             <label
               htmlFor="imageUpload"
-              // Replaced border-gray-300 with border-primary-300
-              // Replaced bg-gray-50 with bg-primary-50
-              // Replaced text-gray-400 with text-primary-400
-              // Replaced hover:bg-gray-100 with hover:bg-primary-100
-              className="w-24 h-24 flex flex-col items-center justify-center border border-primary-300 rounded-md bg-primary-50 text-primary-400 cursor-pointer hover:bg-primary-100"
+              className="w-[140px] h-[140px] flex flex-col items-center justify-center border border-primary-300 rounded-[2px] bg-primary-50 text-primary-400 cursor-pointer hover:bg-primary-100"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -84,18 +71,14 @@ const ProductRegistrationForm: FC<TProductRegistrationFormProps> = () => {
               <input id="imageUpload" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
             </label>
           ) : (
-            // Display uploaded image with remove button
             <>
               <img
-                src={URL.createObjectURL(imageFile)} // Create URL for preview
+                src={URL.createObjectURL(imageFile)}
                 alt="Product Preview"
-                // Replaced border-gray-300 with border-primary-300
-                className="w-24 h-24 object-contain border border-primary-300 rounded-md"
+                className="w-[140px] h-[140px] object-contain border border-primary-300 rounded-[2px]"
               />
               <button
                 onClick={handleImageRemove}
-                // Replaced bg-gray-800 with bg-primary-800
-                // Replaced text-white with text-white (explicitly defined)
                 className="absolute top-0 right-0 -mt-2 -mr-2 bg-primary-800 text-white rounded-full p-1"
                 aria-label="Remove image"
               >
@@ -113,9 +96,7 @@ const ProductRegistrationForm: FC<TProductRegistrationFormProps> = () => {
           )}
         </div>
 
-        {/* Category Dropdowns */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          {/* Main Category (대분류) */}
+        <div className="grid grid-cols-2 gap-4 w-full">
           <div>
             <label htmlFor="mainCategory" className="sr-only">
               대분류
@@ -125,16 +106,11 @@ const ProductRegistrationForm: FC<TProductRegistrationFormProps> = () => {
                 id="mainCategory"
                 value={mainCategory}
                 onChange={(e) => setMainCategory(e.target.value)}
-                // Replaced border-gray-300 with border-primary-300
-                // Replaced focus:ring-blue-500 with focus:ring-secondary-500
-                // Replaced focus:border-blue-500 with focus:border-secondary-500
                 className="block w-full px-4 py-2 border border-primary-300 rounded-md shadow-sm focus:outline-none focus:ring-secondary-500 focus:border-secondary-500 sm:text-sm appearance-none pr-8"
               >
                 <option value="">대분류</option>
                 <option value="음료">음료</option>
-                {/* Add more main categories as needed */}
               </select>
-              {/* Replaced text-gray-700 with text-primary-700 */}
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-primary-700">
                 <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                   <path
@@ -146,8 +122,6 @@ const ProductRegistrationForm: FC<TProductRegistrationFormProps> = () => {
               </div>
             </div>
           </div>
-
-          {/* Sub Category (소분류) */}
           <div>
             <label htmlFor="subCategory" className="sr-only">
               소분류
@@ -157,16 +131,11 @@ const ProductRegistrationForm: FC<TProductRegistrationFormProps> = () => {
                 id="subCategory"
                 value={subCategory}
                 onChange={(e) => setSubCategory(e.target.value)}
-                // Replaced border-gray-300 with border-primary-300
-                // Replaced focus:ring-blue-500 with focus:ring-secondary-500
-                // Replaced focus:border-blue-500 with focus:border-secondary-500
                 className="block w-full px-4 py-2 border border-primary-300 rounded-md shadow-sm focus:outline-none focus:ring-secondary-500 focus:border-secondary-500 sm:text-sm appearance-none pr-8"
               >
                 <option value="">소분류</option>
                 <option value="청량 · 탄산 음료">청량 · 탄산 음료</option>
-                {/* Add more sub categories as needed, potentially based on main category selection */}
               </select>
-              {/* Replaced text-gray-700 with text-primary-700 */}
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-primary-700">
                 <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                   <path
@@ -180,86 +149,42 @@ const ProductRegistrationForm: FC<TProductRegistrationFormProps> = () => {
           </div>
         </div>
 
-        {/* Product Name Input */}
-        <div className="mb-4">
-          <label htmlFor="productName" className="block text-sm font-medium text-primary-700 sr-only">
-            상품명
-          </label>
-          <input
+        <div className="w-full">
+          <Input
             type="text"
             id="productName"
             value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-            // Replaced border-gray-300 with border-primary-300
-            // Replaced placeholder-gray-400 with placeholder-primary-400
-            // Replaced focus:ring-blue-500 with focus:ring-secondary-500
-            // Replaced focus:border-blue-500 with focus:border-secondary-500
-            className="mt-1 block w-full px-3 py-2 border border-primary-300 rounded-md shadow-sm placeholder-primary-400 focus:outline-none focus:ring-secondary-500 focus:border-secondary-500 sm:text-sm"
+            onChange={setProductName}
             placeholder="상품명을 입력해주세요"
           />
         </div>
 
-        {/* Price Input */}
-        <div className="mb-4">
-          <label htmlFor="price" className="block text-sm font-medium text-primary-700 sr-only">
-            가격
-          </label>
-          <input
-            type="text"
-            id="price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            // Replaced border-gray-300 with border-primary-300
-            // Replaced placeholder-gray-400 with placeholder-primary-400
-            // Replaced focus:ring-blue-500 with focus:ring-secondary-500
-            // Replaced focus:border-blue-500 with focus:border-secondary-500
-            className="mt-1 block w-full px-3 py-2 border border-primary-300 rounded-md shadow-sm placeholder-primary-400 focus:outline-none focus:ring-secondary-500 focus:border-secondary-500 sm:text-sm"
-            placeholder="가격을 입력해주세요"
-          />
+        <div className="w-full">
+          <Input type="text" id="price" value={price} onChange={setPrice} placeholder="가격을 입력해주세요" />
         </div>
 
-        {/* Product Link Input */}
-        <div className="mb-6">
-          <label htmlFor="productLink" className="block text-sm font-medium text-primary-700 sr-only">
-            제품 링크
-          </label>
-          <input
+        <div className="w-full">
+          <Input
             type="text"
             id="productLink"
             value={productLink}
-            onChange={(e) => setProductLink(e.target.value)}
-            // Replaced border-gray-300 with border-primary-300
-            // Replaced placeholder-gray-400 with placeholder-primary-400
-            // Replaced focus:ring-blue-500 with focus:ring-secondary-500
-            // Replaced focus:border-blue-500 with focus:border-secondary-500
-            className="mt-1 block w-full px-3 py-2 border border-primary-300 rounded-md shadow-sm placeholder-primary-400 focus:outline-none focus:ring-secondary-500 focus:border-secondary-500 sm:text-sm"
+            onChange={setProductLink}
             placeholder="제품 링크를 입력해주세요"
           />
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex justify-between space-x-4">
+        <div className="flex justify-between w-full">
           <button
             type="button"
-            onClick={() => console.log("취소")} // Add actual cancel logic here (e.g., navigate back)
-            // Replaced border-gray-300 with border-primary-300
-            // Replaced text-gray-700 with text-primary-700
-            // Replaced bg-white with bg-white (explicitly defined)
-            // Replaced hover:bg-gray-50 with hover:bg-primary-50
-            // Replaced focus:ring-gray-500 with focus:ring-primary-500
-            className="flex-1 py-2 px-4 border border-primary-300 rounded-md shadow-sm text-sm font-medium text-primary-700 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+            onClick={() => console.log("취소")}
+            className="w-[216px] h-[64px] border border-primary-300 rounded-[2px] py-[12px] px-[16px] text-sm font-medium text-primary-700 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
           >
             취소
           </button>
           <button
             type="submit"
             onClick={handleSubmit}
-            // Replaced border-transparent with border-transparent (no change)
-            // Replaced text-white with text-white (explicitly defined)
-            // Replaced bg-gray-800 with bg-primary-800
-            // Replaced hover:bg-gray-900 with hover:bg-primary-900
-            // Replaced focus:ring-gray-900 with focus:ring-primary-900
-            className="flex-1 py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-primary-800 hover:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-900"
+            className="w-[216px] h-[64px] rounded-[2px] py-[12px] px-[16px] text-sm font-medium text-white bg-primary-800 hover:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-900"
           >
             등록하기
           </button>
