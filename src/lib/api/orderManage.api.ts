@@ -14,7 +14,6 @@ export type TAdminOrder = {
   productName: string;
 };
 
-// 👇 status는 아예 빼버리고 pending 고정
 export const fetchPendingAdminOrders = async ({
   offset = 0,
   limit = 4,
