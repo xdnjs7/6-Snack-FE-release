@@ -32,7 +32,8 @@ export const getProducts = async (params?: {
   return response;
 };
 
-export const getMyProducts = async (params: TMyProductsParams) => {
+// 내가 등록한 상품 조회
+export const getMyProducts = async (params: TMyProductsParams): Promise<TMyProductsResponse> => {
   const queryString = new URLSearchParams(params);
 
   return await cookieFetch(`/my/products?${queryString.toString()}`);
