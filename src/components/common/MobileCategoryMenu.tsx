@@ -1,9 +1,10 @@
 "use client";
 import { createPortal } from "react-dom";
 import { TCategoryItem } from "@/types/subCategoryMenu.types";
+import { CATEGORIES } from "@/lib/utils/categories.util";
 
 type TMobileCategoryMenuProps = {
-  items: TCategoryItem[];
+  items?: TCategoryItem[];
   isOpen: boolean;
   currentCategory?: string;
   onItemClick?: (item: TCategoryItem) => void;
@@ -11,18 +12,8 @@ type TMobileCategoryMenuProps = {
   className?: string;
 };
 
-const defaultCategories: TCategoryItem[] = [
-  { id: 1, name: "스낵" },
-  { id: 2, name: "음료" },
-  { id: 3, name: "생수" },
-  { id: 4, name: "간편식" },
-  { id: 5, name: "신선식" },
-  { id: 6, name: "원두커피" },
-  { id: 7, name: "비품" },
-];
-
 export default function MobileCategoryMenu({
-  items = defaultCategories,
+  items = CATEGORIES.parentCategory,
   isOpen,
   currentCategory,
   onItemClick,
@@ -31,7 +22,7 @@ export default function MobileCategoryMenu({
 }: TMobileCategoryMenuProps) {
   if (!isOpen) return null;
 
-  // 상품리스트 페이지에서 currentCategory값 받아와야함
+  // 전역 상태에서 선택된 카테고리 정보를 사용
   const isCurrentCategory = (item: TCategoryItem) => {
     if (!currentCategory || !item.id) return false;
     return currentCategory === item.id.toString();

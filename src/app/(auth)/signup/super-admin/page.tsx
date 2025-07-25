@@ -9,9 +9,7 @@ import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
 import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
-// 초대 관련 import 제거
-// import { getInviteApi, TInviteInfo } from "@/lib/api/invite.api";
-// import { signUpWithInviteApi } from "@/lib/api/auth.api";
+import { superAdminSignUpApi } from "@/lib/api/superAdmin.api";
 
 // 리액트 훅폼에 연결할 zod 스키마 정의
 const signUpSchema = z
@@ -28,6 +26,7 @@ const signUpSchema = z
       .regex(/[^a-zA-Z0-9]/, "비밀번호는 특수문자를 포함해야 합니다."),
     passwordConfirm: z.string(),
   })
+  
   .refine((data) => data.password === data.passwordConfirm, {
     message: "비밀번호가 일치하지 않습니다.",
     path: ["passwordConfirm"],
@@ -59,18 +58,10 @@ export default function SuperAdminSignUpPage() {
   const onSubmit = async (data: TSignUpFormData) => {
     setError(null);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}/auth/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        const message = errorData.message || "회원가입에 실패했습니다.";
-        alert(message); // 실패 사유를 alert로 표시
-        setError(message);
-        return; // 로그인 페이지로 이동하지 않음
-      }
+      await superAdminSignUpApi(data);
+      // alert("회원가입이 성공했습니다!");
+      // Implement a custom success modal here
+      console.log("회원가입이 성공했습니다!"); // For debugging
       router.push("/login");
     } catch (error) {
       const message = error instanceof Error ? error.message : "회원가입에 실패했습니다.";

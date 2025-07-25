@@ -47,22 +47,14 @@ export type TSignUpWithInviteResponse = {
 
 export const signUpWithInviteApi = async (
   inviteId: string,
-  email: string,
-  name: string,
   password: string,
   passwordConfirm: string,
-  companyName: string,
-  bizNumber: string,
 ): Promise<TSignUpWithInviteResponse> => {
   return cookieFetch(`/auth/signup/${inviteId}`, {
     method: "POST",
     body: JSON.stringify({
-      email,
-      name,
       password,
       passwordConfirm,
-      companyName,
-      bizNumber,
     }),
   });
 };
