@@ -66,12 +66,16 @@ export default function SuperAdminSignUpPage() {
       });
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || "회원가입에 실패했습니다.");
+        const message = errorData.message || "회원가입에 실패했습니다.";
+        alert(message); // 실패 사유를 alert로 표시
+        setError(message);
+        return; // 로그인 페이지로 이동하지 않음
       }
       router.push("/login");
     } catch (error) {
-      setError(error instanceof Error ? error.message : "회원가입에 실패했습니다.");
-      console.error("회원가입 에러:", error);
+      const message = error instanceof Error ? error.message : "회원가입에 실패했습니다.";
+      alert(message); // 네트워크 등 기타 에러도 alert로 표시
+      setError(message);
     }
   };
 
