@@ -48,7 +48,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                     className={
                       `flex-1 min-w-0 bg-transparent outline-none border-none` +
                       (currentMonthBudget
-                        ? ' text-[#222222] font-suit font-extrabold text-[20px] max-[900px]:text-[18px] sm:text-[32px] md:text-[40px] leading-[100%] align-middle tracking-[-0.025em]'
+                        ? ' text-[#222222] font-suit font-extrabold text-[20px] max-[900px]:text-[18px] sm:text-[32px] md:text-[40px] leading-[100%] align-middle tracking-[-0.025em] max-[640px]:text-[30px] max-[640px]:font-extrabold max-[640px]:font-suit max-[640px]:leading-[100%] max-[640px]:align-middle max-[640px]:tracking-[-0.025em]'
                         : ' text-neutral-300 text-xl max-[900px]:text-lg sm:text-3xl md:text-3xl font-bold font-suit placeholder:text-neutral-300 placeholder:font-suit placeholder:font-bold placeholder:text-[18px] max-[900px]:placeholder:text-[16px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-middle placeholder:tracking-[-0.025em]')
                     }
                     placeholder="예산을 입력해주세요"
@@ -59,7 +59,11 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                     }}
                     disabled={loading}
                   />
-                  <div className="text-neutral-800 text-xl max-[900px]:text-lg sm:text-3xl md:text-4xl font-extrabold font-suit">원</div>
+                  <div className={
+                    "text-neutral-800 font-suit font-extrabold leading-[100%] align-middle tracking-[-0.025em]" +
+                    " text-xl max-[900px]:text-lg sm:text-3xl md:text-4xl" +
+                    (currentMonthBudget ? " max-[640px]:text-[30px] max-[640px]:font-extrabold max-[640px]:font-suit max-[640px]:leading-[100%] max-[640px]:align-middle max-[640px]:tracking-[-0.025em]" : "")
+                  }>원</div>
                 </div>
                 {errors?.currentMonthBudget && (
                   <p className="text-red-500 text-xs mt-1 ml-2">{errors.currentMonthBudget}</p>
@@ -78,7 +82,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                     className={
                       `flex-1 min-w-0 bg-transparent outline-none border-none` +
                       (nextMonthBudget
-                        ? ' text-[#222222] font-suit font-extrabold text-[20px] max-[900px]:text-[18px] sm:text-[32px] md:text-[40px] leading-[100%] align-middle tracking-[-0.025em]'
+                        ? ' text-[#222222] font-suit font-extrabold text-[20px] max-[900px]:text-[18px] sm:text-[32px] md:text-[40px] leading-[100%] align-middle tracking-[-0.025em] max-[640px]:text-[30px] max-[640px]:font-extrabold max-[640px]:font-suit max-[640px]:leading-[100%] max-[640px]:align-middle max-[640px]:tracking-[-0.025em]'
                         : ' text-neutral-300 text-xl max-[900px]:text-lg sm:text-3xl md:text-3xl font-bold font-suit placeholder:text-neutral-300 placeholder:font-suit placeholder:font-bold placeholder:text-[18px] max-[900px]:placeholder:text-[16px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-middle placeholder:tracking-[-0.025em]')
                     }
                     placeholder="예산을 입력해주세요"
@@ -89,7 +93,11 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                     }}
                     disabled={loading}
                   />
-                  <div className="text-neutral-800 text-xl max-[900px]:text-lg sm:text-3xl md:text-4xl font-extrabold font-suit">원</div>
+                  <div className={
+                    "text-neutral-800 font-suit font-extrabold leading-[100%] align-middle tracking-[-0.025em]" +
+                    " text-xl max-[900px]:text-lg sm:text-3xl md:text-4xl" +
+                    (nextMonthBudget ? " max-[640px]:text-[30px] max-[640px]:font-extrabold max-[640px]:font-suit max-[640px]:leading-[100%] max-[640px]:align-middle max-[640px]:tracking-[-0.025em]" : "")
+                  }>원</div>
                 </div>
                 {errors?.nextMonthBudget && <p className="text-red-500 text-xs mt-1 ml-2">{errors.nextMonthBudget}</p>}
                 <div className="self-stretch text-zinc-500 text-sm md:text-base font-bold font-suit">0원</div>
