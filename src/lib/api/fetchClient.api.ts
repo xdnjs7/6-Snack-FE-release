@@ -22,19 +22,30 @@ export const cookieFetch = async <T = any>(path: string, options: RequestInit = 
   };
 
   let response = await request();
-  // ✅ 무한 루프 방지: 리프레시 토큰 요청이면 다시 시도하지 않음
+
   const isRefreshRequest = path === "/auth/refresh-token";
 
-  // 1차 요청이 실패하고 401인 경우 → 리프레시 토큰으로 재발급
-  if (response.status === 401 && !isRefreshRequest) {
+  // 예외 경로: 랜딩페이지(/), /signup, /signup/*, /login, /login/*
+  let isExceptionPath = false;
+  if (typeof window !== "undefined") {
+    const currentPath = window.location.pathname;
+    isExceptionPath = (
+      currentPath === "/" ||
+      currentPath === "/login" ||
+      currentPath.startsWith("/login/") ||
+      currentPath === "/signup" ||
+      currentPath.startsWith("/signup/")
+    );
+  }
+
+  if (response.status === 401 && !isRefreshRequest && !isExceptionPath) {
     try {
       console.log("🔄 액세스 토큰 갱신 시도");
-      console.log("요청함");
-      await refreshAccessToken(); // 토큰 재발급
-      response = await request(); // 재요청
+      await refreshAccessToken();
+      response = await request();
     } catch (e) {
       console.error("❌ 액세스 토큰 재발급 실패");
-      logout(); // 세션 만료 처리
+      logout();
       throw new Error("세션이 만료되었습니다. 다시 로그인해주세요.");
     }
   }
