@@ -10,11 +10,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
 import Link from "next/link";
 
-/**
- * @De-cal TODO:
- * 1. 장바구니 전체 선택, 해제 API 만들어지면 연동
- * 2. 장바구니 수량 선택 API 만들어지면 연동
- */
 type TCartItemProps = {
   cartItems: TGetCartItemsResponse | undefined;
   isPending: boolean;

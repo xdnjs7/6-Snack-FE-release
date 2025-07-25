@@ -11,11 +11,6 @@ import { TGetCartItemsParams, TGetCartItemsResponse } from "@/types/cart.types";
 import { useRouter } from "next/navigation";
 import { createOrder } from "@/lib/api/order.api";
 
-/**
- * @De-cal TODO:
- * 1. 구매 요청 API 연동
- */
-
 type TOrderPageContentProps = {
   cartItemId?: string;
 };
