@@ -16,13 +16,17 @@ import { TSideMenuItem } from "@/types/sideMenu.types";
 import { useRouter } from "next/navigation";
 import ArrowIconSvg from "../svg/ArrowIconSvg";
 import { TCategoryItem } from "@/types/subCategoryMenu.types";
+import { useCategoryStore } from "@/stores/categoryStore";
+import { CATEGORIES } from "@/lib/utils/categories.util";
 
 export default function AuthenticatedHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
-  const [currentCategory, setCurrentCategory] = useState("snack");
   const pathname = usePathname();
   const router = useRouter();
+
+  // 전역 카테고리 상태 사용
+  const { selectedCategory } = useCategoryStore();
 
   const menuItems = [
     { id: "products", label: "상품 리스트", href: "/products" },
@@ -34,16 +38,6 @@ export default function AuthenticatedHeader() {
     // 최고 관리자
     { id: "manage-users", label: "관리", href: "/manage/users" },
     { id: "profile", label: "마이 페이지", href: "/profile" },
-  ];
-
-  const categoryItems = [
-    { id: 1, name: "스낵" },
-    { id: 2, name: "음료" },
-    { id: 3, name: "생수" },
-    { id: 4, name: "간편식" },
-    { id: 5, name: "신선식" },
-    { id: 6, name: "원두커피" },
-    { id: 7, name: "비품" },
   ];
 
   // 햄버거 메뉴버튼 클릭 핸들러
@@ -66,10 +60,13 @@ export default function AuthenticatedHeader() {
 
   // 카테고리 아이템 클릭 핸들러
   const handleCategoryItemClick = (item: TCategoryItem) => {
-    setCurrentCategory(item.id.toString());
     setIsCategoryMenuOpen(false);
     // 여기에 category별 product 검색결과 보여주기
+    router.push(`/products?category=${item.id}`);
   };
+
+  // 현재 선택된 카테고리 이름 표시 (전역 상태에서 가져옴)
+  const currentCategoryName = selectedCategory?.parent || "전체";
   return (
     <header className="w-full h-14 sm:h-25 md:h-[90px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] sm:px-[24px] sm:py-[28px] md:px-[100px] md:py-[32px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg">
       <div className="flex items-center justify-center md:gap-10">
@@ -108,12 +105,11 @@ export default function AuthenticatedHeader() {
       {/* 카테고리 dropdown 버튼 - mobile  */}
       <div className="block sm:hidden">
         <div className="flex gap-1 items-center">
-          <p className="font-bold">음료</p>
+          <p className="font-bold">{currentCategoryName}</p>
           <ArrowIconSvg
             direction={isCategoryMenuOpen ? "up" : "down"}
             onClick={handleCategoryMenuClick}
             className="w-5 h-5 text-black"
-            
           />
         </div>
       </div>
@@ -147,7 +143,6 @@ export default function AuthenticatedHeader() {
         {/* 여기에 menu 누를시 SideMenu 화면 옆에 나오도록 */}
         <HamburgerMenuIconSvg className="md:hidden text-primary-400" onClick={handleMenuClick} />
 
-
         <SideMenu
           items={menuItems}
           isOpen={isMenuOpen}
@@ -159,9 +154,9 @@ export default function AuthenticatedHeader() {
 
         {/* 상품 상세 페이지, 상품 리스트 페이지에서만 모바일버전에서 보임 */}
         <MobileCategoryMenu
-          items={categoryItems}
+          items={CATEGORIES.parentCategory}
           isOpen={isCategoryMenuOpen}
-          currentCategory={currentCategory}
+          currentCategory={selectedCategory?.id?.toString()}
           onItemClick={handleCategoryItemClick}
           onClose={() => setIsCategoryMenuOpen(false)}
         />
