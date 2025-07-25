@@ -13,7 +13,8 @@ import { useRouter } from "next/navigation";
 
 /**
  * @De-cal TODO:
- * 1. alert 사용 중인 것 모달이나 토스트로 변경하기
+ * 1. 즉시 구매 API 연동 후 3번 페이지로 이동시키기
+ * 2. alert 사용 중인 것 모달이나 토스트로 변경하기
  */
 
 export default function CartPage() {

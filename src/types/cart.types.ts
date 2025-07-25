@@ -1,7 +1,8 @@
 import { TProduct } from "./product.types";
 
 export type TGetCartItemsParams = {
-  selected?: string;
+  cartItemId?: string;
+  isChecked?: string;
 };
 
 export type TGetCartItemsResponse = {
