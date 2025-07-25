@@ -5,14 +5,13 @@ import Link from "next/link";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { getInviteApi, TInviteInfo } from "@/lib/api/invite.api";
+import clsx from "clsx";
 import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
 import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
-import clsx from "clsx";
-import Button from "@/components/ui/Button";
-import { signUpWithInviteApi } from "@/lib/api/auth.api";
+// 초대 관련 import 제거
+// import { getInviteApi, TInviteInfo } from "@/lib/api/invite.api";
+// import { signUpWithInviteApi } from "@/lib/api/auth.api";
 
 // 리액트 훅폼에 연결할 zod 스키마 정의
 const signUpSchema = z
@@ -37,12 +36,8 @@ const signUpSchema = z
 type TSignUpFormData = z.infer<typeof signUpSchema>;
 
 export default function SuperAdminSignUpPage() {
-  const params = useParams();
   const router = useRouter();
-  const inviteId = params.inviteId as string;
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [inviteInfo, setInviteInfo] = useState<TInviteInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
@@ -60,43 +55,23 @@ export default function SuperAdminSignUpPage() {
 
   const [passwordInput, passwordConfirmInput] = watch("password", "passwordConfirm");
 
-  // 초대 정보 가져오기
-  useEffect(() => {
-    const fetchInviteInfo = async () => {
-      try {
-        setIsLoading(true);
-        const data: TInviteInfo = await getInviteApi(inviteId);
-        setInviteInfo(data);
-      } catch (error) {
-        setError(error instanceof Error ? error.message : "초대 링크가 유효하지 않습니다.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    //  inviteId 정하기
-    if (inviteId) {
-      fetchInviteInfo();
-    }
-  }, [inviteId]);
-
-  // react hook form 회원가입 처리
+  // 회원가입 처리
   const onSubmit = async (data: TSignUpFormData) => {
-    // ??
-    if (!inviteInfo) return;
-
+    setError(null);
     try {
-      await signUpWithInviteApi(
-        inviteId,
-        data.email,
-        data.name,
-        data.password,
-        data.passwordConfirm,
-        data.companyName,
-        data.bizNumber
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "회원가입에 실패했습니다.");
+      }
       router.push("/login");
     } catch (error) {
       setError(error instanceof Error ? error.message : "회원가입에 실패했습니다.");
+      console.error("회원가입 에러:", error);
     }
   };
 
@@ -114,7 +89,8 @@ export default function SuperAdminSignUpPage() {
         <div className="sm:hidden">
           <div className="flex flex-col items-center justify-center gap-[10px]">
             <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle ">
-              {inviteInfo?.name} 님, 만나서 반갑습니다.
+              {/* {inviteInfo?.name} 님, 만나서 반갑습니다. */}
+              만나서 반갑습니다.
             </h1>
             <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
               비밀번호를 입력해 회원가입을 완료해주세요.
@@ -128,7 +104,8 @@ export default function SuperAdminSignUpPage() {
         <div className="hidden sm:block sm:mb-[20px]">
           <div className="flex flex-col items-center justify-center gap-[10px]">
             <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle ">
-              {inviteInfo?.name} 님, 만나서 반갑습니다.
+              {/* {inviteInfo?.name} 님, 만나서 반갑습니다. */}
+              만나서 반갑습니다.
             </h1>
             <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
               비밀번호를 입력해 회원가입을 완료해주세요.
@@ -260,18 +237,24 @@ export default function SuperAdminSignUpPage() {
               <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.passwordConfirm.message}</span>
             )}
           </div>
-        </form>
 
-        {/* 가입 버튼 */}
-        <Button
-          type="primary"
-          label={isSubmitting ? "처리 중..." : "가입하기"}
-          className={clsx(
-            "w-full h-[64px] mb-[24px]",
-            isValid && !isSubmitting ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
+          {/* 가입 버튼 - 직접 button 태그로 대체 */}
+          <button
+            type="submit"
+            className={clsx(
+              "w-full h-[64px] mb-[24px] rounded-[2px] inline-flex justify-center items-center text-base",
+              isValid && !isSubmitting ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
+              "font-bold"
+            )}
+            disabled={isSubmitting || !isValid}
+          >
+            {isSubmitting ? "처리 중..." : "가입하기"}
+          </button>
+          {/* 에러 메시지 표시 */}
+          {error && (
+            <div className="text-error-500 text-center text-sm mt-2">{error}</div>
           )}
-          onClick={isValid && !isSubmitting ? handleSubmit(onSubmit) : undefined}
-        />
+        </form>
 
         {/* 계정이 있으신가요 */}
         <p className="text-primary-500 text-base/[20px] tracking-tight text-center w-full">
