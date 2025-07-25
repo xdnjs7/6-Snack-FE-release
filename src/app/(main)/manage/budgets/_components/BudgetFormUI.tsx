@@ -24,6 +24,16 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
   success,
   errors,
 }) => {
+  React.useEffect(() => {
+    if (success) {
+      alert("예산이 성공적으로 수정되었습니다.");
+    }
+    // 실패 케이스는 errors에 따라 별도 처리 가능
+    // if (errors.currentMonthBudget || errors.nextMonthBudget) {
+    //   alert("예산 수정에 실패했습니다.");
+    // }
+  }, [success]);
+
   return (
     <div className="flex flex-1 flex-col justify-center sm:flex-row">
       <div className="w-full sm:w-1/2">
@@ -39,7 +49,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
               {/* 이번 달 예산 */}
               <div className="self-stretch flex flex-col justify-center items-start gap-3">
                 <div className="self-stretch text-neutral-800 text-sm md:text-base font-bold font-suit">이번 달</div>
-                <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 max-[744px]:w-full max-[744px]:max-w-full max-[744px]:h-[49px] max-[744px]:pb-[12px] max-[744px]:border-b-2 max-[744px]:gap-[4px] max-[744px]:scrollbar-hide">
+                <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 max-[744px]:w-full max-[744px]:max-w-full max-[744px]:h-[49px] max-[744px]:pb-[12px] max-[744px]:border-b-2 max-[744px]:gap-[4px] max-[744px]:scrollbar-hide overflow-x-visible">
                   <input
                     type="text"
                     inputMode="numeric"
@@ -71,7 +81,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
               {/* 다음 달 예산 */}
               <div className="self-stretch flex flex-col justify-center items-start gap-3">
                 <div className="self-stretch text-neutral-800 text-sm md:text-base font-bold font-suit">매달 시작</div>
-                <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 max-[744px]:w-full max-[744px]:max-w-full max-[744px]:h-[49px] max-[744px]:pb-[12px] max-[744px]:border-b-2 max-[744px]:gap-[4px] max-[744px]:scrollbar-hide">
+                <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 max-[744px]:w-full max-[744px]:max-w-full max-[744px]:h-[49px] max-[744px]:pb-[12px] max-[744px]:border-b-2 max-[744px]:gap-[4px] max-[744px]:scrollbar-hide overflow-x-visible">
                   <input
                     type="text"
                     inputMode="numeric"
@@ -109,7 +119,6 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
               {loading ? "저장 중..." : "수정하기"}
             </button>
           </div>
-          {success && <p className="text-green-600 mt-2">예산이 성공적으로 수정되었습니다.</p>}
         </form>
       </div>
       <div className="hidden sm:block w-1/2" />
