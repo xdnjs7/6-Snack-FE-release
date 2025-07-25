@@ -1,18 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import ic_chevron_down from "@/assets/icons/ic_chevron_down.svg";
-import Image from "next/image";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
-import clsx from "clsx";
 
 type TCartItemQuantityDropdownProps = {
   value: number;
-  onClick: (quantity: number) => void;
+  onClick: (value: number) => void;
 };
 
 export default function CartItemQuantityDropdown({ value, onClick }: TCartItemQuantityDropdownProps) {
   const [isQuantityDropdownVisible, setIsQuantityDropdownVisible] = useState<boolean>(false);
+  const [quantity, setQuantity] = useState<number>(() => value);
 
   const quantityOptions = Array.from({ length: 100 }, (_, i) => i + 1);
 
@@ -26,7 +24,7 @@ export default function CartItemQuantityDropdown({ value, onClick }: TCartItemQu
         onClick={handleQuantityDropdown}
         className="relative flex justify-end items-center h-[40px] pl-[24px] gap-[4px] cursor-pointer"
       >
-        <p className="font-bold text-[14px]/[17px] tracking-tight text-primary-950 sm:text-[16px]/[20px]">{value}</p>
+        <p className="font-bold text-[14px]/[17px] tracking-tight text-primary-950 sm:text-[16px]/[20px]">{quantity}</p>
         <ArrowIconSvg direction="down" className="w-[20px] h-[20px] text-primary-950 sm:w-[24px] sm:h-[24px]" />
       </div>
 
@@ -35,6 +33,7 @@ export default function CartItemQuantityDropdown({ value, onClick }: TCartItemQu
           {quantityOptions.map((quantity, i) => (
             <ul
               onClick={() => {
+                setQuantity(quantity);
                 onClick(quantity);
                 setIsQuantityDropdownVisible(false);
               }}
