@@ -3,7 +3,7 @@ import ic_checkbox from "@/assets/icons/ic_checkbox.svg";
 import ic_checkbox_active from "@/assets/icons/ic_checkbox_active.svg";
 import Image from "next/image";
 import Button from "@/components/ui/Button";
-import CartItemQuantityDropdown from "./CartItemQuantityDropdown";
+import QuantityDropdown from "@/components/common/QuantityDropdown";
 import { TGetCartItemsResponse } from "@/types/cart.types";
 import { deleteSelectedItems, foo, toggleCheckAllItems, toggleCheckItem } from "@/lib/api/cart.api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -149,7 +149,7 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
                     </div>
 
                     <div className="relative flex sm:flex-col sm:justify-center sm:items-end sm:gap-[4px]">
-                      <CartItemQuantityDropdown
+                      <QuantityDropdown
                         value={item.quantity}
                         onClick={(value: number) => updateCartItemQuantity({ cartItemId: item.id, quantity: value })}
                       />
