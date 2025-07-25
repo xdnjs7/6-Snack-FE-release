@@ -33,7 +33,7 @@ export const deleteSelectedItems = async (cartItemIds: number[]): Promise<void> 
 };
 
 // 장바구니 수량 선택
-export const foo = async (cartItemId: number, quantity: number) => {
+export const updateItemQuantity = async (cartItemId: number, quantity: number) => {
   return await cookieFetch(`/cart/${cartItemId}/quantity`, {
     method: "PATCH",
     body: JSON.stringify({ cartItemId, quantity }),

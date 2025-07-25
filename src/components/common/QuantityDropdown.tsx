@@ -38,7 +38,9 @@ export default function QuantityDropdown({ value, onClick }: TQuantityDropdownPr
 
   const handleSelect = (val: number) => {
     setQuantity(val);
-    onClick?.(val);
+    if (val !== value) {
+      onClick?.(val); // ✅ 값이 바뀐 경우만 요청
+    }
     setIsDropdownVisible(false);
   };
 
@@ -72,8 +74,8 @@ export default function QuantityDropdown({ value, onClick }: TQuantityDropdownPr
         // 유효하지 않은 수량이면 value로 리셋
         if (quantity < 1 || quantity > 100 || isNaN(quantity)) {
           setQuantity(value);
-        } else {
-          onClick?.(quantity);
+        } else if (quantity !== value) {
+          onClick?.(quantity); // 값이 바뀌었을 때만 호출
         }
       }
     }
