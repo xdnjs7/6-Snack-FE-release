@@ -36,6 +36,6 @@ export const deleteSelectedItems = async (cartItemIds: number[]): Promise<void> 
 export const updateItemQuantity = async (cartItemId: number, quantity: number) => {
   return await cookieFetch(`/cart/${cartItemId}/quantity`, {
     method: "PATCH",
-    body: JSON.stringify({ cartItemId, quantity }),
+    body: JSON.stringify({ quantity }),
   });
 };
