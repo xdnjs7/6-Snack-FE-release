@@ -4,13 +4,13 @@ import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
 
 
-type CategoryNavigationProps = {
+type TCategoryNavigationProps = {
   parentCategory?: string;
   childCategory?: string;
   className?: string;
 };
 
-export default function CategoryNavigation({ parentCategory, childCategory, className }: CategoryNavigationProps) {
+export default function CategoryNavigation({ parentCategory, childCategory, className }: TCategoryNavigationProps) {
   return (
     <div
       className={twMerge(

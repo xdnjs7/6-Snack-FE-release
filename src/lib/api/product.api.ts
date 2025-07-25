@@ -1,22 +1,22 @@
-import { TMyProductsParams, TProduct } from "@/types/product.types";
-import { defaultFetch, cookieFetch } from "./fetchClient.api";
+import { TMyProductsParams, TMyProductsResponse, TProduct } from "@/types/product.types";
+import { cookieFetch } from "./fetchClient.api";
 
 // 카테고리 조회
 // export const getCategories = async () => {
 //   return cookieFetch("/products/category");
 // };
 
-export type GetProductsResponse = {
+type TGetProductsResponse = {
   items: TProduct[];
   nextCursor?: number;
-}
+};
 // 상품 목록 조회
 export const getProducts = async (params?: {
   category?: number;
   sort?: "latest" | "popular" | "low" | "high";
   cursor?: number;
   limit?: number;
-}): Promise<GetProductsResponse> => {
+}): Promise<TGetProductsResponse> => {
   const searchParams = new URLSearchParams();
 
   if (params?.category) searchParams.append("category", params.category.toString());
@@ -28,7 +28,7 @@ export const getProducts = async (params?: {
   const url = queryString ? `/products?${queryString}` : "/products";
 
   // response 타입 지정해줘야함? -권장
-  const response = await cookieFetch<GetProductsResponse>(url);
+  const response = await cookieFetch<TGetProductsResponse>(url);
   return response;
 };
 

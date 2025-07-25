@@ -18,7 +18,7 @@ import PlusToggleIconSvg from "@/components/svg/PlusToggleIconSvg";
 import Dropdown from "@/components/common/DropDown";
 import { useCategoryStore } from "@/stores/categoryStore";
 
-type CategoryData = {
+type TCategoryData = {
   parentCategory: Array<{ id: number; name: string }>;
   childrenCategory: Record<string, Array<{ id: number; name: string }>>;
 };
@@ -26,7 +26,7 @@ type CategoryData = {
 type TSortOptions = "latest" | "popular" | "low" | "high";
 
 export default function ProductsPageContent() {
-  const [categories] = useState<CategoryData>(CATEGORIES);
+  const [categories] = useState<TCategoryData>(CATEGORIES);
   const [selectedSort, setSelectedSort] = useState<TSortOptions>("latest");
   // 전역 카테고리 상태 사용
   const { selectedCategory, findCategoryPath, clearSelectedCategory } = useCategoryStore();
@@ -73,9 +73,15 @@ export default function ProductsPageContent() {
 
   // 정렬 변경 핸들러
   const handleSortChange = (selectedValue: string) => {
-    const selectedIndex = sortOptions.findIndex((option) => option.label === selectedValue);
-    if (selectedIndex !== -1) {
-      const sortValue = sortOptions[selectedIndex].value;
+    const sortValueMap: Record<string, TSortOptions> = {
+      최신순: "latest",
+      판매순: "popular",
+      "낮은 가격순": "low",
+      "높은 가격순": "high",
+    };
+
+    const sortValue = sortValueMap[selectedValue];
+    if (sortValue) {
       setSelectedSort(sortValue);
     }
   };
