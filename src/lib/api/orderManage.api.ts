@@ -1,29 +1,41 @@
+import { TOrder, TOrderSummary } from "@/types/Order.types";
 import { cookieFetch } from "./fetchClient.api";
 
-export type TAdminOrder = {
-  id: number;
-  userId: string;
-  approver: string | null;
-  adminMessage: string | null;
-  requestMessage: string;
-  totalPrice: number;
-  createdAt: string;
-  updatedAt: string;
-  status: "PENDING" | "APPROVED" | "REJECTED";
-  requester: string;
-  productName: string;
-};
-
-export const fetchPendingAdminOrders = async ({
+export const fetchPendingOrders = async ({
   offset = 0,
-  limit = 4,
+  limit = 10,
   orderBy = "latest",
 }: {
   offset?: number;
   limit?: number;
-  orderBy?: string;
-}): Promise<TAdminOrder[]> => {
+  orderBy?: "latest" | "oldest";
+}): Promise<TOrderSummary[]> => {
   const query = `?status=pending&offset=${offset}&limit=${limit}&orderBy=${orderBy}`;
   const res = await cookieFetch(`/admin/orders${query}`);
+  return res as TOrderSummary[];
+};
+
+export const fetchOrderDetail = async (orderId: number): Promise<TOrder> => {
+  const res = await cookieFetch(`/admin/orders/${orderId}?status=pending`);
+  return res;
+};
+
+export const updateOrderStatus = async ({
+  orderId,
+  status,
+  adminMessage,
+}: {
+  orderId: number;
+  status: "APPROVED" | "REJECTED";
+  adminMessage: string;
+}) => {
+  const res = await cookieFetch(`/admin/orders/${orderId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status, adminMessage }),
+  });
+
   return res;
 };

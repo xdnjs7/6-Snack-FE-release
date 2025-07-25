@@ -3,6 +3,7 @@ import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
 
+
 type CategoryNavigationProps = {
   parentCategory?: string;
   childCategory?: string;

@@ -4,6 +4,9 @@ import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { getAdminOrders } from "@/lib/api/order.api"; // 경로가 맞는지 확인해주세요
 import { getBudgets } from "@/lib/api/budgets.api"; // 경로가 맞는지 확인해주세요
+import Dropdown from "@/components/common/DropDown";
+import fileIcon from "@/assets/icons/ic_file.svg"
+import Image from "next/image";
 
 // API 응답 타입 정의 (예시, 실제 응답에 맞게 수정 필요)
 type AdminOrderApiItem = {
@@ -107,14 +110,6 @@ const OrderHistoryPage = () => {
     fetchData();
   }, []);
 
-  // PurchaseList 정렬 드롭다운 핸들러
-  const handleSortButtonClick = () => setDropdownOpen((prev) => !prev);
-  const handleSortSelect = (value: string) => {
-    setSortBy(value);
-    setCurrentPage(1);
-    setDropdownOpen(false);
-  };
-
   // PurchaseList 드롭다운 외부 클릭 감지
   useEffect(() => {
     if (!dropdownOpen) return;
@@ -205,54 +200,7 @@ const OrderHistoryPage = () => {
         <div className="flex flex-row justify-between items-center mb-6">
           <div className="text-lg sm:text-2xl font-bold font-suit">구매 내역 확인</div>
           <div className="relative custom-sort-dropdown">
-            <button
-              type="button"
-              onClick={handleSortButtonClick}
-              className={clsx(
-                "w-28 h-11 px-4 py-2.5 bg-white border border-neutral-200 rounded-md flex justify-between items-center",
-                "text-neutral-800 text-base font-normal font-suit",
-                "relative",
-                "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-              )}
-              aria-haspopup="listbox"
-              aria-expanded={dropdownOpen}
-            >
-              <span>{sortBy === "latest" ? "정렬" : "오래된 순"}</span>
-              <span className="w-4 h-4 ml-2 inline-block">
-                <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1L8 8L15 1" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-              {dropdownOpen && (
-                <ul
-                  className="absolute left-0 top-full mt-1 w-full bg-white border border-neutral-200 rounded-md shadow-lg z-10"
-                  role="listbox"
-                >
-                  <li
-                    className={clsx(
-                      "px-4 py-2 hover:bg-neutral-100 cursor-pointer",
-                      sortBy === "latest" && "font-bold text-blue-600",
-                    )}
-                    role="option"
-                    aria-selected={sortBy === "latest"}
-                    onClick={() => handleSortSelect("latest")}
-                  >
-                    최신순
-                  </li>
-                  <li
-                    className={clsx(
-                      "px-4 py-2 hover:bg-neutral-100 cursor-pointer",
-                      sortBy === "oldest" && "font-bold text-blue-600",
-                    )}
-                    role="option"
-                    aria-selected={sortBy === "oldest"}
-                    onClick={() => handleSortSelect("oldest")}
-                  >
-                    오래된 순
-                  </li>
-                </ul>
-              )}
-            </button>
+            <Dropdown options={["최신순","오래된순"]} onChange={()=>{}} />
           </div>
         </div>
         {/* PurchaseSummary 컴포넌트 내용 */}
@@ -322,8 +270,8 @@ const OrderHistoryPage = () => {
                     className={clsx(
                       "hidden sm:flex",
                       "absolute",
-                      "left-[48%]",
-                      "top-full",
+                      "left-[47%]",
+                      "top-32",
                       "-translate-x-1/2",
                       "mt-0",
                       "w-[calc(80%)]",
@@ -410,9 +358,9 @@ const OrderHistoryPage = () => {
           style={{ boxShadow: "none", background: "white" }} // 기존 그림자 제거 및 배경색 명시
         >
           {/* 상단: 타이틀 + 정렬 버튼 */}
-          <div className="flex flex-col sm:flex-row sm:justify-end sm:items-center gap-2 px-6 pt-6 pb-2">
+          {/* <div className="flex flex-col sm:flex-row sm:justify-end sm:items-center gap-2 px-6 pt-6 pb-2"> */}
             {/* 이 부분은 삭제됨, 상단으로 이동 */}
-          </div>
+          {/* </div> */}
 
           {/* 리스트/테이블 */}
           <div className="w-full px-0 sm:px-6 pb-4">
@@ -455,7 +403,9 @@ const OrderHistoryPage = () => {
                 {/* 태블릿/데스크탑: sm 이상 */}
                 <div className="hidden sm:flex w-full justify-center items-center py-24">
                   <div className="w-80 inline-flex flex-col justify-start items-center gap-7">
-                    <div className="w-24 h-24 relative bg-neutral-50 rounded-[100px] overflow-hidden mb-2" />
+                    <div className="flex justify-center w-24 h-24 relative bg-neutral-50 rounded-[100px] overflow-hidden mb-2">
+                      <Image src={fileIcon} alt="빈 문서 아이콘" width={36} height={43} priority />
+                    </div>
                     <div className="self-stretch flex flex-col justify-start items-center gap-12">
                       <div className="w-72 flex flex-col justify-start items-center gap-2.5">
                         <div className="self-stretch text-center justify-center text-neutral-800 text-2xl font-extrabold font-['SUIT']">
