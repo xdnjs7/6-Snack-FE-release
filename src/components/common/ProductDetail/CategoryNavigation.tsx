@@ -1,12 +1,12 @@
 import React from "react";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 
-interface CategoryNavigationProps {
+type TCategoryNavigationProps = {
   parentCategory?: string;
   childCategory?: string;
-}
+};
 
-export default function CategoryNavigation({ parentCategory, childCategory }: CategoryNavigationProps) {
+export default function CategoryNavigation({ parentCategory, childCategory }: TCategoryNavigationProps) {
   // 카테고리가 선택되지 않았으면 렌더링하지 않음
   if (!parentCategory || !childCategory) {
     return null;
