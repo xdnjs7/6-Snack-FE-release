@@ -17,8 +17,8 @@ type TRequestListProps = {
     requester: string;
     productName: string;
   }[];
-  onClickReject: () => void;
-  onClickApprove: () => void;
+  onClickReject: (order: TRequestListProps["orderRequests"][0]) => void;
+  onClickApprove: (order: TRequestListProps["orderRequests"][0]) => void;
 };
 
 export default function RequestList({ orderRequests, onClickReject, onClickApprove }: TRequestListProps) {
@@ -54,13 +54,13 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
                   <Button
                     type="white"
                     label="반려"
-                    onClick={onClickReject}
+                    onClick={() => onClickReject(request)}
                     className="w-full flex justify-center items-center border-[1px] border-primary-300 min-w-[160px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
                   />
                   <Button
                     type="black"
                     label="승인"
-                    onClick={onClickApprove}
+                    onClick={() => onClickApprove(request)}
                     className="w-full flex justify-center items-center bg-primary-950 text-white min-w-[160px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
                   />
                 </div>
@@ -90,13 +90,13 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
                 <Button
                   type="white"
                   label="반려"
-                  onClick={onClickReject}
+                  onClick={() => onClickReject(request)}
                   className="flex justify-center items-center border-[1px] border-primary-300 w-[80px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
                 />
                 <Button
                   type="black"
                   label="승인"
-                  onClick={onClickApprove}
+                  onClick={() => onClickApprove(request)}
                   className="flex justify-center items-center bg-primary-950 text-white w-[80px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
                 />
               </div>
