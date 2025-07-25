@@ -16,6 +16,7 @@ import { TProduct } from "@/types/product.types";
 import { useProducts } from "@/hooks/useProducts";
 import PlusToggleIconSvg from "@/components/svg/PlusToggleIconSvg";
 import Dropdown from "@/components/common/DropDown";
+import { useCategoryStore } from "@/stores/categoryStore";
 
 type CategoryData = {
   parentCategory: Array<{ id: number; name: string }>;
@@ -27,6 +28,8 @@ type TSortOptions = "latest" | "popular" | "low" | "high";
 export default function ProductsPageContent() {
   const [categories] = useState<CategoryData>(CATEGORIES);
   const [selectedSort, setSelectedSort] = useState<TSortOptions>("latest");
+  // 전역 카테고리 상태 사용
+  const { selectedCategory, findCategoryPath, clearSelectedCategory } = useCategoryStore();
 
   // 정렬 옵션 매핑
   const sortOptions = [
@@ -36,11 +39,6 @@ export default function ProductsPageContent() {
     { label: "높은 가격순", value: "high" as const },
   ];
 
-  // Zustand 로 마이그레이션 예정
-  const [selectedCategory, setSelectedCategory] = useState<{
-    parent: string;
-    child: string;
-  } | null>(null);
   const searchParams = useSearchParams();
   const { openModal, closeModal } = useModal();
 
@@ -82,36 +80,20 @@ export default function ProductsPageContent() {
     }
   };
 
-  // 카테고리 ID로 부모-자식 경로 찾기
-  const findCategoryPath = (categoryId: number) => {
-    for (const [parentName, children] of Object.entries(categories.childrenCategory)) {
-      const child = children.find((c) => c.id === categoryId);
-      if (child) {
-        setSelectedCategory({
-          parent: parentName,
-          child: child.name,
-        });
-        return;
-      }
-    }
-  };
-
   // 상품 등록 모달 열기
   const handleProductRegistration = () => {
     openModal(<ProductRegistrationForm />);
   };
 
-  // URL 파라미터에서 카테고리 정보 가져오기
+  // URL 파라미터에서 카테고리 정보 가져와서 전역 상태에 저장
   useEffect(() => {
     const categoryId = searchParams.get("category");
     if (categoryId) {
-      // 카테고리 ID로 부모-자식 카테고리 찾기
-      const categoryIdNum = parseInt(categoryId);
-      findCategoryPath(categoryIdNum);
+      findCategoryPath(parseInt(categoryId));
     } else {
-      setSelectedCategory(null);
+      clearSelectedCategory();
     }
-  }, [searchParams]);
+  }, [searchParams, findCategoryPath, clearSelectedCategory]);
 
   return (
     <div className="flex items-start justify-center">
