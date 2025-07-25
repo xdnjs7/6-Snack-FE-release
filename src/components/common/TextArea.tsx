@@ -28,7 +28,7 @@ const TextArea = ({ placeholder, value, onChange, variant = "cart", className }:
       className={twMerge(
         sizeClasses[variant],
         hasText ? "border-primary-950" : "border-primary-200",
-        "p-6 bg-white rounded-sm text-base text-primary-950 resize-none placeholder:text-primary-200 border outline-none",
+        "p-6 bg-white rounded-sm text-base text-primary-950 resize-none placeholder:text-primary-200 border-[1.3px] outline-none",
         className,
       )}
     />
