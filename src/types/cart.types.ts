@@ -6,11 +6,19 @@ export type TGetCartItemsParams = {
 };
 
 export type TGetCartItemsResponse = {
-  id: number;
-  userId: string;
-  productId: number;
-  quantity: number;
-  isChecked: boolean;
-  deletedAt: string | null;
-  product: Omit<TProduct, "category" | "creator">;
-}[];
+  cart: {
+    id: number;
+    userId: string;
+    productId: number;
+    quantity: number;
+    isChecked: boolean;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+    product: Omit<TProduct, "category" | "creator">;
+  }[];
+  budget?: {
+    currentMonthBudget: number;
+    currentMonthExpense: number;
+  };
+};
