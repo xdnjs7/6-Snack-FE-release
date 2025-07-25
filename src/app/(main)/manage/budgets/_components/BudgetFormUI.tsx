@@ -34,6 +34,45 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
     // }
   }, [success]);
 
+  // 한글 금액 단위 포맷 함수 (3백5십만원 등)
+  function formatKoreanCurrencyUnit(value: string): string {
+    if (!value || value === "0") return "0원";
+    let num = Number(value);
+    if (isNaN(num) || num === 0) return "0원";
+
+    // 만원 단위 이하
+    if (num < 10000) return num + "원";
+
+    // 만원 단위 이상
+    const units = ["", "십", "백", "천"];
+    const man = Math.floor(num / 10000);
+    let manStr = "";
+    const manArr = man.toString().split("").reverse();
+    for (let i = manArr.length - 1; i >= 0; i--) {
+      const digit = Number(manArr[i]);
+      if (digit > 0) {
+        manStr += digit + units[i];
+      }
+    }
+    manStr += "만원";
+
+    // 만원 이하 처리
+    const rest = num % 10000;
+    let restStr = "";
+    if (rest > 0) {
+      const restArr = rest.toString().split("").reverse();
+      for (let i = restArr.length - 1; i >= 0; i--) {
+        const digit = Number(restArr[i]);
+        if (digit > 0) {
+          restStr += digit + units[i];
+        }
+      }
+      restStr += "원";
+    }
+
+    return manStr + (restStr ? restStr : "");
+  }
+
   return (
     <div className="flex flex-1 flex-col justify-center sm:flex-row">
       <div className="w-full sm:w-1/2">
@@ -76,7 +115,9 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                 {errors?.currentMonthBudget && (
                   <p className="text-red-500 text-xs mt-1 ml-2">{errors.currentMonthBudget}</p>
                 )}
-                <div className="self-stretch text-zinc-500 text-sm md:text-base font-bold font-suit">0원</div>
+                <div className="self-stretch text-zinc-500 text-sm md:text-base font-bold font-suit">
+                  {formatKoreanCurrencyUnit(currentMonthBudget)}
+                </div>
               </div>
               {/* 다음 달 예산 */}
               <div className="self-stretch flex flex-col justify-center items-start gap-3">
@@ -106,7 +147,9 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                   >원</div>
                 </div>
                 {errors?.nextMonthBudget && <p className="text-red-500 text-xs mt-1 ml-2">{errors.nextMonthBudget}</p>}
-                <div className="self-stretch text-zinc-500 text-sm md:text-base font-bold font-suit">0원</div>
+                <div className="self-stretch text-zinc-500 text-sm md:text-base font-bold font-suit">
+                  {formatKoreanCurrencyUnit(nextMonthBudget)}
+                </div>
               </div>
             </div>
           </div>
