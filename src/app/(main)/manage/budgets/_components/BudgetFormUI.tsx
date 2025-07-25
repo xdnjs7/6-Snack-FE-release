@@ -39,7 +39,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
               {/* 이번 달 예산 */}
               <div className="self-stretch flex flex-col justify-center items-start gap-3">
                 <div className="self-stretch text-neutral-800 text-sm md:text-base font-bold font-suit">이번 달</div>
-                <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 overflow-x-auto max-[744px]:w-[327px] max-[744px]:h-[49px] max-[744px]:pb-[12px] max-[744px]:border-b-2 max-[744px]:gap-[4px]">
+                <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 overflow-x-auto max-[744px]:w-full max-[744px]:max-w-[327px] max-[744px]:h-[49px] max-[744px]:pb-[12px] max-[744px]:border-b-2 max-[744px]:gap-[4px]">
                   <input
                     type="text"
                     inputMode="numeric"
@@ -73,7 +73,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
               {/* 다음 달 예산 */}
               <div className="self-stretch flex flex-col justify-center items-start gap-3">
                 <div className="self-stretch text-neutral-800 text-sm md:text-base font-bold font-suit">매달 시작</div>
-                <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 overflow-x-auto max-[744px]:w-[327px] max-[744px]:h-[49px] max-[744px]:pb-[12px] max-[744px]:border-b-2 max-[744px]:gap-[4px]">
+                <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 overflow-x-auto max-[744px]:w-full max-[744px]:max-w-[327px] max-[744px]:h-[49px] max-[744px]:pb-[12px] max-[744px]:border-b-2 max-[744px]:gap-[4px]">
                   <input
                     type="text"
                     inputMode="numeric"
