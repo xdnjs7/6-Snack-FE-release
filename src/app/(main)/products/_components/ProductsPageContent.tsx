@@ -114,7 +114,7 @@ export default function ProductsPageContent() {
   }, [searchParams]);
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-start justify-center">
       {/* 카테고리 태블릿,데스크탑 */}
       <div className="hidden sm:block">
         <SubCategoryItem categories={categories} />
@@ -132,7 +132,7 @@ export default function ProductsPageContent() {
             className="sm:border-b-0"
           />
           {/* 정렬, 상품등록 버튼 wrapper */}
-          <div className="flex items-center justify-between sm:gap-[30px]">
+          <div className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5">
             <Dropdown options={sortOptions.map((option) => option.label)} onChange={handleSortChange} />
             <Button
               type="black"
@@ -161,7 +161,7 @@ export default function ProductsPageContent() {
                 <Button
                   type="white"
                   label={
-                    <div className="flex items-center justify-center gap-2">
+                    <div className="flex items-center justify-center gap-2 whitespace-nowrap flex-shrink-0">
                       <p>더보기</p>
                       <ArrowIconSvg direction="down" className="w-5 h-5 text-black" />
                     </div>
