@@ -87,13 +87,13 @@ export default function SuperAdminSignUpPage() {
           </Link>
         </div>
         <div className="sm:hidden">
-          <div className="flex flex-col items-center justify-center gap-[10px]">
-            <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle ">
-              {/* {inviteInfo?.name} 님, 만나서 반갑습니다. */}
-              만나서 반갑습니다.
+          <div className="flex flex-col items-start justify-center gap-[10px]">
+            <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle ">
+              {/* 기업 담당자 회원가입 */}
+              기업 담당자 회원가입
             </h1>
-            <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
-              비밀번호를 입력해 회원가입을 완료해주세요.
+            <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-left align-middle">
+              * 그룹 내 유저는 기업 담당자의 초대 메일을 통해 가입이 가능합니다.
             </p>
           </div>
         </div>
@@ -102,13 +102,13 @@ export default function SuperAdminSignUpPage() {
 
       <div className="sm:absolute sm:w-[600px] sm:top-[152.12px] flex flex-col w-full items-center justify-center sm:items-start sm:px-[60px] sm:py-[40px] sm:bg-white sm:rounded-xs sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)]">
         <div className="hidden sm:block sm:mb-[20px]">
-          <div className="flex flex-col items-center justify-center gap-[10px]">
-            <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle ">
-              {/* {inviteInfo?.name} 님, 만나서 반갑습니다. */}
-              만나서 반갑습니다.
+          <div className="flex flex-col items-start justify-center gap-[10px]">
+            <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle ">
+              {/* 기업 담당자 회원가입 */}
+              기업 담당자 회원가입
             </h1>
-            <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
-              비밀번호를 입력해 회원가입을 완료해주세요.
+            <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-left align-middle">
+              * 그룹 내 유저는 기업 담당자의 초대 메일을 통해 가입이 가능합니다.
             </p>
           </div>
         </div>
@@ -133,28 +133,6 @@ export default function SuperAdminSignUpPage() {
               </div>
             </div>
             {errors.name && <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.name.message}</span>}
-          </div>
-
-          {/* 회사명 입력 필드 */}
-          <div className="flex flex-col gap-1">
-            <div className={clsx("relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b", errors.companyName ? "border-error-500" : "border-primary-600")}>
-              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
-                <label className={clsx("text-primary-500 text-xs/[15px] font-normal tracking-tight", !watch("companyName") && "hidden")}>회사명</label>
-                <input type="text" {...register("companyName")} placeholder="회사명을 입력해주세요." className="w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500" />
-              </div>
-            </div>
-            {errors.companyName && <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.companyName.message}</span>}
-          </div>
-
-          {/* 사업자 번호 입력 필드 */}
-          <div className="flex flex-col gap-1">
-            <div className={clsx("relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b", errors.bizNumber ? "border-error-500" : "border-primary-600")}>
-              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
-                <label className={clsx("text-primary-500 text-xs/[15px] font-normal tracking-tight", !watch("bizNumber") && "hidden")}>사업자 번호</label>
-                <input type="text" {...register("bizNumber")} placeholder="사업자 번호를 입력해주세요." className="w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500" />
-              </div>
-            </div>
-            {errors.bizNumber && <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.bizNumber.message}</span>}
           </div>
 
           {/* 비밀번호 input wrapper*/}
@@ -236,6 +214,28 @@ export default function SuperAdminSignUpPage() {
             {errors.passwordConfirm && (
               <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.passwordConfirm.message}</span>
             )}
+          </div>
+
+          {/* 회사명 입력 필드 */}
+          <div className="flex flex-col gap-1">
+            <div className={clsx("relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b", errors.companyName ? "border-error-500" : "border-primary-600")}>
+              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
+                <label className={clsx("text-primary-500 text-xs/[15px] font-normal tracking-tight", !watch("companyName") && "hidden")}>회사명</label>
+                <input type="text" {...register("companyName")} placeholder="회사명을 입력해주세요." className="w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500" />
+              </div>
+            </div>
+            {errors.companyName && <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.companyName.message}</span>}
+          </div>
+
+          {/* 사업자 번호 입력 필드 */}
+          <div className="flex flex-col gap-1">
+            <div className={clsx("relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b", errors.bizNumber ? "border-error-500" : "border-primary-600")}>
+              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
+                <label className={clsx("text-primary-500 text-xs/[15px] font-normal tracking-tight", !watch("bizNumber") && "hidden")}>사업자 번호</label>
+                <input type="text" {...register("bizNumber")} placeholder="사업자 번호를 입력해주세요." className="w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500" />
+              </div>
+            </div>
+            {errors.bizNumber && <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.bizNumber.message}</span>}
           </div>
 
           {/* 가입 버튼 - 직접 button 태그로 대체 */}
