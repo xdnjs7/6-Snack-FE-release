@@ -39,7 +39,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
               {/* 이번 달 예산 */}
               <div className="self-stretch flex flex-col justify-center items-start gap-3">
                 <div className="self-stretch text-neutral-800 text-sm md:text-base font-bold font-suit">이번 달</div>
-                <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 overflow-x-auto">
+                <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 overflow-x-auto max-[744px]:w-[327px] max-[744px]:h-[49px] max-[744px]:pb-[12px] max-[744px]:border-b-2 max-[744px]:gap-[4px]">
                   <input
                     type="text"
                     inputMode="numeric"
@@ -48,8 +48,8 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                     className={
                       `flex-1 min-w-0 bg-transparent outline-none border-none` +
                       (currentMonthBudget
-                        ? ' text-[#222222] font-suit font-extrabold text-[20px] max-[900px]:text-[18px] sm:text-[32px] md:text-[40px] leading-[100%] align-middle tracking-[-0.025em] max-[640px]:text-[30px] max-[640px]:font-extrabold max-[640px]:font-suit max-[640px]:leading-[100%] max-[640px]:align-middle max-[640px]:tracking-[-0.025em]'
-                        : ' text-neutral-300 text-xl max-[900px]:text-lg sm:text-3xl md:text-3xl font-bold font-suit placeholder:text-neutral-300 placeholder:font-suit placeholder:font-bold placeholder:text-[18px] max-[900px]:placeholder:text-[16px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-middle placeholder:tracking-[-0.025em]')
+                        ? ' text-[#222222] font-suit font-extrabold text-[20px] max-[900px]:text-[18px] sm:text-[32px] md:text-[40px] leading-[100%] align-middle tracking-[-0.025em] max-[744px]:text-[30px] max-[744px]:font-extrabold max-[744px]:font-suit max-[744px]:leading-[100%] max-[744px]:align-middle max-[744px]:tracking-[-0.025em]'
+                        : ' text-neutral-300 text-xl max-[900px]:text-lg sm:text-3xl md:text-3xl font-bold font-suit placeholder:text-neutral-300 placeholder:font-suit placeholder:font-bold placeholder:text-[18px] max-[900px]:placeholder:text-[16px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-middle placeholder:tracking-[-0.025em] max-[744px]:placeholder:text-[30px] max-[744px]:placeholder:font-bold max-[744px]:placeholder:font-suit max-[744px]:placeholder:leading-[100%] max-[744px]:placeholder:align-middle max-[744px]:placeholder:tracking-[-0.025em]')
                     }
                     placeholder="예산을 입력해주세요"
                     value={currentMonthBudget === undefined || currentMonthBudget === null || currentMonthBudget === "" ? "" : currentMonthBudget}
@@ -62,7 +62,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                   <div className={
                     "text-neutral-800 font-suit font-extrabold leading-[100%] align-middle tracking-[-0.025em]" +
                     " text-xl max-[900px]:text-lg sm:text-3xl md:text-4xl" +
-                    (currentMonthBudget ? " max-[640px]:text-[30px] max-[640px]:font-extrabold max-[640px]:font-suit max-[640px]:leading-[100%] max-[640px]:align-middle max-[640px]:tracking-[-0.025em]" : "")
+                    (currentMonthBudget ? " max-[744px]:text-[30px] max-[744px]:font-bold max-[744px]:font-suit max-[744px]:leading-[100%] max-[744px]:align-middle max-[744px]:tracking-[-0.025em]" : "")
                   }>원</div>
                 </div>
                 {errors?.currentMonthBudget && (
@@ -73,7 +73,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
               {/* 다음 달 예산 */}
               <div className="self-stretch flex flex-col justify-center items-start gap-3">
                 <div className="self-stretch text-neutral-800 text-sm md:text-base font-bold font-suit">매달 시작</div>
-                <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 overflow-x-auto">
+                <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 overflow-x-auto max-[744px]:w-[327px] max-[744px]:h-[49px] max-[744px]:pb-[12px] max-[744px]:border-b-2 max-[744px]:gap-[4px]">
                   <input
                     type="text"
                     inputMode="numeric"
@@ -82,8 +82,8 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                     className={
                       `flex-1 min-w-0 bg-transparent outline-none border-none` +
                       (nextMonthBudget
-                        ? ' text-[#222222] font-suit font-extrabold text-[20px] max-[900px]:text-[18px] sm:text-[32px] md:text-[40px] leading-[100%] align-middle tracking-[-0.025em] max-[640px]:text-[30px] max-[640px]:font-extrabold max-[640px]:font-suit max-[640px]:leading-[100%] max-[640px]:align-middle max-[640px]:tracking-[-0.025em]'
-                        : ' text-neutral-300 text-xl max-[900px]:text-lg sm:text-3xl md:text-3xl font-bold font-suit placeholder:text-neutral-300 placeholder:font-suit placeholder:font-bold placeholder:text-[18px] max-[900px]:placeholder:text-[16px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-middle placeholder:tracking-[-0.025em]')
+                        ? ' text-[#222222] font-suit font-extrabold text-[20px] max-[900px]:text-[18px] sm:text-[32px] md:text-[40px] leading-[100%] align-middle tracking-[-0.025em] max-[744px]:text-[30px] max-[744px]:font-extrabold max-[744px]:font-suit max-[744px]:leading-[100%] max-[744px]:align-middle max-[744px]:tracking-[-0.025em]'
+                        : ' text-neutral-300 text-xl max-[900px]:text-lg sm:text-3xl md:text-3xl font-bold font-suit placeholder:text-neutral-300 placeholder:font-suit placeholder:font-bold placeholder:text-[18px] max-[900px]:placeholder:text-[16px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-middle placeholder:tracking-[-0.025em] max-[744px]:placeholder:text-[30px] max-[744px]:placeholder:font-bold max-[744px]:placeholder:font-suit max-[744px]:placeholder:leading-[100%] max-[744px]:placeholder:align-middle max-[744px]:placeholder:tracking-[-0.025em]')
                     }
                     placeholder="예산을 입력해주세요"
                     value={nextMonthBudget === undefined || nextMonthBudget === null || nextMonthBudget === "" ? "" : nextMonthBudget}
@@ -96,7 +96,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                   <div className={
                     "text-neutral-800 font-suit font-extrabold leading-[100%] align-middle tracking-[-0.025em]" +
                     " text-xl max-[900px]:text-lg sm:text-3xl md:text-4xl" +
-                    (nextMonthBudget ? " max-[640px]:text-[30px] max-[640px]:font-extrabold max-[640px]:font-suit max-[640px]:leading-[100%] max-[640px]:align-middle max-[640px]:tracking-[-0.025em]" : "")
+                    (nextMonthBudget ? " max-[744px]:text-[30px] max-[744px]:font-bold max-[744px]:font-suit max-[744px]:leading-[100%] max-[744px]:align-middle max-[744px]:tracking-[-0.025em]" : "")
                   }>원</div>
                 </div>
                 {errors?.nextMonthBudget && <p className="text-red-500 text-xs mt-1 ml-2">{errors.nextMonthBudget}</p>}
