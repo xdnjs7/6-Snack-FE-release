@@ -29,12 +29,12 @@ const Dropdown = ({ options = [], onChange }: TDropdownProps) => {
     <div className="relative inline-block w-32">
       {/* 드롭다운 버튼 */}
       <div
-        className={`h-11 px-4 py-2.5 bg-white border border-primary-100 ${
+        className={`h-11 w-[110px] px-4 py-2.5 bg-white border border-primary-100 ${
           isOpen ? "border-b-0" : "border"
         } flex justify-between items-center cursor-pointer`}
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <div className="text-primary-950 text-base font-normal whitespace-nowrap">{sort}</div>
+        <div className="text-primary-950 text-base/[20px] font-normal whitespace-nowrap">{sort}</div>
         <div className="w-4 h-4 relative">
           <Image
             src={isOpen ? ChevronUpIcon : ChevronDownIcon}
@@ -47,12 +47,12 @@ const Dropdown = ({ options = [], onChange }: TDropdownProps) => {
 
       {/* 드롭다운 메뉴 */}
       {isOpen && (
-        <div className="absolute w-full z-10 bg-white border border-primary-100 border-t-0 rounded-b max-h-[300px] overflow-y-auto">
+        <div className="absolute w-[110px] z-10 bg-white border border-primary-100 border-t-0 rounded-b max-h-[300px] overflow-y-auto">
           {menuOptions.map((option) => (
             <div
               key={option}
               onClick={() => handleSelect(option)}
-              className="h-12 pl-4 pr-5 py-2 hover:bg-gray-50 cursor-pointer text-primary-950 text-base font-normal flex items-center whitespace-nowrap"
+              className="h-12 pl-4 pr-5 py-2 hover:bg-gray-50 cursor-pointer text-primary-950 text-base/[20px] font-normal flex items-center whitespace-nowrap"
             >
               {option}
             </div>
