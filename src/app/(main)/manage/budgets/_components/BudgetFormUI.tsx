@@ -44,10 +44,10 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                 pattern="[0-9]*"
                 style={currentMonthBudget ? { color: '#222222' } : {}}
                 className={
-                  `flex-1 bg-transparent outline-none border-none placeholder:text-neutral-300` +
+                  `flex-1 bg-transparent outline-none border-none` +
                   (currentMonthBudget
                     ? ' text-[#222222] font-suit font-extrabold text-[40px] leading-[100%] align-middle tracking-[-0.025em]'
-                    : ' text-neutral-300 text-3xl font-bold font-suit')
+                    : ' text-neutral-300 text-3xl font-bold font-suit placeholder:text-neutral-300 placeholder:font-suit placeholder:font-bold placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-middle placeholder:tracking-[-0.025em]')
                 }
                 placeholder="예산을 입력해주세요"
                 value={currentMonthBudget === undefined || currentMonthBudget === null || currentMonthBudget === "" ? "" : currentMonthBudget}
@@ -74,10 +74,10 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                 pattern="[0-9]*"
                 style={nextMonthBudget ? { color: '#222222' } : {}}
                 className={
-                  `flex-1 bg-transparent outline-none border-none placeholder:text-neutral-300` +
+                  `flex-1 bg-transparent outline-none border-none` +
                   (nextMonthBudget
                     ? ' text-[#222222] font-suit font-extrabold text-[40px] leading-[100%] align-middle tracking-[-0.025em]'
-                    : ' text-neutral-300 text-3xl font-bold font-suit')
+                    : ' text-neutral-300 text-3xl font-bold font-suit placeholder:text-neutral-300 placeholder:font-suit placeholder:font-bold placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-middle placeholder:tracking-[-0.025em]')
                 }
                 placeholder="예산을 입력해주세요"
                 value={nextMonthBudget === undefined || nextMonthBudget === null || nextMonthBudget === "" ? "" : nextMonthBudget}
