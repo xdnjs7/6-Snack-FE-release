@@ -22,10 +22,13 @@ export const cookieFetch = async <T = any>(path: string, options: RequestInit = 
   };
 
   let response = await request();
+  // ✅ 무한 루프 방지: 리프레시 토큰 요청이면 다시 시도하지 않음
+  const isRefreshRequest = path === "/auth/refresh-token";
 
   // 1차 요청이 실패하고 401인 경우 → 리프레시 토큰으로 재발급
-  if (response.status === 401) {
+  if (response.status === 401 && !isRefreshRequest) {
     try {
+      console.log("🔄 액세스 토큰 갱신 시도");
       console.log("요청함");
       await refreshAccessToken(); // 토큰 재발급
       response = await request(); // 재요청
