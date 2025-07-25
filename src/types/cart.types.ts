@@ -1,5 +1,9 @@
 import { TProduct } from "./product.types";
 
+export type TGetCartItemsParams = {
+  selected?: string;
+};
+
 export type TGetCartItemsResponse = {
   id: number;
   userId: string;

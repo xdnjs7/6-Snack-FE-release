@@ -1,13 +1,15 @@
-import { TGetCartItemsResponse } from "@/types/cart.types";
+import { TGetCartItemsParams, TGetCartItemsResponse } from "@/types/cart.types";
 import { cookieFetch } from "./fetchClient.api";
 
 // 장바구니 조회
-export const getCartItems = async (): Promise<TGetCartItemsResponse> => {
-  return await cookieFetch("/cart");
+export const getCartItems = async (params: TGetCartItemsParams = {}): Promise<TGetCartItemsResponse> => {
+  const queryString = new URLSearchParams(params);
+
+  return await cookieFetch(`/cart?${queryString.toString()}`);
 };
 
 // 장바구니 상품 선택 / 해제
-export const toggleCheckItem = async (cartItemId: number, isChecked: boolean) => {
+export const toggleCheckItem = async (cartItemId: number, isChecked: boolean): Promise<void> => {
   return await cookieFetch(`/cart/${cartItemId}/check`, {
     method: "PATCH",
     body: JSON.stringify({ isChecked }),
@@ -23,7 +25,7 @@ export const toggleCheckAllItems = async (isChecked: boolean) => {
 };
 
 // 장바구니 선택된 상품 삭제
-export const deleteSelectedItems = async (cartItemIds: number[]) => {
+export const deleteSelectedItems = async (cartItemIds: number[]): Promise<void> => {
   return await cookieFetch("/cart", {
     method: "DELETE",
     body: JSON.stringify({ itemIds: cartItemIds }),
@@ -31,9 +33,9 @@ export const deleteSelectedItems = async (cartItemIds: number[]) => {
 };
 
 // 장바구니 수량 선택
-export const foo = async (cartItemId: number, bar: number) => {
-  return await cookieFetch(`/foo/${cartItemId}/quantity`, {
+export const foo = async (cartItemId: number, quantity: number) => {
+  return await cookieFetch(`/cart/${cartItemId}/quantity`, {
     method: "PATCH",
-    body: JSON.stringify({ cartItemId, bar }),
+    body: JSON.stringify({ cartItemId, quantity }),
   });
 };

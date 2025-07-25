@@ -9,9 +9,16 @@ import { useQuery } from "@tanstack/react-query";
 import { getCartItems } from "@/lib/api/cart.api";
 import { useAuth } from "@/providers/AuthProvider";
 import { TGetCartItemsResponse } from "@/types/cart.types";
+import { useRouter } from "next/navigation";
+
+/**
+ * @De-cal TODO:
+ * 1. alert 사용 중인 것 모달이나 토스트로 변경하기
+ */
 
 export default function CartPage() {
   const { user } = useAuth();
+  const router = useRouter();
 
   const {
     data: cartItems,
@@ -19,7 +26,7 @@ export default function CartPage() {
     error,
   } = useQuery<TGetCartItemsResponse, Error, TGetCartItemsResponse, [string]>({
     queryKey: ["cart"],
-    queryFn: getCartItems,
+    queryFn: () => getCartItems(),
   });
 
   if (error) {
@@ -29,6 +36,18 @@ export default function CartPage() {
   const selectedTotalPrice = cartItems
     ?.filter((item) => item.isChecked === true)
     .reduce((totalPrice, item) => totalPrice + item.product.price * item.quantity, 0);
+
+  const handleRequestOrder = () => {
+    const isNothingChecked = cartItems?.every((item) => !item.isChecked) ?? true;
+
+    if (isNothingChecked) return alert("1개 이상의 상품을 선택하세요.");
+
+    if (user?.role === "USER") {
+      router.push("/cart/order");
+    } else {
+      router.push("/cart/order-confirmed");
+    }
+  };
 
   return (
     <div className="flex flex-col justify-center items-center w-full">
@@ -77,9 +96,12 @@ export default function CartPage() {
                   className="w-full h-[64px] font-bold tracking-tight text-primary-950"
                 />
               </Link>
-              <Link href="/cart/order" className="w-full">
-                <Button type="black" label="구매 요청" className="w-full h-[64px] font-bold tracking-tight" />
-              </Link>
+              <Button
+                onClick={handleRequestOrder}
+                type="black"
+                label="구매 요청"
+                className="w-full h-[64px] font-bold tracking-tight"
+              />
             </div>
           </div>
         </div>

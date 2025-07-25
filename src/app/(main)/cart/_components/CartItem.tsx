@@ -24,7 +24,7 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  const isAllChecked = cartItems?.length && cartItems?.every((item) => item.isChecked === true);
+  const isAllChecked = cartItems?.length && cartItems?.every((item) => item.isChecked);
   const checkedCartItemIds = cartItems?.filter((item) => item.isChecked).map((item) => item.id) ?? [];
 
   // 장바구니 선택 - Optimistic Update
@@ -61,8 +61,8 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
   });
 
   // 장바구니 수량 선택
-  const { mutate: updateCartItemQuantity } = useMutation<void, Error, { cartItemId: number; bar: number }>({
-    mutationFn: ({ cartItemId, bar }) => foo(cartItemId, bar),
+  const { mutate: updateCartItemQuantity } = useMutation<void, Error, { cartItemId: number; quantity: number }>({
+    mutationFn: ({ cartItemId, quantity }) => foo(cartItemId, quantity),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
   });
 
@@ -151,7 +151,7 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
                     <div className="relative flex sm:flex-col sm:justify-center sm:items-end sm:gap-[4px]">
                       <CartItemQuantityDropdown
                         value={item.quantity}
-                        onClick={(value: number) => updateCartItemQuantity({ cartItemId: item.id, bar: value })}
+                        onClick={(value: number) => updateCartItemQuantity({ cartItemId: item.id, quantity: value })}
                       />
 
                       <p className="hidden sm:block sm:font-extrabold sm:text-[24px]/[32px] sm:text-[#1f1f1f] md:tracking-tight md:leading-[30px]">
