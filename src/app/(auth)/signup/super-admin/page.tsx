@@ -92,7 +92,7 @@ export default function SuperAdminSignUpPage() {
               {/* 기업 담당자 회원가입 */}
               기업 담당자 회원가입
             </h1>
-            <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-left align-middle">
+            <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
               * 그룹 내 유저는 기업 담당자의 초대 메일을 통해 가입이 가능합니다.
             </p>
           </div>
@@ -112,7 +112,7 @@ export default function SuperAdminSignUpPage() {
             </p>
           </div>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full mb-[30px] gap-[20px]">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full mb-[8px] gap-[20px]">
           {/* 이메일 입력 필드 */}
           <div className="flex flex-col gap-1">
             <div className={clsx("relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b", errors.email ? "border-error-500" : "border-primary-600")}>
