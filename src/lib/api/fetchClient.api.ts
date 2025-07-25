@@ -3,7 +3,7 @@ import { refreshAccessToken } from "./auth.api";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
-export const cookieFetch = async (path: string, options: RequestInit = {}) => {
+export const cookieFetch = async <T = any>(path: string, options: RequestInit = {}): Promise<T> => {
   const method = options.method || "GET";
   // 개발 완료후 삭제
   console.log(`🌐 API 요청: ${method} ${API_BASE_URL}${path}`);
@@ -22,10 +22,13 @@ export const cookieFetch = async (path: string, options: RequestInit = {}) => {
   };
 
   let response = await request();
+  // ✅ 무한 루프 방지: 리프레시 토큰 요청이면 다시 시도하지 않음
+  const isRefreshRequest = path === "/auth/refresh-token";
 
   // 1차 요청이 실패하고 401인 경우 → 리프레시 토큰으로 재발급
-  if (response.status === 401) {
+  if (response.status === 401 && !isRefreshRequest) {
     try {
+      console.log("🔄 액세스 토큰 갱신 시도");
       console.log("요청함");
       await refreshAccessToken(); // 토큰 재발급
       response = await request(); // 재요청
@@ -41,32 +44,34 @@ export const cookieFetch = async (path: string, options: RequestInit = {}) => {
     throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
   }
 
-  return response.json();
+  if (response.status === 204) {
+    return null as T;
+  }
+
+  return response.json() as Promise<T>;
 };
 
-export const defaultFetch = async (path: string, options: RequestInit = {}) => {
+export const defaultFetch = async <T = any>(path: string, options: RequestInit = {}): Promise<T> => {
   const method = options.method || "GET";
-  // 개발 완료후 삭제
   console.log(`🌐 API 요청: ${method} ${API_BASE_URL}${path}`);
 
-  try {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-        ...(options.headers || {}),
-      },
-      ...options,
-    });
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+    ...options,
+  });
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
   }
+
+  if (response.status === 204) {
+    return null as T;
+  }
+  const data = await response.json();
+  return data as T;
 };

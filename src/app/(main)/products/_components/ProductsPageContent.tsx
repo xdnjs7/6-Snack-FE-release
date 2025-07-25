@@ -10,163 +10,165 @@ import { useSearchParams } from "next/navigation";
 import { useMediaQuery } from "react-responsive";
 import Button from "@/components/ui/Button";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
+import { useModal } from "@/providers/ModalProvider";
+import ProductRegistrationForm from "@/components/common/ProductRegistrationForm";
+import { TProduct } from "@/types/product.types";
+import { useProducts } from "@/hooks/useProducts";
+import PlusToggleIconSvg from "@/components/svg/PlusToggleIconSvg";
+import Dropdown from "@/components/common/DropDown";
+import { useCategoryStore } from "@/stores/categoryStore";
 
-type CategoryData = {
+type TCategoryData = {
   parentCategory: Array<{ id: number; name: string }>;
   childrenCategory: Record<string, Array<{ id: number; name: string }>>;
 };
 
-// 스키마 변경시 타입도 변경예정, cumulativeQuantity field 추가예정
-type Product = {
-  id: number;
-  categoryId: number;
-  creatorId: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  linkUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-  category: {
-    id: number;
-    name: string;
-    parentId: number;
-  };
-  creator: {
-    id: string;
-    email: string;
-    name: string;
-    role: string;
-  };
-};
+type TSortOptions = "latest" | "popular" | "low" | "high";
 
 export default function ProductsPageContent() {
-  const [categories] = useState<CategoryData>(CATEGORIES);
+  const [categories] = useState<TCategoryData>(CATEGORIES);
+  const [selectedSort, setSelectedSort] = useState<TSortOptions>("latest");
+  // 전역 카테고리 상태 사용
+  const { selectedCategory, findCategoryPath, clearSelectedCategory } = useCategoryStore();
 
-  // 상태변수 관리할것 -  상품들, 로딩중, 커서(더보기 페이지네이션), 선택된 카테고리
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [cursor, setCursor] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<{
-    parent: string;
-    child: string;
-  } | null>(null);
+  // 정렬 옵션 매핑
+  const sortOptions = [
+    { label: "최신순", value: "latest" as const },
+    { label: "판매순", value: "popular" as const },
+    { label: "낮은 가격순", value: "low" as const },
+    { label: "높은 가격순", value: "high" as const },
+  ];
+
   const searchParams = useSearchParams();
+  const { openModal, closeModal } = useModal();
 
   // useMediaQuery로 화면 크기별 limit 결정
   const isMobile = useMediaQuery({ maxWidth: 743 });
   const isTablet = useMediaQuery({ minWidth: 744, maxWidth: 1399 });
   const isDesktop = useMediaQuery({ minWidth: 1400 });
 
-  // 카테고리 ID로 부모-자식 경로 찾기
-  const findCategoryPath = (categoryId: number) => {
-    for (const [parentName, children] of Object.entries(categories.childrenCategory)) {
-      const child = children.find((c) => c.id === categoryId);
-      if (child) {
-        setSelectedCategory({
-          parent: parentName,
-          child: child.name,
-        });
-        return;
-      }
+  // limit 계산 함수 추가
+  const getLimit = () => {
+    if (isMobile) return 4;
+    if (isTablet) return 9;
+    if (isDesktop) return 6;
+    return 6;
+  };
+
+  // TanStack Query 사용
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } = useProducts({
+    // 카테고리는 현재 url 쿼리값, Zustand 적용하여 전역관리시 변경필요할수도
+    category: searchParams.get("category") ? parseInt(searchParams.get("category")!) : undefined,
+    sort: selectedSort,
+    limit: getLimit(),
+  });
+
+  // 모든 페이지의 상품들을 평탄화
+  const allProducts = data?.pages.flatMap((page) => page.items) ?? [];
+
+  // 더보기 (무한스크롤))
+  const handleLoadMore = () => {
+    fetchNextPage();
+  };
+
+  // 정렬 변경 핸들러
+  const handleSortChange = (selectedValue: string) => {
+    const sortValueMap: Record<string, TSortOptions> = {
+      최신순: "latest",
+      판매순: "popular",
+      "낮은 가격순": "low",
+      "높은 가격순": "high",
+    };
+
+    const sortValue = sortValueMap[selectedValue];
+    if (sortValue) {
+      setSelectedSort(sortValue);
     }
   };
 
-  const handleLoadMore = () => {
-    fetchProducts(true);
+  // 상품 등록 모달 열기
+  const handleProductRegistration = () => {
+    openModal(<ProductRegistrationForm />);
   };
 
-  // URL 파라미터에서 카테고리 정보 가져오기
+  // URL 파라미터에서 카테고리 정보 가져와서 전역 상태에 저장
   useEffect(() => {
     const categoryId = searchParams.get("category");
     if (categoryId) {
-      // 카테고리 ID로 부모-자식 카테고리 찾기
-      const categoryIdNum = parseInt(categoryId);
-      findCategoryPath(categoryIdNum);
+      findCategoryPath(parseInt(categoryId));
     } else {
-      setSelectedCategory(null);
+      clearSelectedCategory();
     }
-    // searchParams 변경될때 cursor 초기화 시켜야함
-    // /products?sort=popular&categoryId=1&cursor=7
-    setCursor(null);
-  }, [searchParams]);
-
-  // 상품 목록 가져오기 - 현재 화면사이즈에 따라 limit, category, cursor 적용, sort적용예정
-  const fetchProducts = async (loadMore = false) => {
-    setLoading(true);
-    try {
-      const categoryId = searchParams.get("category");
-      // 화면 크기에 따라 limit (backend에서 take) 값 결정
-      let limit = 0;
-      if (isMobile) limit = 4;
-      else if (isTablet) limit = 9;
-      else if (isDesktop) limit = 6;
-
-      const response = await getProducts({
-        category: categoryId ? parseInt(categoryId) : undefined,
-        limit,
-        cursor: loadMore && cursor ? parseInt(cursor) : undefined,
-      });
-
-      if (loadMore) {
-        // 더보기 페이지네이션을 유저가 클릭한경우
-        setProducts((prev) => [...prev, ...(response.items || [])]);
-      } else {
-        // 첫 로딩일때
-        setProducts(response.items || []);
-      }
-
-      // 첫 로딩일때도 nextCursor은 값을 준다 양이 많을때, 없으면 null
-      setCursor(response.nextCursor);
-    } catch (error) {
-      console.error("상품 로딩 실패:", error);
-      setProducts([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // fetchProducts 함수를 호출하는 useEffect
-  useEffect(() => {
-    fetchProducts(false);
-  }, [searchParams, isMobile, isTablet, isDesktop]);
+  }, [searchParams, findCategoryPath, clearSelectedCategory]);
 
   return (
-    <div className="flex">
+    <div className="flex items-start justify-center">
       {/* 카테고리 태블릿,데스크탑 */}
       <div className="hidden sm:block">
         <SubCategoryItem categories={categories} />
       </div>
 
-      {/* 모바일 하위 카테고리 - 선택된 카테고리가 있을 때만 표시 */}
-      {selectedCategory && (
-        <CategoryNavigation parentCategory={selectedCategory.parent} childCategory={selectedCategory.child} />
-      )}
+      <div className="flex flex-col sm:h-16 sm:w-full sm:border-b sm:border-primary-100">
+        {/* TODO: 모바일 전용 하위 카테고리 - 선택된 카테고리가 있을 때만 표시 */}
 
-      {/* 상품 목록 */}
-      <div className="container mx-auto py-6">
-        {loading ? (
-          <div className="flex justify-center items-center py-16">
-            <div className="text-primary-500">로딩 중...</div>
-          </div>
-        ) : (
-          <>
-            {/* 상품 그리드 */}
-            <ProductGrid products={products} />
+        <div className="flex flex-col sm:flex-row sm:justify-between">
+          {/* 모바일, 태블릿, 데스크탑에서 전부 보이는 상위/하위 카테고리 바 */}
+
+          <CategoryNavigation
+            parentCategory={selectedCategory?.parent}
+            childCategory={selectedCategory?.child}
+            className="sm:border-b-0"
+          />
+          {/* 정렬, 상품등록 버튼 wrapper */}
+          <div className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5">
+            <Dropdown options={sortOptions.map((option) => option.label)} onChange={handleSortChange} />
             <Button
-              type="white"
+              type="black"
               label={
-                <div className="flex items-center justify-center gap-2">
-                  <p>더보기</p>
-                  <ArrowIconSvg direction="down" className="w-5 h-5 text-black" />
+                <div className="flex gap-[6px]">
+                  <PlusToggleIconSvg className="w-4 h-4 text-white" />
+                  <p className="text-primary-50 text-sm/[17px] font-semibold">상품 등록</p>
                 </div>
               }
-              onClick={handleLoadMore}
-              className="w-full h-[44px] sm:h-[64px] py-[16px] px-[24px] text-sm/[17px] font-medium tracking-tight"
+              onClick={handleProductRegistration}
+              className="h-[44px] py-[10px]"
             />
-          </>
-        )}
+          </div>
+        </div>
+        {/* 상품 목록 */}
+        <div className="container mx-auto py-6">
+          {isLoading ? (
+            <div className="flex justify-center items-center py-16">
+              <div className="text-primary-500">로딩 중...</div>
+            </div>
+          ) : (
+            <>
+              {/* 상품 그리드 */}
+              <ProductGrid products={allProducts} />
+              {hasNextPage && (
+                <Button
+                  type="white"
+                  label={
+                    <div className="flex items-center justify-center gap-2 whitespace-nowrap flex-shrink-0">
+                      <p>더보기</p>
+                      <ArrowIconSvg direction="down" className="w-5 h-5 text-black" />
+                    </div>
+                  }
+                  onClick={handleLoadMore}
+                  className="w-full h-[44px] sm:h-[64px] py-[16px] px-[24px] text-sm/[17px] font-medium tracking-tight"
+                  disabled={isFetchingNextPage}
+                />
+              )}
+            </>
+          )}
+          {isError && (
+            <>
+              <div className="flex justify-center items-center py-16">
+                <div className="text-error-500">에러가 발생했습니다: {error.message}</div>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
