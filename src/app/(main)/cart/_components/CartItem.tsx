@@ -5,7 +5,7 @@ import Image from "next/image";
 import Button from "@/components/ui/Button";
 import QuantityDropdown from "@/components/common/QuantityDropdown";
 import { TGetCartItemsResponse } from "@/types/cart.types";
-import { deleteSelectedItems, foo, toggleCheckAllItems, toggleCheckItem } from "@/lib/api/cart.api";
+import { deleteSelectedItems, toggleCheckAllItems, toggleCheckItem, updateItemQuantity } from "@/lib/api/cart.api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
 import Link from "next/link";
@@ -62,14 +62,35 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
 
   // 장바구니 수량 선택
   const { mutate: updateCartItemQuantity } = useMutation<void, Error, { cartItemId: number; quantity: number }>({
-    mutationFn: ({ cartItemId, quantity }) => foo(cartItemId, quantity),
+    mutationFn: ({ cartItemId, quantity }) => updateItemQuantity(cartItemId, quantity),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
   });
 
-  // 장바구니 전체 선택 / 전체 해제
-  const { mutate: toggleCheckAllCartItems } = useMutation<void, Error, boolean>({
+  // 장바구니 전체 선택 / 전체 해제 - Optimistic update
+  const { mutate: toggleCheckAllCartItems } = useMutation<
+    void,
+    Error,
+    boolean,
+    { previousCartItems: TGetCartItemsResponse | undefined }
+  >({
     mutationFn: (isAllChecked) => toggleCheckAllItems(!isAllChecked),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
+    onMutate: async (isAllChecked) => {
+      await queryClient.cancelQueries({ queryKey: ["cart"] });
+
+      const previousCartItems = queryClient.getQueryData<TGetCartItemsResponse>(["cart"]);
+
+      queryClient.setQueryData<TGetCartItemsResponse>(["cart"], (old) =>
+        old?.map((item) => ({ ...item, isChecked: !isAllChecked })),
+      );
+
+      return { previousCartItems };
+    },
+    onError: (error, variables, context) => {
+      if (context?.previousCartItems) {
+        queryClient.setQueryData(["cart"], context.previousCartItems);
+      }
+    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
   });
 
   return (
@@ -92,7 +113,7 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
           </button>
 
           <p className="font-bold text-[16px]/[20px] tracking-tight text-black sm:text-[18px]/[22px]">
-            전체 선택 ({cartItems?.length ?? 0}개)
+            전체 선택 ({checkedCartItemIds?.length ?? 0}개)
           </p>
         </div>
 
