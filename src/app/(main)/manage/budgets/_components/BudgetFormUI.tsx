@@ -51,7 +51,10 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                 }
                 placeholder="예산을 입력해주세요"
                 value={currentMonthBudget === undefined || currentMonthBudget === null || currentMonthBudget === "" ? "" : currentMonthBudget}
-                onChange={(e) => onChange("currentMonthBudget", e.target.value)}
+                onChange={(e) => {
+                  const onlyNums = e.target.value.replace(/[^0-9]/g, "");
+                  onChange("currentMonthBudget", onlyNums);
+                }}
                 disabled={loading}
               />
               <div className="text-neutral-800 text-3xl md:text-4xl font-extrabold font-suit">원</div>
@@ -78,7 +81,10 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                 }
                 placeholder="예산을 입력해주세요"
                 value={nextMonthBudget === undefined || nextMonthBudget === null || nextMonthBudget === "" ? "" : nextMonthBudget}
-                onChange={(e) => onChange("nextMonthBudget", e.target.value)}
+                onChange={(e) => {
+                  const onlyNums = e.target.value.replace(/[^0-9]/g, "");
+                  onChange("nextMonthBudget", onlyNums);
+                }}
                 disabled={loading}
               />
               <div className="text-neutral-800 text-3xl md:text-4xl font-extrabold font-suit">원</div>
