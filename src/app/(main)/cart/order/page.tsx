@@ -15,11 +15,13 @@ import { useRouter, useSearchParams } from "next/navigation";
  * 1. 구매 요청 API 연동
  */
 
-export default function OrderPage() {
+export default function OrderPage({ searchParams }: { searchParams: { cartItemId?: string } }) {
   const router = useRouter();
 
-  const queryString = useSearchParams();
-  const cartItemId = queryString.get("cartItemId") ?? undefined;
+  const cartItemId = searchParams.cartItemId;
+  // const queryString = useSearchParams();
+  // const cartItemId = queryString.get("cartItemId") ?? undefined;
+  console.log("cartItemId", cartItemId);
 
   const params: TGetCartItemsParams = {
     ...(cartItemId ? { cartItemId } : { isChecked: "true" }),
