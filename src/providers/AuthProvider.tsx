@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getUserApi } from "@/lib/api/user.api";
 import { loginApi, logoutApi, registerApi } from "@/lib/api/auth.api";
+import { usePathname } from "next/navigation";
 
 export type User = {
   id: string;
@@ -30,6 +31,7 @@ export const useAuth = () => {
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const pathname = usePathname();
 
   const getUser = async () => {
     try {
@@ -55,8 +57,10 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   };
 
   useEffect(() => {
+    // 예외 경로: 홈(랜딩)페이지와 /auth 하위 경로들
+    if (pathname === "/" || pathname.startsWith("/auth")) return;
     getUser();
-  }, []);
+  }, [pathname]);
 
   return <AuthContext.Provider value={{ user, login, logout, register }}>{children}</AuthContext.Provider>;
 }
