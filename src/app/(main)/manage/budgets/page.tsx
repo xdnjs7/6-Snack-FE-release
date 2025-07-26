@@ -15,7 +15,7 @@ const budgetSchema = z.object({
 
 type BudgetInputs = z.infer<typeof budgetSchema>;
 
-const ManageBudgetsPage: React.FC = () => {
+function ManageBudgetsPage() {
   const queryClient = useQueryClient();
 
   // 예산 데이터 패칭
@@ -86,6 +86,6 @@ const ManageBudgetsPage: React.FC = () => {
       />
     </div>
   );
-};
+}
 
 export default ManageBudgetsPage;
