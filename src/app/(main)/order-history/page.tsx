@@ -196,9 +196,11 @@ const OrderHistoryPage = () => {
       )}
     >
       {/* Main Content Area */}
-      <main className={clsx("flex-1", "p-6 sm:p-8 md:p-10", "max-w-[1352px]", "mx-auto", "w-full", "relative")}>
+      <main className={clsx("flex-1", "p-6 sm:p-8 md:p-10", "max-w-[1352px]", "mx-auto", "w-full", "relative")}
+        style={{ background: "var(--color-white)" }} // 배경색 전역 변수 적용
+      >
         <div className="flex flex-row justify-between items-center mb-6">
-          <div className="text-lg sm:text-2xl font-bold font-suit">구매 내역 확인</div>
+          <div className="text-lg sm:text-2xl font-bold font-suit" style={{ color: "var(--color-primary-950)" }}>구매 내역 확인</div>
           <div className="relative custom-sort-dropdown">
             <Dropdown
               options={["최신순", "오래된순"]}
@@ -215,22 +217,23 @@ const OrderHistoryPage = () => {
         </div>
         {/* PurchaseSummary 컴포넌트 내용 */}
         {budgetLoading ? (
-          <div className="py-8 text-center text-blue-600">예산 정보 로딩 중...</div>
+          <div className="py-8 text-center" style={{ color: "var(--color-secondary-500)" }}>예산 정보 로딩 중...</div>
         ) : budgetError ? (
-          <div className="py-8 text-center text-red-500">{budgetError}</div>
+          <div className="py-8 text-center" style={{ color: "var(--color-error-500)" }}>{budgetError}</div>
         ) : !budgetData ? null : (
           <div className="w-full flex flex-col gap-4 mb-8">
             {/* 카드 3개 (모바일: 세로, 태블릿/PC: 가로) */}
             <div className="relative flex flex-col gap-4 sm:flex-row sm:gap-5">
               {/* 이번 달 예산 */}
-              <div className="flex-1 flex flex-col justify-between w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-2 rounded-[4px] bg-[color:var(--color-primary-50)] opacity-100">
+              <div className="flex-1 flex flex-col justify-between w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-2 rounded-[4px] opacity-100"
+                style={{ background: "var(--color-primary-50)" }}>
                 <div className="flex flex-row items-center justify-between w-full mb-2">
-                  <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">이번 달 예산</div>
-                  <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
+                  <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit" style={{ color: "var(--color-primary-950)" }}>이번 달 예산</div>
+                  <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit" style={{ color: "var(--color-primary-950)" }}>
                     {formatNumber(budgetData.currentMonthBudget)}
                   </div>
                 </div>
-                <div className="text-stone-500 text-sm sm:text-base font-normal font-suit leading-snug mt-0">
+                <div className="text-stone-500 text-sm sm:text-base font-normal font-suit leading-snug mt-0" style={{ color: "var(--color-primary-400)" }}>
                   지난 달 예산은
                   <br />
                   {formatNumber(budgetData.previousMonthBudget)}였어요
@@ -238,25 +241,27 @@ const OrderHistoryPage = () => {
               </div>
               {/* 이번 달 지출액 */}
               <div
-                className="flex-1 flex flex-col justify-between relative w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-0 rounded-[4px] bg-[color:var(--color-primary-50)] opacity-100 overflow-visible"
+                className="flex-1 flex flex-col justify-between relative w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-0 rounded-[4px] opacity-100 overflow-visible"
+                style={{ background: "var(--color-primary-50)" }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
               >
                 <div className="flex flex-row items-center justify-between w-full mb-0">
-                  <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">이번 달 지출액</div>
-                  <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
+                  <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit" style={{ color: "var(--color-primary-950)" }}>이번 달 지출액</div>
+                  <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit" style={{ color: "var(--color-primary-950)" }}>
                     {formatNumber(budgetData.currentMonthExpense)}
                   </div>
                 </div>
-                <div className="text-stone-500 text-sm sm:text-base font-normal font-suit">
+                <div className="text-stone-500 text-sm sm:text-base font-normal font-suit" style={{ color: "var(--color-primary-400)" }}>
                   지난 달: {formatNumber(budgetData.previousMonthExpense)}
                 </div>
                 {/* 진행바 */}
                 <div className="w-full flex items-center gap-0 mt-0">
-                  <div className="flex-1 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
+                  <div className="flex-1 h-1.5 rounded-md overflow-hidden" style={{ background: "var(--color-primary-200)" }}>
                     <div
-                      className="h-1.5 bg-blue-500 rounded-md"
+                      className="h-1.5 rounded-md"
                       style={{
+                        background: "var(--color-secondary-500)",
                         width: `${budgetData.currentMonthExpense > 0 && budgetData.currentMonthBudget > 0
                           ? Math.max(
                             1,
@@ -267,7 +272,7 @@ const OrderHistoryPage = () => {
                       }}
                     />
                   </div>
-                  <div className="text-neutral-800 text-xs sm:text-sm font-normal font-suit min-w-[32px] text-right">
+                  <div className="text-neutral-800 text-xs sm:text-sm font-normal font-suit min-w-[32px] text-right" style={{ color: "var(--color-primary-950)" }}>
                     {budgetData.currentMonthBudget > 0
                       ? `${budgetData.currentMonthExpense > 0 ? Math.max(1, Math.round((budgetData.currentMonthExpense / budgetData.currentMonthBudget) * 100)) : 0}%`
                       : "-"}
@@ -285,7 +290,6 @@ const OrderHistoryPage = () => {
                       "mt-0",
                       "w-[calc(80%)]",
                       "p-6",
-                      "bg-neutral-800",
                       "rounded-[12px]",
                       "flex-col",
                       "justify-center",
@@ -294,6 +298,7 @@ const OrderHistoryPage = () => {
                       "z-10",
                       "pointer-events-none", // 호버된 상태에서 클릭 방지
                     )}
+                    style={{ background: "var(--color-primary-950)" }}
                   >
                     <div className="inline-flex justify-start items-center gap-1">
                       <div className="text-white text-base font-extrabold font-suit">이번 달 남은 예산:</div>
@@ -314,14 +319,15 @@ const OrderHistoryPage = () => {
                 )}
               </div>
               {/* 올해 총 지출액 */}
-              <div className="flex-1 flex flex-col justify-between w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-2 rounded-[4px] bg-[color:var(--color-primary-50)] opacity-100">
+              <div className="flex-1 flex flex-col justify-between w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-2 rounded-[4px] opacity-100"
+                style={{ background: "var(--color-primary-50)" }}>
                 <div className="flex flex-row items-center justify-between w-full mb-2">
-                  <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">올해 총 지출액</div>
-                  <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
+                  <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit" style={{ color: "var(--color-primary-950)" }}>올해 총 지출액</div>
+                  <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit" style={{ color: "var(--color-primary-950)" }}>
                     {formatNumber(budgetData.currentYearTotalExpense)}
                   </div>
                 </div>
-                <div className="text-stone-500 text-sm sm:text-base font-normal font-suit leading-snug mt-auto">
+                <div className="text-stone-500 text-sm sm:text-base font-normal font-suit leading-snug mt-auto" style={{ color: "var(--color-primary-400)" }}>
                   {`올해 작년보다`}
                   <br />
                   {`${(budgetData.currentYearTotalExpense - budgetData.previousYearTotalExpense).toLocaleString()}원 ${budgetData.currentYearTotalExpense - budgetData.previousYearTotalExpense > 0
@@ -332,7 +338,8 @@ const OrderHistoryPage = () => {
               </div>
             </div>
             {/* 모바일용 남은 예산 정보 박스 (항상 노출 - 모바일) */}
-            <div className="flex sm:hidden w-full p-6 bg-neutral-800 rounded-[12px] flex-col justify-center items-start gap-2 mt-4">
+            <div className="flex sm:hidden w-full p-6 rounded-[12px] flex-col justify-center items-start gap-2 mt-4"
+              style={{ background: "var(--color-primary-950)" }}>
               <div className="inline-flex justify-start items-center gap-1">
                 <div className="text-white text-base font-extrabold font-suit">이번 달 남은 예산:</div>
                 <div className="text-white text-base font-extrabold font-suit">
