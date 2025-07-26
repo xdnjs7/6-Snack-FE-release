@@ -372,12 +372,10 @@ const OrderHistoryPage = () => {
                         </div>
                         <div className="flex flex-col gap-2">
                           <div className="flex justify-between items-center">
-                            <span className="text-neutral-500 text-sm font-normal font-suit">구매 요청일</span>{" "}
-                            {/* Figma 시안: #808080 */}
+                            <span className="text-neutral-500 text-sm font-normal font-suit">구매 요청일</span>
                             <span className="text-neutral-800 text-sm font-bold font-suit">
                               {item.requestDate}
-                            </span>{" "}
-                            {/* Figma 시안: #3C3C3C */}
+                            </span>
                           </div>
                           <div className="flex justify-between items-center">
                             <span className="text-neutral-500 text-sm font-normal font-suit">요청인</span>
@@ -411,8 +409,6 @@ const OrderHistoryPage = () => {
                 {/* 태블릿/PC: 테이블형 */}
                 <div className="hidden sm:block">
                   <table className="min-w-full divide-y divide-neutral-200">
-                    {" "}
-                    {/* Figma 시안: divide border #E5E5E5 */}
                     <thead className="bg-white">
                       <tr
                         style={{
@@ -423,8 +419,7 @@ const OrderHistoryPage = () => {
                       >
                         <th className="px-6 py-4 text-left text-base font-bold text-neutral-500 font-suit">
                           구매 요청일
-                        </th>{" "}
-                        {/* Figma 시안: #808080 */}
+                        </th>
                         <th className="px-6 py-4 text-left text-base font-bold text-neutral-500 font-suit">요청인</th>
                         <th className="px-6 py-4 text-left text-base font-bold text-neutral-500 font-suit">
                           구매 품목
@@ -437,8 +432,6 @@ const OrderHistoryPage = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-neutral-100">
-                      {" "}
-                      {/* 각 행 사이에 구분선 */}
                       {currentItems.map((item) => (
                         <tr
                           key={item.id}
@@ -524,8 +517,7 @@ const OrderHistoryPage = () => {
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                    />{" "}
-                    {/* Figma 시안: stroke #A3A3A3 */}
+                    />
                   </svg>
                 </span>
                 Prev
@@ -558,8 +550,7 @@ const OrderHistoryPage = () => {
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                    />{" "}
-                    {/* Figma 시안: stroke #222222 */}
+                    />
                   </svg>
                 </span>
               </button>
