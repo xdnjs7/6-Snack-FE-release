@@ -1,4 +1,4 @@
-import { TOrder, TOrderSummary } from "@/types/Order.types";
+import { TOrder, TOrderSummary } from "@/types/order.types";
 import { cookieFetch } from "./fetchClient.api";
 
 export const fetchPendingOrders = async ({

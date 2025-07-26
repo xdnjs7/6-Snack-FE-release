@@ -10,11 +10,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
 import Link from "next/link";
 
-/**
- * @De-cal TODO:
- * 1. 장바구니 전체 선택, 해제 API 만들어지면 연동
- * 2. 장바구니 수량 선택 API 만들어지면 연동
- */
 type TCartItemProps = {
   cartItems: TGetCartItemsResponse | undefined;
   isPending: boolean;
@@ -24,8 +19,8 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  const isAllChecked = cartItems?.length && cartItems?.every((item) => item.isChecked);
-  const checkedCartItemIds = cartItems?.filter((item) => item.isChecked).map((item) => item.id) ?? [];
+  const isAllChecked = cartItems?.cart.length && cartItems?.cart.every((item) => item.isChecked);
+  const checkedCartItemIds = cartItems?.cart.filter((item) => item.isChecked).map((item) => item.id) ?? [];
 
   // 장바구니 선택 - Optimistic Update
   const { mutate: toggleCheckCartItem } = useMutation<
@@ -41,7 +36,7 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
       const previousCartItems = queryClient.getQueryData<TGetCartItemsResponse>(["cart"]);
 
       queryClient.setQueryData<TGetCartItemsResponse>(["cart"], (old) =>
-        old?.map((item) => (item.id === cartItemId ? { ...item, isChecked } : item)),
+        old ? { ...old, cart: old.cart.map((item) => (item.id === cartItemId ? { ...item, isChecked } : item)) } : old,
       );
 
       return { previousCartItems };
@@ -80,7 +75,7 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
       const previousCartItems = queryClient.getQueryData<TGetCartItemsResponse>(["cart"]);
 
       queryClient.setQueryData<TGetCartItemsResponse>(["cart"], (old) =>
-        old?.map((item) => ({ ...item, isChecked: !isAllChecked })),
+        old ? { ...old, cart: old.cart.map((item) => ({ ...item, isChecked: !isAllChecked })) } : old,
       );
 
       return { previousCartItems };
@@ -130,10 +125,10 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
 
       {isPending ? (
         <div>로딩 중...</div>
-      ) : !cartItems?.length ? (
+      ) : !cartItems?.cart.length ? (
         <div className="flex justify-center items-center h-[200px]">장바구니에 담은 상품이 없습니다.</div>
       ) : (
-        cartItems.map((item, i) => (
+        cartItems.cart.map((item, i) => (
           <div
             key={`${item}_${i}`}
             className="h-[121px] py-[20px] border-b-1 border-primary-100 sm:py-[30px] sm:h-[200px] sm:last:border-0"

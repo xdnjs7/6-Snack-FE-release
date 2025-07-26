@@ -10,12 +10,6 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
-/**
- * @De-cal TODO:
- * 1. 정렬 기능 제대로 붙었는지 확인
- * 2. 총 등록한 상품 API 수정 된 내용에 따라서 변경 필요
- */
-
 export default function MyProductsPage() {
   const [params, setParams] = useState<TMyProductsParams>({
     page: "1",

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Button from "../ui/Button";
 import TextArea from "./TextArea";
 import { twMerge } from "tailwind-merge";
-import { TOrder } from "@/types/Order.types";
+import { TOrder } from "@/types/order.types";
 import { updateOrderStatus } from "@/lib/api/orderManage.api";
 
 type TOrderManageModalProps = {
@@ -133,7 +133,7 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
               {type === "approve" ? "승인 메시지" : "반려 메시지"}
             </p>
             <TextArea
-              className="w-full max-w-[480px] h-[140px] p-[24px] rounded-[2px] border-1 border-primary-200 outline-none resize-none placeholder:font-normal placeholder:text-[16px]/[26px] placeholder:tracking-tight placeholder:text-[#929292]"
+              className="w-full max-w-[480px] h-[140px] p-[24px] rounded-[2px] resize-none placeholder:font-normal placeholder:text-[16px]/[26px] placeholder:tracking-tight placeholder:text-[#929292]"
               placeholder={type === "approve" ? "승인 메시지를 입력해주세요" : "반려 메시지를 입력해주세요"}
               value={adminMessage}
               onChange={(e) => setAdminMessage(e.target.value)}
@@ -157,7 +157,7 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
                   adminMessage,
                 });
 
-                onClick(); 
+                onClick();
                 closeModal();
               } catch (error) {
                 alert("실패!");

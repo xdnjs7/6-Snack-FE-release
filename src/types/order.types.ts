@@ -27,10 +27,15 @@ type TOrderBase = {
 };
 
 export type TOrderSummary = TOrderBase & {
-  productName: string; 
+  productName: string;
 };
 
-export type TOrder = TOrderBase&{
-    products: TProducts;
-    budget: TBudget;
-}
+export type TOrder = TOrderBase & {
+  products: TProducts;
+  budget: TBudget;
+};
+
+export type TOrderRequestBody = {
+  requestMessage?: string;
+  cartItemIds: number[];
+};
