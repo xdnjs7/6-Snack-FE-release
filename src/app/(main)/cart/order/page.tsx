@@ -1,12 +1,52 @@
+"use client";
+
 import React from "react";
 import OrderItem from "./_components/OrderItem";
-// import ic_chevron_right_gray from "@/assets/icons/ic_chevron_right_gray.svg";
-// import Image from "next/image";
 import TextArea from "@/components/common/TextArea";
 import Button from "@/components/ui/Button";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
+import { useQuery } from "@tanstack/react-query";
+import { getCartItems } from "@/lib/api/cart.api";
+import { TGetCartItemsParams, TGetCartItemsResponse } from "@/types/cart.types";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function OrderPage() {
+/**
+ * @De-cal TODO:
+ * 1. 구매 요청 API 연동
+ */
+
+export default function OrderPage({ searchParams }: { searchParams: { cartItemId?: string } }) {
+  const router = useRouter();
+
+  const cartItemId = searchParams.cartItemId;
+  // const queryString = useSearchParams();
+  // const cartItemId = queryString.get("cartItemId") ?? undefined;
+  console.log("cartItemId", cartItemId);
+
+  const params: TGetCartItemsParams = {
+    ...(cartItemId ? { cartItemId } : { isChecked: "true" }),
+  };
+
+  const {
+    data: cartItems,
+    isPending,
+    error,
+  } = useQuery<TGetCartItemsResponse, Error, TGetCartItemsResponse, [string, string, string]>({
+    queryKey: ["cart", "order", cartItemId ?? "isChecked"],
+    queryFn: () => getCartItems(params),
+  });
+
+  // const {mutate: } = useMutation({
+  //   mutationFn: () => {},
+  //   onSuccess: () => {
+  //     router.push('/cart/order-confirm')
+  //   }
+  // })
+
+  if (error) {
+    return <div>에러 발생 : {error.message}</div>;
+  }
+
   return (
     <div className="flex flex-col justify-center items-center w-full">
       <div className="w-full max-w-[1200px] md:px-[24px]">
@@ -20,7 +60,7 @@ export default function OrderPage() {
           </div>
         </div>
 
-        <OrderItem />
+        <OrderItem isPending={isPending} cartItems={cartItems} />
 
         <div className="flex flex-col justify-center items-start mt-[40px] gap-[14px] sm:gap-[20px]">
           <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-950">요청 메시지</p>
@@ -29,11 +69,13 @@ export default function OrderPage() {
 
         <div className="flex justify-center items-center mt-[24px] gap-[16px] sm:mt-[50px] sm:gap-[20px]">
           <Button
+            onClick={() => router.push("/cart")}
             className="w-full max-w-[300px] h-[64px] font-bold text-[16px]/[20px] tracking-tight"
             type="white"
             label="취소"
           />
           <Button
+            onClick={() => {}}
             className="w-full max-w-[300px] h-[64px] font-bold text-[16px]/[20px] tracking-tight"
             type="black"
             label="구매 요청"
