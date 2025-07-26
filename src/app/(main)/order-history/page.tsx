@@ -58,10 +58,14 @@ const OrderHistoryPage = () => {
     requestDate: item.requestDate || item.createdAt || "-",
     requester: item.requesterName || item.requester || "-",
     status: statusMap[statusKey],
-    item: item.itemSummary || item.item || "-",
-    amount: typeof item.amount === "number" ? item.amount.toLocaleString() : "-",
+    item: item.productName || item.itemSummary || item.item || "-", // productName 우선
+    amount: typeof item.totalPrice === "number"
+      ? item.totalPrice.toLocaleString()
+      : typeof item.amount === "number"
+        ? item.amount.toLocaleString()
+        : "-", // totalPrice 우선
     approvalDate: item.approvalDate || item.updatedAt || "-",
-    manager: item.managerName || item.manager || "-",
+    manager: item.approver || item.managerName || item.manager || "-", // approver 우선
   });
   const pendingList = (pendingData?.orders || []).map((item: any) => parse(item, "pending"));
   const approvedList = (approvedData?.orders || []).map((item: any) => parse(item, "approved"));
@@ -107,13 +111,15 @@ const OrderHistoryPage = () => {
           <div className="text-lg sm:text-2xl font-bold font-suit" style={{ color: "var(--color-primary-950)" }}>구매 내역 확인</div>
           <div className="relative custom-sort-dropdown">
             <Dropdown
-              options={["최신순", "오래된순"]}
+              options={["최신순", "낮은 금액순", "높은 금액순"]}
               onChange={(selectedOption: string) => {
                 // 선택된 옵션에 따라 sortBy 상태 업데이트
                 if (selectedOption === "최신순") {
                   setSortBy("latest");
-                } else if (selectedOption === "오래된순") {
-                  setSortBy("oldest"); // API에서 'oldest' 또는 'asc' 등으로 사용한다면 맞춰야 합니다.
+                } else if (selectedOption === "낮은 금액순") {
+                  setSortBy("priceAsc"); // API에서 낮은 금액순 정렬 파라미터에 맞게 값 지정
+                } else if (selectedOption === "높은 금액순") {
+                  setSortBy("priceDesc"); // API에서 높은 금액순 정렬 파라미터에 맞게 값 지정
                 }
               }}
             />
