@@ -79,26 +79,26 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
         <form onSubmit={onSubmit} className="w-full flex flex-col gap-20 mt-[20px]">
           <div className="self-stretch flex flex-col justify-start items-start gap-12">
             <div className="self-stretch flex flex-col justify-start items-start gap-2">
-              <div className="self-stretch text-black text-lg md:text-2xl font-bold font-suit">예산 관리</div>
-              <div className="self-stretch text-zinc-500 text-sm md:text-base font-normal font-suit">
+              <div className="self-stretch text-[color:var(--color-primary-950)] text-lg md:text-2xl font-bold">예산 관리</div>
+              <div className="self-stretch text-[color:var(--color-primary-400)] text-sm md:text-base font-normal">
                 이번 달 예산을 정해서 지출을 관리해보세요
               </div>
             </div>
             <div className="self-stretch flex flex-col justify-center items-start gap-16">
               {/* 이번 달 예산 */}
               <div className="self-stretch flex flex-col justify-center items-start gap-3">
-                <div className="self-stretch text-neutral-800 text-sm md:text-base font-bold font-suit">이번 달</div>
-                <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 max-[744px]:w-full max-[744px]:max-w-full max-[744px]:h-[49px] max-[744px]:pb-[12px] max-[744px]:border-b-2 max-[744px]:gap-[4px] max-[744px]:scrollbar-hide overflow-x-visible">
+                <div className="self-stretch text-[color:var(--color-primary-950)] text-sm md:text-base font-bold">이번 달</div>
+                <div className="self-stretch border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 w-full max-w-full h-[49px] pb-[12px] scrollbar-hide overflow-x-visible">
                   <input
                     type="text"
                     inputMode="numeric"
                     pattern="[0-9]*"
-                    style={currentMonthBudget ? { color: '#222222', height: '37px' } : { height: '37px' }}
+                    style={currentMonthBudget ? { color: 'var(--color-primary-950)', height: '37px' } : { height: '37px' }}
                     className={
                       `flex-1 min-w-0 bg-transparent outline-none border-none` +
                       (currentMonthBudget
-                        ? ' text-[#222222] font-suit font-extrabold text-[20px] max-[900px]:text-[18px] sm:text-[32px] md:text-[40px] leading-[100%] align-middle tracking-[-0.025em] max-[744px]:text-[30px] max-[744px]:font-extrabold max-[744px]:font-suit max-[744px]:leading-[100%] max-[744px]:align-middle max-[744px]:tracking-[-0.025em]'
-                        : ' text-neutral-300 text-xl max-[900px]:text-lg sm:text-3xl md:text-3xl font-bold font-suit placeholder:text-neutral-300 placeholder:font-suit placeholder:font-bold placeholder:text-[18px] max-[900px]:placeholder:text-[16px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-bottom placeholder:tracking-[-0.025em] max-[744px]:placeholder:text-[30px] max-[744px]:placeholder:font-bold max-[744px]:placeholder:font-suit max-[744px]:placeholder:leading-[100%] max-[744px]:placeholder:align-bottom max-[744px]:placeholder:tracking-[-0.025em]')
+                        ? ' text-[color:var(--color-primary-950)] font-extrabold text-[20px] sm:text-[32px] md:text-[40px] tracking-tight leading-[100%] align-middle'
+                        : ' text-neutral-300 text-xl sm:text-3xl md:text-3xl font-bold placeholder:text-neutral-300 placeholder:font-bold placeholder:text-[18px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-bottom placeholder:tracking-tight')
                     }
                     placeholder="예산을 입력해주세요"
                     value={currentMonthBudget === undefined || currentMonthBudget === null || currentMonthBudget === "" ? "" : currentMonthBudget}
@@ -109,30 +109,30 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                     disabled={loading}
                   />
                   <div
-                    className="text-neutral-800 font-suit font-bold leading-[100%] align-middle tracking-[-0.025em] max-[744px]:text-[30px] max-[744px]:font-bold max-[744px]:font-suit max-[744px]:leading-[100%] max-[744px]:align-middle max-[744px]:tracking-[-0.025em] min-[745px]:text-3xl min-[1400px]:text-4xl"
+                    className="text-[color:var(--color-primary-950)] font-bold leading-[100%] align-middle tracking-tight sm:text-3xl md:text-4xl"
                   >원</div>
                 </div>
                 {errors?.currentMonthBudget && (
                   <p className="text-red-500 text-xs mt-1 ml-2">{errors.currentMonthBudget}</p>
                 )}
-                <div className="self-stretch text-zinc-500 text-sm md:text-base font-bold font-suit">
+                <div className="self-stretch text-[color:var(--color-primary-400)] text-sm md:text-base font-bold">
                   {formatKoreanCurrencyUnit(currentMonthBudget)}
                 </div>
               </div>
               {/* 다음 달 예산 */}
               <div className="self-stretch flex flex-col justify-center items-start gap-3">
-                <div className="self-stretch text-neutral-800 text-sm md:text-base font-bold font-suit">매달 시작</div>
-                <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 max-[744px]:w-full max-[744px]:max-w-full max-[744px]:h-[49px] max-[744px]:pb-[12px] max-[744px]:border-b-2 max-[744px]:gap-[4px] max-[744px]:scrollbar-hide overflow-x-visible">
+                <div className="self-stretch text-[color:var(--color-primary-950)] text-sm md:text-base font-bold">매달 시작</div>
+                <div className="self-stretch border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 w-full max-w-full h-[49px] pb-[12px] scrollbar-hide overflow-x-visible">
                   <input
                     type="text"
                     inputMode="numeric"
                     pattern="[0-9]*"
-                    style={nextMonthBudget ? { color: '#222222', height: '37px' } : { height: '37px' }}
+                    style={nextMonthBudget ? { color: 'var(--color-primary-950)', height: '37px' } : { height: '37px' }}
                     className={
                       `flex-1 min-w-0 bg-transparent outline-none border-none` +
                       (nextMonthBudget
-                        ? ' text-[#222222] font-suit font-extrabold text-[20px] max-[900px]:text-[18px] sm:text-[32px] md:text-[40px] leading-[100%] align-middle tracking-[-0.025em] max-[744px]:text-[30px] max-[744px]:font-extrabold max-[744px]:font-suit max-[744px]:leading-[100%] max-[744px]:align-middle max-[744px]:tracking-[-0.025em]'
-                        : ' text-neutral-300 text-xl max-[900px]:text-lg sm:text-3xl md:text-3xl font-bold font-suit placeholder:text-neutral-300 placeholder:font-suit placeholder:font-bold placeholder:text-[18px] max-[900px]:placeholder:text-[16px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-bottom placeholder:tracking-[-0.025em] max-[744px]:placeholder:text-[30px] max-[744px]:placeholder:font-bold max-[744px]:placeholder:font-suit max-[744px]:placeholder:leading-[100%] max-[744px]:placeholder:align-bottom max-[744px]:placeholder:tracking-[-0.025em]')
+                        ? ' text-[color:var(--color-primary-950)] font-extrabold text-[20px] sm:text-[32px] md:text-[40px] tracking-tight leading-[100%] align-middle'
+                        : ' text-neutral-300 text-xl sm:text-3xl md:text-3xl font-bold placeholder:text-neutral-300 placeholder:font-bold placeholder:text-[18px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-bottom placeholder:tracking-tight')
                     }
                     placeholder="예산을 입력해주세요"
                     value={nextMonthBudget === undefined || nextMonthBudget === null || nextMonthBudget === "" ? "" : nextMonthBudget}
@@ -143,11 +143,11 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                     disabled={loading}
                   />
                   <div
-                    className="text-neutral-800 font-suit font-bold leading-[100%] align-middle tracking-[-0.025em] max-[744px]:text-[30px] max-[744px]:font-bold max-[744px]:font-suit max-[744px]:leading-[100%] max-[744px]:align-middle max-[744px]:tracking-[-0.025em] min-[745px]:text-3xl min-[1400px]:text-4xl"
+                    className="text-[color:var(--color-primary-950)] font-bold leading-[100%] align-middle tracking-tight sm:text-3xl md:text-4xl"
                   >원</div>
                 </div>
                 {errors?.nextMonthBudget && <p className="text-red-500 text-xs mt-1 ml-2">{errors.nextMonthBudget}</p>}
-                <div className="self-stretch text-zinc-500 text-sm md:text-base font-bold font-suit">
+                <div className="self-stretch text-[color:var(--color-primary-400)] text-sm md:text-base font-bold">
                   {formatKoreanCurrencyUnit(nextMonthBudget)}
                 </div>
               </div>
@@ -156,7 +156,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
           <div className="self-stretch h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center mt-8">
             <button
               type="submit"
-              className="w-full h-full text-center text-white text-base font-bold font-suit"
+              className="w-full h-full text-center text-white text-base font-bold"
               disabled={loading}
             >
               {loading ? "저장 중..." : "수정하기"}
