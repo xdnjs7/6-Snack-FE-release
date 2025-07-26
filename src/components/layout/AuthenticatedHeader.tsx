@@ -26,7 +26,7 @@ export default function AuthenticatedHeader() {
   const router = useRouter();
 
   // 전역 카테고리 상태 사용
-  const { selectedCategory,  } = useCategoryStore();
+  const { selectedCategory } = useCategoryStore();
 
   const menuItems = [
     { id: "products", label: "상품 리스트", href: "/products" },
@@ -104,14 +104,15 @@ export default function AuthenticatedHeader() {
 
       {/* 카테고리 dropdown 버튼 - mobile  */}
       <div className="block sm:hidden">
-        <div className="flex gap-1 items-center">
+        <button
+          className="flex gap-1 items-center"
+          onClick={handleCategoryMenuClick}
+          aria-expanded={isCategoryMenuOpen}
+          aria-haspopup="true"
+        >
           <p className="font-bold">{currentCategoryName}</p>
-          <ArrowIconSvg
-            direction={isCategoryMenuOpen ? "up" : "down"}
-            onClick={handleCategoryMenuClick}
-            className="w-5 h-5 text-black"
-          />
-        </div>
+          <ArrowIconSvg direction={isCategoryMenuOpen ? "up" : "down"} className="w-5 h-5 text-black" />
+        </button>
       </div>
 
       {/* 장바구니 + 메뉴 영역 */}

@@ -103,7 +103,7 @@ export default function ProductsPageContent() {
   }, [searchParams, findCategoryPath, clearSelectedCategory]);
 
   return (
-    <div className="flex items-start justify-center">
+    <div className="w-full flex items-start justify-center">
       {/* 카테고리 태블릿,데스크탑 */}
       <div className="hidden sm:block">
         <SubCategoryItem categories={categories} />

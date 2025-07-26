@@ -10,11 +10,11 @@ export default function SubCategoryTabs() {
 
   // children category 없는 현재 parent category이면 여기 아래아이템 모두 primary-400 으로 보여야함,
   return (
-    <div className="w-full border-b border-primary-100 inline-flex justify-start items-center gap-2 sm:hidden">
+    <div className="max-w-full border-b border-primary-100 inline-flex justify-start items-center gap-2 sm:hidden category-tabs-scroll">
       {childrenCategories.map((child) => (
         <button
           key={child.id}
-          className="h-12 px-2 py-3.5 flex justify-center items-center gap-2.5"
+          className="h-12 px-2 py-3.5 flex justify-center items-center gap-2.5 category-tab-btn"
           onClick={() => router.push(`/products?category=${child.id}`)}
         >
           <div
