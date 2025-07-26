@@ -17,6 +17,7 @@ import { useProducts } from "@/hooks/useProducts";
 import PlusToggleIconSvg from "@/components/svg/PlusToggleIconSvg";
 import Dropdown from "@/components/common/DropDown";
 import { useCategoryStore } from "@/stores/categoryStore";
+import SubCategoryTabs from "./SubCategoryTabs";
 
 type TCategoryData = {
   parentCategory: Array<{ id: number; name: string }>;
@@ -29,7 +30,7 @@ export default function ProductsPageContent() {
   const [categories] = useState<TCategoryData>(CATEGORIES);
   const [selectedSort, setSelectedSort] = useState<TSortOptions>("latest");
   // 전역 카테고리 상태 사용
-  const { selectedCategory, findCategoryPath, clearSelectedCategory } = useCategoryStore();
+  const { selectedCategory, clearSelectedCategory, findCategoryPath } = useCategoryStore();
 
   // 정렬 옵션 매핑
   const sortOptions = [
@@ -109,7 +110,8 @@ export default function ProductsPageContent() {
       </div>
 
       <div className="flex flex-col sm:h-16 sm:w-full sm:border-b sm:border-primary-100">
-        {/* TODO: 모바일 전용 하위 카테고리 - 선택된 카테고리가 있을 때만 표시 */}
+        {/* TODO: 모바일 전용 하위 카테고리 TabMenu - 선택된 카테고리가 있을 때만 표시 */}
+        <SubCategoryTabs />
 
         <div className="flex flex-col sm:flex-row sm:justify-between">
           {/* 모바일, 태블릿, 데스크탑에서 전부 보이는 상위/하위 카테고리 바 */}

@@ -26,7 +26,7 @@ export default function AuthenticatedHeader() {
   const router = useRouter();
 
   // 전역 카테고리 상태 사용
-  const { selectedCategory } = useCategoryStore();
+  const { selectedCategory,  } = useCategoryStore();
 
   const menuItems = [
     { id: "products", label: "상품 리스트", href: "/products" },
