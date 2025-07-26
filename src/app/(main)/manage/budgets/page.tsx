@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getBudgets, patchBudgets } from "@/lib/api/budgets.api";
 import BudgetFormUI from "./_components/BudgetFormUI";
 
@@ -14,52 +15,57 @@ const budgetSchema = z.object({
 
 type BudgetInputs = z.infer<typeof budgetSchema>;
 
-const ManageBudgetsPage: React.FC = () => {
+function ManageBudgetsPage() {
+  const queryClient = useQueryClient();
+
+  // 예산 데이터 패칭
+  const { data, isLoading: isQueryLoading } = useQuery({
+    queryKey: ["budgets"],
+    queryFn: getBudgets,
+  });
+
+  // 폼 세팅
   const {
     handleSubmit,
     setValue,
     formState: { errors },
     watch,
+    reset,
   } = useForm<BudgetInputs>({
     resolver: zodResolver(budgetSchema),
+    defaultValues: {
+      currentMonthBudget: "",
+      nextMonthBudget: "",
+    },
   });
 
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-
+  // 쿼리 데이터로 폼 초기화
   useEffect(() => {
-    const fetchBudgets = async () => {
-      setLoading(true);
-      try {
-        const data = await getBudgets();
-        setValue("currentMonthBudget", data.currentMonthBudget?.toString() ?? "");
-        setValue("nextMonthBudget", data.monthlyBudget?.toString() ?? "");
-      } catch {
-        // 에러 처리 필요시 추가
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchBudgets();
-  }, [setValue]);
+    if (data) {
+      reset({
+        currentMonthBudget: data.currentMonthBudget?.toString() ?? "",
+        nextMonthBudget: data.monthlyBudget?.toString() ?? "",
+      });
+    }
+  }, [data, reset]);
 
-  const onSubmit = async (formData: BudgetInputs) => {
-    setLoading(true);
-    setSuccess(false);
-    try {
-      await patchBudgets({
+  // 예산 수정 뮤테이션
+  const {
+    mutate: updateBudgets,
+    isPending: isMutating,
+    isSuccess,
+  } = useMutation({
+    mutationFn: (formData: BudgetInputs) =>
+      patchBudgets({
         currentMonthBudget: Number(formData.currentMonthBudget) || 0,
         monthlyBudget: Number(formData.nextMonthBudget) || 0,
-      });
-      setSuccess(true);
-    } catch {
-      // 에러 처리 필요시 추가
-    } finally {
-      setLoading(false);
-    }
-  };
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["budgets"] });
+    },
+  });
 
-  // BudgetFormUI에 맞는 핸들러 및 상태 변환
+  // BudgetFormUI에 맞는 핸들러
   const handleUIChange = (field: "currentMonthBudget" | "nextMonthBudget", value: string) => {
     setValue(field, value);
   };
@@ -70,9 +76,9 @@ const ManageBudgetsPage: React.FC = () => {
         currentMonthBudget={String((typeof watch === "function" ? watch("currentMonthBudget") : "") || "")}
         nextMonthBudget={String((typeof watch === "function" ? watch("nextMonthBudget") : "") || "")}
         onChange={handleUIChange}
-        onSubmit={handleSubmit(onSubmit)}
-        loading={loading}
-        success={success}
+        onSubmit={handleSubmit((formData) => updateBudgets(formData))}
+        loading={isQueryLoading || isMutating}
+        success={isSuccess}
         errors={{
           currentMonthBudget: errors.currentMonthBudget?.message,
           nextMonthBudget: errors.nextMonthBudget?.message,
@@ -80,6 +86,6 @@ const ManageBudgetsPage: React.FC = () => {
       />
     </div>
   );
-};
+}
 
 export default ManageBudgetsPage;

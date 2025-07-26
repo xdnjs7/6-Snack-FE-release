@@ -223,7 +223,7 @@ const OrderHistoryPage = () => {
             {/* 카드 3개 (모바일: 세로, 태블릿/PC: 가로) */}
             <div className="relative flex flex-col gap-4 sm:flex-row sm:gap-5">
               {/* 이번 달 예산 */}
-              <div className="flex-1 flex flex-col justify-between w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-2 rounded-[4px] bg-[#F5F5F5] opacity-100">
+              <div className="flex-1 flex flex-col justify-between w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-2 rounded-[4px] bg-[color:var(--color-primary-50)] opacity-100">
                 <div className="flex flex-row items-center justify-between w-full mb-2">
                   <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">이번 달 예산</div>
                   <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
@@ -238,7 +238,7 @@ const OrderHistoryPage = () => {
               </div>
               {/* 이번 달 지출액 */}
               <div
-                className="flex-1 flex flex-col justify-between relative w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-0 rounded-[4px] bg-[#F5F5F5] opacity-100 overflow-visible"
+                className="flex-1 flex flex-col justify-between relative w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-0 rounded-[4px] bg-[color:var(--color-primary-50)] opacity-100 overflow-visible"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
               >
@@ -314,7 +314,7 @@ const OrderHistoryPage = () => {
                 )}
               </div>
               {/* 올해 총 지출액 */}
-              <div className="flex-1 flex flex-col justify-between w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-2 rounded-[4px] bg-[#F5F5F5] opacity-100">
+              <div className="flex-1 flex flex-col justify-between w-[414.67px] h-[150px] pt-[30px] pr-[40px] pb-[30px] pl-[30px] gap-2 rounded-[4px] bg-[color:var(--color-primary-50)] opacity-100">
                 <div className="flex flex-row items-center justify-between w-full mb-2">
                   <div className="text-neutral-800 text-base sm:text-lg font-bold font-suit">올해 총 지출액</div>
                   <div className="text-neutral-800 text-lg sm:text-2xl font-extrabold font-suit">
@@ -449,9 +449,9 @@ const OrderHistoryPage = () => {
                     {currentItems.map((item) => (
                       <div
                         key={item.id}
-                        className="bg-neutral-50 rounded-[12px] p-5 flex flex-col gap-3 shadow-sm" // Figma 시안: 배경색 #F5F5F5, rounded-12px
+                        className="bg-[color:var(--color-primary-100)] rounded-[12px] p-5 flex flex-col gap-3 shadow-sm" // Figma 시안: 배경색 #F5F5F5, rounded-12px
                         style={{
-                          border: "1px solid #E5E5E5", // Figma 시안: Border
+                          border: "1px solid var(--color-primary-100)",
                           width: "100%",
                         }}
                       >
@@ -477,7 +477,7 @@ const OrderHistoryPage = () => {
                                   "px-2 py-1 rounded-[100px] text-xs font-bold font-suit",
                                   item.status === "요청"
                                     ? "bg-blue-50 text-blue-600" // Figma 시안: 요청 #EBF2FF, 텍스트 #2563EB
-                                    : "bg-neutral-200 text-neutral-600", // Figma 시안: 승인 #E5E5E5, 텍스트 #666666
+                                    : "bg-[color:var(--color-primary-100)] text-neutral-600", // 승인 #E5E5E5
                                 )}
                               >
                                 {item.status}
@@ -548,7 +548,7 @@ const OrderHistoryPage = () => {
                                   "px-2 py-1 rounded-[100px] text-xs font-bold font-suit",
                                   item.status === "요청"
                                     ? "bg-blue-50 text-blue-600" // Figma 시안: 요청 #EBF2FF, 텍스트 #2563EB
-                                    : "bg-neutral-200 text-neutral-600", // Figma 시안: 승인 #E5E5E5, 텍스트 #666666
+                                    : "bg-[color:var(--color-primary-100)] text-neutral-600", // 승인 #E5E5E5
                                 )}
                               >
                                 {item.status}

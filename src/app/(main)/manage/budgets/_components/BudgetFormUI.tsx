@@ -24,69 +24,148 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
   success,
   errors,
 }) => {
+  React.useEffect(() => {
+    if (success) {
+      alert("예산이 성공적으로 수정되었습니다.");
+    }
+    // 실패 케이스는 errors에 따라 별도 처리 가능
+    // if (errors.currentMonthBudget || errors.nextMonthBudget) {
+    //   alert("예산 수정에 실패했습니다.");
+    // }
+  }, [success]);
+
+  // 한글 금액 단위 포맷 함수 (3백5십만원 등)
+  function formatKoreanCurrencyUnit(value: string): string {
+    if (!value || value === "0") return "0원";
+    let num = Number(value);
+    if (isNaN(num) || num === 0) return "0원";
+
+    // 만원 단위 이하
+    if (num < 10000) return num + "원";
+
+    // 만원 단위 이상
+    const units = ["", "십", "백", "천"];
+    const man = Math.floor(num / 10000);
+    let manStr = "";
+    const manArr = man.toString().split("").reverse();
+    for (let i = manArr.length - 1; i >= 0; i--) {
+      const digit = Number(manArr[i]);
+      if (digit > 0) {
+        manStr += digit + units[i];
+      }
+    }
+    manStr += "만원";
+
+    // 만원 이하 처리
+    const rest = num % 10000;
+    let restStr = "";
+    if (rest > 0) {
+      const restArr = rest.toString().split("").reverse();
+      for (let i = restArr.length - 1; i >= 0; i--) {
+        const digit = Number(restArr[i]);
+        if (digit > 0) {
+          restStr += digit + units[i];
+        }
+      }
+      restStr += "원";
+    }
+
+    return manStr + (restStr ? restStr : "");
+  }
+
   return (
-    <form onSubmit={onSubmit} className="w-full flex flex-col gap-20 mt-[20px]">
-      <div className="self-stretch flex flex-col justify-start items-start gap-12">
-        <div className="self-stretch flex flex-col justify-start items-start gap-2">
-          <div className="self-stretch text-black text-lg md:text-2xl font-bold font-suit">예산 관리</div>
-          <div className="self-stretch text-zinc-500 text-sm md:text-base font-normal font-suit">
-            이번 달 예산을 정해서 지출을 관리해보세요
-          </div>
-        </div>
-        <div className="self-stretch flex flex-col justify-center items-start gap-16">
-          {/* 이번 달 예산 */}
-          <div className="self-stretch flex flex-col justify-center items-start gap-3">
-            <div className="self-stretch text-neutral-800 text-sm md:text-base font-bold font-suit">이번 달</div>
-            <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1">
-              <input
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                className="flex-1 bg-transparent outline-none border-none text-neutral-300 text-3xl font-bold font-suit placeholder:text-neutral-300"
-                placeholder="예산을 입력해주세요"
-                value={currentMonthBudget}
-                onChange={(e) => onChange("currentMonthBudget", e.target.value)}
-                disabled={loading}
-              />
-              <div className="text-neutral-800 text-3xl md:text-4xl font-extrabold font-suit">원</div>
+    <div className="flex flex-1 flex-col justify-center sm:flex-row">
+      <div className="w-full sm:w-1/2">
+        <form onSubmit={onSubmit} className="w-full flex flex-col gap-20 mt-[20px]">
+          <div className="self-stretch flex flex-col justify-start items-start gap-12">
+            <div className="self-stretch flex flex-col justify-start items-start gap-2">
+              <div className="self-stretch text-[color:var(--color-primary-950)] text-lg md:text-2xl font-bold">예산 관리</div>
+              <div className="self-stretch text-[color:var(--color-primary-400)] text-sm md:text-base font-normal">
+                이번 달 예산을 정해서 지출을 관리해보세요
+              </div>
             </div>
-            {errors?.currentMonthBudget && (
-              <p className="text-red-500 text-xs mt-1 ml-2">{errors.currentMonthBudget}</p>
-            )}
-            <div className="self-stretch text-zinc-500 text-sm md:text-base font-bold font-suit">0원</div>
-          </div>
-          {/* 다음 달 예산 */}
-          <div className="self-stretch flex flex-col justify-center items-start gap-3">
-            <div className="self-stretch text-neutral-800 text-sm md:text-base font-bold font-suit">매달 시작</div>
-            <div className="self-stretch pb-3 border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1">
-              <input
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                className="flex-1 bg-transparent outline-none border-none text-neutral-300 text-3xl font-bold font-suit placeholder:text-neutral-300"
-                placeholder="예산을 입력해주세요"
-                value={nextMonthBudget}
-                onChange={(e) => onChange("nextMonthBudget", e.target.value)}
-                disabled={loading}
-              />
-              <div className="text-neutral-800 text-3xl md:text-4xl font-extrabold font-suit">원</div>
+            <div className="self-stretch flex flex-col justify-center items-start gap-16">
+              {/* 이번 달 예산 */}
+              <div className="self-stretch flex flex-col justify-center items-start gap-3">
+                <div className="self-stretch text-[color:var(--color-primary-950)] text-sm md:text-base font-bold">이번 달</div>
+                <div className="self-stretch border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 w-full max-w-full h-[49px] pb-[12px] scrollbar-hide overflow-x-visible">
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    style={currentMonthBudget ? { color: 'var(--color-primary-950)', height: '37px' } : { height: '37px' }}
+                    className={
+                      `flex-1 min-w-0 bg-transparent outline-none border-none` +
+                      (currentMonthBudget
+                        ? ' text-[color:var(--color-primary-950)] font-extrabold text-[20px] sm:text-[32px] md:text-[40px] tracking-tight leading-[100%] align-middle'
+                        : ' text-neutral-300 text-xl sm:text-3xl md:text-3xl font-bold placeholder:text-neutral-300 placeholder:font-bold placeholder:text-[18px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-bottom placeholder:tracking-tight')
+                    }
+                    placeholder="예산을 입력해주세요"
+                    value={currentMonthBudget === undefined || currentMonthBudget === null || currentMonthBudget === "" ? "" : currentMonthBudget}
+                    onChange={(e) => {
+                      const onlyNums = e.target.value.replace(/[^0-9]/g, "");
+                      onChange("currentMonthBudget", onlyNums);
+                    }}
+                    disabled={loading}
+                  />
+                  <div
+                    className="text-[color:var(--color-primary-950)] font-bold leading-[100%] align-middle tracking-tight sm:text-3xl md:text-4xl"
+                  >원</div>
+                </div>
+                {errors?.currentMonthBudget && (
+                  <p className="text-red-500 text-xs mt-1 ml-2">{errors.currentMonthBudget}</p>
+                )}
+                <div className="self-stretch text-[color:var(--color-primary-400)] text-sm md:text-base font-bold">
+                  {formatKoreanCurrencyUnit(currentMonthBudget)}
+                </div>
+              </div>
+              {/* 다음 달 예산 */}
+              <div className="self-stretch flex flex-col justify-center items-start gap-3">
+                <div className="self-stretch text-[color:var(--color-primary-950)] text-sm md:text-base font-bold">매달 시작</div>
+                <div className="self-stretch border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 w-full max-w-full h-[49px] pb-[12px] scrollbar-hide overflow-x-visible">
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    style={nextMonthBudget ? { color: 'var(--color-primary-950)', height: '37px' } : { height: '37px' }}
+                    className={
+                      `flex-1 min-w-0 bg-transparent outline-none border-none` +
+                      (nextMonthBudget
+                        ? ' text-[color:var(--color-primary-950)] font-extrabold text-[20px] sm:text-[32px] md:text-[40px] tracking-tight leading-[100%] align-middle'
+                        : ' text-neutral-300 text-xl sm:text-3xl md:text-3xl font-bold placeholder:text-neutral-300 placeholder:font-bold placeholder:text-[18px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-bottom placeholder:tracking-tight')
+                    }
+                    placeholder="예산을 입력해주세요"
+                    value={nextMonthBudget === undefined || nextMonthBudget === null || nextMonthBudget === "" ? "" : nextMonthBudget}
+                    onChange={(e) => {
+                      const onlyNums = e.target.value.replace(/[^0-9]/g, "");
+                      onChange("nextMonthBudget", onlyNums);
+                    }}
+                    disabled={loading}
+                  />
+                  <div
+                    className="text-[color:var(--color-primary-950)] font-bold leading-[100%] align-middle tracking-tight sm:text-3xl md:text-4xl"
+                  >원</div>
+                </div>
+                {errors?.nextMonthBudget && <p className="text-red-500 text-xs mt-1 ml-2">{errors.nextMonthBudget}</p>}
+                <div className="self-stretch text-[color:var(--color-primary-400)] text-sm md:text-base font-bold">
+                  {formatKoreanCurrencyUnit(nextMonthBudget)}
+                </div>
+              </div>
             </div>
-            {errors?.nextMonthBudget && <p className="text-red-500 text-xs mt-1 ml-2">{errors.nextMonthBudget}</p>}
-            <div className="self-stretch text-zinc-500 text-sm md:text-base font-bold font-suit">0원</div>
           </div>
-        </div>
+          <div className="self-stretch h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center mt-8">
+            <button
+              type="submit"
+              className="w-full h-full text-center text-white text-base font-bold"
+              disabled={loading}
+            >
+              {loading ? "저장 중..." : "수정하기"}
+            </button>
+          </div>
+        </form>
       </div>
-      <div className="self-stretch h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center mt-8">
-        <button
-          type="submit"
-          className="w-full h-full text-center text-white text-base font-bold font-suit"
-          disabled={loading}
-        >
-          {loading ? "저장 중..." : "수정하기"}
-        </button>
-      </div>
-      {success && <p className="text-green-600 mt-2">예산이 성공적으로 수정되었습니다.</p>}
-    </form>
+      <div className="hidden sm:block w-1/2" />
+    </div>
   );
 };
 
