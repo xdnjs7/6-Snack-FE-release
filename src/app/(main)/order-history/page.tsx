@@ -19,6 +19,7 @@ type TPurchaseItem = {
   amount: string;
   approvalDate: string;
   manager: string;
+  adminMessage?: string; // 즉시요청 구분용
 };
 
 const OrderHistoryPage = () => {
@@ -32,13 +33,7 @@ const OrderHistoryPage = () => {
   const { data: budgetData, isLoading: budgetLoading, isError: budgetIsError, error: budgetErrorObj } = useBudgets();
   const budgetError = budgetIsError ? (budgetErrorObj as Error)?.message || "예산 데이터를 불러오지 못했습니다." : null;
 
-  // 구매내역 데이터 패칭 (pending/approved 병합)
-  const {
-    data: pendingData,
-    isLoading: pendingLoading,
-    isError: pendingIsError,
-    error: pendingErrorObj,
-  } = useAdminOrders({ status: "pending", offset: (currentPage - 1) * itemsPerPage, limit: itemsPerPage, orderBy: sortBy });
+  // 구매내역 데이터 패칭 (승인완료만)
   const {
     data: approvedData,
     isLoading: approvedLoading,
@@ -46,18 +41,18 @@ const OrderHistoryPage = () => {
     error: approvedErrorObj,
   } = useAdminOrders({ status: "approved", offset: (currentPage - 1) * itemsPerPage, limit: itemsPerPage, orderBy: sortBy });
 
-  const purchaseListLoading = pendingLoading || approvedLoading;
-  const purchaseListError = pendingIsError ? (pendingErrorObj as Error)?.message : approvedIsError ? (approvedErrorObj as Error)?.message : null;
+  const purchaseListLoading = approvedLoading;
+  const purchaseListError = approvedIsError ? (approvedErrorObj as Error)?.message : null;
 
   const formatNumber = (num: number | undefined) => (typeof num === "number" ? num.toLocaleString() + "원" : "-");
 
-  // 데이터 파싱 및 병합
-  const statusMap: Record<string, "요청" | "승인"> = { pending: "요청", approved: "승인" };
-  const parse = (item: any, statusKey: string) => ({
+  // 데이터 파싱
+  const statusMap: Record<string, "요청" | "승인"> = { approved: "승인" };
+  const parse = (item: any) => ({
     id: String(item.id),
     requestDate: item.requestDate || item.createdAt || "-",
     requester: item.requesterName || item.requester || "-",
-    status: statusMap[statusKey],
+    status: statusMap["approved"],
     item: item.productName || item.itemSummary || item.item || "-", // productName 우선
     amount: typeof item.totalPrice === "number"
       ? item.totalPrice.toLocaleString()
@@ -66,13 +61,12 @@ const OrderHistoryPage = () => {
         : "-", // totalPrice 우선
     approvalDate: item.approvalDate || item.updatedAt || "-",
     manager: item.approver || item.managerName || item.manager || "-", // approver 우선
+    adminMessage: item.adminMessage,
   });
-  const pendingList = (pendingData?.orders || []).map((item: any) => parse(item, "pending"));
-  const approvedList = (approvedData?.orders || []).map((item: any) => parse(item, "approved"));
-  const purchaseItems = [...pendingList, ...approvedList];
-  const totalCount = (pendingData?.meta?.totalCount || 0) + (approvedData?.meta?.totalCount || 0);
+  const purchaseItems: TPurchaseItem[] = (approvedData?.orders || []).map((item: any) => parse(item));
+  const totalCount = approvedData?.meta?.totalCount || 0;
   const totalPages = Math.ceil(totalCount / itemsPerPage);
-  const currentItems = purchaseItems;
+  const currentItems: TPurchaseItem[] = purchaseItems;
 
   const handlePageChange = (page: number) => {
     if (page > 0 && page <= totalPages) {
@@ -366,37 +360,39 @@ const OrderHistoryPage = () => {
                     {currentItems.map((item) => (
                       <div
                         key={item.id}
-                        className="bg-[color:var(--color-primary-100)] rounded-[12px] p-5 flex flex-col gap-3 shadow-sm" // Figma 시안: 배경색 #F5F5F5, rounded-12px
-                        style={{
-                          border: "1px solid var(--color-primary-100)",
-                          width: "100%",
-                        }}
+                        className="bg-[color:var(--color-primary-100)] rounded-[12px] p-5 flex flex-col gap-3 shadow-sm"
+                        style={{ border: "1px solid var(--color-primary-100)", width: "100%" }}
                       >
                         <div className="flex justify-between items-center border-b border-neutral-200 pb-3 mb-2">
                           <div className="text-neutral-800 text-base font-bold font-suit">{item.item}</div>
                           <div className="text-neutral-800 text-lg font-extrabold font-suit">{item.amount}</div>
+                          {item.adminMessage?.includes("즉시 구매") ? (
+                            <span className="ml-2 px-2 py-1 rounded-[100px] text-xs font-bold font-suit bg-yellow-100 text-yellow-700">즉시요청</span>
+                          ) : null}
                         </div>
                         <div className="flex flex-col gap-2">
                           <div className="flex justify-between items-center">
                             <span className="text-neutral-500 text-sm font-normal font-suit">구매 요청일</span>
-                            <span className="text-neutral-800 text-sm font-bold font-suit">
-                              {item.requestDate}
-                            </span>
+                            <span className="text-neutral-800 text-sm font-bold font-suit">{item.requestDate}</span>
                           </div>
                           <div className="flex justify-between items-center">
                             <span className="text-neutral-500 text-sm font-normal font-suit">요청인</span>
                             <span className="flex items-center gap-2">
                               <span className="text-neutral-800 text-sm font-bold font-suit">{item.requester}</span>
-                              <span
-                                className={clsx(
-                                  "px-2 py-1 rounded-[100px] text-xs font-bold font-suit",
-                                  item.status === "요청"
-                                    ? "bg-blue-50 text-blue-600" // Figma 시안: 요청 #EBF2FF, 텍스트 #2563EB
-                                    : "bg-[color:var(--color-primary-100)] text-neutral-600", // 승인 #E5E5E5
-                                )}
-                              >
-                                {item.status}
-                              </span>
+                              {item.adminMessage?.includes("즉시 구매") ? (
+                                <span className="ml-2 px-2 py-1 rounded-[100px] text-xs font-bold font-suit bg-yellow-100 text-yellow-700">즉시요청</span>
+                              ) : (
+                                <span
+                                  className={clsx(
+                                    "px-2 py-1 rounded-[100px] text-xs font-bold font-suit",
+                                    item.status === "요청"
+                                      ? "bg-blue-50 text-blue-600" // Figma 시안: 요청 #EBF2FF, 텍스트 #2563EB
+                                      : "bg-[color:var(--color-primary-100)] text-neutral-600", // 승인 #E5E5E5
+                                  )}
+                                >
+                                  {item.status}
+                                </span>
+                              )}
                             </span>
                           </div>
                           <div className="flex justify-between items-center">
@@ -431,7 +427,7 @@ const OrderHistoryPage = () => {
                           구매 품목
                         </th>
                         <th className="px-6 py-4 text-left text-base font-bold text-neutral-500 font-suit">금액</th>
-                        <th className="px-6 py-4 text-left text-base font-bold text-neutral-500 font-suit">
+                        <th className="px-6 py-4 text-left textbase font-bold text-neutral-500 font-suit">
                           구매 승인일
                         </th>
                         <th className="px-6 py-4 text-left text-base font-bold text-neutral-500 font-suit">담당자</th>
@@ -442,10 +438,7 @@ const OrderHistoryPage = () => {
                         <tr
                           key={item.id}
                           className="h-20 align-middle"
-                          style={{
-                            borderBottom: "1px solid #E5E5E5", // Figma 시안: 테이블 행 하단 border #E5E5E5
-                            width: "100%",
-                          }}
+                          style={{ borderBottom: "1px solid #E5E5E5", width: "100%" }}
                         >
                           <td className="px-6 py-4 whitespace-nowrap text-base text-neutral-800 font-normal font-suit">
                             {item.requestDate}
@@ -453,16 +446,20 @@ const OrderHistoryPage = () => {
                           <td className="px-6 py-4 whitespace-nowrap text-base text-neutral-800 font-normal font-suit">
                             <span className="flex items-center gap-2">
                               <span>{item.requester}</span>
-                              <span
-                                className={clsx(
-                                  "px-2 py-1 rounded-[100px] text-xs font-bold font-suit",
-                                  item.status === "요청"
-                                    ? "bg-blue-50 text-blue-600" // Figma 시안: 요청 #EBF2FF, 텍스트 #2563EB
-                                    : "bg-[color:var(--color-primary-100)] text-neutral-600", // 승인 #E5E5E5
-                                )}
-                              >
-                                {item.status}
-                              </span>
+                              {item.adminMessage?.includes("즉시 구매") ? (
+                                <span className="ml-2 px-2 py-1 rounded-[100px] text-xs font-bold font-suit bg-yellow-100 text-yellow-700">즉시요청</span>
+                              ) : (
+                                <span
+                                  className={clsx(
+                                    "px-2 py-1 rounded-[100px] text-xs font-bold font-suit",
+                                    item.status === "요청"
+                                      ? "bg-blue-50 text-blue-600" // Figma 시안: 요청 #EBF2FF, 텍스트 #2563EB
+                                      : "bg-[color:var(--color-primary-100)] text-neutral-600", // 승인 #E5E5E5
+                                  )}
+                                >
+                                  {item.status}
+                                </span>
+                              )}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-pre-wrap text-base text-neutral-800 font-normal font-suit">
@@ -485,84 +482,84 @@ const OrderHistoryPage = () => {
               </>
             )}
           </div>
-
-          {/* Pagination */}
-          <nav
-            className="px-4 py-3 flex items-center justify-between sm:px-6"
-            style={{ width: "100%" }}
-            aria-label="Pagination"
-          >
-            <div className="text-neutral-800 text-base font-normal font-suit">
-              {currentPage} of {totalPages}
-            </div>
-            <div className="flex items-center">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className={clsx(
-                  "flex items-center gap-1.5 px-3 py-2 rounded-md",
-                  "text-neutral-500 text-base font-normal font-suit", // Figma 시안: 텍스트 #808080
-                  "bg-white", // Figma 시안: 배경 흰색, 테두리 #E5E5E5
-                  "hover:bg-neutral-100", // Figma 시안: 호버 시 배경 #F5F5F5
-                  "transition-colors duration-200",
-                  currentPage === 1 && "opacity-50 cursor-not-allowed",
-                )}
-              >
-                <span className="w-6 h-6 flex items-center justify-center">
-                  <svg
-                    width="8"
-                    height="14"
-                    viewBox="0 0 8 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="block mx-auto my-auto"
-                  >
-                    <path
-                      d="M7 13L1 7L7 1"
-                      stroke="#A3A3A3"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-                Prev
-              </button>
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className={clsx(
-                  "flex items-center gap-1.5 px-3 py-2 rounded-md",
-                  "text-neutral-800 text-base font-normal font-suit", // Figma 시안: 텍스트 #3C3C3C
-                  "bg-white", // Figma 시안: 배경 흰색, 테두리 #E5E5E5
-                  "hover:bg-neutral-100", // Figma 시안: 호버 시 배경 #F5F5F5
-                  "transition-colors duration-200 ml-2",
-                  currentPage === totalPages && "opacity-50 cursor-not-allowed",
-                )}
-              >
-                Next
-                <span className="w-6 h-6 flex items-center justify-center">
-                  <svg
-                    width="8"
-                    height="14"
-                    viewBox="0 0 8 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="block mx-auto my-auto"
-                  >
-                    <path
-                      d="M1 1L7 7L1 13"
-                      stroke="#222"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-              </button>
-            </div>
-          </nav>
         </div>
+
+        {/* Pagination */}
+        <nav
+          className="px-4 py-3 flex items-center justify-between sm:px-6"
+          style={{ width: "100%" }}
+          aria-label="Pagination"
+        >
+          <div className="text-neutral-800 text-base font-normal font-suit">
+            {currentPage} of {totalPages}
+          </div>
+          <div className="flex items-center">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={clsx(
+                "flex items-center gap-1.5 px-3 py-2 rounded-md",
+                "text-neutral-500 text-base font-normal font-suit",
+                "bg-white",
+                "hover:bg-neutral-100",
+                "transition-colors duration-200",
+                currentPage === 1 && "opacity-50 cursor-not-allowed",
+              )}
+            >
+              <span className="w-6 h-6 flex items-center justify-center">
+                <svg
+                  width="8"
+                  height="14"
+                  viewBox="0 0 8 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="block mx-auto my-auto"
+                >
+                  <path
+                    d="M7 13L1 7L7 1"
+                    stroke="#A3A3A3"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+              Prev
+            </button>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={clsx(
+                "flex items-center gap-1.5 px-3 py-2 rounded-md",
+                "text-neutral-800 text-base font-normal font-suit",
+                "bg-white",
+                "hover:bg-neutral-100",
+                "transition-colors duration-200 ml-2",
+                currentPage === totalPages && "opacity-50 cursor-not-allowed",
+              )}
+            >
+              Next
+              <span className="w-6 h-6 flex items-center justify-center">
+                <svg
+                  width="8"
+                  height="14"
+                  viewBox="0 0 8 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="block mx-auto my-auto"
+                >
+                  <path
+                    d="M1 1L7 7L1 13"
+                    stroke="#222"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </nav>
       </main>
     </div>
   );
