@@ -2,27 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import { getAdminOrders } from "@/lib/api/order.api"; // 경로가 맞는지 확인해주세요
-import { getBudgets } from "@/lib/api/budgets.api"; // 경로가 맞는지 확인해주세요
+import { useBudgets } from "@/hooks/useBudgets";
+import { useAdminOrders } from "@/hooks/useAdminOrders";
 import Dropdown from "@/components/common/DropDown";
-import fileIcon from "@/assets/icons/ic_file.svg"
+import fileIcon from "@/assets/icons/ic_file.svg";
 import Image from "next/image";
-
-// API 응답 타입 정의 (예시, 실제 응답에 맞게 수정 필요)
-type AdminOrderApiItem = {
-  id: number | string;
-  requestDate?: string;
-  createdAt?: string;
-  requesterName?: string;
-  requester?: string;
-  itemSummary?: string;
-  item?: string;
-  amount?: number;
-  approvalDate?: string;
-  updatedAt?: string;
-  managerName?: string;
-  manager?: string;
-};
 
 // 구매 내역 아이템 타입 정의
 // (API 응답에 맞게 타입을 수정해야 할 수 있음)
@@ -37,78 +21,60 @@ type TPurchaseItem = {
   manager: string;
 };
 
-type AdminOrderApiResponse = {
-  items?: AdminOrderApiItem[];
-  data?: AdminOrderApiItem[];
-  totalCount?: number;
-  total?: number;
-};
-
-const statusMap: Record<string, "요청" | "승인"> = {
-  pending: "요청",
-  approved: "승인",
-};
-
-// 예산/지출/총액 API 응답 타입
-interface BudgetSummaryApi {
-  id: number;
-  companyId: number;
-  currentMonthExpense: number;
-  currentMonthBudget: number;
-  monthlyBudget: number;
-  year: string;
-  month: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-  currentYearTotalExpense: number;
-  previousMonthBudget: number;
-  previousMonthExpense: number;
-  previousYearTotalExpense: number;
-}
-
-const formatNumber = (num: number | undefined) => (typeof num === "number" ? num.toLocaleString() + "원" : "-");
-
 const OrderHistoryPage = () => {
-  // PurchaseSummary 상태
-  const [budgetData, setBudgetData] = useState<BudgetSummaryApi | null>(null);
-  const [budgetLoading, setBudgetLoading] = useState(false);
-  const [budgetError, setBudgetError] = useState<string | null>(null);
-  const [isHovered, setIsHovered] = useState(false); // Add state for hover
-
-  // PurchaseList 상태
-  const [purchaseItems, setPurchaseItems] = useState<TPurchaseItem[]>([]);
   const [sortBy, setSortBy] = useState<string>("latest");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [purchaseListLoading, setPurchaseListLoading] = useState(false);
-  const [purchaseListError, setPurchaseListError] = useState<string | null>(null);
   const itemsPerPage = 4;
-  const [totalCount, setTotalCount] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  // PurchaseSummary 데이터 로드
-  useEffect(() => {
-    const fetchData = async () => {
-      setBudgetLoading(true);
-      setBudgetError(null);
-      try {
-        const res = await getBudgets();
-        setBudgetData(res);
-      } catch (e: unknown) {
-        let msg = "예산 데이터를 불러오지 못했습니다.";
-        if (typeof e === "object" && e !== null && "message" in e) {
-          const err = e as { message?: string };
-          if (typeof err.message === "string") {
-            msg = err.message;
-          }
-        }
-        setBudgetError(msg);
-      } finally {
-        setBudgetLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  // 예산 데이터 패칭
+  const { data: budgetData, isLoading: budgetLoading, isError: budgetIsError, error: budgetErrorObj } = useBudgets();
+  const budgetError = budgetIsError ? (budgetErrorObj as Error)?.message || "예산 데이터를 불러오지 못했습니다." : null;
+
+  // 구매내역 데이터 패칭 (pending/approved 병합)
+  const {
+    data: pendingData,
+    isLoading: pendingLoading,
+    isError: pendingIsError,
+    error: pendingErrorObj,
+  } = useAdminOrders({ status: "pending", offset: (currentPage - 1) * itemsPerPage, limit: itemsPerPage, orderBy: sortBy });
+  const {
+    data: approvedData,
+    isLoading: approvedLoading,
+    isError: approvedIsError,
+    error: approvedErrorObj,
+  } = useAdminOrders({ status: "approved", offset: (currentPage - 1) * itemsPerPage, limit: itemsPerPage, orderBy: sortBy });
+
+  const purchaseListLoading = pendingLoading || approvedLoading;
+  const purchaseListError = pendingIsError ? (pendingErrorObj as Error)?.message : approvedIsError ? (approvedErrorObj as Error)?.message : null;
+
+  const formatNumber = (num: number | undefined) => (typeof num === "number" ? num.toLocaleString() + "원" : "-");
+
+  // 데이터 파싱 및 병합
+  const statusMap: Record<string, "요청" | "승인"> = { pending: "요청", approved: "승인" };
+  const parse = (item: any, statusKey: string) => ({
+    id: String(item.id),
+    requestDate: item.requestDate || item.createdAt || "-",
+    requester: item.requesterName || item.requester || "-",
+    status: statusMap[statusKey],
+    item: item.itemSummary || item.item || "-",
+    amount: typeof item.amount === "number" ? item.amount.toLocaleString() : "-",
+    approvalDate: item.approvalDate || item.updatedAt || "-",
+    manager: item.managerName || item.manager || "-",
+  });
+  const pendingList = (pendingData?.orders || []).map((item: any) => parse(item, "pending"));
+  const approvedList = (approvedData?.orders || []).map((item: any) => parse(item, "approved"));
+  const purchaseItems = [...pendingList, ...approvedList];
+  const totalCount = (pendingData?.meta?.totalCount || 0) + (approvedData?.meta?.totalCount || 0);
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
+  const currentItems = purchaseItems;
+
+  const handlePageChange = (page: number) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
   // PurchaseList 드롭다운 외부 클릭 감지
   useEffect(() => {
@@ -122,68 +88,6 @@ const OrderHistoryPage = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dropdownOpen]);
-
-  // PurchaseList 데이터 로드
-  useEffect(() => {
-    const fetchData = async () => {
-      setPurchaseListLoading(true);
-      setPurchaseListError(null);
-      try {
-        const [pendingRes, approvedRes]: [AdminOrderApiResponse, AdminOrderApiResponse] = await Promise.all([
-          getAdminOrders({
-            status: "pending",
-            offset: (currentPage - 1) * itemsPerPage,
-            limit: itemsPerPage,
-            orderBy: sortBy,
-          }),
-          getAdminOrders({
-            status: "approved",
-            offset: (currentPage - 1) * itemsPerPage,
-            limit: itemsPerPage,
-            orderBy: sortBy,
-          }),
-        ]);
-        const parse = (item: AdminOrderApiItem, statusKey: string): TPurchaseItem => ({
-          id: String(item.id),
-          requestDate: item.requestDate || item.createdAt || "-",
-          requester: item.requesterName || item.requester || "-",
-          status: statusMap[statusKey],
-          item: item.itemSummary || item.item || "-",
-          amount: typeof item.amount === "number" ? item.amount.toLocaleString() : "-",
-          approvalDate: item.approvalDate || item.updatedAt || "-",
-          manager: item.managerName || item.manager || "-",
-        });
-        const pendingList = (pendingRes.items || pendingRes.data || []).map((item) => parse(item, "pending"));
-        const approvedList = (approvedRes.items || approvedRes.data || []).map((item) => parse(item, "approved"));
-        setPurchaseItems([...pendingList, ...approvedList]);
-        setTotalCount(
-          (pendingRes.totalCount || pendingRes.total || 0) + (approvedRes.totalCount || approvedRes.total || 0),
-        );
-      } catch (e: unknown) {
-        let msg = "구매 내역 데이터를 불러오지 못했습니다.";
-        if (typeof e === "object" && e !== null && "message" in e) {
-          const err = e as { message?: string };
-          if (typeof err.message === "string") {
-            msg = err.message;
-          }
-        }
-        setPurchaseListError(msg);
-      } finally {
-        setPurchaseListLoading(false);
-      }
-    };
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortBy, currentPage]);
-
-  const totalPages = Math.ceil(totalCount / itemsPerPage);
-  const currentItems = purchaseItems; // 이미 API에서 페이징된 데이터만 받아옴
-
-  const handlePageChange = (page: number) => {
-    if (page > 0 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
 
   return (
     <div
@@ -386,7 +290,7 @@ const OrderHistoryPage = () => {
             ) : currentItems.length === 0 ? (
               <>
                 {/* 모바일: sm 미만 */}
-                <div className="block sm:hidden w-full flex justify-center items-center py-16">
+                <div className="sm:hidden w-full flex justify-center items-center py-16">
                   <div className="self-stretch inline-flex flex-col justify-start items-center gap-5 w-full">
                     <div className="w-24 h-24 relative bg-neutral-50 rounded-[100px] overflow-hidden mb-2" />
                     <div className="self-stretch flex flex-col justify-start items-center gap-10 w-full">
