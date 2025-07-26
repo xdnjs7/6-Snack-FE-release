@@ -4,7 +4,6 @@ import CategoryNavigation from "@/components/common/ProductDetail/CategoryNaviga
 import SubCategoryItem from "@/components/common/SubCategoryItem";
 import ProductGrid from "@/components/common/ProductGrid";
 import { CATEGORIES } from "@/lib/utils/categories.util";
-import { getProducts } from "@/lib/api/product.api";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useMediaQuery } from "react-responsive";
@@ -12,7 +11,6 @@ import Button from "@/components/ui/Button";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { useModal } from "@/providers/ModalProvider";
 import ProductRegistrationForm from "@/components/common/ProductRegistrationForm";
-import { TProduct } from "@/types/product.types";
 import { useProducts } from "@/hooks/useProducts";
 import PlusToggleIconSvg from "@/components/svg/PlusToggleIconSvg";
 import Dropdown from "@/components/common/DropDown";
@@ -146,7 +144,7 @@ export default function ProductsPageContent() {
           ) : (
             <>
               {/* 상품 그리드 */}
-              <ProductGrid products={allProducts} />
+              <ProductGrid products={allProducts} currentCategoryId={selectedCategory?.id} />
               {hasNextPage && (
                 <Button
                   type="white"
