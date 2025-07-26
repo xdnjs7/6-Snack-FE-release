@@ -7,6 +7,7 @@ import { useAdminOrders } from "@/hooks/useAdminOrders";
 import Dropdown from "@/components/common/DropDown";
 import fileIcon from "@/assets/icons/ic_file.svg";
 import Image from "next/image";
+import { formatDate } from "@/lib/utils/formatDate.util";
 
 // 구매 내역 아이템 타입 정의
 // (API 응답에 맞게 타입을 수정해야 할 수 있음)
@@ -50,7 +51,11 @@ const OrderHistoryPage = () => {
   const statusMap: Record<string, "요청" | "승인"> = { approved: "승인" };
   const parse = (item: any) => ({
     id: String(item.id),
-    requestDate: item.requestDate || item.createdAt || "-",
+    requestDate: item.requestDate
+      ? formatDate(item.requestDate)
+      : item.createdAt
+        ? formatDate(item.createdAt)
+        : "-",
     requester: item.requesterName || item.requester || "-",
     status: statusMap["approved"],
     item: item.productName || item.itemSummary || item.item || "-", // productName 우선
@@ -59,7 +64,11 @@ const OrderHistoryPage = () => {
       : typeof item.amount === "number"
         ? item.amount.toLocaleString()
         : "-", // totalPrice 우선
-    approvalDate: item.approvalDate || item.updatedAt || "-",
+    approvalDate: item.approvalDate
+      ? formatDate(item.approvalDate)
+      : item.updatedAt
+        ? formatDate(item.updatedAt)
+        : "-",
     manager: item.approver || item.managerName || item.manager || "-", // approver 우선
     adminMessage: item.adminMessage,
   });
