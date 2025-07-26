@@ -12,6 +12,6 @@ export const useAdminOrders = ({ status, offset, limit, orderBy }: UseAdminOrder
   return useQuery({
     queryKey: ['adminOrders', status, offset, limit, orderBy],
     queryFn: () => getAdminOrders({ status, offset, limit, orderBy }),
-    staleTime: 1000 * 60, // 1분 캐싱
+    staleTime: 0, // 항상 최신 데이터 패칭
   });
 };
