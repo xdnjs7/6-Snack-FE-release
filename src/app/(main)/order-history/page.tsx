@@ -114,15 +114,15 @@ const OrderHistoryPage = () => {
           <div className="text-lg sm:text-2xl font-bold font-suit" style={{ color: "var(--color-primary-950)" }}>구매 내역 확인</div>
           <div className="relative custom-sort-dropdown">
             <Dropdown
-              options={["최신순", "낮은 금액순", "높은 금액순"]}
+              options={["최신순", "낮은 가격순", "높은 가격순"]}
               onChange={(selectedOption: string) => {
                 // 선택된 옵션에 따라 sortBy 상태 업데이트
                 if (selectedOption === "최신순") {
-                  setSortBy("latest");
-                } else if (selectedOption === "낮은 금액순") {
-                  setSortBy("priceAsc"); // API에서 낮은 금액순 정렬 파라미터에 맞게 값 지정
-                } else if (selectedOption === "높은 금액순") {
-                  setSortBy("priceDesc"); // API에서 높은 금액순 정렬 파라미터에 맞게 값 지정
+                  setSortBy("latest"); // createdAt 내림차순
+                } else if (selectedOption === "낮은 가격순") {
+                  setSortBy("priceLow"); // totalPrice 오름차순
+                } else if (selectedOption === "높은 가격순") {
+                  setSortBy("priceHigh"); // totalPrice 내림차순
                 }
               }}
             />
