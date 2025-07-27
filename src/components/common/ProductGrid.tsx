@@ -39,7 +39,7 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
   }
 
   return (
-    <div className="grid grid-cols-2 grid-rows-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:grid-rows-3 sm:gap-x-3.5 sm:gap-y-7.5 md:grid-cols-3 md:grid-rows-2 md:gap-x-10 md:gap-y-15">
+    <div className="grid grid-cols-2 grid-rows-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:grid-rows-3 sm:gap-x-3.5 sm:gap-y-7.5 md:grid-cols-3 md:grid-rows-2 md:gap-x-10 md:gap-y-15 overflow-hidden justify-items-center">
       {products.map((product) => {
         // 상품 상세 페이지 URL 생성 (카테고리 파라미터 포함)
         // 현재 선택된 카테고리가 있으면 그것을 사용, 없으면 상품의 카테고리 ID 사용
@@ -50,21 +50,21 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
           <Link
             key={product.id}
             href={productDetailUrl}
-            className="flex flex-col justify-start items-start gap-5 hover:opacity-80 transition-opacity"
+            className="flex flex-col justify-start items-center gap-[14px] hover:opacity-80 transition-opacity h-[240.5px] w-full"
           >
-            <div className="relative w-full h-[154.5px] px-[120px] py-[73px] round-xs  bg-primary-50">
+            <div className="relative w-full aspect-square min-h-[154.5px] max-h-[366.67px] px-4 sm:px-[120px] py-4 sm:py-[73px] round-xs bg-primary-50 overflow-hidden">
               <Image src={img_coke_zero.src} alt={product.name} fill className="object-contain" />
             </div>
-            <div className="flex flex-col justify-start items-start gap-2">
-              <div className="inline-flex justify-start items-center gap-2">
-                <div className="justify-start text-stone-900 text-lg font-normal">{product.name}</div>
-                {/* 상품 팔린갯수 api 연동되면 가져와야함, 변경예정 */}
-                <div className="justify-center text-blue-500 text-sm font-bold ">29회 구매</div>
-              </div>
+            <div className="flex flex-col justify-start items-start gap-2 w-full">
+              <div className="justify-start text-stone-900 text-lg font-normal">{product.name}</div>
+              {/* 상품 팔린갯수 api 연동되면 가져와야함, 변경예정 */}
               <div className="justify-start text-stone-900 text-lg font-extrabold">
                 {product.price.toLocaleString("ko-KR")}원
               </div>
+              <div className="justify-center text-blue-500 text-sm font-bold ">29회 구매</div>
             </div>
+
+            {/* </div> */}
           </Link>
         );
       })}

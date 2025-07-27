@@ -101,7 +101,7 @@ export default function ProductsPageContent() {
   }, [searchParams, findCategoryPath, clearSelectedCategory]);
 
   return (
-    <div className="w-full flex items-start justify-center">
+    <div className="w-full flex items-start justify-center sm:gap-5 md:gap-10">
       {/* 카테고리 태블릿,데스크탑 */}
       <div className="hidden sm:block">
         <SubCategoryItem categories={categories} />
@@ -117,10 +117,10 @@ export default function ProductsPageContent() {
           <CategoryNavigation
             parentCategory={selectedCategory?.parent}
             childCategory={selectedCategory?.child}
-            className="sm:border-b-0"
+            className="sm:border-b-0 px-6 sm:px-0"
           />
           {/* 정렬, 상품등록 버튼 wrapper */}
-          <div className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5">
+          <div className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5 border-b border-primary-100 sm:border-0 px-6 sm:px-0">
             <Dropdown options={sortOptions.map((option) => option.label)} onChange={handleSortChange} />
             <Button
               type="black"
