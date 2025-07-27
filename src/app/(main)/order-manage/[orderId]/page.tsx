@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { useOrderDetail } from "@/hooks/useOrderDetail";
+import Button from "@/components/ui/Button";
 
 type TOrderManageDetailPageProps = {
   // 현재는 props가 없지만 향후 확장성을 위해 타입 정의
@@ -263,6 +264,11 @@ export default function OrderManageDetailPage({}: TOrderManageDetailPageProps) {
               </div>
             </div>
           </div>
+        </div>
+        {/* 요청 반려, 요청 승인 버튼 */}
+        <div className="flex w-full justify-center gap-4 sm:gap-5">
+          <Button type="white" label="요청 반려" className="w-full h-16 md:max-w-[300px]" />
+          <Button type="primary" label="요청 승인" className="w-full h-16 md:max-w-[300px]" />
         </div>
       </div>
     </div>
