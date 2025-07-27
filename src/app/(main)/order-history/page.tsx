@@ -1,100 +1,31 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
-import { useBudgets } from "@/hooks/useBudgets";
-import { useAdminOrders } from "@/hooks/useAdminOrders";
 import Dropdown from "@/components/common/DropDown";
 import fileIcon from "@/assets/icons/ic_file.svg";
 import Image from "next/image";
-import { formatDate } from "@/lib/utils/formatDate.util";
-
-// 구매 내역 아이템 타입 정의
-// (API 응답에 맞게 타입을 수정해야 할 수 있음)
-type TPurchaseItem = {
-  id: string;
-  requestDate: string;
-  requester: string;
-  status: "요청" | "승인";
-  item: string;
-  amount: string;
-  approvalDate: string;
-  manager: string;
-  adminMessage?: string; // 즉시요청 구분용
-};
+import { useOrderHistory } from "@/hooks/useOrderHistory";
 
 const OrderHistoryPage = () => {
-  const [sortBy, setSortBy] = useState<string>("latest");
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 4;
-  const [isHovered, setIsHovered] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  // 예산 데이터 패칭
-  const { data: budgetData, isLoading: budgetLoading, isError: budgetIsError, error: budgetErrorObj } = useBudgets();
-  const budgetError = budgetIsError ? (budgetErrorObj as Error)?.message || "예산 데이터를 불러오지 못했습니다." : null;
-
-  // 구매내역 데이터 패칭 (승인완료만)
+  // 공통 로직 훅 사용
   const {
-    data: approvedData,
-    isLoading: approvedLoading,
-    isError: approvedIsError,
-    error: approvedErrorObj,
-  } = useAdminOrders({ status: "approved", offset: (currentPage - 1) * itemsPerPage, limit: itemsPerPage, orderBy: sortBy });
-
-  const purchaseListLoading = approvedLoading;
-  const purchaseListError = approvedIsError ? (approvedErrorObj as Error)?.message : null;
-
-  const formatNumber = (num: number | undefined) => (typeof num === "number" ? num.toLocaleString() + "원" : "-");
-
-  // 데이터 파싱
-  const statusMap: Record<string, "요청" | "승인"> = { approved: "승인" };
-  const parse = (item: any) => ({
-    id: String(item.id),
-    requestDate: item.requestDate
-      ? formatDate(item.requestDate)
-      : item.createdAt
-        ? formatDate(item.createdAt)
-        : "-",
-    requester: item.requesterName || item.requester || "-",
-    status: statusMap["approved"],
-    item: item.productName || item.itemSummary || item.item || "-", // productName 우선
-    amount: typeof item.totalPrice === "number"
-      ? item.totalPrice.toLocaleString()
-      : typeof item.amount === "number"
-        ? item.amount.toLocaleString()
-        : "-", // totalPrice 우선
-    approvalDate: item.approvalDate
-      ? formatDate(item.approvalDate)
-      : item.updatedAt
-        ? formatDate(item.updatedAt)
-        : "-",
-    manager: item.approver || item.managerName || item.manager || "-", // approver 우선
-    adminMessage: item.adminMessage,
-  });
-  const purchaseItems: TPurchaseItem[] = (approvedData?.orders || []).map((item: any) => parse(item));
-  const totalCount = approvedData?.meta?.totalCount || 0;
-  const totalPages = Math.ceil(totalCount / itemsPerPage);
-  const currentItems: TPurchaseItem[] = purchaseItems;
-
-  const handlePageChange = (page: number) => {
-    if (page > 0 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
-
-  // PurchaseList 드롭다운 외부 클릭 감지
-  useEffect(() => {
-    if (!dropdownOpen) return;
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (!target.closest(".custom-sort-dropdown")) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [dropdownOpen]);
+    budgetData,
+    budgetLoading,
+    budgetError,
+    purchaseListLoading,
+    purchaseListError,
+    currentItems,
+    totalPages,
+    currentPage,
+    handlePageChange,
+    sortBy,
+    setSortBy,
+    dropdownOpen,
+    setDropdownOpen,
+    formatNumber,
+  } = useOrderHistory();
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
@@ -181,7 +112,7 @@ const OrderHistoryPage = () => {
                 </div>
                 {/* 진행바 */}
                 <div className="w-full flex items-center gap-0 mt-0">
-                  <div className="flex-1 h-1.5 rounded-md overflow-hidden bg-[color:var(--color-primary-200)]">
+                  <div className="flex-1 h-1.5 rounded-md overflow-hidden bg-[color:var(--color-primary-200]">
                     <div
                       className="h-1.5 rounded-md bg-[color:var(--color-secondary-500)]"
                       style={{
