@@ -443,7 +443,7 @@ const OrderHistoryPage = () => {
       <div className="min-h-screen w-full relative bg-white overflow-hidden hidden md:block">
 
         {/* Desktop Content */}
-        <div className="max-w-7xl mx-auto px-6 pt-[40px] pb-10 inline-flex flex-col justify-start items-start gap-10">
+        <div className="w-full max-w-[1600px] mx-auto px-8 pt-[40px] pb-10 inline-flex flex-col justify-start items-start gap-10">
           {/* Desktop Header + Sort */}
           <div className="self-stretch inline-flex justify-between items-center">
             <div className="justify-center text-neutral-800 text-lg font-bold font-['SUIT']">구매 내역 확인</div>
