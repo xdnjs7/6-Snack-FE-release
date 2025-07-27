@@ -53,7 +53,7 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
             className="flex flex-col justify-start items-center gap-[14px] hover:opacity-80 transition-opacity h-[240.5px] w-full"
           >
             <div className="relative w-full aspect-square min-h-[154.5px] max-h-[366.67px] px-4 sm:px-[120px] py-4 sm:py-[73px] round-xs bg-primary-50 overflow-hidden">
-              <Image src={img_coke_zero.src} alt={product.name} fill className="object-contain" />
+              <Image src={product.imageUrl} alt={product.name} fill className="object-contain" />
             </div>
             <div className="flex flex-col justify-start items-start gap-2 w-full">
               <div className="justify-start text-stone-900 text-lg font-normal">{product.name}</div>
