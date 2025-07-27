@@ -15,6 +15,7 @@ import PlusToggleIconSvg from "@/components/svg/PlusToggleIconSvg";
 import Dropdown from "@/components/common/DropDown";
 import { useCategoryStore } from "@/stores/categoryStore";
 import { useDeviceType } from "@/hooks/useDeviceType";
+import SubCategoryTabs from "./SubCategoryTabs";
 
 type TCategoryData = {
   parentCategory: Array<{ id: number; name: string }>;
@@ -27,7 +28,7 @@ export default function ProductsPageContent() {
   const [categories] = useState<TCategoryData>(CATEGORIES);
   const [selectedSort, setSelectedSort] = useState<TSortOptions>("latest");
   // 전역 카테고리 상태 사용
-  const { selectedCategory, findCategoryPath, clearSelectedCategory } = useCategoryStore();
+  const { selectedCategory, clearSelectedCategory, findCategoryPath } = useCategoryStore();
 
   // 정렬 옵션 매핑
   const sortOptions = [
@@ -98,14 +99,15 @@ export default function ProductsPageContent() {
   }, [searchParams, findCategoryPath, clearSelectedCategory]);
 
   return (
-    <div className="flex items-start justify-center">
+    <div className="w-full flex items-start justify-center sm:gap-5 md:gap-10">
       {/* 카테고리 태블릿,데스크탑 */}
       <div className="hidden sm:block">
         <SubCategoryItem categories={categories} />
       </div>
 
       <div className="flex flex-col sm:h-16 sm:w-full sm:border-b sm:border-primary-100">
-        {/* TODO: 모바일 전용 하위 카테고리 - 선택된 카테고리가 있을 때만 표시 */}
+        {/* TODO: 모바일 전용 하위 카테고리 TabMenu - 선택된 카테고리가 있을 때만 표시 */}
+        <SubCategoryTabs />
 
         <div className="flex flex-col sm:flex-row sm:justify-between">
           {/* 모바일, 태블릿, 데스크탑에서 전부 보이는 상위/하위 카테고리 바 */}
@@ -113,10 +115,10 @@ export default function ProductsPageContent() {
           <CategoryNavigation
             parentCategory={selectedCategory?.parent}
             childCategory={selectedCategory?.child}
-            className="sm:border-b-0"
+            className="sm:border-b-0 px-6 sm:px-0"
           />
           {/* 정렬, 상품등록 버튼 wrapper */}
-          <div className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5">
+          <div className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5 px-[24px] sm:px-0">
             <Dropdown options={sortOptions.map((option) => option.label)} onChange={handleSortChange} />
             <Button
               type="black"
@@ -132,7 +134,7 @@ export default function ProductsPageContent() {
           </div>
         </div>
         {/* 상품 목록 */}
-        <div className="container mx-auto py-6">
+        <div className="container mx-auto py-6 px-[24px] sm:px-0 ">
           {isLoading ? (
             <div className="flex justify-center items-center py-16">
               <div className="text-primary-500">로딩 중...</div>
@@ -140,7 +142,7 @@ export default function ProductsPageContent() {
           ) : (
             <>
               {/* 상품 그리드 */}
-              <ProductGrid products={allProducts} />
+              <ProductGrid products={allProducts} currentCategoryId={selectedCategory?.id} />
               {hasNextPage && (
                 <Button
                   type="white"

@@ -59,7 +59,7 @@ export default function SideMenu({ items, isOpen, currentPath, onItemClick, onCl
   };
 
   const sideMenuContent = (
-    <div className="fixed inset-0 z-[9999]">
+    <div className="fixed inset-0 z-[10002]">
       {/* Background Overlay */}
       <div className="absolute inset-0 bg-black/20" onClick={onClose} />
 

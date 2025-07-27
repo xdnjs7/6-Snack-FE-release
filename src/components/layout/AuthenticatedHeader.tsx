@@ -42,12 +42,12 @@ export default function AuthenticatedHeader() {
 
   // 햄버거 메뉴버튼 클릭 핸들러
   const handleMenuClick = () => {
-    setIsMenuOpen(true);
+    setIsMenuOpen(!isMenuOpen);
   };
 
-  // 카테고리 메뉴 열기 핸들러
+  // 카테고리 메뉴 토글 핸들러
   const handleCategoryMenuClick = () => {
-    setIsCategoryMenuOpen(true);
+    setIsCategoryMenuOpen(!isCategoryMenuOpen);
   };
 
   // 사이드바 메뉴에서 nav 선택시 핸들러
@@ -68,7 +68,7 @@ export default function AuthenticatedHeader() {
   // 현재 선택된 카테고리 이름 표시 (전역 상태에서 가져옴)
   const currentCategoryName = selectedCategory?.parent || "전체";
   return (
-    <header className="w-full h-14 sm:h-25 md:h-[90px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] sm:px-[24px] sm:py-[28px] md:px-[100px] md:py-[32px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg">
+    <header className="w-full h-14 sm:h-25 md:h-[90px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] sm:px-[24px] sm:py-[28px] md:px-[100px] md:py-[32px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg relative z-[10000]">
       <div className="flex items-center justify-center md:gap-10">
         <Link href="/">
           <SnackIconSvg className="w-[102.75px] h-[44px]" />
@@ -104,14 +104,15 @@ export default function AuthenticatedHeader() {
 
       {/* 카테고리 dropdown 버튼 - mobile  */}
       <div className="block sm:hidden">
-        <div className="flex gap-1 items-center">
+        <button
+          className="flex gap-1 items-center cursor-pointer"
+          onClick={handleCategoryMenuClick}
+          aria-expanded={isCategoryMenuOpen}
+          aria-haspopup="true"
+        >
           <p className="font-bold">{currentCategoryName}</p>
-          <ArrowIconSvg
-            direction={isCategoryMenuOpen ? "up" : "down"}
-            onClick={handleCategoryMenuClick}
-            className="w-5 h-5 text-black"
-          />
-        </div>
+          <ArrowIconSvg direction={isCategoryMenuOpen ? "up" : "down"} className="w-5 h-5 text-black" />
+        </button>
       </div>
 
       {/* 장바구니 + 메뉴 영역 */}

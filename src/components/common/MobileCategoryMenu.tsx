@@ -29,13 +29,13 @@ export default function MobileCategoryMenu({
   };
 
   const categoryMenuContent = (
-    <div className="fixed inset-0 z-[9999]">
-      {/* Background Overlay */}
+    <div className="fixed inset-0 z-[9999] sm:hidden">
+      {/* Background Overlay - 전체 화면 */}
       <div className="absolute inset-0 bg-black/20" onClick={onClose} />
 
       {/* Category Menu */}
       <div
-        className={`absolute top-14 md:top-[90px] left-1/2 transform -translate-x-1/2 w-full h-[calc(100vh-3.5rem)] sm:hidden bg-white/90 backdrop-blur-lg flex flex-col items-center gap-2.5 p-4 ${className}`}
+        className={`absolute top-14 left-1/2 transform -translate-x-1/2 w-full sm:hidden bg-white/90 backdrop-blur-lg flex flex-col items-center gap-2.5 p-4 ${className}`}
       >
         {items.map((item) => {
           const isActive = isCurrentCategory(item);
