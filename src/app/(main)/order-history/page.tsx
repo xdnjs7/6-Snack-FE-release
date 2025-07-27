@@ -607,7 +607,7 @@ const OrderHistoryPage = () => {
 
           {/* Desktop Budget Details Hover Box */}
           {isHovered && (
-            <div className="w-64 p-6 absolute left-1/2 transform -translate-x-1/2 top-[260px] bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
+            <div className="w-64 p-6 absolute left-[46%] transform -translate-x-1/2 top-[256px] bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
               <div className="inline-flex justify-start items-center gap-1">
                 <div className="justify-center text-white text-base font-extrabold font-['SUIT']">이번 달 남은 예산:</div>
                 <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
