@@ -8,14 +8,15 @@ import ChevronDownIcon from "@/assets/icons/ic_chevron_down.svg";
 
 type TDropdownProps = {
   options?: string[];
+  placeholder?: string;
   onChange: (value: string) => void;
 };
 
 const defaultOptions = ["최신순", "판매순", "낮은 가격순", "높은 가격순"];
 
-const Dropdown = ({ options = [], onChange }: TDropdownProps) => {
+const Dropdown = ({ options = [], placeholder = "정렬", onChange }: TDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [sort, setSort] = useState<string>("정렬");
+  const [sort, setSort] = useState<string>(placeholder);
 
   const handleSelect = (option: string) => {
     onChange(option);
