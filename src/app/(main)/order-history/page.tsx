@@ -64,12 +64,12 @@ const OrderHistoryPage = () => {
                     {budgetData ? formatNumber(budgetData.currentMonthBudget) : '1,000,000원'}
                   </div>
                 </div>
-                <div className="justify-center text-stone-500 text-sm font-normal font-['SUIT'] leading-snug">
+                <div className="relative w-34 justify-center text-stone-500 text-sm font-normal font-['SUIT'] leading-snug">
                   지난 달 예산은 {budgetData ? formatNumber(budgetData.previousMonthBudget) : '2,000,000원'}이었어요
                 </div>
               </div>
               <div
-                className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-4 overflow-hidden"
+                className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-3 overflow-hidden"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
               >
@@ -82,7 +82,7 @@ const OrderHistoryPage = () => {
                 <div className="justify-center text-stone-500 text-sm font-normal font-['SUIT']">
                   지난 달: {budgetData ? formatNumber(budgetData.previousMonthExpense) : '2,000,000원'}
                 </div>
-                <div className="self-stretch inline-flex justify-center items-center gap-1">
+                <div className="self-stretch inline-flex justify-left items-center gap-1">
                   <div className="w-20 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
                     <div
                       className="h-1.5 bg-blue-500 rounded-md"
@@ -497,8 +497,8 @@ const OrderHistoryPage = () => {
                   {budgetData ? formatNumber(budgetData.currentMonthExpense) : '126,000원'}
                 </div>
               </div>
-              <div className="self-stretch inline-flex justify-center items-center gap-2.5">
-                <div className="w-72 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
+              <div className="self-stretch inline-flex justify-left items-center gap-2.5">
+                <div className="w-90 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
                   <div
                     className="h-1.5 bg-blue-500 rounded-md"
                     style={{
