@@ -57,7 +57,7 @@ const OrderHistoryPage = () => {
           {/* Mobile Budget Cards */}
           <div className="self-stretch relative flex flex-col justify-center items-start gap-4">
             <div className="self-stretch inline-flex justify-start items-start gap-4">
-              <div className="flex-1 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 overflow-hidden">
+              <div className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 overflow-hidden">
                 <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
                   <div className="self-stretch justify-center text-neutral-800 text-base font-bold font-['SUIT']">이번 달 예산</div>
                   <div className="justify-center text-neutral-800 text-lg font-extrabold font-['SUIT']">
@@ -65,10 +65,14 @@ const OrderHistoryPage = () => {
                   </div>
                 </div>
                 <div className="justify-center text-stone-500 text-sm font-normal font-['SUIT'] leading-snug">
-                  지난 달 예산은<br />{budgetData ? formatNumber(budgetData.previousMonthBudget) : '2,000,000원'}이었어요
+                  지난 달 예산은 {budgetData ? formatNumber(budgetData.previousMonthBudget) : '2,000,000원'}이었어요
                 </div>
               </div>
-              <div className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-4 overflow-hidden">
+              <div
+                className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-4 overflow-hidden"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
                 <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
                   <div className="self-stretch justify-center text-neutral-800 text-base font-bold font-['SUIT']">이번 달 지출액</div>
                   <div className="justify-center text-neutral-800 text-lg font-extrabold font-['SUIT']">
@@ -79,8 +83,16 @@ const OrderHistoryPage = () => {
                   지난 달: {budgetData ? formatNumber(budgetData.previousMonthExpense) : '2,000,000원'}
                 </div>
                 <div className="self-stretch inline-flex justify-center items-center gap-1">
-                  <div className="w-20 h-1.5 bg-neutral-300 rounded-md" />
-                  <div className="w-16 h-1.5 bg-blue-500 rounded-md" />
+                  <div className="w-20 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
+                    <div
+                      className="h-1.5 bg-blue-500 rounded-md"
+                      style={{
+                        width: `${budgetData && budgetData.currentMonthBudget > 0
+                          ? Math.max(1, Math.round((budgetData.currentMonthExpense / budgetData.currentMonthBudget) * 100))
+                          : 0}%`,
+                      }}
+                    />
+                  </div>
                   <div className="justify-center text-neutral-800 text-xs font-normal font-['SUIT']">
                     {budgetData && budgetData.currentMonthBudget > 0
                       ? `${Math.max(1, Math.round((budgetData.currentMonthExpense / budgetData.currentMonthBudget) * 100))}%`
@@ -107,23 +119,25 @@ const OrderHistoryPage = () => {
             </div>
 
             {/* Mobile Budget Details Box */}
-            <div className="w-64 p-6 left-1/2 transform -translate-x-1/2 top-[141px] absolute bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
-              <div className="inline-flex justify-start items-center gap-1">
-                <div className="justify-center text-white text-base font-extrabold font-['SUIT']">이번 달 남은 예산:</div>
-                <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
-                  {budgetData ? formatNumber(budgetData.currentMonthBudget - budgetData.currentMonthExpense) : '126,000원'}
+            {isHovered && (
+              <div className="w-64 p-6 left-1/2 transform -translate-x-1/2 top-[141px] absolute bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
+                <div className="inline-flex justify-start items-center gap-1">
+                  <div className="justify-center text-white text-base font-extrabold font-['SUIT']">이번 달 남은 예산:</div>
+                  <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
+                    {budgetData ? formatNumber(budgetData.currentMonthBudget - budgetData.currentMonthExpense) : '126,000원'}
+                  </div>
                 </div>
-              </div>
-              <div className="inline-flex justify-start items-center gap-1">
-                <div className="justify-center text-white text-sm font-normal font-['SUIT']">지난 달 남은 예산:</div>
+                <div className="inline-flex justify-start items-center gap-1">
+                  <div className="justify-center text-white text-sm font-normal font-['SUIT']">지난 달 남은 예산:</div>
+                  <div className="justify-center text-white text-sm font-normal font-['SUIT']">
+                    {budgetData ? formatNumber(budgetData.previousMonthBudget - budgetData.previousMonthExpense) : '150,000원'}
+                  </div>
+                </div>
                 <div className="justify-center text-white text-sm font-normal font-['SUIT']">
-                  {budgetData ? formatNumber(budgetData.previousMonthBudget - budgetData.previousMonthExpense) : '150,000원'}
+                  지난 달보다 {budgetData ? Math.abs(budgetData.currentMonthExpense - budgetData.previousMonthExpense).toLocaleString() : '24,000'}원 {budgetData && budgetData.currentMonthExpense - budgetData.previousMonthExpense > 0 ? '더 사용했어요' : '덜 사용했어요'}
                 </div>
               </div>
-              <div className="justify-center text-white text-sm font-normal font-['SUIT']">
-                지난 달보다 {budgetData ? Math.abs(budgetData.currentMonthExpense - budgetData.previousMonthExpense).toLocaleString() : '24,000'}원 {budgetData && budgetData.currentMonthExpense - budgetData.previousMonthExpense > 0 ? '더 사용했어요' : '덜 사용했어요'}
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Mobile Purchase List */}
@@ -257,7 +271,11 @@ const OrderHistoryPage = () => {
                 지난 달 예산은<br />{budgetData ? formatNumber(budgetData.previousMonthBudget) : '2,000,000원'}이었어요
               </div>
             </div>
-            <div className="flex-1 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-4 overflow-hidden">
+            <div
+              className="flex-1 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-4 overflow-hidden"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
               <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
                 <div className="self-stretch justify-center text-neutral-800 text-lg font-bold font-['SUIT']">이번 달 지출액</div>
                 <div className="justify-center text-neutral-800 text-2xl font-extrabold font-['SUIT']">
@@ -268,8 +286,16 @@ const OrderHistoryPage = () => {
                 지난 달: {budgetData ? formatNumber(budgetData.previousMonthExpense) : '2,000,000원'}
               </div>
               <div className="self-stretch inline-flex justify-center items-center gap-2.5">
-                <div className="w-36 h-1.5 bg-neutral-300 rounded-md" />
-                <div className="w-24 h-1.5 bg-blue-500 rounded-md" />
+                <div className="w-36 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
+                  <div
+                    className="h-1.5 bg-blue-500 rounded-md"
+                    style={{
+                      width: `${budgetData && budgetData.currentMonthBudget > 0
+                        ? Math.max(1, Math.round((budgetData.currentMonthExpense / budgetData.currentMonthBudget) * 100))
+                        : 0}%`,
+                    }}
+                  />
+                </div>
                 <div className="justify-center text-neutral-800 text-sm font-normal font-['SUIT']">
                   {budgetData && budgetData.currentMonthBudget > 0
                     ? `${Math.max(1, Math.round((budgetData.currentMonthExpense / budgetData.currentMonthBudget) * 100))}%`
@@ -391,23 +417,25 @@ const OrderHistoryPage = () => {
           </div>
 
           {/* Tablet Budget Details Hover Box */}
-          <div className="w-64 p-6 absolute left-1/2 transform -translate-x-1/2 top-[229px] bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
-            <div className="inline-flex justify-start items-center gap-1">
-              <div className="justify-center text-white text-base font-extrabold font-['SUIT']">이번 달 남은 예산:</div>
-              <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
-                {budgetData ? formatNumber(budgetData.currentMonthBudget - budgetData.currentMonthExpense) : '126,000원'}
+          {isHovered && (
+            <div className="w-64 p-6 absolute left-1/2 transform -translate-x-1/2 top-[280px] bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
+              <div className="inline-flex justify-start items-center gap-1">
+                <div className="justify-center text-white text-base font-extrabold font-['SUIT']">이번 달 남은 예산:</div>
+                <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
+                  {budgetData ? formatNumber(budgetData.currentMonthBudget - budgetData.currentMonthExpense) : '126,000원'}
+                </div>
               </div>
-            </div>
-            <div className="inline-flex justify-start items-center gap-1">
-              <div className="justify-center text-white text-sm font-normal font-['SUIT']">지난 달 남은 예산:</div>
+              <div className="inline-flex justify-start items-center gap-1">
+                <div className="justify-center text-white text-sm font-normal font-['SUIT']">지난 달 남은 예산:</div>
+                <div className="justify-center text-white text-sm font-normal font-['SUIT']">
+                  {budgetData ? formatNumber(budgetData.previousMonthBudget - budgetData.previousMonthExpense) : '150,000원'}
+                </div>
+              </div>
               <div className="justify-center text-white text-sm font-normal font-['SUIT']">
-                {budgetData ? formatNumber(budgetData.previousMonthBudget - budgetData.previousMonthExpense) : '150,000원'}
+                지난 달보다 {budgetData ? Math.abs(budgetData.currentMonthExpense - budgetData.previousMonthExpense).toLocaleString() : '24,000'}원 {budgetData && budgetData.currentMonthExpense - budgetData.previousMonthExpense > 0 ? '더 사용했어요' : '덜 사용했어요'}
               </div>
             </div>
-            <div className="justify-center text-white text-sm font-normal font-['SUIT']">
-              지난 달보다 {budgetData ? Math.abs(budgetData.currentMonthExpense - budgetData.previousMonthExpense).toLocaleString() : '24,000'}원 {budgetData && budgetData.currentMonthExpense - budgetData.previousMonthExpense > 0 ? '더 사용했어요' : '덜 사용했어요'}
-            </div>
-          </div>
+          )}
         </div>
       </div>
 
@@ -451,7 +479,11 @@ const OrderHistoryPage = () => {
                 </div>
               </div>
             </div>
-            <div className="flex-1 pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 overflow-hidden">
+            <div
+              className="flex-1 pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 overflow-hidden"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
               <div className="self-stretch inline-flex justify-between items-start">
                 <div className="flex justify-start items-center gap-3.5">
                   <div className="inline-flex flex-col justify-start items-start gap-2">
@@ -466,8 +498,16 @@ const OrderHistoryPage = () => {
                 </div>
               </div>
               <div className="self-stretch inline-flex justify-center items-center gap-2.5">
-                <div className="w-72 h-1.5 bg-neutral-300 rounded-md" />
-                <div className="w-56 h-1.5 bg-blue-500 rounded-md" />
+                <div className="w-72 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
+                  <div
+                    className="h-1.5 bg-blue-500 rounded-md"
+                    style={{
+                      width: `${budgetData && budgetData.currentMonthBudget > 0
+                        ? Math.max(1, Math.round((budgetData.currentMonthExpense / budgetData.currentMonthBudget) * 100))
+                        : 0}%`,
+                    }}
+                  />
+                </div>
                 <div className="justify-center text-neutral-800 text-sm font-normal font-['SUIT']">
                   {budgetData && budgetData.currentMonthBudget > 0
                     ? `${Math.max(1, Math.round((budgetData.currentMonthExpense / budgetData.currentMonthBudget) * 100))}%`
@@ -564,23 +604,25 @@ const OrderHistoryPage = () => {
           </div>
 
           {/* Desktop Budget Details Hover Box */}
-          <div className="w-64 p-6 absolute left-1/2 transform -translate-x-1/2 top-[209px] bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
-            <div className="inline-flex justify-start items-center gap-1">
-              <div className="justify-center text-white text-base font-extrabold font-['SUIT']">이번 달 남은 예산:</div>
-              <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
-                {budgetData ? formatNumber(budgetData.currentMonthBudget - budgetData.currentMonthExpense) : '126,000원'}
+          {isHovered && (
+            <div className="w-64 p-6 absolute left-1/2 transform -translate-x-1/2 top-[260px] bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
+              <div className="inline-flex justify-start items-center gap-1">
+                <div className="justify-center text-white text-base font-extrabold font-['SUIT']">이번 달 남은 예산:</div>
+                <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
+                  {budgetData ? formatNumber(budgetData.currentMonthBudget - budgetData.currentMonthExpense) : '126,000원'}
+                </div>
               </div>
-            </div>
-            <div className="inline-flex justify-start items-center gap-1">
-              <div className="justify-center text-white text-sm font-normal font-['SUIT']">지난 달 남은 예산:</div>
+              <div className="inline-flex justify-start items-center gap-1">
+                <div className="justify-center text-white text-sm font-normal font-['SUIT']">지난 달 남은 예산:</div>
+                <div className="justify-center text-white text-sm font-normal font-['SUIT']">
+                  {budgetData ? formatNumber(budgetData.previousMonthBudget - budgetData.previousMonthExpense) : '150,000원'}
+                </div>
+              </div>
               <div className="justify-center text-white text-sm font-normal font-['SUIT']">
-                {budgetData ? formatNumber(budgetData.previousMonthBudget - budgetData.previousMonthExpense) : '150,000원'}
+                지난 달보다 {budgetData ? Math.abs(budgetData.currentMonthExpense - budgetData.previousMonthExpense).toLocaleString() : '24,000'}원 {budgetData && budgetData.currentMonthExpense - budgetData.previousMonthExpense > 0 ? '더 사용했어요' : '덜 사용했어요'}
               </div>
             </div>
-            <div className="justify-center text-white text-sm font-normal font-['SUIT']">
-              지난 달보다 {budgetData ? Math.abs(budgetData.currentMonthExpense - budgetData.previousMonthExpense).toLocaleString() : '24,000'}원 {budgetData && budgetData.currentMonthExpense - budgetData.previousMonthExpense > 0 ? '더 사용했어요' : '덜 사용했어요'}
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </>
