@@ -42,7 +42,7 @@ export default function AuthenticatedHeader() {
 
   // 햄버거 메뉴버튼 클릭 핸들러
   const handleMenuClick = () => {
-    setIsMenuOpen(true);
+    setIsMenuOpen(!isMenuOpen);
   };
 
   // 카테고리 메뉴 토글 핸들러
