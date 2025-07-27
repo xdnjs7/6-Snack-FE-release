@@ -120,7 +120,7 @@ export default function ProductsPageContent() {
             className="sm:border-b-0 px-6 sm:px-0"
           />
           {/* 정렬, 상품등록 버튼 wrapper */}
-          <div className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5 border-b border-primary-100 sm:border-0 px-6 sm:px-0">
+          <div className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5 px-[24px] sm:px-0">
             <Dropdown options={sortOptions.map((option) => option.label)} onChange={handleSortChange} />
             <Button
               type="black"
@@ -136,7 +136,7 @@ export default function ProductsPageContent() {
           </div>
         </div>
         {/* 상품 목록 */}
-        <div className="container mx-auto py-6">
+        <div className="container mx-auto py-6 px-[24px] sm:px-0 ">
           {isLoading ? (
             <div className="flex justify-center items-center py-16">
               <div className="text-primary-500">로딩 중...</div>
