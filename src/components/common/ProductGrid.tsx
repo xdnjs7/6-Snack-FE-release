@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 
 type Product = {
   id: number;
