@@ -26,9 +26,12 @@ export type TOrderWithBudget = {
 };
 
 // 주문 상세 조회 API 함수 (관리자용)
-export const getOrderDetail = async (orderId: string): Promise<TOrderWithBudget> => {
+export const getOrderDetail = async (
+  orderId: string,
+  status: "pending" | "approved" = "pending",
+): Promise<TOrderWithBudget> => {
   try {
-    const response: TOrderWithBudget = await cookieFetch(`/admin/orders/${orderId}`);
+    const response: TOrderWithBudget = await cookieFetch(`/admin/orders/${orderId}?status=${status}`);
     return response;
   } catch (error) {
     throw error;
