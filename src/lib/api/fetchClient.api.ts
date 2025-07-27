@@ -10,11 +10,14 @@ export const cookieFetch = async <T = any>(path: string, options: RequestInit = 
 
   // fetch 호출 부분을 함수로 분리
   const request = async () => {
+    // FormData를 보낼 때는 Content-Type 헤더를 설정하지 않아야 브라우저가 자동으로 boundary를 설정합니다
+    const isFormData = options.body instanceof FormData;
+
     return await fetch(`${API_BASE_URL}${path}`, {
       credentials: "include",
       cache: "no-store",
       headers: {
-        "Content-Type": "application/json",
+        ...(isFormData ? {} : { "Content-Type": "application/json" }),
         ...(options.headers || {}),
       },
       ...options,
@@ -29,13 +32,12 @@ export const cookieFetch = async <T = any>(path: string, options: RequestInit = 
   let isExceptionPath = false;
   if (typeof window !== "undefined") {
     const currentPath = window.location.pathname;
-    isExceptionPath = (
+    isExceptionPath =
       currentPath === "/" ||
       currentPath === "/login" ||
       currentPath.startsWith("/login/") ||
       currentPath === "/signup" ||
-      currentPath.startsWith("/signup/")
-    );
+      currentPath.startsWith("/signup/");
   }
 
   if (response.status === 401 && !isRefreshRequest && !isExceptionPath) {
