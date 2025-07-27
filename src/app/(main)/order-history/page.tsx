@@ -33,15 +33,24 @@ const OrderHistoryPage = () => {
       <div className="min-h-screen w-full max-w-sm mx-auto relative bg-white overflow-hidden sm:hidden">
 
         {/* Mobile Content */}
-        <div className="w-full px-6 left-0 top-[80px] absolute inline-flex flex-col justify-start items-end gap-4">
+        <div className="w-full px-6 pt-6 inline-flex flex-col justify-start items-end gap-4">
           {/* Mobile Header + Sort */}
           <div className="self-stretch inline-flex justify-between items-center">
             <div className="justify-center text-neutral-800 text-lg font-bold font-['SUIT']">구매 내역 확인</div>
-            <div className="w-28 h-11 px-4 py-2.5 bg-white border border-neutral-200 flex justify-between items-center">
-              <div className="justify-start text-neutral-800 text-base font-normal font-['SUIT']">정렬</div>
-              <div className="w-4 h-4 relative overflow-hidden">
-                <div className="w-2.5 h-1.5 left-[3.40px] top-[4.68px] absolute bg-neutral-800" />
-              </div>
+            <div className="relative custom-sort-dropdown w-auto">
+              <Dropdown
+                options={["최신순", "낮은 가격순", "높은 가격순"]}
+                onChange={(selectedOption: string) => {
+                  // 선택된 옵션에 따라 sortBy 상태 업데이트
+                  if (selectedOption === "최신순") {
+                    setSortBy("latest"); // createdAt 내림차순
+                  } else if (selectedOption === "낮은 가격순") {
+                    setSortBy("priceLow"); // totalPrice 오름차순
+                  } else if (selectedOption === "높은 가격순") {
+                    setSortBy("priceHigh"); // totalPrice 내림차순
+                  }
+                }}
+              />
             </div>
           </div>
 
@@ -98,7 +107,7 @@ const OrderHistoryPage = () => {
             </div>
 
             {/* Mobile Budget Details Box */}
-            <div className="w-64 p-6 left-[16px] top-[141px] absolute bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
+            <div className="w-64 p-6 left-1/2 transform -translate-x-1/2 top-[141px] absolute bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
               <div className="inline-flex justify-start items-center gap-1">
                 <div className="justify-center text-white text-base font-extrabold font-['SUIT']">이번 달 남은 예산:</div>
                 <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
@@ -214,15 +223,24 @@ const OrderHistoryPage = () => {
       <div className="min-h-screen w-full max-w-3xl mx-auto relative bg-white overflow-hidden hidden sm:block md:hidden">
 
         {/* Tablet Content */}
-        <div className="w-full px-6 left-0 top-[130px] absolute inline-flex flex-col justify-start items-start gap-7">
+        <div className="w-full px-6 pt-6 inline-flex flex-col justify-start items-start gap-7">
           {/* Tablet Header + Sort */}
           <div className="self-stretch inline-flex justify-between items-center">
             <div className="justify-center text-neutral-800 text-lg font-bold font-['SUIT']">구매 내역 확인</div>
-            <div className="w-28 h-11 px-4 py-2.5 bg-white border border-neutral-200 flex justify-between items-center">
-              <div className="justify-start text-neutral-800 text-base font-normal font-['SUIT']">정렬</div>
-              <div className="w-4 h-4 relative overflow-hidden">
-                <div className="w-2.5 h-1.5 left-[3.40px] top-[4.68px] absolute bg-neutral-800" />
-              </div>
+            <div className="relative custom-sort-dropdown w-auto">
+              <Dropdown
+                options={["최신순", "낮은 가격순", "높은 가격순"]}
+                onChange={(selectedOption: string) => {
+                  // 선택된 옵션에 따라 sortBy 상태 업데이트
+                  if (selectedOption === "최신순") {
+                    setSortBy("latest"); // createdAt 내림차순
+                  } else if (selectedOption === "낮은 가격순") {
+                    setSortBy("priceLow"); // totalPrice 오름차순
+                  } else if (selectedOption === "높은 가격순") {
+                    setSortBy("priceHigh"); // totalPrice 내림차순
+                  }
+                }}
+              />
             </div>
           </div>
 
@@ -401,11 +419,20 @@ const OrderHistoryPage = () => {
           {/* Desktop Header + Sort */}
           <div className="self-stretch inline-flex justify-between items-center">
             <div className="justify-center text-neutral-800 text-lg font-bold font-['SUIT']">구매 내역 확인</div>
-            <div className="w-28 h-11 px-4 py-2.5 bg-white border border-neutral-200 flex justify-between items-center">
-              <div className="justify-start text-neutral-800 text-base font-normal font-['SUIT']">정렬</div>
-              <div className="w-4 h-4 relative overflow-hidden">
-                <div className="w-2.5 h-1.5 left-[3.40px] top-[4.68px] absolute bg-neutral-800" />
-              </div>
+            <div className="relative custom-sort-dropdown w-auto">
+              <Dropdown
+                options={["최신순", "낮은 가격순", "높은 가격순"]}
+                onChange={(selectedOption: string) => {
+                  // 선택된 옵션에 따라 sortBy 상태 업데이트
+                  if (selectedOption === "최신순") {
+                    setSortBy("latest"); // createdAt 내림차순
+                  } else if (selectedOption === "낮은 가격순") {
+                    setSortBy("priceLow"); // totalPrice 오름차순
+                  } else if (selectedOption === "높은 가격순") {
+                    setSortBy("priceHigh"); // totalPrice 내림차순
+                  }
+                }}
+              />
             </div>
           </div>
 
@@ -468,37 +495,37 @@ const OrderHistoryPage = () => {
           {/* Desktop Purchase List - Table Format */}
           <div className="self-stretch flex flex-col justify-start items-start">
             <div className="self-stretch px-10 py-5 border-t border-b border-neutral-200 inline-flex justify-between items-center">
-              <div className="w-32 justify-center text-zinc-500 text-base font-bold font-['SUIT']">구매 요청일</div>
-              <div className="w-32 justify-center text-zinc-500 text-base font-bold font-['SUIT']">요청인</div>
-              <div className="w-44 justify-center text-zinc-500 text-base font-bold font-['SUIT']">상품 정보</div>
-              <div className="w-32 justify-center text-zinc-500 text-base font-bold font-['SUIT']">주문 금액</div>
-              <div className="flex justify-center items-center gap-2">
-                <div className="w-32 justify-center text-zinc-500 text-base font-bold font-['SUIT']">구매 승인일</div>
+              <div className="w-32 justify-start text-zinc-500 text-base font-bold font-['SUIT']">구매 요청일</div>
+              <div className="w-32 justify-start text-zinc-500 text-base font-bold font-['SUIT']">요청인</div>
+              <div className="w-44 justify-start text-zinc-500 text-base font-bold font-['SUIT']">상품 정보</div>
+              <div className="w-32 justify-start text-zinc-500 text-base font-bold font-['SUIT']">주문 금액</div>
+              <div className="flex justify-start items-center gap-2">
+                <div className="w-32 justify-start text-zinc-500 text-base font-bold font-['SUIT']">구매 승인일</div>
               </div>
-              <div className="w-24 justify-center text-zinc-500 text-base font-bold font-['SUIT']">담당자</div>
+              <div className="w-24 justify-start text-zinc-500 text-base font-bold font-['SUIT']">담당자</div>
             </div>
             <div className="self-stretch flex flex-col justify-start items-start">
               {currentItems.length > 0 ? (
                 currentItems.map((item) => (
                   <div key={item.id} className="self-stretch h-24 px-10 border-b border-neutral-200 inline-flex justify-between items-center">
-                    <div className="w-32 justify-center text-neutral-800 text-base font-normal font-['SUIT']">{item.requestDate}</div>
-                    <div className="flex justify-start items-center gap-2">
-                      <div className="justify-center text-neutral-800 text-base font-normal font-['SUIT']">{item.requester}</div>
+                    <div className="w-32 justify-start text-neutral-800 text-base font-normal font-['SUIT']">{item.requestDate}</div>
+                    <div className="w-32 flex justify-start items-center gap-2">
+                      <div className="justify-start text-neutral-800 text-base font-normal font-['SUIT']">{item.requester}</div>
                       {item.adminMessage?.includes("즉시 구매") && (
                         <div className="px-2 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1">
                           <div className="justify-center text-blue-500 text-xs font-bold font-['SUIT']">즉시 요청</div>
                         </div>
                       )}
                     </div>
-                    <div className="inline-flex flex-col justify-center items-start gap-1">
-                      <div className="w-44 justify-center text-neutral-800 text-base font-normal font-['SUIT']">{item.item}</div>
-                      <div className="justify-center text-zinc-500 text-sm font-normal font-['SUIT']">총 수량 4개</div>
+                    <div className="w-44 inline-flex flex-col justify-center items-start gap-1">
+                      <div className="justify-start text-neutral-800 text-base font-normal font-['SUIT']">{item.item}</div>
+                      <div className="justify-start text-zinc-500 text-sm font-normal font-['SUIT']">총 수량 4개</div>
                     </div>
-                    <div className="w-32 justify-center text-neutral-800 text-base font-normal font-['SUIT']">{item.amount}</div>
+                    <div className="w-32 justify-start text-neutral-800 text-base font-normal font-['SUIT']">{item.amount}</div>
                     <div className="flex justify-start items-center gap-5">
-                      <div className="w-32 justify-center text-neutral-800 text-base font-normal font-['SUIT']">{item.approvalDate}</div>
+                      <div className="w-32 justify-start text-neutral-800 text-base font-normal font-['SUIT']">{item.approvalDate}</div>
                     </div>
-                    <div className="w-24 justify-center text-neutral-800 text-base font-normal font-['SUIT']">{item.manager}</div>
+                    <div className="w-24 justify-start text-neutral-800 text-base font-normal font-['SUIT']">{item.manager}</div>
                   </div>
                 ))
               ) : (
