@@ -63,6 +63,12 @@ export default function OrderManageDetailPage({}: TOrderManageDetailPageProps) {
   const shippingFee: number = 3000;
   const finalTotal: number = calculatedTotal + shippingFee;
 
+  // 예산 관련 변수들
+  const currentMonthBudget = orderRequest.budget.currentMonthBudget || 0;
+  const currentMonthExpense = orderRequest.budget.currentMonthExpense || 0;
+  const remainingBudget = currentMonthBudget - currentMonthExpense;
+  const budgetAfterPurchase = remainingBudget - finalTotal;
+
   return (
     <div className="min-h-screen bg-white">
       {/* Main Content */}
@@ -221,24 +227,24 @@ export default function OrderManageDetailPage({}: TOrderManageDetailPageProps) {
             <div className="self-stretch inline-flex justify-start items-center">
               <div className="w-24 sm:w-32 md:w-36 h-10 sm:h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
                 <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">
-                  예산정보
+                  이번 달 지출액
                 </div>
               </div>
               <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
                 <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
-                  1,000,000원
+                  {formatPrice(currentMonthExpense)}원
                 </div>
               </div>
             </div>
             <div className="self-stretch inline-flex justify-start items-center">
               <div className="w-24 sm:w-32 md:w-36 h-10 sm:h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
                 <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">
-                  이번달 지출액
+                  이번 달 남은 예산
                 </div>
               </div>
               <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
                 <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
-                  750,000원
+                  {formatPrice(remainingBudget)}원
                 </div>
               </div>
             </div>
@@ -247,24 +253,12 @@ export default function OrderManageDetailPage({}: TOrderManageDetailPageProps) {
             <div className="self-stretch inline-flex justify-start items-center">
               <div className="w-24 sm:w-32 md:w-36 self-stretch px-2 py-3 sm:py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
                 <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">
-                  남은 예산
+                  구매 후 예산
                 </div>
               </div>
               <div className="flex-1 self-stretch p-3 sm:p-4 border-b border-neutral-200 flex justify-start items-start gap-2">
                 <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
-                  250,000원
-                </div>
-              </div>
-            </div>
-            <div className="self-stretch inline-flex justify-start items-start">
-              <div className="w-24 sm:w-32 md:w-36 self-stretch px-2 py-3 sm:py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">
-                  구매 후 예산
-                </div>
-              </div>
-              <div className="flex-1 p-3 sm:p-4 border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="flex-1 justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT'] leading-snug">
-                  247,000원
+                  {formatPrice(budgetAfterPurchase)}원
                 </div>
               </div>
             </div>
