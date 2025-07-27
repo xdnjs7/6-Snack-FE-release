@@ -39,3 +39,22 @@ export type TOrderRequestBody = {
   requestMessage?: string;
   cartItemIds: number[];
 };
+
+export type TOrderNowBody = {
+  cartItemIds: number[];
+};
+
+export type TOrderNowResponse = {
+  message: string;
+  data: {
+    id: number;
+    userId: string;
+    approver: string;
+    adminMessage: string | null;
+    requestMessage: string | null;
+    totalPrice: number;
+    createdAt: string;
+    updatedAt: string;
+    status: string;
+  };
+};

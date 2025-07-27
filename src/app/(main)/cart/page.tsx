@@ -1,23 +1,32 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CartItem from "./_components/CartItem";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getCartItems } from "@/lib/api/cart.api";
 import { useAuth } from "@/providers/AuthProvider";
 import { TGetCartItemsResponse } from "@/types/cart.types";
 import { useRouter } from "next/navigation";
+import Toast from "@/components/common/Toast";
+import { orderNow } from "@/lib/api/order.api";
+import { TOrderNowResponse } from "@/types/order.types";
+import clsx from "clsx";
+import { useDeviceType } from "@/hooks/useDeviceType";
 
 /**
  * @De-cal TODO:
- * 1. 즉시 구매 API 연동 후 3번 페이지로 이동시키기
+ * 1. 즉시 구매 API 연동 후 order-confirmed 페이지로 이동시키기
  * 2. alert 사용 중인 것 모달이나 토스트로 변경하기
  */
 
 export default function CartPage() {
+  const [isToastVisible, setIsToastVisible] = useState<boolean>(false);
+  const { isMobile } = useDeviceType();
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
   const { user } = useAuth();
   const router = useRouter();
 
@@ -30,6 +39,11 @@ export default function CartPage() {
     queryFn: () => getCartItems(),
   });
 
+  const { mutate: adminOrderNow } = useMutation<TOrderNowResponse, Error, number[]>({
+    mutationFn: (cartItemIds) => orderNow(cartItemIds),
+    onSuccess: () => router.push("/cart/order-confirmed"),
+  });
+
   if (error) {
     return <div>에러 발생 : {error.message}</div>;
   }
@@ -38,23 +52,49 @@ export default function CartPage() {
   const selectedTotalPrice = cartItems?.cart
     .filter((item) => item.isChecked === true)
     .reduce((totalPrice, item) => totalPrice + item.product.price * item.quantity, 0);
+  const canPurchase =
+    currentMonthBudget - currentMonthExpense - (selectedTotalPrice ? selectedTotalPrice + 3000 : 0) >= 0;
+  const remainingBudget = cartItems?.budget ? currentMonthBudget - currentMonthExpense : 0;
+  const checkedCartItemIds = cartItems?.cart.filter((item) => item.isChecked).map((item) => item.id) ?? [];
+
+  // 타이머 언마운트 시 클린업
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   const handleRequestOrder = () => {
-    const isNothingChecked = cartItems?.cart.every((item) => !item.isChecked) ?? true;
+    // 아무 상품도 선택하지 않았을 때
+    if (checkedCartItemIds.length === 0) return alert("1개 이상의 상품을 선택하세요.");
 
-    if (isNothingChecked) return alert("1개 이상의 상품을 선택하세요.");
+    // USER일 때
+    if (user?.role === "USER") router.push("/cart/order");
 
-    if (user?.role === "USER") {
-      router.push("/cart/order");
-    } else {
-      router.push("/cart/order-confirmed");
+    // 예산 부족할 때
+    if (!canPurchase) {
+      setIsToastVisible(true);
+
+      if (timerRef.current) clearTimeout(timerRef.current);
+
+      timerRef.current = setTimeout(() => {
+        setIsToastVisible(false);
+        timerRef.current = null;
+      }, 3000);
+
+      return;
     }
+
+    // 즉시 구매 API
+    adminOrderNow(checkedCartItemIds);
   };
 
   return (
     <div className="flex flex-col justify-center items-center w-full">
       <div className="w-full max-w-[1200px] md:px-[24px]">
-        <div className="flex flex-col gap-[40px] mt-[20px] sm:gap-[70px] sm:mt-[60px] sm:pb-[36px] md:mt-[80px]">
+        <div className="relative flex flex-col gap-[40px] mt-[20px] sm:gap-[70px] sm:mt-[60px] sm:pb-[36px] md:mt-[80px]">
           <div className="flex flex-col justify-center items-center gap-[10px] font-bold text-[16px]/[20px] tracking-tight sm:flex-row sm:gap-[20px] sm:text-[18px]/[22px]">
             <p className="text-primary-950">1. Shopping Cart</p>
             {user?.role === "USER" && (
@@ -70,7 +110,32 @@ export default function CartPage() {
             <p className="text-primary-300">{user?.role === "USER" ? "3. Order Confirmed" : "2. Order Confirmed"}</p>
           </div>
 
-          <CartItem cartItems={cartItems} isPending={isPending} />
+          <Toast
+            text={
+              isMobile ? (
+                "예산이 부족합니다."
+              ) : (
+                <>
+                  <p>예산이 부족합니다.&nbsp;</p>
+                  <p>수량을 줄이거나 항목을 제거해주세요.</p>
+                </>
+              )
+            }
+            budget={remainingBudget}
+            className={clsx(
+              isToastVisible
+                ? "opacity-100 translate-y-0 sm:translate-y-[-25%] md:translate-y-[-50%]"
+                : "opacity-0 translate-y-1/2 sm:translate-y-0 md:translate-y-[-25%]",
+              "absolute max-w-[1200px] transition-all duration-500 md:max-w-[1152px]",
+            )}
+          />
+
+          <CartItem
+            cartItems={cartItems}
+            isPending={isPending}
+            canPurchase={canPurchase}
+            checkedCartItemIds={checkedCartItemIds}
+          />
 
           <div className="flex flex-col justify-center items-start gap-[30px] sm:flex-row sm:justify-between sm:items-center sm:gap-[40px] md:gap-[60px]">
             <div className="flex flex-col w-full gap-[14px]">
@@ -96,7 +161,7 @@ export default function CartPage() {
                   <div className="flex justify-start items-center gap-[4px] mt-[2px] sm:mt-[6px]">
                     <p className="font-bold text-[18px]/[22px] tracking-tight text-primary-700">남은 예산 금액</p>
                     <p className="font-extrabold text-[18px]/[22px] tracking-tight text-primary-700">
-                      {cartItems?.budget ? (currentMonthBudget - currentMonthExpense).toLocaleString("ko-KR") : 0}원
+                      {remainingBudget.toLocaleString("ko-KR")}원
                     </p>
                   </div>
                 </>
