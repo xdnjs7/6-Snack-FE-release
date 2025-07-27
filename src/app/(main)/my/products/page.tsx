@@ -4,11 +4,11 @@ import Desktop from "@/components/common/Desktop";
 import Dropdown from "@/components/common/DropDown";
 import Pagination from "@/components/common/Pagination";
 import ProductList from "@/components/common/ProductList";
+import { useDeviceType } from "@/hooks/useDeviceType";
 import { getMyProducts } from "@/lib/api/product.api";
 import { TMyProductsParams, TMyProductsResponse } from "@/types/product.types";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { useMediaQuery } from "react-responsive";
 
 export default function MyProductsPage() {
   const [params, setParams] = useState<TMyProductsParams>({
@@ -16,10 +16,7 @@ export default function MyProductsPage() {
     limit: "4",
     orderBy: "latest",
   });
-
-  const isMobile = useMediaQuery({ maxWidth: 743 });
-  const isTablet = useMediaQuery({ minWidth: 744, maxWidth: 1399 });
-  const isDesktop = useMediaQuery({ minWidth: 1400 });
+  const { isMobile, isTablet, isDesktop } = useDeviceType();
 
   const {
     data: products,
