@@ -206,9 +206,11 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
                       }}
                       type="white"
                       label={user?.role === "USER" ? "바로 요청" : "즉시 구매"}
-                      disabled={!canPurchase}
+                      disabled={user?.role === "USER" ? false : !canPurchase}
                       className={clsx(
-                        !canPurchase && "bg-primary-50 border-primary-300 text-primary-400 cursor-default",
+                        user?.role === "USER"
+                          ? false
+                          : !canPurchase && "bg-primary-50 border-primary-300 text-primary-400 cursor-default",
                         "w-[88px] h-[40px] font-normal text-[13px]/[16px] tracking-tight outline-none sm:w-[99px] sm:h-[44px] sm:text-[16px]/[20px]",
                       )}
                     />
