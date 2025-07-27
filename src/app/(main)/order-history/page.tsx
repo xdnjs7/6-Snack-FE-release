@@ -6,6 +6,8 @@ import Dropdown from "@/components/common/DropDown";
 import fileIcon from "@/assets/icons/ic_file.svg";
 import Image from "next/image";
 import { useOrderHistory } from "@/hooks/useOrderHistory";
+import ChevronLeftIcon from "@/assets/icons/ic_chevron_left.svg";
+import ChevronRightIcon from "@/assets/icons/ic_chevron_right.svg";
 
 const OrderHistoryPage = () => {
   // 공통 로직 훅 사용
@@ -214,7 +216,7 @@ const OrderHistoryPage = () => {
                 className="flex justify-start items-center gap-1.5"
               >
                 <div className="w-6 h-6 relative overflow-hidden">
-                  <div className="w-2 h-3.5 left-[15.98px] top-[19.16px] absolute origin-top-left rotate-180 bg-zinc-500" />
+                  <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
                 </div>
                 <div className="text-center justify-start text-zinc-500 text-base font-normal font-['SUIT']">Prev</div>
               </button>
@@ -225,7 +227,7 @@ const OrderHistoryPage = () => {
               >
                 <div className="text-center justify-start text-neutral-800 text-base font-normal font-['SUIT']">Next</div>
                 <div className="w-6 h-6 relative overflow-hidden">
-                  <div className="w-2 h-3.5 left-[8.02px] top-[5.37px] absolute bg-neutral-800" />
+                  <Image src={ChevronRightIcon} alt="Chevron Right" width={24} height={24} />
                 </div>
               </button>
             </div>
@@ -399,7 +401,7 @@ const OrderHistoryPage = () => {
                 className="flex justify-start items-center gap-1.5"
               >
                 <div className="w-6 h-6 relative overflow-hidden">
-                  <div className="w-2 h-3.5 left-[15.98px] top-[19.16px] absolute origin-top-left rotate-180 bg-zinc-500" />
+                  <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
                 </div>
                 <div className="text-center justify-start text-zinc-500 text-base font-normal font-['SUIT']">Prev</div>
               </button>
@@ -410,7 +412,7 @@ const OrderHistoryPage = () => {
               >
                 <div className="text-center justify-start text-neutral-800 text-base font-normal font-['SUIT']">Next</div>
                 <div className="w-6 h-6 relative overflow-hidden">
-                  <div className="w-2 h-3.5 left-[8.02px] top-[5.37px] absolute bg-neutral-800" />
+                  <Image src={ChevronRightIcon} alt="Chevron Right" width={24} height={24} />
                 </div>
               </button>
             </div>
@@ -586,7 +588,7 @@ const OrderHistoryPage = () => {
                 className="flex justify-start items-center gap-1.5"
               >
                 <div className="w-6 h-6 relative overflow-hidden">
-                  <div className="w-2 h-3.5 left-[15.98px] top-[19.16px] absolute origin-top-left rotate-180 bg-zinc-500" />
+                  <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
                 </div>
                 <div className="text-center justify-start text-zinc-500 text-base font-normal font-['SUIT']">Prev</div>
               </button>
@@ -597,7 +599,7 @@ const OrderHistoryPage = () => {
               >
                 <div className="text-center justify-start text-neutral-800 text-base font-normal font-['SUIT']">Next</div>
                 <div className="w-6 h-6 relative overflow-hidden">
-                  <div className="w-2 h-3.5 left-[8.02px] top-[5.37px] absolute bg-neutral-800" />
+                  <Image src={ChevronRightIcon} alt="Chevron Right" width={24} height={24} />
                 </div>
               </button>
             </div>
