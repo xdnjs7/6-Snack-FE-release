@@ -2,13 +2,14 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
+import debounce from "lodash.debounce";
 
 type TQuantityDropdownProps = {
   value: number;
   onClick?: (value: number) => void;
 };
 
-export default function QuantityDropdown({ value, onClick }: TQuantityDropdownProps) {
+export default function QuantityDropdown({ value, onClick: updateQuantity }: TQuantityDropdownProps) {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [quantity, setQuantity] = useState<number>(value);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -19,28 +20,36 @@ export default function QuantityDropdown({ value, onClick }: TQuantityDropdownPr
   const quantityOptions = Array.from({ length: 100 }, (_, i) => i + 1);
 
   const handleDropdownToggle = (e: React.MouseEvent) => {
-    e.stopPropagation(); // 이벤트 버블링 막기
     setIsDropdownVisible((prev) => !prev);
   };
 
+  const changeQuantity = useRef(debounce((quantity: number) => updateQuantity?.(quantity), 500)).current;
+
+  // 직접 수량 입력
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
+    const num = Number(val);
 
-    if (/^\d*$/.test(val)) {
-      const num = Number(val);
-      if (val === "") {
-        setQuantity(NaN);
-      } else if (num >= 1 && num <= 100) {
-        setQuantity(num);
-      }
+    // 숫자가 아니거나 빈 값일 때는 quantity를 null로 세팅해서 빈 칸으로 유지
+    if (val === "" || isNaN(num)) {
+      setQuantity(NaN); // null 또는 NaN 등 빈 상태 표시용
+      return;
+    }
+
+    if (num >= 1 && num <= 100) {
+      setQuantity(num);
+      changeQuantity(num); // ✅ 입력 디바운싱 처리
     }
   };
 
+  // 드롭다운 수량 선택
   const handleSelect = (val: number) => {
     setQuantity(val);
+
     if (val !== value) {
-      onClick?.(val); // ✅ 값이 바뀐 경우만 요청
+      updateQuantity?.(val); // ✅ 값이 바뀐 경우만 요청
     }
+
     setIsDropdownVisible(false);
   };
 
@@ -75,7 +84,7 @@ export default function QuantityDropdown({ value, onClick }: TQuantityDropdownPr
         if (quantity < 1 || quantity > 100 || isNaN(quantity)) {
           setQuantity(value);
         } else if (quantity !== value) {
-          onClick?.(quantity); // 값이 바뀌었을 때만 호출
+          updateQuantity?.(quantity); // 값이 바뀌었을 때만 호출
         }
       }
     }
@@ -84,19 +93,23 @@ export default function QuantityDropdown({ value, onClick }: TQuantityDropdownPr
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, [quantity, value, onClick]);
+  }, [quantity, value, updateQuantity]);
 
   return (
     <div className="relative w-[72px]">
-      <div className="flex justify-end items-center h-[40px] pl-[20px] gap-[4px]">
+      <div className="flex justify-end items-center h-[40px] pl-[20px] gap-[4px] sm:pl-[16px]">
         <input
           ref={inputRef}
           type="text"
           value={isNaN(quantity) ? "" : quantity}
           onChange={handleChange}
           onFocus={() => {
-            if (!isDropdownVisible) setIsDropdownVisible(true);
             inputRef.current?.select(); // 전체 텍스트 선택
+          }}
+          onBlur={() => {
+            if (isNaN(quantity)) {
+              setQuantity(value);
+            }
           }}
           className="w-full font-bold text-[14px]/[17px] text-right tracking-tight text-primary-950 outline-none select-all sm:text-[16px]/[20px]"
         />
@@ -120,7 +133,7 @@ export default function QuantityDropdown({ value, onClick }: TQuantityDropdownPr
                 e.preventDefault(); // 포커스 잃는 문제 방지
                 handleSelect(qty);
               }}
-              className={`flex justify-end items-center h-[40px] px-[24px] font-bold text-[14px]/[17px] tracking-tight text-primary-950 sm:text-[16px]/[20px] cursor-pointer
+              className={`flex justify-end items-center h-[40px] pr-[24px] pl-[25px] font-bold text-[14px]/[17px] tracking-tight text-primary-950 cursor-pointer sm:text-[16px]/[20px] sm:pr-[28px] sm:pl-[18px] 
                 ${qty === quantity ? "bg-gray-200/80" : "hover:bg-gray-100"}`}
             >
               {qty}
