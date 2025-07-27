@@ -1,4 +1,6 @@
+import { TOrderNowBody, TOrderRequestBody } from "@/types/order.types";
 import { cookieFetch } from "./fetchClient.api";
+
 // 관리자 구매내역 조회 API
 export const getAdminOrders = async ({
   status,
@@ -18,4 +20,20 @@ export const getAdminOrders = async ({
     orderBy,
   });
   return cookieFetch(`/admin/orders?${params.toString()}`);
+};
+
+// 구매 요청
+export const createOrder = async ({ requestMessage, cartItemIds }: TOrderRequestBody) => {
+  return await cookieFetch("/orders", {
+    method: "POST",
+    body: JSON.stringify({ requestMessage, cartItemIds }),
+  });
+};
+
+// 즉시 구매
+export const orderNow = async (cartItemIds: number[]) => {
+  return await cookieFetch("/admin/orders/instant", {
+    method: "POST",
+    body: JSON.stringify({ cartItemIds }),
+  });
 };

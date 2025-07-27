@@ -7,7 +7,7 @@ import useOrderVisibleCount from "@/hooks/useOrderVisibleCount";
 import OrderManageModal from "@/components/common/OrderManageModal";
 import { useModal } from "@/providers/ModalProvider";
 import { fetchOrderDetail, fetchPendingOrders } from "@/lib/api/orderManage.api";
-import { TOrderSummary } from "@/types/Order.types";
+import { TOrderSummary } from "@/types/order.types";
 
 export default function Order() {
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);

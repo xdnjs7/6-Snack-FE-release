@@ -53,9 +53,9 @@ export const navLinks: DevNavSection[] = [
   {
     category: "장바구니",
     links: [
-      { name: "장바구니", path: "/cart", role: "일반유저", progress: "리팩터링 중" },
-      { name: "주문", path: "/cart/order", role: "일반유저", progress: "리팩터링 중" },
-      { name: "구매 완료", path: "/cart/order-confirmed", role: "일반유저", progress: "시작 전" },
+      { name: "장바구니", path: "/cart", role: "일반유저", progress: "완성" },
+      { name: "주문", path: "/cart/order", role: "일반유저", progress: "완성" },
+      { name: "구매 완료", path: "/cart/order-confirmed", role: "일반유저", progress: "진행 중" },
     ],
   },
   {

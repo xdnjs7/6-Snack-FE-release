@@ -8,24 +8,24 @@ import { TGetCartItemsResponse } from "@/types/cart.types";
 import { deleteSelectedItems, toggleCheckAllItems, toggleCheckItem, updateItemQuantity } from "@/lib/api/cart.api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
-import Link from "next/link";
+import clsx from "clsx";
+import { orderNow } from "@/lib/api/order.api";
+import { useRouter } from "next/navigation";
+import { TOrderNowResponse } from "@/types/order.types";
 
-/**
- * @De-cal TODO:
- * 1. 장바구니 전체 선택, 해제 API 만들어지면 연동
- * 2. 장바구니 수량 선택 API 만들어지면 연동
- */
 type TCartItemProps = {
   cartItems: TGetCartItemsResponse | undefined;
   isPending: boolean;
+  canPurchase: boolean;
+  checkedCartItemIds: number[];
 };
 
-export default function CartItem({ cartItems, isPending }: TCartItemProps) {
+export default function CartItem({ cartItems, isPending, canPurchase, checkedCartItemIds }: TCartItemProps) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
-  const isAllChecked = cartItems?.length && cartItems?.every((item) => item.isChecked);
-  const checkedCartItemIds = cartItems?.filter((item) => item.isChecked).map((item) => item.id) ?? [];
+  const isAllChecked = cartItems?.cart.length && cartItems?.cart.every((item) => item.isChecked);
 
   // 장바구니 선택 - Optimistic Update
   const { mutate: toggleCheckCartItem } = useMutation<
@@ -41,7 +41,7 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
       const previousCartItems = queryClient.getQueryData<TGetCartItemsResponse>(["cart"]);
 
       queryClient.setQueryData<TGetCartItemsResponse>(["cart"], (old) =>
-        old?.map((item) => (item.id === cartItemId ? { ...item, isChecked } : item)),
+        old ? { ...old, cart: old.cart.map((item) => (item.id === cartItemId ? { ...item, isChecked } : item)) } : old,
       );
 
       return { previousCartItems };
@@ -80,7 +80,7 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
       const previousCartItems = queryClient.getQueryData<TGetCartItemsResponse>(["cart"]);
 
       queryClient.setQueryData<TGetCartItemsResponse>(["cart"], (old) =>
-        old?.map((item) => ({ ...item, isChecked: !isAllChecked })),
+        old ? { ...old, cart: old.cart.map((item) => ({ ...item, isChecked: !isAllChecked })) } : old,
       );
 
       return { previousCartItems };
@@ -91,6 +91,12 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
       }
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
+  });
+
+  // 장바구니 즉시 구매(단건)
+  const { mutate: adminOrderNow } = useMutation<TOrderNowResponse, Error, number[]>({
+    mutationFn: (cartItemId) => orderNow(cartItemId),
+    onSuccess: () => router.push("/cart/order-confirmed"),
   });
 
   return (
@@ -130,10 +136,10 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
 
       {isPending ? (
         <div>로딩 중...</div>
-      ) : !cartItems?.length ? (
+      ) : !cartItems?.cart.length ? (
         <div className="flex justify-center items-center h-[200px]">장바구니에 담은 상품이 없습니다.</div>
       ) : (
-        cartItems.map((item, i) => (
+        cartItems.cart.map((item, i) => (
           <div
             key={`${item}_${i}`}
             className="h-[121px] py-[20px] border-b-1 border-primary-100 sm:py-[30px] sm:h-[200px] sm:last:border-0"
@@ -188,19 +194,24 @@ export default function CartItem({ cartItems, isPending }: TCartItemProps) {
                     <p className="hidden sm:block sm:font-normal sm:text-[14px]/[17px] tracking-tight text-[#6b6b6b]">
                       택배 배송비 3,000원
                     </p>
-                    <Link
-                      href={
-                        user?.role === "USER"
-                          ? `/cart/order?cartItemId=${item.id}`
-                          : `/cart/order-confirmed?cartItemId=${item.id}`
-                      }
-                    >
-                      <Button
-                        type="white"
-                        label={user?.role === "USER" ? "바로 요청" : "즉시 구매"}
-                        className="w-[88px] h-[40px] font-normal text-[13px]/[16px] tracking-tight sm:w-[99px] sm:h-[44px] sm:text-[16px]/[20px]"
-                      />
-                    </Link>
+                    <Button
+                      onClick={() => {
+                        if (user?.role === "USER") {
+                          router.push(`/cart/order?cartItemId=${item.id}`);
+                        }
+
+                        if (user?.role !== "USER") {
+                          adminOrderNow([item.id]);
+                        }
+                      }}
+                      type="white"
+                      label={user?.role === "USER" ? "바로 요청" : "즉시 구매"}
+                      disabled={!canPurchase}
+                      className={clsx(
+                        !canPurchase && "bg-primary-50 border-primary-300 text-primary-400 cursor-default",
+                        "w-[88px] h-[40px] font-normal text-[13px]/[16px] tracking-tight outline-none sm:w-[99px] sm:h-[44px] sm:text-[16px]/[20px]",
+                      )}
+                    />
                   </div>
                 </div>
               </div>

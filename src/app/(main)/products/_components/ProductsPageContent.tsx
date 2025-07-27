@@ -6,7 +6,6 @@ import ProductGrid from "@/components/common/ProductGrid";
 import { CATEGORIES } from "@/lib/utils/categories.util";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useMediaQuery } from "react-responsive";
 import Button from "@/components/ui/Button";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { useModal } from "@/providers/ModalProvider";
@@ -15,6 +14,7 @@ import { useProducts } from "@/hooks/useProducts";
 import PlusToggleIconSvg from "@/components/svg/PlusToggleIconSvg";
 import Dropdown from "@/components/common/DropDown";
 import { useCategoryStore } from "@/stores/categoryStore";
+import { useDeviceType } from "@/hooks/useDeviceType";
 import SubCategoryTabs from "./SubCategoryTabs";
 
 type TCategoryData = {
@@ -41,10 +41,8 @@ export default function ProductsPageContent() {
   const searchParams = useSearchParams();
   const { openModal, closeModal } = useModal();
 
-  // useMediaQuery로 화면 크기별 limit 결정
-  const isMobile = useMediaQuery({ maxWidth: 743 });
-  const isTablet = useMediaQuery({ minWidth: 744, maxWidth: 1399 });
-  const isDesktop = useMediaQuery({ minWidth: 1400 });
+  // useDeviceType 커스텀 훅으로 화면 크기별 limit 결정
+  const { isMobile, isTablet, isDesktop } = useDeviceType();
 
   // limit 계산 함수 추가
   const getLimit = () => {
