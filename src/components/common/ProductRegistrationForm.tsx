@@ -2,9 +2,10 @@ import React, { FormEvent, ChangeEvent, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Input from "./Input";
 import Dropdown from "./DropDown";
-import photoIcon from "../../assets/icons/ic_photo.svg";
+import photoIcon from "@/assets/icons/ic_photo.svg";
 import Image from "next/image";
 import { CATEGORIES } from "../../lib/utils/categories.util";
+import { useCreateProduct } from "@/hooks/useProductMutations";
 
 // 상품 데이터를 위한 타입 정의
 export type TProductData = {
@@ -42,7 +43,7 @@ export default function ProductRegistrationForm({
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm<FormData>({
     defaultValues: {
@@ -56,6 +57,9 @@ export default function ProductRegistrationForm({
 
   const [imageFile, setImageFile] = React.useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = React.useState<string | null>(null);
+
+  // React Query Mutation
+  const createProductMutation = useCreateProduct();
 
   // initialData가 변경될 때마다 폼 필드를 초기화
   useEffect(() => {
@@ -101,27 +105,36 @@ export default function ProductRegistrationForm({
       return;
     }
 
+    // 카테고리 ID 매핑
+    const selectedParentCategory = data.mainCategory;
+    const selectedSubCategory = data.subCategory;
+
+    let categoryId = 1; // 기본값
+
+    if (selectedParentCategory && selectedSubCategory) {
+      const parentCategory = CATEGORIES.parentCategory.find((cat) => cat.name === selectedParentCategory);
+      const childrenCategories = parentCategory
+        ? CATEGORIES.childrenCategory[selectedParentCategory as keyof typeof CATEGORIES.childrenCategory]
+        : [];
+      const subCategory = childrenCategories?.find((cat) => cat.name === selectedSubCategory);
+
+      if (subCategory) {
+        categoryId = subCategory.id;
+      }
+    }
+
     try {
       // FormData 생성
       const formData = new FormData();
       formData.append("name", data.productName);
       formData.append("price", data.price);
       formData.append("linkUrl", data.productLink);
-      formData.append("categoryId", "1"); // 임시로 1번 카테고리 사용
+      formData.append("categoryId", categoryId.toString());
       formData.append("image", imageFile);
 
-      // API 호출
-      const response = await fetch("/api/products", {
-        method: "POST",
-        body: formData,
-      });
+      // React Query Mutation 사용
+      await createProductMutation.mutateAsync(formData);
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log("상품 등록 성공:", result);
       alert("상품이 등록되었습니다!");
 
       // 폼 초기화
@@ -262,17 +275,17 @@ export default function ProductRegistrationForm({
             <button
               type="button"
               onClick={onCancel || (() => console.log("취소"))}
-              disabled={isSubmitting}
+              disabled={createProductMutation.isPending}
               className="w-[216px] h-[64px] border border-primary-300 rounded-[2px] py-[12px] px-[16px] text-sm font-medium text-primary-700 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               취소
             </button>
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={createProductMutation.isPending}
               className="w-[216px] h-[64px] rounded-[2px] py-[12px] px-[16px] text-sm font-medium text-white bg-primary-800 hover:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-900 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "등록 중..." : "등록하기"}
+              {createProductMutation.isPending ? "등록 중..." : "등록하기"}
             </button>
           </div>
         </form>
