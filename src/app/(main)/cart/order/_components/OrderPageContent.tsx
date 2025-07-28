@@ -12,12 +12,14 @@ import { useRouter } from "next/navigation";
 import { createOrder } from "@/lib/api/order.api";
 import clsx from "clsx";
 import { TOrderResponse } from "@/types/order.types";
+import { useAuth } from "@/providers/AuthProvider";
 
 type TOrderPageContentProps = {
   cartItemId?: string;
 };
 
 export default function OrderPageContent({ cartItemId }: TOrderPageContentProps) {
+  const { user } = useAuth();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [requestMessage, setRequestMessage] = useState<string>("");
   const router = useRouter();
@@ -51,6 +53,10 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
   const handleValueChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setRequestMessage(e.target.value);
   };
+
+  if (user?.role) {
+    return <div className="flex h-[80vh] justify-center items-center">일반 유저만 이용가능한 페이지입니다.</div>;
+  }
 
   if (error) {
     return <div>에러 발생 : {error.message}</div>;
