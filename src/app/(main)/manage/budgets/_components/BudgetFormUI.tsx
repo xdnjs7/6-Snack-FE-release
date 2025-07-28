@@ -37,7 +37,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
   // 한글 금액 단위 포맷 함수 (3백5십만원 등)
   function formatKoreanCurrencyUnit(value: string): string {
     if (!value || value === "0") return "0원";
-    let num = Number(value);
+    const num = Number(value);
     if (isNaN(num) || num === 0) return "0원";
 
     // 만원 단위 이하

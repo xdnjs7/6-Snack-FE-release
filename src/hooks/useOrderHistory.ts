@@ -37,7 +37,27 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
 
   // 데이터 파싱
   const statusMap: Record<string, "요청" | "승인"> = { approved: "승인" };
-  const parse = (item: any): TPurchaseItem => ({
+  
+  interface OrderItem {
+    id: number | string;
+    requestDate?: string;
+    createdAt?: string;
+    requesterName?: string;
+    requester?: string;
+    productName?: string;
+    itemSummary?: string;
+    item?: string;
+    totalPrice?: number;
+    amount?: number;
+    approvalDate?: string;
+    updatedAt?: string;
+    approver?: string;
+    managerName?: string;
+    manager?: string;
+    adminMessage?: string;
+  }
+  
+  const parse = (item: OrderItem): TPurchaseItem => ({
     id: String(item.id),
     requestDate: item.requestDate
       ? formatDate(item.requestDate)
@@ -60,7 +80,7 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
     manager: item.approver || item.managerName || item.manager || "-",
     adminMessage: item.adminMessage,
   });
-  const purchaseItems: TPurchaseItem[] = (approvedData?.orders || []).map((item: any) => parse(item));
+  const purchaseItems: TPurchaseItem[] = (approvedData?.orders || []).map((item: OrderItem) => parse(item));
   const totalCount = approvedData?.meta?.totalCount || 0;
   const totalPages = Math.ceil(totalCount / itemsPerPage);
   const currentItems: TPurchaseItem[] = purchaseItems;

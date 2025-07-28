@@ -1,9 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import clsx from "clsx";
 import Dropdown from "@/components/common/DropDown";
-import fileIcon from "@/assets/icons/ic_file.svg";
 import Image from "next/image";
 import { useOrderHistory } from "@/hooks/useOrderHistory";
 import ChevronLeftIcon from "@/assets/icons/ic_chevron_left.svg";
@@ -13,18 +11,11 @@ const OrderHistoryPage = () => {
   // 공통 로직 훅 사용
   const {
     budgetData,
-    budgetLoading,
-    budgetError,
-    purchaseListLoading,
-    purchaseListError,
     currentItems,
     totalPages,
     currentPage,
     handlePageChange,
-    sortBy,
     setSortBy,
-    dropdownOpen,
-    setDropdownOpen,
     formatNumber,
   } = useOrderHistory();
   const [isHovered, setIsHovered] = useState(false);
