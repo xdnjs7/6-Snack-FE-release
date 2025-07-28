@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { twMerge } from "tailwind-merge";
 
 import ChevronUpIcon from "@/assets/icons/ic_chevron_up.svg";
 import ChevronDownIcon from "@/assets/icons/ic_chevron_down.svg";
@@ -10,11 +11,12 @@ type TDropdownProps = {
   options?: string[];
   placeholder?: string;
   onChange: (value: string) => void;
+  className?: string;
 };
 
 const defaultOptions = ["최신순", "판매순", "낮은 가격순", "높은 가격순"];
 
-const Dropdown = ({ options = [], placeholder = "정렬", onChange }: TDropdownProps) => {
+const Dropdown = ({ options = [], placeholder = "정렬", onChange, className }: TDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [sort, setSort] = useState<string>(placeholder);
 
@@ -27,10 +29,10 @@ const Dropdown = ({ options = [], placeholder = "정렬", onChange }: TDropdownP
   const menuOptions = options.length === 0 ? defaultOptions : options;
 
   return (
-    <div className="relative inline-block w-[110px] z-30">
+    <div className={twMerge("relative inline-block w-[110px] z-30", className)}>
       {/* 드롭다운 버튼 */}
       <div
-        className={`h-11 w-[110px] px-4 py-2.5 bg-white border border-primary-100 ${
+        className={`h-11 w-full px-4 py-2.5 bg-white border border-primary-100 ${
           isOpen ? "border-b-0" : "border"
         } flex justify-between items-center cursor-pointer`}
         onClick={() => setIsOpen((prev) => !prev)}
@@ -48,7 +50,7 @@ const Dropdown = ({ options = [], placeholder = "정렬", onChange }: TDropdownP
 
       {/* 드롭다운 메뉴 */}
       {isOpen && (
-        <div className="absolute w-[110px] z-10 bg-white border border-primary-100 border-t-0 rounded-b max-h-[300px] overflow-y-auto">
+        <div className="absolute w-full z-10 bg-white border border-primary-100 border-t-0 rounded-b max-h-[300px] overflow-y-auto">
           {menuOptions.map((option) => (
             <div
               key={option}

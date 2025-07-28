@@ -218,13 +218,23 @@ export default function ProductRegistrationForm({
               <label htmlFor="mainCategory" className="sr-only">
                 대분류
               </label>
-              <Dropdown options={parentCategoryOptions} placeholder="대분류" onChange={handleMainCategoryChange} />
+              <Dropdown
+                options={parentCategoryOptions}
+                placeholder="대분류"
+                onChange={handleMainCategoryChange}
+                className="w-full"
+              />
             </div>
             <div>
               <label htmlFor="subCategory" className="sr-only">
                 소분류
               </label>
-              <Dropdown options={childrenCategoryOptions} placeholder="소분류" onChange={handleSubCategoryChange} />
+              <Dropdown
+                options={childrenCategoryOptions}
+                placeholder="소분류"
+                onChange={handleSubCategoryChange}
+                className="w-full"
+              />
             </div>
           </div>
 
