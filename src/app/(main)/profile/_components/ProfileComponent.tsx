@@ -3,6 +3,7 @@
 import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
 import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
 import Button from "@/components/ui/Button";
+import Input from "@/components/common/Input";
 import { getUserInfo, updatePassword, updateSuper } from "@/lib/api/profile.api";
 import { TButtonType } from "@/types/button.types";
 import { Role } from "@/types/InviteMemberModal.types";
@@ -11,6 +12,7 @@ import { useEffect, useState } from "react";
 export default function ProfileComponent() {
   const [userId, setUserId] = useState("");
   const [company, setCompany] = useState("");
+  const [originalCompany, setOriginalCompany] = useState("");
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,8 +22,18 @@ export default function ProfileComponent() {
   const [showCheckPw, setShowCheckPw] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isFormValid = password.length > 0 && confirmPassword.length > 0 && password === confirmPassword;
+  const isCompanyChanged = role === Role.SUPER_ADMIN && company !== originalCompany;
+  const isPasswordValid = password.length >= 8 && password === confirmPassword && password.length > 0;
+  const isFormValid = isCompanyChanged || isPasswordValid;
   const buttonType: TButtonType = isFormValid ? "black" : "grayDisabled";
+
+  const passwordError = password.length > 0 && password.length < 8 ? "비밀번호는 8자 이상이어야 합니다." : "";
+  const confirmPasswordError =
+    confirmPassword.length > 0 && confirmPassword.length < 8
+      ? "비밀번호는 8자 이상이어야 합니다."
+      : password !== confirmPassword && confirmPassword.length > 0
+      ? "비밀번호가 일치하지 않습니다."
+      : "";
 
   useEffect(() => {
     (async () => {
@@ -29,6 +41,7 @@ export default function ProfileComponent() {
         const user = await getUserInfo();
         setUserId(user.id);
         setCompany(user.company.name);
+        setOriginalCompany(user.company.name);
         setRole(user.role);
         setName(user.name);
         setEmail(user.email);
@@ -52,6 +65,7 @@ export default function ProfileComponent() {
   }
 
   const handleSubmit = async () => {
+    // isFormValid가 아니면 아무 동작도 하지 않음 (alert 제거)
     if (!isFormValid) return;
     try {
       setIsSubmitting(true);
@@ -82,19 +96,15 @@ export default function ProfileComponent() {
           <div className="self-stretch flex flex-col justify-start items-start gap-8">
             <div className="self-stretch flex flex-col justify-start items-start gap-5">
               {/* 기업명 */}
-              <div className="self-stretch flex flex-col gap-1">
-                <label className="text-primary-600 text-xs">기업명</label>
-                <input
-                  className={`w-full border-b py-2 text-base outline-none ${
-                    role === Role.SUPER_ADMIN
-                      ? "border-primary-950 text-primary-900"
-                      : "border-primary-200 text-primary-300 bg-transparent"
-                  }`}
-                  value={company}
-                  onChange={(e) => setCompany(e.target.value)}
-                  readOnly={role !== Role.SUPER_ADMIN}
-                />
-              </div>
+              <Input
+                label="기업명"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                hasValue={!!company}
+                id="company"
+                placeholder="기업명을 입력하세요"
+                readOnly={role !== Role.SUPER_ADMIN}
+              />
 
               {/* 권한 */}
               <div className="self-stretch flex flex-col gap-1">
@@ -121,50 +131,38 @@ export default function ProfileComponent() {
               </div>
 
               {/* 비밀번호 */}
-              <div className="relative self-stretch flex flex-col gap-1">
-                <label className="text-primary-600 text-xs">비밀번호</label>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="w-full border-b py-2 border-primary-950 text-primary-900 text-base outline-none"
-                  placeholder="비밀번호를 입력해주세요"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-0 bottom-2.5 w-6 h-6"
-                >
-                  {showPassword ? (
-                    <VisibilityOnIconSvg className="w-6 h-6" />
-                  ) : (
-                    <VisibilityOffIconSvg className="w-6 h-6" />
-                  )}
-                </button>
-              </div>
+              <Input
+                label="비밀번호"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                hasValue={!!password}
+                isPassword
+                onToggleVisibility={() => setShowPassword((prev) => !prev)}
+                VisibilityOnIcon={VisibilityOnIconSvg}
+                VisibilityOffIcon={VisibilityOffIconSvg}
+                errorMessage={passwordError}
+                id="password"
+                autoComplete="new-password"
+                placeholder="비밀번호를 입력하세요"
+              />
 
               {/* 비밀번호 확인 */}
-              <div className="relative self-stretch flex flex-col gap-1">
-                <label className="text-gray-500 text-xs">비밀번호 확인</label>
-                <input
-                  type={showCheckPw ? "text" : "password"}
-                  className="w-full border-b border-primary-950 text-primary-900 py-2 text-base outline-none"
-                  placeholder="비밀번호를 한번 더 입력해주세요"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowCheckPw((prev) => !prev)}
-                  className="absolute right-0 bottom-2.5 w-6 h-6"
-                >
-                  {showCheckPw ? (
-                    <VisibilityOnIconSvg className="w-6 h-6" />
-                  ) : (
-                    <VisibilityOffIconSvg className="w-6 h-6" />
-                  )}
-                </button>
-              </div>
+              <Input
+                label="비밀번호 확인"
+                type={showCheckPw ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                hasValue={!!confirmPassword}
+                isPassword
+                onToggleVisibility={() => setShowCheckPw((prev) => !prev)}
+                VisibilityOnIcon={VisibilityOnIconSvg}
+                VisibilityOffIcon={VisibilityOffIconSvg}
+                errorMessage={confirmPasswordError}
+                id="confirmPassword"
+                autoComplete="new-password"
+                placeholder="비밀번호 확인을 입력하세요"
+              />
             </div>
           </div>
 
