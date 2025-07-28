@@ -85,7 +85,7 @@ export default function ProductsPageContent() {
 
   // 상품 등록 모달 열기
   const handleProductRegistration = () => {
-    openModal(<ProductRegistrationForm />);
+    openModal(<ProductRegistrationForm onClose={closeModal} />);
   };
 
   // URL 파라미터에서 카테고리 정보 가져와서 전역 상태에 저장
