@@ -24,18 +24,18 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
   const { data: budgetData, isLoading: budgetLoading, isError: budgetIsError, error: budgetErrorObj } = useBudgets();
   const budgetError = budgetIsError ? (budgetErrorObj as Error)?.message || "예산 데이터를 불러오지 못했습니다." : null;
 
-  // 구매내역 데이터 패칭 (승인완료만)
+  // 구매내역 데이터 패칭 (승인완료만) - 모든 데이터를 한 번에 가져와서 캐시 활용
   const {
     data: approvedData,
     isLoading: approvedLoading,
     isError: approvedIsError,
     error: approvedErrorObj,
-  } = useAdminOrders({ status: "approved", offset: (currentPage - 1) * itemsPerPage, limit: itemsPerPage, orderBy: sortBy });
+  } = useAdminOrders({ status: "approved" }); // offset, limit, orderBy 제거
 
   const purchaseListLoading = approvedLoading;
   const purchaseListError = approvedIsError ? (approvedErrorObj as Error)?.message : null;
 
-  // 데이터 파싱
+  // 데이터 파싱 및 정렬
   const statusMap: Record<string, "요청" | "승인"> = { approved: "승인" };
   
   interface OrderItem {
@@ -80,10 +80,50 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
     manager: item.approver || item.managerName || item.manager || "-",
     adminMessage: item.adminMessage,
   });
-  const purchaseItems: TPurchaseItem[] = (approvedData?.orders || []).map((item: OrderItem) => parse(item));
-  const totalCount = approvedData?.meta?.totalCount || 0;
+
+  // 모든 아이템을 파싱
+  const allPurchaseItems: TPurchaseItem[] = ((approvedData as any)?.orders || []).map((item: OrderItem) => parse(item));
+
+  // 클라이언트 사이드에서 정렬 처리
+  const sortedItems = useCallback(() => {
+    const items = [...allPurchaseItems];
+    
+    switch (sortBy) {
+      case "latest":
+        return items.sort((a, b) => {
+          const dateA = new Date(a.requestDate).getTime();
+          const dateB = new Date(b.requestDate).getTime();
+          return dateB - dateA; // 최신순 (내림차순)
+        });
+      case "priceLow":
+        return items.sort((a, b) => {
+          const priceA = parseFloat(a.amount.replace(/[^0-9]/g, '')) || 0;
+          const priceB = parseFloat(b.amount.replace(/[^0-9]/g, '')) || 0;
+          return priceA - priceB; // 낮은 가격순 (오름차순)
+        });
+      case "priceHigh":
+        return items.sort((a, b) => {
+          const priceA = parseFloat(a.amount.replace(/[^0-9]/g, '')) || 0;
+          const priceB = parseFloat(b.amount.replace(/[^0-9]/g, '')) || 0;
+          return priceB - priceA; // 높은 가격순 (내림차순)
+        });
+      default:
+        return items;
+    }
+  }, [allPurchaseItems, sortBy]);
+
+  const sortedPurchaseItems = sortedItems();
+
+  // 클라이언트 사이드에서 페이지네이션 처리
+  const totalCount = sortedPurchaseItems.length;
   const totalPages = Math.ceil(totalCount / itemsPerPage);
-  const currentItems: TPurchaseItem[] = purchaseItems;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems: TPurchaseItem[] = sortedPurchaseItems.slice(startIndex, startIndex + itemsPerPage);
+
+  // 정렬이 변경될 때 첫 페이지로 이동
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [sortBy]);
 
   const handlePageChange = useCallback((page: number) => {
     if (page > 0 && page <= totalPages) {
