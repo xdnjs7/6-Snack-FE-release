@@ -36,7 +36,7 @@ export default function CartPage() {
 
   const { mutate: adminOrderNow } = useMutation<TOrderNowResponse, Error, number[]>({
     mutationFn: (cartItemIds) => orderNow(cartItemIds),
-    onSuccess: () => router.push("/cart/order-confirmed"),
+    onSuccess: (order) => router.push(`/cart/order-confirmed/${order.data.id}`),
     onError: () => setIsDisabled(false),
   });
 
