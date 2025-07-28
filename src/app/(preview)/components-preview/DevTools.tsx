@@ -94,13 +94,13 @@ export default function DevNavBar() {
   // 진행바 기능
   const totalLinks = useMemo(() => {
     return navLinks.reduce((acc, section) => acc + section.links.length, 0);
-  }, [navLinks]);
+  }, []);
 
   const completedLinks = useMemo(() => {
     return navLinks.reduce((acc, section) => {
       return acc + section.links.filter((link) => link.progress === "완성").length;
     }, 0);
-  }, [navLinks]);
+  }, []);
 
   const completionPercentage = useMemo(() => {
     if (totalLinks === 0) return 0;
