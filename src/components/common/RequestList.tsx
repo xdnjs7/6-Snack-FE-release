@@ -24,6 +24,16 @@ type TRequestListProps = {
 export default function RequestList({ orderRequests, onClickReject, onClickApprove }: TRequestListProps) {
   return (
     <>
+      {/* PC 테이블 헤더 */}
+      <div className="flex justify-center w-full ">
+        <div className="hidden sm:flex justify-between items-center w-full max-w-[1352px] h-[100px] border-b border-neutral-200 md:px-[40px]">
+          <div className="font-bold text-zinc-500 text-base w-[100px] md:w-[142px] ">구매 요청일</div>
+          <div className="font-bold text-zinc-500 text-base w-[140px] md:w-[360px] ">상품 정보</div>
+          <div className="font-bold text-zinc-500 text-base w-[100px] md:w-[142px] ">주문 금액</div>
+          <div className="font-bold text-zinc-500 text-base w-[64px] md:w-[133px] ">요청인</div>
+          <div className="font-bold text-zinc-500 text-base w-[168px] h-[40px] flex items-center">비고</div>
+        </div>
+      </div>
       {orderRequests.map((request, i) => (
         <Fragment key={`${request}_${i}`}>
           <Mobile>

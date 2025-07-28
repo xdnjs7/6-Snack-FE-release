@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { TInviteMemberModalProps, Role, UserRole } from "@/types/InviteMemberModal.types";
+import { sendInvite } from "@/lib/api/invite.api";
+import { getUserApi } from "@/lib/api/user.api";
 
 const roleLabels: Record<UserRole, string> = {
   USER: "유저",
@@ -48,7 +50,39 @@ export default function InviteMemberModal({
         alert(err.message || "권한 수정 중 오류 발생");
       }
     } else {
-      onSubmit?.({ name, email, role: selectedRole });
+      // 초대 모드일 때
+      try {
+        if (!name || !email) {
+          alert("이름과 이메일을 모두 입력해주세요.");
+          return;
+        }
+
+        // 현재 사용자 정보 가져오기
+        const currentUser = await getUserApi();
+        
+        // 초대 API 호출
+        const inviteData = {
+          email,
+          name,
+          role: selectedRole,
+          companyId: currentUser.company.id,
+          invitedById: currentUser.id,
+          expiresInDays: 7
+        };
+
+        const result = await sendInvite(inviteData);
+        
+        if (result.emailSent) {
+          alert("초대 이메일이 성공적으로 발송되었습니다.");
+        } else {
+          alert("초대 링크는 생성되었지만 이메일 발송에 실패했습니다.");
+        }
+        
+        onSubmit?.({ name, email, role: selectedRole });
+        onCancel?.();
+      } catch (err: any) {
+        alert(err.message || "초대 발송 중 오류가 발생했습니다.");
+      }
     }
   };
 
