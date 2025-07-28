@@ -10,6 +10,8 @@ import { TMemberItem } from "@/types/meberList.types";
 import { fetchAllCompanyUsers } from "@/lib/api/companyUser.api";
 import { useSearchParams } from "next/navigation";
 import { deleteUserById } from "@/lib/api/superAdmin.api";
+import { sendInvite } from "@/lib/api/invite.api";
+import { getUserApi } from "@/lib/api/user.api";
 
 export default function User() {
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
@@ -37,6 +39,39 @@ export default function User() {
       setMembers((prev) => prev.filter((member) => member.id !== userId));
     } catch (error) {
       alert("유저 삭제에 실패했습니다.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleInviteUser = async (data: { name: string; email: string; role: 'USER' | 'ADMIN' }) => {
+    try {
+      setLoading(true);
+      
+      const currentUser = await getUserApi();
+      
+      // 초대 API 호출
+      const inviteData = {
+        email: data.email,
+        name: data.name,
+        role: data.role,
+        companyId: currentUser.company.id,
+        invitedById: currentUser.id,
+        expiresInDays: 7
+      };
+
+      const result = await sendInvite(inviteData);
+      
+      if (result.emailSent) {
+        alert("초대 이메일이 성공적으로 발송되었습니다.");
+        const { users } = await fetchAllCompanyUsers({ name, limit: 50 });
+        setMembers(users);
+      } else {
+        alert("초대 링크는 생성되었지만 이메일 발송에 실패했습니다.");
+      }
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "초대 발송에 실패했습니다.");
       console.error(error);
     } finally {
       setLoading(false);
@@ -71,10 +106,7 @@ export default function User() {
             openModal(
               <InviteMemberModal
                 onCancel={closeModal}
-                onSubmit={(data) => {
-                  console.log("회원 초대 등록:", data);
-                  closeModal();
-                }}
+                onSubmit={handleInviteUser}
               />,
             );
           }}
@@ -112,10 +144,7 @@ export default function User() {
               <InviteMemberModal
                 mode="invite"
                 onCancel={closeModal}
-                onSubmit={(data) => {
-                  console.log("회원 초대 등록:", data);
-                  closeModal();
-                }}
+                onSubmit={handleInviteUser}
               />,
             );
           }}

@@ -8,23 +8,25 @@ type TOrderItemProps = {
 };
 
 export default function OrderItem({ isPending, cartItems }: TOrderItemProps) {
-  const totalPrice = cartItems?.reduce((total, item) => total + item.product.price * item.quantity, 0);
+  const totalPrice = cartItems?.cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
 
   return (
     <>
       <div className="flex justify-start items-center gap-[6px] mt-[40px] sm:mt-[80px] sm:mb-[20px]">
         <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-950">요청 품목</p>
-        <p className="font-normal text-[16px]/[20px] tracking-tight text-primary-950">총 {cartItems?.length ?? 0}개</p>
+        <p className="font-normal text-[16px]/[20px] tracking-tight text-primary-950">
+          총 {cartItems?.cart.length ?? 0}개
+        </p>
       </div>
 
       <div className="flex flex-col justify-center items-center w-full gap-[20px] sm:shadow-[0px_0px_10px_0px_rgba(0,0,0,0.12)] sm:py-[40px] sm:px-[30px] sm:rounded-[2px] md:px-[60px]">
         <div className="flex flex-col items-center w-full">
           {isPending ? (
             <div>로딩 중...</div>
-          ) : !cartItems?.length ? (
+          ) : !cartItems?.cart.length ? (
             <div className="flex justify-center items-center h-[200px]">올바른 요청이 아닙니다.</div>
           ) : (
-            cartItems.map((item, i) => {
+            cartItems.cart.map((item, i) => {
               return (
                 <div
                   key={`${item}_${i}`}
