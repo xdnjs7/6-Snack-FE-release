@@ -8,11 +8,11 @@ export const fetchPendingOrders = async ({
 }: {
   offset?: number;
   limit?: number;
-  orderBy?: "latest" | "oldest";
+  orderBy?: string; // string으로 확장
 }): Promise<TOrderSummary[]> => {
   const query = `?status=pending&offset=${offset}&limit=${limit}&orderBy=${orderBy}`;
   const res = await cookieFetch(`/admin/orders${query}`);
-  return res as TOrderSummary[];
+  return res.orders as TOrderSummary[];
 };
 
 export const fetchOrderDetail = async (orderId: number): Promise<TOrder> => {
