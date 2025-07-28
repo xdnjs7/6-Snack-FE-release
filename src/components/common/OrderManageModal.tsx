@@ -1,11 +1,11 @@
+import { updateOrderStatus } from "@/lib/api/orderManage.api";
 import { useModal } from "@/providers/ModalProvider";
-import Image, { StaticImageData } from "next/image";
-import React, { useState } from "react";
+import { TOrder } from "@/types/order.types";
+import Image from "next/image";
+import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 import Button from "../ui/Button";
 import TextArea from "./TextArea";
-import { twMerge } from "tailwind-merge";
-import { TOrder } from "@/types/order.types";
-import { updateOrderStatus } from "@/lib/api/orderManage.api";
 
 type TOrderManageModalProps = {
   type: "reject" | "approve";
@@ -159,7 +159,7 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
 
                 onClick();
                 closeModal();
-              } catch (error) {
+              } catch {
                 alert("실패!");
               }
             }}

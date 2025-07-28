@@ -1,18 +1,15 @@
+import { useModal } from "@/providers/ModalProvider";
 import { TMemberItem } from "@/types/meberList.types";
 import Badge from "../ui/Badge";
 import DeleteAccountConfirmModal from "./DeleteAccountConfirmModal";
-import { useModal } from "@/providers/ModalProvider";
 import InviteMemberModal from "./InviteMemberModal";
 import MenuDropdown from "./MenuDropdown";
-import Mobile from "./Mobile";
-import { Role } from "@/types/InviteMemberModal.types";
 
 type TMemberListProps = TMemberItem & {
-  onClickChangeRole?: (id: string, currentRole: TMemberItem["role"]) => void;
   onClickDeleteUser?: (id: string) => void;
 };
 
-const MemberList = ({ id, name, email, role, onClickChangeRole, onClickDeleteUser }: TMemberListProps) => {
+const MemberList = ({ id, name, email, role, onClickDeleteUser }: TMemberListProps) => {
   const { openModal, closeModal } = useModal();
   return (
     <>
