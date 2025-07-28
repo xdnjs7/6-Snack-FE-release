@@ -551,11 +551,15 @@ const OrderHistoryPage = () => {
                 currentItems.map((item) => (
                   <div key={item.id} className="self-stretch h-24 px-10 border-b border-neutral-200 inline-flex justify-between items-center">
                     <div className="w-32 justify-start text-neutral-800 text-base font-normal font-['SUIT']">{item.requestDate}</div>
-                    <div className="relative w-32 flex justify-start items-center gap-2">
-                      <div className="justify-start text-neutral-800 text-base font-normal font-['SUIT']">{item.requester}</div>
+                    <div className="w-32 flex justify-start items-center gap-2 whitespace-nowrap overflow-hidden text-ellipsis">
+                      <div className="justify-start text-neutral-800 text-base font-normal font-['SUIT'] whitespace-nowrap overflow-hidden text-ellipsis">
+                        {item.requester}
+                      </div>
                       {item.adminMessage?.includes("즉시 구매") && (
-                        <div className="px-1 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1">
-                          <div className="justify-center items-center text-center text-blue-500 text-xs font-bold font-['SUIT'] w-12">즉시 요청</div>
+                        <div className="px-2 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1 whitespace-nowrap">
+                          <div className="justify-center items-center text-center text-blue-500 text-xs font-bold font-['SUIT'] w-12 whitespace-nowrap overflow-hidden text-ellipsis">
+                            즉시 요청
+                          </div>
                         </div>
                       )}
                     </div>
