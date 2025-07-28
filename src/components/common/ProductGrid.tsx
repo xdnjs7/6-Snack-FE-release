@@ -11,6 +11,7 @@ type Product = {
   price: number;
   imageUrl: string;
   linkUrl: string;
+  cumulativeSales: number;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
@@ -60,7 +61,7 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
               <div className="justify-start text-stone-900 text-lg font-extrabold">
                 {product.price.toLocaleString("ko-KR")}원
               </div>
-              <div className="justify-center text-blue-500 text-sm font-bold ">29회 구매</div>
+              <div className="justify-center text-blue-500 text-sm font-bold ">{product.cumulativeSales}회 구매</div>
             </div>
 
             {/* </div> */}
