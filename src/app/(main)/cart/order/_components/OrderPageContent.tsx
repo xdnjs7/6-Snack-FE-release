@@ -10,12 +10,14 @@ import { getCartItems } from "@/lib/api/cart.api";
 import { TGetCartItemsParams, TGetCartItemsResponse } from "@/types/cart.types";
 import { useRouter } from "next/navigation";
 import { createOrder } from "@/lib/api/order.api";
+import clsx from "clsx";
 
 type TOrderPageContentProps = {
   cartItemId?: string;
 };
 
 export default function OrderPageContent({ cartItemId }: TOrderPageContentProps) {
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [requestMessage, setRequestMessage] = useState<string>("");
   const router = useRouter();
 
@@ -36,6 +38,7 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
   const { mutate: orderRequest } = useMutation<void, Error, { requestMessage?: string; cartItemIds: number[] }>({
     mutationFn: ({ requestMessage, cartItemIds }) => createOrder({ requestMessage, cartItemIds }),
     onSuccess: () => router.push("/cart/order-confirm"),
+    onError: () => setIsDisabled(true),
   });
 
   const cartItemIds = cartItems?.cart.map((item) => item.id) ?? [];
@@ -80,10 +83,17 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
             label="취소"
           />
           <Button
-            onClick={() => orderRequest({ requestMessage, cartItemIds })}
-            className="w-full max-w-[300px] h-[64px] font-bold text-[16px]/[20px] tracking-tight"
+            onClick={() => {
+              setIsDisabled(true);
+              orderRequest({ requestMessage, cartItemIds });
+            }}
+            disabled={isDisabled}
             type="black"
-            label="구매 요청"
+            label={isDisabled ? "잠시만 기다려주세요..." : "구매 요청"}
+            className={clsx(
+              isDisabled && "text-primary-300 bg-primary-100 cursor-default",
+              "w-full max-w-[300px] h-[64px] font-bold text-[16px]/[20px] tracking-tight",
+            )}
           />
         </div>
       </div>

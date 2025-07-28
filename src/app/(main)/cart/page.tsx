@@ -13,16 +13,11 @@ import { useRouter } from "next/navigation";
 import Toast from "@/components/common/Toast";
 import { orderNow } from "@/lib/api/order.api";
 import { TOrderNowResponse } from "@/types/order.types";
-import clsx from "clsx";
 import { useDeviceType } from "@/hooks/useDeviceType";
-
-/**
- * @De-cal TODO:
- * 1. 즉시 구매 API 연동 후 order-confirmed 페이지로 이동시키기
- * 2. alert 사용 중인 것 모달이나 토스트로 변경하기
- */
+import clsx from "clsx";
 
 export default function CartPage() {
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isToastVisible, setIsToastVisible] = useState<boolean>(false);
   const { isMobile } = useDeviceType();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -42,6 +37,7 @@ export default function CartPage() {
   const { mutate: adminOrderNow } = useMutation<TOrderNowResponse, Error, number[]>({
     mutationFn: (cartItemIds) => orderNow(cartItemIds),
     onSuccess: () => router.push("/cart/order-confirmed"),
+    onError: () => setIsDisabled(false),
   });
 
   if (error) {
@@ -68,10 +64,21 @@ export default function CartPage() {
 
   const handleRequestOrder = () => {
     // 아무 상품도 선택하지 않았을 때
-    if (checkedCartItemIds.length === 0) return alert("1개 이상의 상품을 선택하세요.");
+    if (checkedCartItemIds.length === 0) {
+      setIsToastVisible(true);
+
+      if (timerRef.current) clearTimeout(timerRef.current);
+
+      timerRef.current = setTimeout(() => {
+        setIsToastVisible(false);
+        timerRef.current = null;
+      }, 3000);
+
+      return;
+    }
 
     // USER일 때
-    if (user?.role === "USER") router.push("/cart/order");
+    if (user?.role === "USER") return router.push("/cart/order");
 
     // 예산 부족할 때
     if (!canPurchase) {
@@ -88,13 +95,14 @@ export default function CartPage() {
     }
 
     // 즉시 구매 API
+    setIsDisabled(true);
     adminOrderNow(checkedCartItemIds);
   };
 
   return (
     <div className="flex flex-col justify-center items-center w-full">
       <div className="w-full max-w-[1200px] md:px-[24px]">
-        <div className="relative flex flex-col gap-[40px] mt-[20px] sm:gap-[70px] sm:mt-[60px] sm:pb-[36px] md:mt-[80px]">
+        <div className="flex flex-col gap-[40px] mt-[20px] sm:gap-[70px] sm:mt-[60px] sm:pb-[36px] md:mt-[80px]">
           <div className="flex flex-col justify-center items-center gap-[10px] font-bold text-[16px]/[20px] tracking-tight sm:flex-row sm:gap-[20px] sm:text-[18px]/[22px]">
             <p className="text-primary-950">1. Shopping Cart</p>
             {user?.role === "USER" && (
@@ -110,25 +118,24 @@ export default function CartPage() {
             <p className="text-primary-300">{user?.role === "USER" ? "3. Order Confirmed" : "2. Order Confirmed"}</p>
           </div>
 
-          <Toast
-            text={
-              isMobile ? (
-                "예산이 부족합니다."
-              ) : (
-                <>
-                  <p>예산이 부족합니다.&nbsp;</p>
-                  <p>수량을 줄이거나 항목을 제거해주세요.</p>
-                </>
-              )
-            }
-            budget={remainingBudget}
-            className={clsx(
-              isToastVisible
-                ? "opacity-100 translate-y-0 sm:translate-y-[-25%] md:translate-y-[-50%]"
-                : "opacity-0 translate-y-1/2 sm:translate-y-0 md:translate-y-[-25%]",
-              "absolute max-w-[1200px] transition-all duration-500 md:max-w-[1152px]",
-            )}
-          />
+          {checkedCartItemIds.length === 0 ? (
+            <Toast text="1개 이상의 상품을 선택하세요." isVisible={isToastVisible} />
+          ) : (
+            <Toast
+              text={
+                isMobile ? (
+                  "예산이 부족합니다."
+                ) : (
+                  <>
+                    <p>예산이 부족합니다.&nbsp;</p>
+                    <p>수량을 줄이거나 항목을 제거해주세요.</p>
+                  </>
+                )
+              }
+              isVisible={isToastVisible}
+              budget={remainingBudget}
+            />
+          )}
 
           <CartItem
             cartItems={cartItems}
@@ -172,15 +179,20 @@ export default function CartPage() {
               <Link href="/products" className="w-full">
                 <Button
                   type="white"
+                  disabled={isDisabled}
                   label="계속 쇼핑하기"
                   className="w-full h-[64px] font-bold tracking-tight text-primary-950"
                 />
               </Link>
               <Button
                 onClick={handleRequestOrder}
+                disabled={isDisabled}
                 type="black"
-                label="구매 요청"
-                className="w-full h-[64px] font-bold tracking-tight"
+                label={isDisabled ? "잠시만 기다려주세요..." : "구매 요청"}
+                className={clsx(
+                  isDisabled && "text-primary-300 bg-primary-100 cursor-default",
+                  "w-full h-[64px] font-bold tracking-tight",
+                )}
               />
             </div>
           </div>
