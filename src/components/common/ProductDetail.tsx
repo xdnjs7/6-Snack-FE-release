@@ -48,8 +48,8 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
     <div className="w-full flex flex-col justify-center items-center px-6 sm:px-0 sm:max-w-[1180px]">
       <div className="w-full flex flex-col justify-center items-start gap-7.5">
         <CategoryNavigation
-          parentCategoryName={product.category.parent?.name ?? "기타"}
-          subCategoryName={product.category.name}
+          parentCategory={product.category.parent?.name ?? "기타"}
+          childCategory={product.category.name}
         />
         <div className="w-full flex flex-col md:flex-row md:gap-10">
           <ProductImage imageUrl={product.imageUrl} />
