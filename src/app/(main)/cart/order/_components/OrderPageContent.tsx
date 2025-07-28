@@ -11,6 +11,7 @@ import { TGetCartItemsParams, TGetCartItemsResponse } from "@/types/cart.types";
 import { useRouter } from "next/navigation";
 import { createOrder } from "@/lib/api/order.api";
 import clsx from "clsx";
+import { TOrderResponse } from "@/types/order.types";
 
 type TOrderPageContentProps = {
   cartItemId?: string;
@@ -35,9 +36,13 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
   });
 
   // 구매 요청
-  const { mutate: orderRequest } = useMutation<void, Error, { requestMessage?: string; cartItemIds: number[] }>({
+  const { mutate: orderRequest } = useMutation<
+    TOrderResponse,
+    Error,
+    { requestMessage?: string; cartItemIds: number[] }
+  >({
     mutationFn: ({ requestMessage, cartItemIds }) => createOrder({ requestMessage, cartItemIds }),
-    onSuccess: () => router.push("/cart/order-confirm"),
+    onSuccess: (order) => router.push(`/cart/order-confirmed/${order.data.id}`),
     onError: () => setIsDisabled(true),
   });
 

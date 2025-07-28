@@ -3,15 +3,16 @@ import { getAdminOrders } from '@/lib/api/order.api';
 
 interface UseAdminOrdersParams {
   status: 'pending' | 'approved';
-  offset: number;
-  limit: number;
-  orderBy: string;
+  offset?: number;
+  limit?: number;
+  orderBy?: string;
 }
 
-export const useAdminOrders = ({ status, offset, limit, orderBy }: UseAdminOrdersParams) => {
+export const useAdminOrders = ({ status, offset = 0, limit = 100, orderBy = 'latest' }: UseAdminOrdersParams) => {
   return useQuery({
-    queryKey: ['adminOrders', status, offset, limit, orderBy],
-    queryFn: () => getAdminOrders({ status, offset, limit, orderBy }),
-    staleTime: 0, // 항상 최신 데이터 패칭
+    queryKey: ['adminOrders', status], // offset, limit, orderBy 제거하여 캐시 활용
+    queryFn: () => getAdminOrders({ status, offset: 0, limit: 100, orderBy: 'latest' }), // 모든 데이터를 한 번에 가져옴
+    staleTime: 5 * 60 * 1000, // 5분간 캐시된 데이터 사용
+    gcTime: 10 * 60 * 1000, // 10분간 메모리에 보관
   });
 };
