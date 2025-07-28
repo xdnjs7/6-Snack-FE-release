@@ -4,7 +4,7 @@ import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
 import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
 import Button from "@/components/ui/Button";
 import Input from "@/components/common/Input";
-import { getUserInfo, updatePassword, updateSuper } from "@/lib/api/profile.api";
+import { getUserInfo, updatePassword, updateSuper, updateCompany, UserInfo } from "@/lib/api/profile.api";
 import { TButtonType } from "@/types/button.types";
 import { Role } from "@/types/InviteMemberModal.types";
 import { useEffect, useState } from "react";
@@ -38,7 +38,7 @@ export default function ProfileComponent() {
   useEffect(() => {
     (async () => {
       try {
-        const user = await getUserInfo();
+        const user: UserInfo = await getUserInfo();
         setUserId(user.id);
         setCompany(user.company.name);
         setOriginalCompany(user.company.name);
@@ -70,8 +70,15 @@ export default function ProfileComponent() {
     try {
       setIsSubmitting(true);
       if (role === Role.SUPER_ADMIN) {
-        await updateSuper(userId, company, password);
-        alert("회사 정보가 변경되었습니다.");
+        if (isCompanyChanged && !isPasswordValid) {
+          // 회사명만 변경
+          await updateCompany(userId, company);
+          alert("회사명이 변경되었습니다.");
+        } else if (isPasswordValid) {
+          // 비밀번호만 변경하거나 회사명과 비밀번호 모두 변경
+          await updateSuper(userId, company, password);
+          alert("정보가 변경되었습니다.");
+        }
       } else {
         await updatePassword(userId, password);
         alert("비밀번호가 변경되었습니다.");
@@ -96,15 +103,19 @@ export default function ProfileComponent() {
           <div className="self-stretch flex flex-col justify-start items-start gap-8">
             <div className="self-stretch flex flex-col justify-start items-start gap-5">
               {/* 기업명 */}
-              <Input
-                label="기업명"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                hasValue={!!company}
-                id="company"
-                placeholder="기업명을 입력하세요"
-                readOnly={role !== Role.SUPER_ADMIN}
-              />
+            <div className="self-stretch flex flex-col gap-1">
+                <label className="text-primary-600 text-xs">기업명</label>
+                <input
+                  className={`w-full border-b py-2 text-base outline-none ${
+                    role === Role.SUPER_ADMIN
+                      ? "border-primary-950 text-primary-900"
+                      : "border-primary-200 text-primary-300 bg-transparent"
+                  }`}
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  readOnly={role !== Role.SUPER_ADMIN}
+                />
+              </div>
 
               {/* 권한 */}
               <div className="self-stretch flex flex-col gap-1">
