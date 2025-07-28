@@ -8,11 +8,7 @@ import clsx from "clsx";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { getMyOrderDetail, TMyOrderDetail } from "@/lib/api/orderHistory.api";
 
-type TOrderConfirmedPageProps = {
-  orderId?: string;
-};
-
-export default function OrderConfirmedPage({ orderId: propOrderId }: TOrderConfirmedPageProps) {
+export default function OrderConfirmedPage() {
   const router = useRouter();
   const params = useParams();
   const [orderData, setOrderData] = useState<TMyOrderDetail | null>(null);
@@ -20,7 +16,7 @@ export default function OrderConfirmedPage({ orderId: propOrderId }: TOrderConfi
   const [error, setError] = useState<string | null>(null);
 
   // orderId 우선순위: props > URL params
-  const orderId = propOrderId || (params.orderId as string);
+  const orderId = params.orderId as string;
 
   useEffect(() => {
     const fetchOrderDetail = async (): Promise<void> => {
