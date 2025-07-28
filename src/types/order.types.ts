@@ -13,7 +13,7 @@ type TBudget = {
   currentMonthExpense: number;
 };
 
-type TOrderBase = {
+export type TOrderBase = {
   id: number;
   userId: string;
   approver: null;
