@@ -1,15 +1,23 @@
 import { TMyProductsParams, TMyProductsResponse, TProduct } from "@/types/product.types";
 import { cookieFetch } from "./fetchClient.api";
 
-// 카테고리 조회
-// export const getCategories = async () => {
-//   return cookieFetch("/products/category");
-// };
-
 type TGetProductsResponse = {
   items: TProduct[];
   nextCursor?: number;
 };
+
+type TCreateProductResponse = {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  linkUrl: string;
+  categoryId: number;
+  creatorId: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 // 상품 목록 조회
 export const getProducts = async (params?: {
   category?: number;
@@ -37,4 +45,14 @@ export const getMyProducts = async (params: TMyProductsParams): Promise<TMyProdu
   const queryString = new URLSearchParams(params);
 
   return await cookieFetch(`/my/products?${queryString.toString()}`);
+};
+
+// 상품 생성
+export const createProduct = async (formData: FormData): Promise<TCreateProductResponse> => {
+  const response = await cookieFetch<TCreateProductResponse>("/products", {
+    method: "POST",
+    body: formData,
+  });
+
+  return response;
 };

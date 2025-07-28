@@ -13,7 +13,7 @@ export const useProducts = (params: TUseProductsParams) => {
     queryKey: ["products", params],
     queryFn: ({ pageParam }: { pageParam: number | undefined }) =>
       getProducts({
-        ...params, 
+        ...params,
         cursor: pageParam,
       }),
     initialPageParam: undefined as number | undefined,
