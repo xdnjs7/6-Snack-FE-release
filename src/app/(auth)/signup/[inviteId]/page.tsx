@@ -39,7 +39,7 @@ export default function InviteSignUpPage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [inviteInfo, setInviteInfo] = useState<TInviteInfo | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [inviteError, setInviteError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
@@ -64,7 +64,7 @@ export default function InviteSignUpPage() {
         const data: TInviteInfo = await getInviteApi(inviteId);
         setInviteInfo(data);
       } catch (error) {
-        setError(error instanceof Error ? error.message : "초대 링크가 유효하지 않습니다.");
+        setInviteError(error instanceof Error ? error.message : "초대 링크가 유효하지 않습니다.");
       } finally {
         setIsLoading(false);
       }
@@ -84,9 +84,30 @@ export default function InviteSignUpPage() {
       await signUpWithInviteApi(inviteId, data.password, data.passwordConfirm);
       router.push("/login");
     } catch (error) {
-      setError(error instanceof Error ? error.message : "회원가입에 실패했습니다.");
+      setFormError("root", { message: "회원가입에 실패했습니다. 다시 시도해주세요." });
     }
   };
+
+  // 로딩 중이거나 에러가 있을 때 표시
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <div className="text-lg font-medium text-primary-600">초대 정보를 불러오는 중...</div>
+      </div>
+    );
+  }
+
+  if (inviteError) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen gap-4">
+        <div className="text-lg font-medium text-error-600">초대 링크 오류</div>
+        <div className="text-base text-primary-600">{inviteError}</div>
+        <Link href="/login" className="text-primary-950 underline">
+          로그인 페이지로 돌아가기
+        </Link>
+      </div>
+    );
+  }
 
   return (
     // top parent
@@ -215,6 +236,13 @@ export default function InviteSignUpPage() {
             )}
           </div>
         </form>
+
+        {/* 전체 폼 에러 메시지 */}
+        {errors.root && (
+          <div className="mb-4 p-3 bg-error-50 border border-error-200 rounded text-error-600 text-sm">
+            {errors.root.message}
+          </div>
+        )}
 
         <Button
           type="primary"
