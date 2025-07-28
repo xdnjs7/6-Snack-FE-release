@@ -310,6 +310,5 @@ export default function ProductRegistrationForm({
           </div>
         </form>
       </div>
-    // </div>
   );
 }
