@@ -141,8 +141,8 @@ const OrderHistoryPage = () => {
 
             {/* Mobile Budget Details Box */}
             {isHovered && (
-              <div className="w-64 p-6 left-1/2 transform -translate-x-1/2 top-[141px] absolute bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
-                <div className="inline-flex justify-start items-center gap-1">
+              <div className="w-64 p-6 left-[44%] transform -translate-x-1/2 top-36 absolute bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
+                <div className="inline-flex justify-start items-center gap-2">
                   <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
                     이번 달 남은 예산:
                   </div>
@@ -352,7 +352,7 @@ const OrderHistoryPage = () => {
               <div className="justify-center text-stone-500 text-base font-normal font-['SUIT']">
                 지난 달: {safeBudgetData ? formatNumber(safeBudgetData.previousMonthExpense) : "2,000,000원"}
               </div>
-              <div className="self-stretch inline-flex justify-center items-center gap-2.5">
+              <div className="self-stretch inline-flex justify-left items-center gap-2.5">
                 <div className="w-36 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
                   <div
                     className="h-1.5 bg-blue-500 rounded-md"
@@ -527,7 +527,7 @@ const OrderHistoryPage = () => {
 
           {/* Tablet Budget Details Hover Box */}
           {isHovered && (
-            <div className="w-64 p-6 absolute left-[55%] transform -translate-x-1/2 top-[264px] bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
+            <div className="w-64 p-6 absolute left-[54.5%] transform -translate-x-1/2 top-[264px] bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
               <div className="inline-flex justify-start items-center gap-1">
                 <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
                   이번 달 남은 예산:
