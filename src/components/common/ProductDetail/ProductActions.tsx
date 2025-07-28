@@ -36,11 +36,12 @@ export default function ProductActions({
   return (
     <>
       <div className="flex items-start gap-3.5 sm:gap-5">
-        <QuantityDropdown selectedQuantity={selectedQuantity} onQuantityChange={onQuantityChange} />
+        <QuantityDropdown value={selectedQuantity} onClick={onQuantityChange} />
+
         {canEdit && (
           <MenuDropdown
             menuType="product"
-            onEdit={() => console.log("상품 수정")}
+            // onEdit={() => console.log("상품 수정")}
             onDelete={() => setShowModal(true)}
           />
         )}
