@@ -56,6 +56,7 @@ export const Badge = ({ type }: TBadgeProps) => {
     <div
       className={clsx(
         "rounded-full inline-flex justify-center items-center gap-1",
+        "whitespace-nowrap w-fit",
         bg,
         SmallBadge
           ? "w-[52px] h-5 px-2.5 py-1 text-xs sm:w-16 sm:h-7 sm:px-2 sm:py-1.5 sm:text-sm"
