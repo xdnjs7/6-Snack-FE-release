@@ -160,6 +160,7 @@ export default function AuthenticatedHeader() {
           currentCategory={selectedCategory?.id?.toString()}
           onItemClick={handleCategoryItemClick}
           onClose={() => setIsCategoryMenuOpen(false)}
+          useExternalState
         />
       </div>
     </header>
