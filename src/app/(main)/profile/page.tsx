@@ -1,5 +1,4 @@
-import React from 'react';
-import ProfileComponent from './_components/ProfileComponent';
+import ProfileComponent from "./_components/ProfileComponent";
 
 function Page() {
   return (

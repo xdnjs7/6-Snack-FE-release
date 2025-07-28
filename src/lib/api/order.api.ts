@@ -1,4 +1,4 @@
-import { TOrderNowBody, TOrderRequestBody } from "@/types/order.types";
+import { TOrderRequestBody } from "@/types/order.types";
 import { cookieFetch } from "./fetchClient.api";
 
 // 관리자 구매내역 조회 API

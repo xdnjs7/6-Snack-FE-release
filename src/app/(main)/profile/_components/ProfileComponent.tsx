@@ -1,15 +1,12 @@
 "use client";
 
-import Image from "next/image";
-import Button from "@/components/ui/Button";
-import { TButtonType } from "@/types/button.types";
-import React, { useEffect, useState } from "react";
 import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
 import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
+import Button from "@/components/ui/Button";
 import { getUserInfo, updatePassword, updateSuper } from "@/lib/api/profile.api";
+import { TButtonType } from "@/types/button.types";
 import { Role } from "@/types/InviteMemberModal.types";
-
-
+import { useEffect, useState } from "react";
 
 export default function ProfileComponent() {
   const [userId, setUserId] = useState("");
@@ -67,8 +64,9 @@ export default function ProfileComponent() {
       }
       setPassword("");
       setConfirmPassword("");
-    } catch (err: any) {
-      alert(err.message || "업데이트 실패");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "업데이트 실패";
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

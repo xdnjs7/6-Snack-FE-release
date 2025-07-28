@@ -1,24 +1,22 @@
 "use client";
-import React, { useEffect, useMemo, useState, Suspense } from "react";
 import InviteMemberModal from "@/components/common/InviteMemberModal";
 import MemberList from "@/components/common/MemberList";
 import Pagination from "@/components/common/Pagination";
 import Button from "@/components/ui/Button";
 import SearchBar from "@/components/ui/SearchBar";
+import { fetchAllCompanyUsers } from "@/lib/api/companyUser.api";
+import { sendInvite } from "@/lib/api/invite.api";
+import { deleteUserById } from "@/lib/api/superAdmin.api";
+import { getUserApi } from "@/lib/api/user.api";
 import { useModal } from "@/providers/ModalProvider";
 import { TMemberItem } from "@/types/meberList.types";
-import { fetchAllCompanyUsers } from "@/lib/api/companyUser.api";
 import { useSearchParams } from "next/navigation";
-import { deleteUserById } from "@/lib/api/superAdmin.api";
-import { sendInvite } from "@/lib/api/invite.api";
-import { getUserApi } from "@/lib/api/user.api";
+import { Suspense, useEffect, useMemo, useState } from "react";
 
 export default function User() {
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
   const { openModal, closeModal } = useModal();
   const [members, setMembers] = useState<TMemberItem[]>([]);
-  const [nextCursor, setNextCursor] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
   const name = searchParams.get("name") ?? "";
@@ -45,12 +43,12 @@ export default function User() {
     }
   };
 
-  const handleInviteUser = async (data: { name: string; email: string; role: 'USER' | 'ADMIN' }) => {
+  const handleInviteUser = async (data: { name: string; email: string; role: "USER" | "ADMIN" }) => {
     try {
       setLoading(true);
-      
+
       const currentUser = await getUserApi();
-      
+
       // 초대 API 호출
       const inviteData = {
         email: data.email,
@@ -58,11 +56,11 @@ export default function User() {
         role: data.role,
         companyId: currentUser.company.id,
         invitedById: currentUser.id,
-        expiresInDays: 7
+        expiresInDays: 7,
       };
 
       const result = await sendInvite(inviteData);
-      
+
       if (result.emailSent) {
         alert("초대 이메일이 성공적으로 발송되었습니다.");
         const { users } = await fetchAllCompanyUsers({ name, limit: 50 });
@@ -82,10 +80,8 @@ export default function User() {
     (async () => {
       try {
         setLoading(true);
-        const { users, nextCursor } = await fetchAllCompanyUsers({ name, limit: 50 });
+        const { users } = await fetchAllCompanyUsers({ name, limit: 50 });
         setMembers(users);
-        setNextCursor(nextCursor);
-        setHasMore(!!nextCursor);
       } catch (error) {
         alert(error instanceof Error ? error.message : "회원 목록 불러오기 실패");
       } finally {
@@ -103,12 +99,7 @@ export default function User() {
           label="회원 초대하기"
           className="w-50 h-16 hidden sm:block"
           onClick={() => {
-            openModal(
-              <InviteMemberModal
-                onCancel={closeModal}
-                onSubmit={handleInviteUser}
-              />,
-            );
+            openModal(<InviteMemberModal onCancel={closeModal} onSubmit={handleInviteUser} />);
           }}
         />
       </div>
@@ -140,13 +131,7 @@ export default function User() {
           label="회원 초대하기"
           className="w-50 h-16  sm:hidden "
           onClick={() => {
-            openModal(
-              <InviteMemberModal
-                mode="invite"
-                onCancel={closeModal}
-                onSubmit={handleInviteUser}
-              />,
-            );
+            openModal(<InviteMemberModal mode="invite" onCancel={closeModal} onSubmit={handleInviteUser} />);
           }}
         />
       </div>

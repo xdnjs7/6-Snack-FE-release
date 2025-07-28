@@ -1,13 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import Dropdown from "@/components/common/DropDown";
+import OrderManageModal from "@/components/common/OrderManageModal";
 import Pagination from "@/components/common/Pagination";
 import RequestList from "@/components/common/RequestList";
 import useOrderVisibleCount from "@/hooks/useOrderVisibleCount";
-import OrderManageModal from "@/components/common/OrderManageModal";
-import { useModal } from "@/providers/ModalProvider";
 import { fetchOrderDetail, fetchPendingOrders } from "@/lib/api/orderManage.api";
+import { useModal } from "@/providers/ModalProvider";
 import { TOrderSummary } from "@/types/order.types";
+import { useEffect, useMemo, useState } from "react";
 
 export default function Order() {
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
@@ -15,17 +15,16 @@ export default function Order() {
   const [orderRequests, setOrderRequests] = useState<TOrderSummary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
-  
-  const orderByMap: Record<string, string> = {
-    "최신순": "latest",
-    "낮은 가격순": "priceLow",
-    "높은 가격순": "priceHigh",
-  };
-  const [orderBy, setOrderBy] = useState<string>(orderByMap["최신순"]);
 
-  useEffect(() => {
-    setOrderBy(orderByMap["최신순"]);
-  }, []);
+  const orderByMap = useMemo(
+    (): Record<string, string> => ({
+      최신순: "latest",
+      "낮은 가격순": "priceLow",
+      "높은 가격순": "priceHigh",
+    }),
+    [],
+  );
+  const [orderBy, setOrderBy] = useState<string>(orderByMap["최신순"]);
 
   const { visibleCount } = useOrderVisibleCount();
   const totalPages = Math.ceil(totalCount / visibleCount);

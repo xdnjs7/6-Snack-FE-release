@@ -2,9 +2,8 @@
 
 import Desktop from "@/components/common/Desktop";
 import Menu from "@/components/common/Menu";
-import Mobile from "@/components/common/Mobile";
 import TabMenu from "@/components/common/TabMenu";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 export default function ManagePageLayout({ children }: { children: React.ReactNode }) {
