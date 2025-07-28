@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import SnackIconSvg from "@/components/svg/SnackIconSvg";
 import Link from "next/link";
 import z from "zod";
@@ -46,7 +46,6 @@ export default function SuperAdminSignUpPage() {
     handleSubmit,
     watch,
     formState: { errors, isSubmitting, isValid },
-    setError: setFormError,
   } = useForm<TSignUpFormData>({
     resolver: zodResolver(signUpSchema),
     mode: "onChange",

@@ -11,18 +11,11 @@ const OrderHistoryPage = () => {
   // 공통 로직 훅 사용
   const {
     budgetData,
-    budgetLoading,
-    budgetError,
-    purchaseListLoading,
-    purchaseListError,
     currentItems,
     totalPages,
     currentPage,
     handlePageChange,
-    sortBy,
     setSortBy,
-    dropdownOpen,
-    setDropdownOpen,
     formatNumber,
   } = useOrderHistory();
   const [isHovered, setIsHovered] = useState(false);

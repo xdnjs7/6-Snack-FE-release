@@ -19,7 +19,7 @@ export default function QuantityDropdown({ value, onClick: updateQuantity }: TQu
 
   const quantityOptions = Array.from({ length: 100 }, (_, i) => i + 1);
 
-  const handleDropdownToggle = (e: React.MouseEvent) => {
+  const handleDropdownToggle = () => {
     setIsDropdownVisible((prev) => !prev);
   };
 
