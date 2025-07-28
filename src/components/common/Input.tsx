@@ -54,7 +54,7 @@ export default function Input({
             {...rest}
             className={clsx(
               isPassword && !hasValue ? "tracking-tight" : rest.className,
-              "z-10 w-full font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
+              "w-full font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
               { "tracking-[0.25em]": isPassword && !hasValue },
             )}
           />
