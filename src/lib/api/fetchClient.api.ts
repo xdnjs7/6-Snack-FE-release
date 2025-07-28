@@ -3,7 +3,7 @@ import { refreshAccessToken } from "./auth.api";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
-export const cookieFetch = async <T = any>(path: string, options: RequestInit = {}): Promise<T> => {
+export const cookieFetch = async <T>(path: string, options: RequestInit = {}): Promise<T> => {
   const method = options.method || "GET";
   // 개발 완료후 삭제
   console.log(`🌐 API 요청: ${method} ${API_BASE_URL}${path}`);
@@ -45,7 +45,7 @@ export const cookieFetch = async <T = any>(path: string, options: RequestInit = 
       console.log("🔄 액세스 토큰 갱신 시도");
       await refreshAccessToken();
       response = await request();
-    } catch (e) {
+    } catch (error) {
       console.error("❌ 액세스 토큰 재발급 실패");
       logout();
       throw new Error("세션이 만료되었습니다. 다시 로그인해주세요.");
@@ -64,7 +64,7 @@ export const cookieFetch = async <T = any>(path: string, options: RequestInit = 
   return response.json() as Promise<T>;
 };
 
-export const defaultFetch = async <T = any>(path: string, options: RequestInit = {}): Promise<T> => {
+export const defaultFetch = async <T>(path: string, options: RequestInit = {}): Promise<T> => {
   const method = options.method || "GET";
   console.log(`🌐 API 요청: ${method} ${API_BASE_URL}${path}`);
 

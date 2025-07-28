@@ -5,14 +5,15 @@ import { useParams, useRouter } from "next/navigation";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { useOrderDetail } from "@/hooks/useOrderDetail";
 import Button from "@/components/ui/Button";
+import Image from "next/image";
 
-type TOrderManageDetailPageProps = {
-  // 현재는 props가 없지만 향후 확장성을 위해 타입 정의
-};
-
-export default function OrderManageDetailPage({}: TOrderManageDetailPageProps) {
+// type TOrderManageDetailPageProps = {
+//   // 현재는 props가 없지만 향후 확장성을 위해 타입 정의
+// };
+// export default function OrderManageDetailPage({}: TOrderManageDetailPageProps);
+export default function OrderManageDetailPage() {
   const params = useParams();
-  const router = useRouter();
+  // const router = useRouter();
   const orderId: string = params.orderId as string;
 
   const [isItemsExpanded, setIsItemsExpanded] = useState<boolean>(true);
@@ -101,7 +102,7 @@ export default function OrderManageDetailPage({}: TOrderManageDetailPageProps) {
               <div className="self-stretch px-3 sm:px-4 md:px-5 pt-3 sm:pt-4 md:pt-5 pb-5 sm:pb-6 md:pb-7 bg-white rounded-sm shadow-[0px_0px_6px_0px_rgba(0,0,0,0.0)] sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline sm:outline-1 sm:outline-neutral-200 flex flex-col justify-start items-start gap-4 sm:gap-5">
                 {/* Items List */}
                 <div className="self-stretch flex flex-col justify-start items-start">
-                  {orderRequest.products?.map((item, index: number) => (
+                  {orderRequest.products?.map((item) => (
                     <div
                       key={item.id}
                       className="self-stretch py-3 sm:py-4 md:py-5 md:pr-5 border-b border-neutral-200 inline-flex justify-between items-center"
@@ -109,11 +110,14 @@ export default function OrderManageDetailPage({}: TOrderManageDetailPageProps) {
                       <div className="flex justify-start items-center gap-3 sm:gap-4 md:gap-5">
                         <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-36 lg:h-36 bg-[--color-white] shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
                           {typeof item.imageUrl === "string" && (
-                            <img
-                              src={item.imageUrl}
-                              alt={item.productName}
-                              className="w-5 h-8 sm:w-7 sm:h-12 md:w-10 md:h-16 lg:w-14 lg:h-24 relative"
-                            />
+                            <div className="w-7 h-12 sm:w-10 sm:h-16 md:w-14 md:h-24 relative">
+                              <Image
+                                src={item.imageUrl}
+                                alt={item.productName}
+                                fill
+                                className="object-contain"
+                              />
+                            </div>
                           )}
                         </div>
                         <div className="inline-flex flex-col justify-center items-start gap-3 sm:gap-5 md:gap-7">

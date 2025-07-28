@@ -29,13 +29,13 @@ type FormData = {
 // ProductRegistrationForm 컴포넌트가 받을 수 있는 프롭스 타입 정의
 type TProductRegistrationFormProps = {
   onSubmitSuccess?: () => void;
-  onCancel?: () => void;
+  onClose?: () => void;
   initialData?: TProductData;
 };
 
 export default function ProductRegistrationForm({
   onSubmitSuccess,
-  onCancel,
+  onClose,
   initialData,
 }: TProductRegistrationFormProps) {
   const {
@@ -145,6 +145,11 @@ export default function ProductRegistrationForm({
       // 제출 성공 콜백 호출
       if (onSubmitSuccess) {
         onSubmitSuccess();
+      }
+
+      // 모달 닫기
+      if (onClose) {
+        onClose();
       }
     } catch (error) {
       console.error("상품 등록 실패:", error);
@@ -274,7 +279,11 @@ export default function ProductRegistrationForm({
           <div className="flex justify-between w-full">
             <button
               type="button"
-              onClick={onCancel || (() => console.log("취소"))}
+              onClick={() => {
+                if (onClose) {
+                  onClose();
+                }
+              }}
               disabled={createProductMutation.isPending}
               className="w-[216px] h-[64px] border border-primary-300 rounded-[2px] py-[12px] px-[16px] text-sm font-medium text-primary-700 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
