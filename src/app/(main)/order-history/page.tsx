@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 // Budget 데이터 타입 정의
-interface BudgetData {
+type TBudgetData = {
   currentMonthBudget: number;
   previousMonthBudget: number;
   currentMonthExpense: number;
@@ -31,7 +31,7 @@ const OrderHistoryPage = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   // budgetData 타입 안전성을 위한 타입 가드
-  const safeBudgetData = budgetData as BudgetData | undefined;
+  const safeBudgetData = budgetData as TBudgetData | undefined;
 
   return (
     <>
