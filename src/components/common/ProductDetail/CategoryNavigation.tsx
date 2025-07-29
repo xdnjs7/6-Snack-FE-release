@@ -3,7 +3,6 @@ import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
 
-
 type TCategoryNavigationProps = {
   parentCategory?: string;
   childCategory?: string;
@@ -20,14 +19,18 @@ export default function CategoryNavigation({ parentCategory, childCategory, clas
         className,
       )}
     >
-      <p className="font-normal text-sm/[17px] sm:text-base/[20px] text-primary-200 tracking-tight">
-        {parentCategory || "대분류"}
+      <p
+        className={`font-normal text-sm/[17px] sm:text-base/[20px] tracking-tight ${
+          parentCategory ? "text-primary-200" : "text-primary-950"
+        }`}
+      >
+        {parentCategory || "전체"}
       </p>
       <div>
         <ArrowIconSvg direction="right" className="w-3 h-3 sm:w-4 sm:h-4 text-primary-100" />
       </div>
       <p className="font-normal text-sm/[17px] sm:text-base/[20px] text-primary-950 tracking-tight">
-        {childCategory || "소분류"}
+        {childCategory || ""}
       </p>
     </div>
   );
