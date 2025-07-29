@@ -152,7 +152,7 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
             onClick={async () => {
               try {
                 await updateOrderStatus({
-                  orderId: order.id,
+                  orderId: String(order.id),
                   status: type === "approve" ? "APPROVED" : "REJECTED",
                   adminMessage,
                 });

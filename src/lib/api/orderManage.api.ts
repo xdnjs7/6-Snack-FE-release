@@ -25,9 +25,9 @@ export const updateOrderStatus = async ({
   status,
   adminMessage,
 }: {
-  orderId: number;
+  orderId: string;
   status: "APPROVED" | "REJECTED";
-  adminMessage: string;
+  adminMessage?: string;
 }) => {
   const res = await cookieFetch(`/admin/orders/${orderId}`, {
     method: "PATCH",
