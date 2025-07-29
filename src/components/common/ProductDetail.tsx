@@ -29,7 +29,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
     if (product?.category?.id) {
       findCategoryPath(product.category.id);
     }
-  }, [product?.category?.id]);
+  }, [product?.category?.id, findCategoryPath]);
 
   if (isLoading) return <p>로딩 중...</p>;
   if (isError || !product) return <p>상품 정보를 불러올 수 없습니다.</p>;
@@ -76,7 +76,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                 selectedQuantity={selectedQuantity}
                 onAddToCart={handleAddToCart}
               />
-              <ProductInfoSections product={product} />
+              <ProductInfoSections />
             </div>
           </div>
         </div>
