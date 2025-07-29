@@ -55,6 +55,14 @@ export default function SuperAdminSignUpPage() {
     mode: "onChange",
   });
 
+  // register 결과 저장
+  const emailReg = register("email");
+  const nameReg = register("name");
+  const passwordReg = register("password");
+  const passwordConfirmReg = register("passwordConfirm");
+  const companyNameReg = register("companyName");
+  const bizNumberReg = register("bizNumber");
+
   // Toast를 보여주는 함수
   const showToast = (message: string, variant: ToastVariant = "success") => {
     setToastMessage(message);
@@ -133,7 +141,8 @@ export default function SuperAdminSignUpPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full mb-[8px] gap-[20px]">
             {/* 이메일 입력 필드 */}
             <Input
-              {...register("email")}
+              {...emailReg}
+              inputRef={emailReg.ref}
               type="email"
               label="이메일"
               placeholder="이메일을 입력해주세요."
@@ -142,7 +151,8 @@ export default function SuperAdminSignUpPage() {
 
             {/* 이름 입력 필드 */}
             <Input
-              {...register("name")}
+              {...nameReg}
+              inputRef={nameReg.ref}
               type="text"
               label="이름"
               placeholder="이름을 입력해주세요."
@@ -151,7 +161,8 @@ export default function SuperAdminSignUpPage() {
 
             {/* 비밀번호 input wrapper*/}
             <Input
-              {...register("password")}
+              {...passwordReg}
+              inputRef={passwordReg.ref}
               type="password"
               label="비밀번호"
               placeholder="비밀번호를 입력해주세요."
@@ -161,7 +172,8 @@ export default function SuperAdminSignUpPage() {
 
             {/* 비밀번호 확인 input wrapper*/}
             <Input
-              {...register("passwordConfirm")}
+              {...passwordConfirmReg}
+              inputRef={passwordConfirmReg.ref}
               type="password"
               label="비밀번호 확인"
               placeholder="비밀번호를 한 번 더 입력해주세요."
@@ -171,7 +183,8 @@ export default function SuperAdminSignUpPage() {
 
             {/* 회사명 입력 필드 */}
             <Input
-              {...register("companyName")}
+              {...companyNameReg}
+              inputRef={companyNameReg.ref}
               type="text"
               label="회사명"
               placeholder="회사명을 입력해주세요."
@@ -181,7 +194,8 @@ export default function SuperAdminSignUpPage() {
 
             {/* 사업자 번호 입력 필드 */}
             <Input
-              {...register("bizNumber")}
+              {...bizNumberReg}
+              inputRef={bizNumberReg.ref}
               type="text"
               label="사업자 번호"
               placeholder="사업자 번호를 입력해주세요."
