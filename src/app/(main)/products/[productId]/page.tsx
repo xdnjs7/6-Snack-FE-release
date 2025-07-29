@@ -19,7 +19,7 @@ export default function ProductDetailPage() {
     if (product?.category?.id) {
       findCategoryPath(product.category.id);
     }
-  }, [product?.category?.id]);
+  }, [product?.category?.id, findCategoryPath]);
 
   if (!productId || isNaN(productId)) {
     return <div className="px-6 py-10">잘못된 접근입니다.</div>;
