@@ -17,7 +17,7 @@ export const toggleCheckItem = async (cartItemId: number, isChecked: boolean): P
 };
 
 // 장바구니 전체 선택 / 전체 해제
-export const toggleCheckAllItems = async (isChecked: boolean) => {
+export const toggleCheckAllItems = async (isChecked: boolean): Promise<void> => {
   return await cookieFetch("/cart/check", {
     method: "PATCH",
     body: JSON.stringify({ isChecked }),
@@ -33,7 +33,7 @@ export const deleteSelectedItems = async (cartItemIds: number[]): Promise<void> 
 };
 
 // 장바구니 수량 선택
-export const updateItemQuantity = async (cartItemId: number, quantity: number) => {
+export const updateItemQuantity = async (cartItemId: number, quantity: number): Promise<void> => {
   return await cookieFetch(`/cart/${cartItemId}/quantity`, {
     method: "PATCH",
     body: JSON.stringify({ quantity }),

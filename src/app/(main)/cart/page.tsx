@@ -40,10 +40,6 @@ export default function CartPage() {
     onError: () => setIsDisabled(false),
   });
 
-  if (error) {
-    return <div>에러 발생 : {error.message}</div>;
-  }
-
   const { currentMonthBudget = 0, currentMonthExpense = 0 } = cartItems?.budget ?? {};
   const selectedTotalPrice = cartItems?.cart
     .filter((item) => item.isChecked === true)
@@ -98,6 +94,10 @@ export default function CartPage() {
     setIsDisabled(true);
     adminOrderNow(checkedCartItemIds);
   };
+
+  if (error) {
+    return <div>에러 발생 : {error.message}</div>;
+  }
 
   return (
     <div className="flex flex-col justify-center items-center w-full">

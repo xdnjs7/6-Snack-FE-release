@@ -55,15 +55,15 @@ export default function ProductList({ products }: TProductListProps) {
       {products.items.map((item, i) => (
         <Fragment key={`${item}_${i}`}>
           <div className="border-b-[1px] border-primary-100 md:hidden">
-            <div className="flex flex-col gap-[10px] w-[327px] h-[120px] mt-[20px] mb-[30px] sm:mt-[30px]">
+            <div className="flex flex-col w-full gap-[10px] min-w-[327px] max-w-[696px] h-[120px] mt-[20px] mb-[30px] sm:mt-[30px]">
               <p className="font-extrabold text-[16px]/[20px]">{formatDate(item.createdAt)}</p>
               <div className="flex gap-[20px]">
-                <div className="flex justify-center items-center w-[90px] h-[90px] p-[24px] rounded-[2px] bg-primary-50">
+                <div className="flex justify-center items-center min-w-[90px] h-[90px] p-[24px] rounded-[2px] bg-primary-50">
                   <div className="relative w-[29px] h-[50px]">
                     <Image src={item.imageUrl} alt="상품" fill className="object-contain" />
                   </div>
                 </div>
-                <div className="flex flex-col gap-[10px]">
+                <div className="flex flex-col min-w-[217px] gap-[10px]">
                   <div className="flex flex-col gap-[6px] sm:gap-[4px]">
                     <p className="font-normal text-[12px]/[15px] text-primary-500">{item.category.name}</p>
                     <p className="font-normal text-[14px]/[17px] tracking-tight text-primary-950 sm:text-[16px]/[20px]">
@@ -73,7 +73,9 @@ export default function ProductList({ products }: TProductListProps) {
                       {item.price.toLocaleString("ko-KR")}원
                     </p>
                   </div>
-                  <p className="font-normal text-[14px]/[17px] tracking-tight text-primary-600">{item.linkUrl}</p>
+                  <p className="font-normal text-[14px]/[17px] tracking-tight text-primary-600 truncate">
+                    {item.linkUrl.split("https://")}
+                  </p>
                 </div>
               </div>
             </div>
@@ -98,8 +100,8 @@ export default function ProductList({ products }: TProductListProps) {
                 <p className="w-[160px] font-normal text-[16px]/[20px] tracking-tight text-primary-950">
                   {item.price.toLocaleString("ko-KR")}원
                 </p>
-                <p className="w-[160px] font-normal text-[16px]/[20px] tracking-tight text-primary-950">
-                  {item.linkUrl}
+                <p className="w-[112px] font-normal text-[16px]/[20px] tracking-tight text-primary-950 truncate">
+                  {item.linkUrl.split("https://")}
                 </p>
               </div>
             </div>
