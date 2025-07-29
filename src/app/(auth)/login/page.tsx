@@ -154,10 +154,10 @@ export default function LoginPage() {
 
             <Button
               type="black"
-              label={isSubmitting || isDisabled ? "로그인 중..." : "로그인"}
-              disabled={!isValid || isSubmitting || isDisabled}
+              label={isSubmitting ? "로그인 중..." : "로그인"}
+              disabled={!isValid || isSubmitting}
               className={clsx(
-                (!isValid || isSubmitting || isDisabled) && "text-primary-300 bg-primary-100 cursor-default",
+                (!isValid || isSubmitting) && "text-primary-300 bg-primary-100 cursor-default",
                 "w-full mb-[24px] font-bold text-[16px]/[20px] h-[64px]",
               )}
             />
