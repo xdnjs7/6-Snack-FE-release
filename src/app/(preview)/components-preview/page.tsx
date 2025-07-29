@@ -36,6 +36,7 @@ import Header from "@/components/layout/Header";
 import CartItem from "@/app/(main)/cart/_components/CartItem";
 import OrderItem from "@/app/(main)/cart/order/_components/OrderItem";
 import { categories, order, orderRequests, products } from "./MockData";
+import DogSpinner from "@/components/common/spinnerAnimate";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -94,6 +95,12 @@ export default function ComponentsPreviewPage() {
             onChange={(e) => setRequestMessage(e.target.value)}
             placeholder="요청 메시지를 입력해주세요"
           />
+        </div>
+        <h2 className="text-lg font-semibold bg-blue-100">🐶 Spinner 컴포넌트</h2>
+
+        <div className="flex flex-col items-center">
+          <DogSpinner />
+          <p className="text-black text-sm font-medium animate-pulse -mt-7">Loading...</p>
         </div>
 
         <div className="space-y-4 mb-4">
