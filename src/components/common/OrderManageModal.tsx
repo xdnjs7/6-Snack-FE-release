@@ -53,7 +53,7 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
               {order.products.map((product, i) => {
                 return (
                   <div
-                    key={`${product}_${i}`}
+                    key={product.id}
                     className="flex justify-between items-center w-full py-[20px] pr-[8px] border-b-1 border-primary-100"
                   >
                     <div className="flex justify-center items-center gap-[12px] sm:gap-[20px]">

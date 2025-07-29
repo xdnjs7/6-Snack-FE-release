@@ -29,7 +29,7 @@ export default function OrderItem({ isPending, cartItems }: TOrderItemProps) {
             cartItems.cart.map((item, i) => {
               return (
                 <div
-                  key={`${item}_${i}`}
+                  key={item.id}
                   className="flex justify-between items-center w-full py-[20px] pr-[8px] border-b-1 border-primary-100"
                 >
                   <div className="flex justify-start items-center w-full gap-[12px] sm:gap-[20px]">

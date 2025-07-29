@@ -141,7 +141,7 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
       ) : (
         cartItems.cart.map((item, i) => (
           <div
-            key={`${item}_${i}`}
+            key={item.id}
             className="h-[121px] py-[20px] border-b-1 border-primary-100 sm:py-[30px] sm:h-[200px] sm:last:border-0"
           >
             <div className="flex justify-center items-center gap-[10px] sm:gap-[20px]">
