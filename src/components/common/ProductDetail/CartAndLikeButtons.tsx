@@ -1,7 +1,5 @@
 import React from "react";
-import Image from "next/image";
 import Button from "../../ui/Button";
-import ic_like_normal from "@/assets/icons/ic_like_normal.svg";
 
 type TProps = {
   productId: number;

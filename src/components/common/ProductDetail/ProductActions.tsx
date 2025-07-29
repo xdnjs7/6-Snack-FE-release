@@ -28,7 +28,7 @@ export default function ProductActions({
       await deleteProductApi(productId);
       alert("상품이 삭제되었습니다.");
       router.push("/products");
-    } catch (err) {
+    } catch {
       alert("상품 삭제 실패");
     }
   };
