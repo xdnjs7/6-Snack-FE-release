@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function DogSpinner() {
   const [frame, setFrame] = useState(1);
@@ -17,7 +18,13 @@ export default function DogSpinner() {
 
   return (
     <div className="w-20 h-20 relative">
-      <img src={imageSrc} alt="로딩 강아지" className="w-full h-full object-contain" />
+      <Image
+        src={imageSrc}
+        alt="로딩 강아지"
+        fill // 부모가 relative일 경우, 전체 채움
+        className="object-contain"
+        priority // 스피너는 빠르게 보여야 하므로 optional하게 적용
+      />
     </div>
   );
 }
