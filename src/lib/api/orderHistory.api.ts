@@ -12,10 +12,13 @@ export type TProduct = {
 // 내 구매 요청 상세 조회용 타입 (실제 API 응답 구조)
 export type TReceipt = {
   id: number;
+  productId: number;
+  orderId: number;
   productName: string;
   price: number;
   imageUrl: string;
   quantity: number;
+  createdAt: string;
 };
 
 export type TOrderedItem = {
@@ -41,6 +44,7 @@ export type TUser = {
 
 export type TMyOrderDetail = {
   id: number;
+  companyId: number;
   userId: string;
   approver: string | null;
   adminMessage: string | null;
@@ -50,7 +54,7 @@ export type TMyOrderDetail = {
   updatedAt: string;
   status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELED';
   user: TUser;
-  orderedItems: TOrderedItem[];
+  receipts: TReceipt[];
 };
 
 export type TMyOrderDetailResponse = {
