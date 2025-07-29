@@ -52,8 +52,8 @@ type TProductListProps = {
 export default function ProductList({ products }: TProductListProps) {
   return (
     <>
-      {products.items.map((item, i) => (
-        <Fragment key={`${item}_${i}`}>
+      {products.items.map((item) => (
+        <Fragment key={item.id}>
           <div className="border-b-[1px] border-primary-100 md:hidden">
             <div className="flex flex-col w-full gap-[10px] min-w-[327px] max-w-[696px] h-[120px] mt-[20px] mb-[30px] sm:mt-[30px]">
               <p className="font-extrabold text-[16px]/[20px]">{formatDate(item.createdAt)}</p>

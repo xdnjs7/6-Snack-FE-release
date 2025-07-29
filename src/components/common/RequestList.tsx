@@ -35,7 +35,7 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
         </div>
       </div>
       {orderRequests.map((request, i) => (
-        <Fragment key={`${request}_${i}`}>
+        <Fragment key={request.id}>
           <Mobile>
             <div className="border-b-[1px] border-primary-100">
               <div className="flex flex-col min-w-[327px] h-[144px] gap-[20px] my-[24px]">
