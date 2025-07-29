@@ -171,8 +171,9 @@ export default function ProductRegistrationForm({
     : [];
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-primary-50">
-      <div className="w-[512px] h-[696px] rounded-[6px] p-[30px] bg-white shadow-xl flex flex-col gap-[32px] items-center">
+    // <div className="min-h-screen flex items-center justify-center p-4 bg-primary-50">
+
+      <div className="w-[512px] h-[696px] fixed inset-0 top-1/2 left-1/2 -translate-1/2 rounded-[6px] p-[30px] bg-white shadow-xl flex flex-col gap-[32px] items-center">
         <h2 className="font-suit font-bold text-[18px] leading-[100%] tracking-[-0.45px] text-primary-950 text-center">
           상품 등록
         </h2>
@@ -309,6 +310,5 @@ export default function ProductRegistrationForm({
           </div>
         </form>
       </div>
-    </div>
   );
 }
