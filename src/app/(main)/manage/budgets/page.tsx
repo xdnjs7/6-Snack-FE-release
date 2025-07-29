@@ -15,11 +15,16 @@ const budgetSchema = z.object({
 
 type BudgetInputs = z.infer<typeof budgetSchema>;
 
+interface BudgetResponse {
+  currentMonthBudget?: number;
+  monthlyBudget?: number;
+}
+
 function ManageBudgetsPage() {
   const queryClient = useQueryClient();
 
   // 예산 데이터 패칭
-  const { data, isLoading: isQueryLoading } = useQuery({
+  const { data, isLoading: isQueryLoading } = useQuery<BudgetResponse>({
     queryKey: ["budgets"],
     queryFn: getBudgets,
   });
