@@ -27,7 +27,7 @@ type TSortOptions = "latest" | "popular" | "low" | "high";
 export default function ProductsPageContent() {
   const [categories] = useState<TCategoryData>(CATEGORIES);
   const [selectedSort, setSelectedSort] = useState<TSortOptions>("latest");
-  // 전역 카테고리 상태 사용
+  // 전역 카테고리 상태 Zustand 사용
   const { selectedCategory, clearSelectedCategory, findCategoryPath } = useCategoryStore();
 
   // 정렬 옵션 매핑
@@ -41,10 +41,9 @@ export default function ProductsPageContent() {
   const searchParams = useSearchParams();
   const { openModal, closeModal } = useModal();
 
-  // useDeviceType 커스텀 훅으로 화면 크기별 limit 결정
   const { isMobile, isTablet, isDesktop } = useDeviceType();
 
-  // limit 계산 함수 추가
+  // 디바이스별 보여줄 상품갯수 계산
   const getLimit = () => {
     if (isMobile) return 4;
     if (isTablet) return 9;
@@ -52,23 +51,18 @@ export default function ProductsPageContent() {
     return 6;
   };
 
-  // TanStack Query 사용
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error, refetch } = useProducts({
-    // 카테고리는 현재 url 쿼리값, Zustand 적용하여 전역관리시 변경필요할수도
     category: searchParams.get("category") ? parseInt(searchParams.get("category")!) : undefined,
     sort: selectedSort,
     limit: getLimit(),
   });
 
-  // 모든 페이지의 상품들을 평탄화
   const allProducts = data?.pages.flatMap((page) => page.items) ?? [];
 
-  // 더보기 (무한스크롤))
   const handleLoadMore = () => {
     fetchNextPage();
   };
 
-  // 정렬 변경 핸들러
   const handleSortChange = (selectedValue: string) => {
     const sortValueMap: Record<string, TSortOptions> = {
       최신순: "latest",
