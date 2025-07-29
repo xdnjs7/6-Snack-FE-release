@@ -25,6 +25,7 @@ export type TProduct = {
   price: number;
   imageUrl: string;
   linkUrl: string;
+  cumulativeSales: number;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
