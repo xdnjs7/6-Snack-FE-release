@@ -8,19 +8,41 @@ import Button from "@/components/ui/Button";
 import Image from "next/image";
 import { updateOrderStatus } from "@/lib/api/orderManage.api";
 import useOrderStatusUpdate from "@/hooks/useOrderStatusUpdate";
+import Toast from "@/components/common/Toast";
 
 export default function OrderManageDetailPage() {
   const params = useParams();
-  // const router = useRouter();
+  const router = useRouter();
   const orderId: string = params.orderId as string;
 
   const [isItemsExpanded, setIsItemsExpanded] = useState<boolean>(true);
+  const [toastConfig, setToastConfig] = useState<{
+    isVisible: boolean;
+    text: string;
+    variant: "success" | "error";
+  }>({
+    isVisible: false,
+    text: "",
+    variant: "success",
+  });
 
   // React Query 훅 불러오기
   // 주문 상세 조회
   const { data: orderRequest, isLoading, error } = useOrderDetail(orderId);
   // 주문 상태 승인/거절
   const updateOrderMutation = useOrderStatusUpdate();
+
+  // 토스트 함수
+  const showToast = (text: string, variant: "success" | "error" = "success") => {
+    setToastConfig({
+      isVisible: true,
+      text,
+      variant,
+    });
+    setTimeout(() => {
+      setToastConfig((prev) => ({ ...prev, isVisible: false }));
+    }, 3000);
+  };
 
   const handleApprove = async () => {
     try {
@@ -29,9 +51,12 @@ export default function OrderManageDetailPage() {
         status: "APPROVED",
       });
       // TODO: 토스트 달기
-      alert("승인완료");
+      showToast("구매 요청이 승인되었습니다.", "success");
+      setTimeout(() => {
+        router.push("/order-manage");
+      }, 2000);
     } catch (error) {
-      console.error("승인 실패:", error);
+      showToast("승인 처리에 실패했습니다.", "error");
     }
   };
 
@@ -41,10 +66,12 @@ export default function OrderManageDetailPage() {
         orderId: orderId,
         status: "REJECTED",
       });
-      alert("거절완료");
-      // TODO: 토스트 달기
+      showToast("구매 요청이 반려되었습니다.", "success");
+      setTimeout(() => {
+        router.push("/order-manage");
+      }, 2000);
     } catch (error) {
-      console.error("반려 실패:", error);
+      showToast("반려 처리에 실패했습니다.", "error");
     }
   };
 
@@ -101,6 +128,7 @@ export default function OrderManageDetailPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Toast text={toastConfig.text} variant={toastConfig.variant} isVisible={toastConfig.isVisible} />
       {/* Main Content */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-4 sm:pt-6 md:pt-8 flex flex-col justify-start items-start gap-5 sm:gap-6 md:gap-7">
         <div className="self-stretch justify-center text-[--color-primary-800] text-base sm:text-lg md:text-xl lg:text-2xl font-bold font-['SUIT']">
@@ -308,7 +336,7 @@ export default function OrderManageDetailPage() {
             onClick={handleApprove}
             disabled={updateOrderMutation.isPending}
           />
-      </div>
+        </div>
       </div>
     </div>
   );
