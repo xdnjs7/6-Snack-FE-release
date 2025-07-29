@@ -29,7 +29,7 @@ const Dropdown = ({ options = [], placeholder = "정렬", onChange, className }:
   const menuOptions = options.length === 0 ? defaultOptions : options;
 
   return (
-    <div className={twMerge("relative inline-block w-[110px] z-30", className)}>
+    <div className={twMerge("relative inline-block w-[110px]", className)}>
       {/* 드롭다운 버튼 */}
       <div
         className={`h-11 w-full px-4 py-2.5 bg-white border border-primary-100 ${

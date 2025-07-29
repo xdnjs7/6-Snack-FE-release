@@ -53,7 +53,7 @@ export default function ProductsPageContent() {
   };
 
   // TanStack Query 사용
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } = useProducts({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error, refetch } = useProducts({
     // 카테고리는 현재 url 쿼리값, Zustand 적용하여 전역관리시 변경필요할수도
     category: searchParams.get("category") ? parseInt(searchParams.get("category")!) : undefined,
     sort: selectedSort,
@@ -80,6 +80,8 @@ export default function ProductsPageContent() {
     const sortValue = sortValueMap[selectedValue];
     if (sortValue) {
       setSelectedSort(sortValue);
+      // 정렬 변경 시 쿼리를 리셋하여 첫 페이지부터 다시 로드
+      refetch();
     }
   };
 
@@ -99,7 +101,7 @@ export default function ProductsPageContent() {
   }, [searchParams, findCategoryPath, clearSelectedCategory]);
 
   return (
-    <div className="w-full flex items-start justify-center sm:gap-5 md:gap-10">
+    <div className="w-full flex items-start justify-center sm:gap-5 md:gap-10 md:mt-[80px]">
       {/* 카테고리 태블릿,데스크탑 */}
       <div className="hidden sm:block">
         <SubCategoryItem categories={categories} />

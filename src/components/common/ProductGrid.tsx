@@ -11,6 +11,7 @@ type Product = {
   price: number;
   imageUrl: string;
   linkUrl: string;
+  cumulativeSales: number;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
@@ -38,7 +39,7 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
   }
 
   return (
-    <div className="grid grid-cols-2 grid-rows-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:grid-rows-3 sm:gap-x-3.5 sm:gap-y-7.5 md:grid-cols-3 md:grid-rows-2 md:gap-x-10 md:gap-y-15 overflow-hidden justify-items-center">
+    <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-3.5 sm:gap-y-7.5 md:grid-cols-3 md:gap-x-10 md:gap-y-15 justify-items-center">
       {products.map((product) => {
         // 상품 상세 페이지 URL 생성 (카테고리 파라미터 포함)
         // 현재 선택된 카테고리가 있으면 그것을 사용, 없으면 상품의 카테고리 ID 사용
@@ -49,7 +50,7 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
           <Link
             key={product.id}
             href={productDetailUrl}
-            className="flex flex-col justify-start items-center gap-[14px] hover:opacity-80 transition-opacity h-[240.5px] w-full"
+            className="flex flex-col justify-start items-center gap-[14px] hover:opacity-80 transition-opacity w-full"
           >
             <div className="relative w-full aspect-square min-h-[154.5px] max-h-[366.67px] px-4 sm:px-[120px] py-4 sm:py-[73px] round-xs bg-primary-50 overflow-hidden">
               <Image src={product.imageUrl} alt={product.name} fill className="object-contain" />
@@ -60,10 +61,8 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
               <div className="justify-start text-stone-900 text-lg font-extrabold">
                 {product.price.toLocaleString("ko-KR")}원
               </div>
-              <div className="justify-center text-blue-500 text-sm font-bold ">29회 구매</div>
+              <div className="justify-center text-blue-500 text-sm font-bold ">{product.cumulativeSales}회 구매</div>
             </div>
-
-            {/* </div> */}
           </Link>
         );
       })}

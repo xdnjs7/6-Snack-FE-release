@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, forwardRef } from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
 import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
@@ -11,6 +11,9 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   type?: "text" | "email" | "password" | "number" | "tel" | "url";
   showPasswordToggle?: boolean;
   containerClassName?: string;
+  isCompanyName?: boolean;
+  isBizNumber?: boolean;
+  inputRef?: React.Ref<HTMLInputElement>;
 };
 
 export default function Input(
@@ -23,16 +26,18 @@ export default function Input(
     className,
     value,
     placeholder,
+    isCompanyName = false,
+    isBizNumber = false,
     ...props
-  }: InputProps,
-  ref?: React.Ref<HTMLInputElement>
+  }: InputProps & { inputRef?: React.Ref<HTMLInputElement>; ref?: React.Ref<HTMLInputElement> }
 ) {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [internalValue, setInternalValue] = useState<string>("");
 
   // value가 제어되는지 확인
   const isControlled = value !== undefined;
-  const inputValue = isControlled ? value : internalValue;
+  let inputValue = isControlled ? value : internalValue;
+
   const hasValue = Boolean(inputValue);
 
   const handlePasswordToggle = () => {
@@ -40,8 +45,27 @@ export default function Input(
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newValue = e.target.value;
+
+    // 회사명 입력 제한: 특수문자 제거, 20글자 제한
+    if (isCompanyName) {
+      newValue = newValue.replace(/[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\s]/g, '').slice(0, 20);
+      e.target.value = newValue;
+    }
+
+    // 사업자번호 입력 제한: 숫자만 허용, 10자리까지만 입력
+    if (isBizNumber) {
+      newValue = newValue.replace(/\D/g, '').slice(0, 10);
+      e.target.value = newValue;
+      if (!isControlled) {
+        setInternalValue(newValue);
+      }
+      props.onChange?.(e);
+      return;
+    }
+
     if (!isControlled) {
-      setInternalValue(e.target.value);
+      setInternalValue(newValue);
     }
     props.onChange?.(e);
   };
@@ -81,7 +105,8 @@ export default function Input(
           {/* Input */}
           <input
             {...props}
-            ref={ref}
+            ref={(props.inputRef // explicit prop
+              ?? (props as any).ref) as React.Ref<HTMLInputElement>}
             type={actualType}
             value={inputValue}
             onChange={handleChange}
