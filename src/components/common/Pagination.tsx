@@ -62,13 +62,21 @@ export default function Pagination({
 
   const handlePrevPage = () => {
     if (!isFirstPage) {
-      onPrevPage?.() || onPageChange(currentPage - 1);
+      if (onPrevPage) {
+        onPrevPage();
+      } else {
+        onPageChange(currentPage - 1);
+      }
     }
   };
 
   const handleNextPage = () => {
     if (!isLastPage) {
-      onNextPage?.() || onPageChange(currentPage + 1);
+      if (onNextPage) {
+        onNextPage();
+      } else {
+        onPageChange(currentPage + 1);
+      }
     }
   };
 

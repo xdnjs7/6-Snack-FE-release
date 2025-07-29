@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import Link from "next/link";
 import Button from "@/components/ui/Button";
 import clsx from "clsx";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
@@ -150,13 +149,14 @@ export default function OrderConfirmedPage() {
               <div className="self-stretch px-5 md:px-14 pt-5 md:pt-10 pb-7 md:pb-10 bg-transparent sm:bg-white/10 rounded-sm shadow-[0px_0px_6px_0px_rgba(0,0,0,0.0)] sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline-1 sm:outline-neutral-200 flex flex-col justify-start items-start gap-5">
                 {/* 상품 목록 */}
                 <div className="self-stretch flex flex-col justify-start items-start">
-                  {orderData.orderedItems.map((orderedItem, index) => (
+                  {orderData.orderedItems.map((orderedItem) => (
                     <div
                       key={orderedItem.id}
                       className="self-stretch pr-5 py-5 border-b border-neutral-200 inline-flex justify-between items-center"
                     >
                       <div className="flex justify-start items-center gap-5">
                         <div className="w-36 h-36 bg-white shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             className="w-14 h-24 relative"
                             src={orderedItem.receipt.imageUrl}
