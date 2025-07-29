@@ -10,6 +10,7 @@ import clsx from "clsx";
 import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
 import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
 import { superAdminSignUpApi } from "@/lib/api/superAdmin.api";
+import Input from "@/components/common/Input";
 
 // 리액트 훅폼에 연결할 zod 스키마 정의
 const signUpSchema = z
@@ -26,7 +27,7 @@ const signUpSchema = z
       .regex(/[^a-zA-Z0-9]/, "비밀번호는 특수문자를 포함해야 합니다."),
     passwordConfirm: z.string(),
   })
-  
+
   .refine((data) => data.password === data.passwordConfirm, {
     message: "비밀번호가 일치하지 않습니다.",
     path: ["passwordConfirm"],
@@ -38,8 +39,6 @@ export default function SuperAdminSignUpPage() {
   const router = useRouter();
 
   const [error, setError] = useState<string | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   const {
     register,
@@ -50,8 +49,6 @@ export default function SuperAdminSignUpPage() {
     resolver: zodResolver(signUpSchema),
     mode: "onChange",
   });
-
-  const [passwordInput, passwordConfirmInput] = watch("password", "passwordConfirm");
 
   // 회원가입 처리
   const onSubmit = async (data: TSignUpFormData) => {
@@ -108,129 +105,60 @@ export default function SuperAdminSignUpPage() {
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full mb-[8px] gap-[20px]">
           {/* 이메일 입력 필드 */}
-          <div className="flex flex-col gap-1">
-            <div className={clsx("relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b", errors.email ? "border-error-500" : "border-primary-600")}>
-              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
-                <label className={clsx("text-primary-500 text-xs/[15px] font-normal tracking-tight", !watch("email") && "hidden")}>이메일</label>
-                <input type="email" {...register("email")} placeholder="이메일을 입력해주세요." className="w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500" />
-              </div>
-            </div>
-            {errors.email && <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.email.message}</span>}
-          </div>
+          <Input
+            {...register("email")}
+            type="email"
+            label="이메일"
+            placeholder="이메일을 입력해주세요."
+            error={errors.email?.message}
+          />
 
           {/* 이름 입력 필드 */}
-          <div className="flex flex-col gap-1">
-            <div className={clsx("relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b", errors.name ? "border-error-500" : "border-primary-600")}>
-              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
-                <label className={clsx("text-primary-500 text-xs/[15px] font-normal tracking-tight", !watch("name") && "hidden")}>이름</label>
-                <input type="text" {...register("name")} placeholder="이름을 입력해주세요." className="w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500" />
-              </div>
-            </div>
-            {errors.name && <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.name.message}</span>}
-          </div>
+          <Input
+            {...register("name")}
+            type="text"
+            label="이름"
+            placeholder="이름을 입력해주세요."
+            error={errors.name?.message}
+          />
 
           {/* 비밀번호 input wrapper*/}
-          <div className="flex flex-col gap-1">
-            <div
-              className={clsx(
-                "relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b",
-                errors.password ? "border-error-500" : "border-primary-600",
-              )}
-            >
-              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
-                <label
-                  className={clsx(
-                    "text-primary-500 text-xs/[15px] font-normal tracking-tight",
-                    !passwordInput && "hidden",
-                  )}
-                >
-                  비밀번호
-                </label>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  {...register("password")}
-                  placeholder="비밀번호를 입력해주세요."
-                  className={clsx(
-                    // 수정해야함!
-                    showPassword ? "tracking-tight" : "tracking-[0.25em]",
-                    "w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
-                  )}
-                />
-              </div>
-              {/* 비밀번호 보임토글 */}
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-1 bottom-2"
-              >
-                {showPassword ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
-              </button>
-            </div>
-            {/* 에러 메세지 */}
-            {errors.password && (
-              <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.password.message}</span>
-            )}
-          </div>
+          <Input
+            {...register("password")}
+            type="password"
+            label="비밀번호"
+            placeholder="비밀번호를 입력해주세요."
+            showPasswordToggle={true}
+            error={errors.password?.message}
+          />
 
           {/* 비밀번호 확인 input wrapper*/}
-          <div className="flex flex-col gap-1">
-            <div className="relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b border-primary-600">
-              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
-                <label
-                  className={clsx(
-                    "text-primary-500 text-xs/[15px] font-normal tracking-tight",
-                    !passwordConfirmInput && "hidden",
-                  )}
-                >
-                  비밀번호 확인
-                </label>
-                <input
-                  type={showPasswordConfirm ? "text" : "password"}
-                  {...register("passwordConfirm")}
-                  placeholder="비밀번호를 한 번 더 입력해주세요."
-                  className={clsx(
-                    // 수정해야함!
-                    showPassword ? "text-[16px]/[20px]" : "text-[20px]/[20px]",
-                    "w-full tracking-tight text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight outline-none",
-                  )}
-                />
-              </div>
-              {/* 비밀번호 확인 보임토글 */}
-              <button
-                type="button"
-                onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
-                className="cursor-pointer absolute right-1 bottom-2"
-              >
-                {showPasswordConfirm ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
-              </button>
-            </div>
-            {/* 에러 메세지 */}
-            {errors.passwordConfirm && (
-              <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.passwordConfirm.message}</span>
-            )}
-          </div>
+          <Input
+            {...register("passwordConfirm")}
+            type="password"
+            label="비밀번호 확인"
+            placeholder="비밀번호를 한 번 더 입력해주세요."
+            showPasswordToggle={true}
+            error={errors.passwordConfirm?.message}
+          />
 
           {/* 회사명 입력 필드 */}
-          <div className="flex flex-col gap-1">
-            <div className={clsx("relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b", errors.companyName ? "border-error-500" : "border-primary-600")}>
-              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
-                <label className={clsx("text-primary-500 text-xs/[15px] font-normal tracking-tight", !watch("companyName") && "hidden")}>회사명</label>
-                <input type="text" {...register("companyName")} placeholder="회사명을 입력해주세요." className="w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500" />
-              </div>
-            </div>
-            {errors.companyName && <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.companyName.message}</span>}
-          </div>
+          <Input
+            {...register("companyName")}
+            type="text"
+            label="회사명"
+            placeholder="회사명을 입력해주세요."
+            error={errors.companyName?.message}
+          />
 
           {/* 사업자 번호 입력 필드 */}
-          <div className="flex flex-col gap-1">
-            <div className={clsx("relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b", errors.bizNumber ? "border-error-500" : "border-primary-600")}>
-              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
-                <label className={clsx("text-primary-500 text-xs/[15px] font-normal tracking-tight", !watch("bizNumber") && "hidden")}>사업자 번호</label>
-                <input type="text" {...register("bizNumber")} placeholder="사업자 번호를 입력해주세요." className="w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500" />
-              </div>
-            </div>
-            {errors.bizNumber && <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.bizNumber.message}</span>}
-          </div>
+          <Input
+            {...register("bizNumber")}
+            type="text"
+            label="사업자 번호"
+            placeholder="사업자 번호를 입력해주세요."
+            error={errors.bizNumber?.message}
+          />
 
           {/* 가입 버튼 - 직접 button 태그로 대체 */}
           <button
