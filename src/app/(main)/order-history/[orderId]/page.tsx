@@ -60,13 +60,11 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
   const formatDate = (dateString: string | undefined | null): string => {
     if (!dateString) return '-';
     try {
-      return new Date(dateString).toLocaleDateString('ko-KR', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}.${month}.${day}`;
     } catch (error) {
       console.error('Date formatting error:', error);
       return '-';
@@ -81,7 +79,7 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
   if (isLoading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-base sm:text-lg md:text-xl">로딩 중...</div>
+        <div className="text-lg">로딩 중...</div>
       </div>
     );
   }
@@ -89,7 +87,7 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
   if (error || !orderData) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-base sm:text-lg md:text-xl text-red-600">{error || '주문 내역을 찾을 수 없습니다.'}</div>
+        <div className="text-lg text-red-600">{error || '주문 내역을 찾을 수 없습니다.'}</div>
       </div>
     );
   }
@@ -103,64 +101,69 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
   return (
     <div className="min-h-screen bg-white">
       {/* Main Content */}
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-4 sm:pt-6 md:pt-8 flex flex-col justify-start items-start gap-5 sm:gap-6 md:gap-7">
-        <div className="self-stretch justify-center text-[--color-primary-800] text-base sm:text-lg md:text-xl lg:text-2xl font-bold font-['SUIT']">
+      <div className="w-full max-w-7xl mx-auto pt-[30px] flex flex-col justify-start items-start gap-[23px]">
+        <div className="self-stretch justify-center text-gray-950 text-lg font-bold font-['SUIT']">
           구매 내역 상세
         </div>
 
         {/* Items Section */}
-        <div className="self-stretch flex flex-col justify-start items-start gap-4 sm:gap-5 md:gap-6 lg:gap-10">
-          <div className="self-stretch flex flex-col justify-start items-start gap-4 sm:gap-5">
+        <div className="self-stretch flex flex-col justify-start items-start gap-10">
+          <div className="self-stretch flex flex-col justify-start items-start gap-[15px]">
             <div 
               className="inline-flex justify-start items-start gap-1.5 cursor-pointer"
               onClick={() => setIsItemsExpanded(!isItemsExpanded)}
             >
-              <div className="justify-center text-[--color-primary-800] text-sm sm:text-base md:text-lg font-bold font-['SUIT']">구매 품목</div>
-              <div className="justify-center text-[--color-primary-800] text-sm sm:text-base md:text-lg font-normal font-['SUIT']">
+              <div className="justify-center text-gray-950 text-base font-bold font-['SUIT']">구매 품목</div>
+              <div className="justify-center text-gray-950 text-base font-normal font-['SUIT']">
                 총 {orderData.products?.length || 0}개
               </div>
               <ArrowIconSvg 
-                direction={isItemsExpanded ? "down" : "right"} 
-                className="w-4 h-4 sm:w-5 sm:h-5 text-[--color-primary-800]" 
+                direction={isItemsExpanded ? "up" : "down"} 
+                className="w-5 h-5 text-gray-950" 
               />
             </div>
 
             {isItemsExpanded && (
-              <div className="self-stretch px-3 sm:px-4 md:px-5 pt-3 sm:pt-4 md:pt-5 pb-5 sm:pb-6 md:pb-7 bg-white rounded-sm shadow-[0px_0px_6px_0px_rgba(0,0,0,0.0)] sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline-1 sm:outline-neutral-200 flex flex-col justify-start items-start gap-4 sm:gap-5">
+              <div className="self-stretch bg-white rounded-sm sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline-1 sm:outline-neutral-200 flex flex-col justify-start items-start gap-5 sm:px-5 sm:pt-5 sm:pb-[30px] md:px-[60px] md:py-[40px]">
                 {/* Items List */}
-                                <div className="self-stretch flex flex-col justify-start items-start">
+                <div className="self-stretch flex flex-col justify-start items-start gap-[16px] sm:gap-0">
                   {orderData.products?.map((item: TProduct) => (
-                    <div 
+                                        <div 
                       key={item.id} 
-                      className="self-stretch py-3 sm:py-4 md:py-5 md:pr-5 border-b border-neutral-200 inline-flex justify-between items-center"
+                      className="self-stretch border-b border-neutral-200 inline-flex justify-between items-center sm:py-5 sm:pr-5"
                     >
-                      <div className="flex justify-start items-center gap-3 sm:gap-4 md:gap-5">
-                        <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-36 lg:h-36 bg-[--color-white] shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
+                      <div className="flex gap-5 flex-1 sm:flex sm:justify-start sm:items-center sm:gap-5">
+                        <div className="w-24 h-24 sm:w-[140px] sm:h-[140px] bg-[--color-white] shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
                           {item.imageUrl && (
                             <Image 
                               src={item.imageUrl} 
                               alt={item.productName}
                               width={56}
                               height={96}
-                              className="w-5 h-8 sm:w-7 sm:h-12 md:w-10 md:h-16 lg:w-14 lg:h-24 relative" 
+                              className="w-10 h-16 sm:w-14 sm:h-24 relative" 
                             />
                           )}
                         </div>
-                        <div className="inline-flex flex-col justify-center items-start gap-3 sm:gap-5 md:gap-7">
-                          <div className="flex flex-col justify-center items-start gap-1.5 sm:gap-2 md:gap-2.5">
-                            <div className="text-center justify-center text-[--color-primary-800] text-xs sm:text-sm md:text-base font-medium font-['SUIT']">
+                        <div className="flex-1 inline-flex flex-col items-start gap-3 sm:justify-start sm:inline-flex sm:flex-col sm:justify-start sm:items-start sm:gap-7">
+                          <div className="flex flex-col justify-center items-start gap-1 sm:justify-start sm:gap-2.5">
+                            <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-medium font-['SUIT']">
                               {item.productName}
                             </div>
-                            <div className="justify-start text-[--color-primary-800] text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+                            <div className="justify-start text-gray-950 text-sm sm:text-base font-bold font-['SUIT']">
                               {formatPrice(item.price)}원
                             </div>
                           </div>
-                          <div className="justify-center text-gray-500 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
-                            수량 {item.quantity}개
+                          <div className="flex justify-between items-center w-full sm:justify-start sm:flex sm:justify-start">
+                            <div className="justify-center text-gray-500 text-[13px] sm:text-base font-bold font-['SUIT']">
+                              수량 {item.quantity}개
+                            </div>
+                            <div className="text-center justify-center text-gray-700 text-base font-bold font-['SUIT'] sm:hidden">
+                              {formatPrice(item.price * item.quantity)}원
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className="text-center justify-center text-gray-700 text-sm sm:text-base md:text-lg lg:text-xl font-extrabold font-['SUIT'] leading-loose">
+                      <div className="hidden sm:block text-center justify-center text-gray-700 text-[20px] font-extrabold font-['SUIT']">
                         {formatPrice(item.price * item.quantity)}원
                       </div>
                     </div>
@@ -168,26 +171,26 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
                 </div>
 
                 {/* Order Amount Info */}
-                <div className="self-stretch flex flex-col gap-2 sm:gap-3">
-                  <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">주문금액</div>
-                    <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
-                      {formatPrice(calculatedTotal)}원
+                                  <div className="self-stretch flex flex-col gap-3 sm:gap-[7px] sm:px-5">
+                    <div className="flex justify-between items-center">
+                      <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">주문금액</div>
+                      <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
+                        {formatPrice(calculatedTotal)}원
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">배송비</div>
+                      <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
+                        {formatPrice(shippingFee)}원
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <div className="text-center justify-center text-gray-950 text-lg sm:text-lg font-bold font-['SUIT']">총 주문금액</div>
+                      <div className="text-center justify-center text-gray-950 text-lg sm:text-2xl font-bold sm:font-extrabold font-['SUIT']">
+                        {formatPrice(finalTotal)}원
+                      </div>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">배송비</div>
-                    <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
-                      {formatPrice(shippingFee)}원
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-[--color-primary-800] text-sm sm:text-base md:text-lg lg:text-xl font-bold font-['SUIT']">총 주문금액</div>
-                    <div className="text-center justify-center text-[--color-primary-800] text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-extrabold font-['SUIT']">
-                      {formatPrice(finalTotal)}원
-                    </div>
-                  </div>
-                </div>
               </div>
             )}
           </div>
@@ -195,37 +198,37 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
 
         {/* Request Info Section */}
         <div className="self-stretch flex flex-col justify-start items-start">
-          <div className="self-stretch px-2 py-3 sm:py-3.5 border-b border-neutral-800 inline-flex justify-start items-center gap-2">
-            <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm md:text-base font-extrabold font-['SUIT']">요청 정보</div>
+          <div className="self-stretch py-3.5 border-b border-neutral-800 inline-flex justify-start items-center gap-2 sm:pl-2">
+            <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-extrabold font-['SUIT']">요청 정보</div>
           </div>
-          <div className="self-stretch flex flex-col justify-center items-start">
-            <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 h-10 sm:h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">요청인</div>
+          <div className="self-stretch flex flex-col justify-center items-start sm:flex sm:flex-row sm:justify-start sm:items-stretch">
+            <div className="self-stretch inline-flex justify-start items-center sm:flex-1">
+              <div className="w-36 h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
+                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">요청인</div>
               </div>
-              <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+              <div className="flex-1 h-12 px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2 sm:border-r">
+                <div className="text-center justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT']">
                   {orderData.requester || "-"}
                 </div>
               </div>
             </div>
-            <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 h-10 sm:h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">요청 날짜</div>
+            <div className="self-stretch inline-flex justify-start items-center sm:flex-1">
+              <div className="w-36 h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
+                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">요청 날짜</div>
               </div>
-              <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+              <div className="flex-1 h-12 px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
+                <div className="text-center justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT']">
                   {formatDate(orderData.createdAt)}
                 </div>
               </div>
             </div>
           </div>
           <div className="self-stretch inline-flex justify-start items-start">
-            <div className="w-24 sm:w-32 md:w-36 self-stretch px-2 py-3 sm:py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
-              <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">요청 메시지</div>
+            <div className="w-36 self-stretch px-2 py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
+              <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">요청 메시지</div>
             </div>
-            <div className="flex-1 p-3 sm:p-4 border-b border-neutral-200 flex justify-start items-center gap-2">
-              <div className="flex-1 justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT'] leading-snug">
+            <div className="flex-1 p-4 border-b border-neutral-200 flex justify-start items-center gap-2">
+              <div className="flex-1 justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT'] leading-snug">
                 {orderData.requestMessage || "요청 메시지가 없습니다."}
               </div>
             </div>
@@ -234,48 +237,48 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
 
         {/* Approval Info Section */}
         <div className="self-stretch flex flex-col justify-start items-start">
-          <div className="self-stretch px-2 py-3 sm:py-3.5 border-b border-neutral-800 inline-flex justify-start items-center gap-2">
-            <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm md:text-base font-extrabold font-['SUIT']">승인 정보</div>
+          <div className="self-stretch py-3.5 border-b border-neutral-800 inline-flex justify-start items-center gap-2 sm:pl-2">
+            <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-extrabold font-['SUIT']">승인 정보</div>
           </div>
-          <div className="self-stretch flex flex-col justify-center items-start">
-            <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 h-10 sm:h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">담당자</div>
+          <div className="self-stretch flex flex-col justify-center items-start sm:flex sm:flex-row sm:justify-start sm:items-stretch">
+            <div className="self-stretch inline-flex justify-start items-center sm:flex-1">
+              <div className="w-36 h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
+                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">담당자</div>
               </div>
-              <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+              <div className="flex-1 h-12 px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2 sm:border-r">
+                <div className="text-center justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT']">
                   {orderData.approver || "-"}
                 </div>
               </div>
             </div>
-            <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 h-10 sm:h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">승인 날짜</div>
+            <div className="self-stretch inline-flex justify-start items-center sm:flex-1">
+              <div className="w-36 h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
+                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">승인 날짜</div>
               </div>
-              <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+              <div className="flex-1 h-12 px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
+                <div className="text-center justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT']">
                   {orderData.updatedAt ? formatDate(orderData.updatedAt) : "-"}
                 </div>
               </div>
             </div>
           </div>
-          <div className="self-stretch flex flex-col justify-center items-start">
-            <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 self-stretch px-2 py-3 sm:py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">상태</div>
+          <div className="self-stretch flex flex-col justify-center items-start sm:flex sm:flex-row sm:justify-start sm:items-stretch">
+            <div className="self-stretch inline-flex justify-start items-center sm:flex-1">
+              <div className="w-36 self-stretch px-2 py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
+                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">상태</div>
               </div>
-              <div className="flex-1 self-stretch p-3 sm:p-4 border-b border-neutral-200 flex justify-start items-start gap-2">
-                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+              <div className="flex-1 self-stretch p-4 border-b border-neutral-200 flex justify-start items-start gap-2 sm:border-r">
+                <div className="text-center justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT']">
                   {getStatusText(orderData.status)}
                 </div>
               </div>
             </div>
-            <div className="self-stretch inline-flex justify-start items-start">
-              <div className="w-24 sm:w-32 md:w-36 self-stretch px-2 py-3 sm:py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">결과 메시지</div>
+            <div className="self-stretch inline-flex justify-start items-start sm:flex-1">
+              <div className="w-36 self-stretch px-2 py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
+                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">결과 메시지</div>
               </div>
-              <div className="flex-1 p-3 sm:p-4 border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="flex-1 justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT'] leading-snug">
+              <div className="flex-1 p-4 border-b border-neutral-200 flex justify-start items-center gap-2">
+                <div className="flex-1 justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT'] leading-snug">
                   {orderData.adminMessage || "-"}
                 </div>
               </div>
