@@ -6,11 +6,9 @@ import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { useOrderDetail } from "@/hooks/useOrderDetail";
 import Button from "@/components/ui/Button";
 import Image from "next/image";
+import { updateOrderStatus } from "@/lib/api/orderManage.api";
+import useOrderStatusUpdate from "@/hooks/useOrderStatusUpdate";
 
-// type TOrderManageDetailPageProps = {
-//   // 현재는 props가 없지만 향후 확장성을 위해 타입 정의
-// };
-// export default function OrderManageDetailPage({}: TOrderManageDetailPageProps);
 export default function OrderManageDetailPage() {
   const params = useParams();
   // const router = useRouter();
@@ -18,8 +16,38 @@ export default function OrderManageDetailPage() {
 
   const [isItemsExpanded, setIsItemsExpanded] = useState<boolean>(true);
 
-  // React Query를 사용한 주문 상세 조회
+  // React Query 훅 불러오기
+  // 주문 상세 조회
   const { data: orderRequest, isLoading, error } = useOrderDetail(orderId);
+  // 주문 상태 승인/거절
+  const updateOrderMutation = useOrderStatusUpdate();
+
+  const handleApprove = async () => {
+    try {
+      await updateOrderMutation.mutateAsync({
+        orderId: orderId,
+        status: "APPROVED",
+      });
+      // TODO: 토스트 달기
+      alert("승인완료");
+    } catch (error) {
+      console.error("승인 실패:", error);
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      await updateOrderMutation.mutateAsync({
+        orderId: orderId,
+        status: "REJECTED",
+      });
+      alert("거절완료");
+      // TODO: 토스트 달기
+    } catch (error) {
+      console.error("반려 실패:", error);
+    }
+  };
+
   // TODO 유틸함수로 분리예정
   const formatDate = (dateString: string | undefined | null): string => {
     if (!dateString) return "-";
@@ -111,12 +139,7 @@ export default function OrderManageDetailPage() {
                         <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-36 lg:h-36 bg-[--color-white] shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
                           {typeof item.imageUrl === "string" && (
                             <div className="w-7 h-12 sm:w-10 sm:h-16 md:w-14 md:h-24 relative">
-                              <Image
-                                src={item.imageUrl}
-                                alt={item.productName}
-                                fill
-                                className="object-contain"
-                              />
+                              <Image src={item.imageUrl} alt={item.productName} fill className="object-contain" />
                             </div>
                           )}
                         </div>
@@ -271,9 +294,21 @@ export default function OrderManageDetailPage() {
         </div>
         {/* 요청 반려, 요청 승인 버튼 */}
         <div className="flex w-full justify-center gap-4 sm:gap-5">
-          <Button type="white" label="요청 반려" className="w-full h-16 md:max-w-[300px]" />
-          <Button type="primary" label="요청 승인" className="w-full h-16 md:max-w-[300px]" />
-        </div>
+          <Button
+            type="white"
+            label={updateOrderMutation.isPending ? "처리중..." : "요청 반려"}
+            className="w-full h-16 md:max-w-[300px]"
+            onClick={handleReject}
+            disabled={updateOrderMutation.isPending}
+          />
+          <Button
+            type="primary"
+            label={updateOrderMutation.isPending ? "처리중..." : "요청 승인"}
+            className="w-full h-16 md:max-w-[300px]"
+            onClick={handleApprove}
+            disabled={updateOrderMutation.isPending}
+          />
+      </div>
       </div>
     </div>
   );
