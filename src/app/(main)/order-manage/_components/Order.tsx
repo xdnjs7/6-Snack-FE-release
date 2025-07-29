@@ -35,8 +35,8 @@ export default function Order() {
         setIsLoading(true);
         const offset = (currentPaginationPage - 1) * visibleCount;
         const res = await fetchPendingOrders({ offset, limit: visibleCount, orderBy });
-        setOrderRequests(res);
-        setTotalCount(res.length);
+        setOrderRequests(res.orders);
+        setTotalCount(res.meta.totalCount);
       } catch (err) {
         console.error("주문 데이터 불러오기 실패", err);
       } finally {

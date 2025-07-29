@@ -73,7 +73,7 @@ export default function MyProductsPage() {
                 <p className="w-[180px] font-bold text-[16px]/[20px] tracking-tight text-primary-500">등록일</p>
                 <p className="w-[180px] font-bold text-[16px]/[20px] tracking-tight text-primary-500">카테고리</p>
                 <p className="w-[160px] font-bold text-[16px]/[20px] tracking-tight text-primary-500">가격</p>
-                <p className="w-[160px] font-bold text-[16px]/[20px] tracking-tight text-primary-500">제품 링크</p>
+                <p className="w-[112px] font-bold text-[16px]/[20px] tracking-tight text-primary-500">제품 링크</p>
               </div>
             </div>
           </Desktop>

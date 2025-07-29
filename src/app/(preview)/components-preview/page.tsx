@@ -25,7 +25,6 @@ import { useModal } from "@/providers/ModalProvider";
 import ProductDetail from "@/components/common/ProductDetail";
 import Menu from "@/components/common/Menu";
 import TabMenu from "@/components/common/TabMenu";
-import ProductEditForm from "@/components/common/ProductEditForm";
 import ProductRegistrationForm from "@/components/common/ProductRegistrationForm";
 import MyRequestList from "@/components/common/MyRequestList";
 import Input from "@/components/common/Input";
@@ -36,6 +35,7 @@ import Header from "@/components/layout/Header";
 import CartItem from "@/app/(main)/cart/_components/CartItem";
 import OrderItem from "@/app/(main)/cart/order/_components/OrderItem";
 import { categories, order, orderRequests, products } from "./MockData";
+import DogSpinner from "@/components/common/spinnerAnimate";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -94,6 +94,12 @@ export default function ComponentsPreviewPage() {
             onChange={(e) => setRequestMessage(e.target.value)}
             placeholder="요청 메시지를 입력해주세요"
           />
+        </div>
+        <h2 className="text-lg font-semibold bg-blue-100">🐶 Spinner 컴포넌트</h2>
+
+        <div className="flex flex-col items-center">
+          <DogSpinner />
+          <p className="text-black text-sm font-medium animate-pulse -mt-7">Loading...</p>
         </div>
 
         <div className="space-y-4 mb-4">
@@ -273,8 +279,6 @@ export default function ComponentsPreviewPage() {
       <p className="mb-4 font-bold text-xl bg-violet-100">김홍섭</p>
       <div className="rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] p-6">
         <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">[상품 수정 모달]</h2>
-          <ProductEditForm />
           <h2 className="text-lg font-semibold bg-blue-100">[상품 등록 모달]</h2>
           <ProductRegistrationForm />
           <h2 className="text-lg font-semibold bg-blue-100">[My Request List(요청 취소 가능)]</h2>

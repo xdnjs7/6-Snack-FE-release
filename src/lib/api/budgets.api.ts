@@ -2,7 +2,12 @@ import { cookieFetch } from "./fetchClient.api";
 
 const companyId = 1; // TODO: 추후 동적으로 변경 예정
 
-export const getBudgets = async () => {
+interface BudgetResponse {
+  currentMonthBudget?: number;
+  monthlyBudget?: number;
+}
+
+export const getBudgets = async (): Promise<BudgetResponse> => {
   return cookieFetch(`/admin/${companyId}/budgets`, {
     method: "GET",
   });

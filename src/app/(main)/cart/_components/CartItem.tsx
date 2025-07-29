@@ -96,7 +96,7 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
   // 장바구니 즉시 구매(단건)
   const { mutate: adminOrderNow } = useMutation<TOrderNowResponse, Error, number[]>({
     mutationFn: (cartItemId) => orderNow(cartItemId),
-    onSuccess: () => router.push("/cart/order-confirmed"),
+    onSuccess: (order) => router.push(`/cart/order-confirmed/${order.data.id}`),
   });
 
   return (

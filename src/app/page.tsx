@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ArrowRightIcon from "@/components/svg/ArrowRightIconSvg";
+import Image from "next/image";
 
 const CARD_TEXTS = [
   "흩어진 간식 구매처를 통합하고,\n기수별 지출을 똑똑하게 관리하세요.",
@@ -31,15 +32,27 @@ export default function LandingPage() {
           </Link>
 
           <div className="mt-10 w-[90%] max-w-[1300px] h-auto rounded-[10px] overflow-hidden">
-            <img src="/images/landingPage_mobile.png" alt="mobile preview" className="block sm:hidden w-full h-auto" />
-            <img
+            <Image
+              src="/images/landingPage_mobile.png"
+              alt="mobile preview"
+              width={1300}
+              height={600}
+              className="block sm:hidden w-full h-auto"
+            />
+
+            <Image
               src="/images/landingPage_tablet.png"
               alt="tablet preview"
+              width={1300}
+              height={600}
               className="hidden sm:block md:hidden w-full h-auto"
             />
-            <img
+
+            <Image
               src="/images/landingPage_desktop.png"
               alt="desktop preview"
+              width={1300}
+              height={600}
               className="hidden md:block w-full h-auto"
             />
           </div>
