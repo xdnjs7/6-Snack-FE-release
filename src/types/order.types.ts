@@ -58,3 +58,32 @@ export type TOrderNowResponse = {
     status: string;
   };
 };
+
+export type TOrderResponse = {
+  message: string;
+  data: {
+    id: number;
+    companyId: number;
+    userId: string;
+    approver: string | null;
+    adminMessage: string | null;
+    requestMessage: string;
+    totalPrice: number;
+    createdAt: string;
+    updatedAt: string;
+    status: string;
+    orderedItems: {
+      id: number;
+      orderId: number;
+      receiptId: number;
+      productId: number;
+      receipt: {
+        id: number;
+        productName: string;
+        price: number;
+        imageUrl: string;
+        quantity: number;
+      };
+    }[];
+  };
+};

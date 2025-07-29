@@ -11,12 +11,15 @@ import { TGetCartItemsParams, TGetCartItemsResponse } from "@/types/cart.types";
 import { useRouter } from "next/navigation";
 import { createOrder } from "@/lib/api/order.api";
 import clsx from "clsx";
+import { TOrderResponse } from "@/types/order.types";
+import { useAuth } from "@/providers/AuthProvider";
 
 type TOrderPageContentProps = {
   cartItemId?: string;
 };
 
 export default function OrderPageContent({ cartItemId }: TOrderPageContentProps) {
+  const { user } = useAuth();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [requestMessage, setRequestMessage] = useState<string>("");
   const router = useRouter();
@@ -35,9 +38,13 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
   });
 
   // 구매 요청
-  const { mutate: orderRequest } = useMutation<void, Error, { requestMessage?: string; cartItemIds: number[] }>({
+  const { mutate: orderRequest } = useMutation<
+    TOrderResponse,
+    Error,
+    { requestMessage?: string; cartItemIds: number[] }
+  >({
     mutationFn: ({ requestMessage, cartItemIds }) => createOrder({ requestMessage, cartItemIds }),
-    onSuccess: () => router.push("/cart/order-confirm"),
+    onSuccess: (order) => router.push(`/cart/order-confirmed/${order.data.id}`),
     onError: () => setIsDisabled(true),
   });
 
@@ -46,6 +53,10 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
   const handleValueChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setRequestMessage(e.target.value);
   };
+
+  if (user?.role) {
+    return <div className="flex h-[80vh] justify-center items-center">일반 유저만 이용가능한 페이지입니다.</div>;
+  }
 
   if (error) {
     return <div>에러 발생 : {error.message}</div>;

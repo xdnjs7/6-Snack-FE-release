@@ -36,13 +36,9 @@ export default function CartPage() {
 
   const { mutate: adminOrderNow } = useMutation<TOrderNowResponse, Error, number[]>({
     mutationFn: (cartItemIds) => orderNow(cartItemIds),
-    onSuccess: () => router.push("/cart/order-confirmed"),
+    onSuccess: (order) => router.push(`/cart/order-confirmed/${order.data.id}`),
     onError: () => setIsDisabled(false),
   });
-
-  if (error) {
-    return <div>에러 발생 : {error.message}</div>;
-  }
 
   const { currentMonthBudget = 0, currentMonthExpense = 0 } = cartItems?.budget ?? {};
   const selectedTotalPrice = cartItems?.cart
@@ -98,6 +94,10 @@ export default function CartPage() {
     setIsDisabled(true);
     adminOrderNow(checkedCartItemIds);
   };
+
+  if (error) {
+    return <div>에러 발생 : {error.message}</div>;
+  }
 
   return (
     <div className="flex flex-col justify-center items-center w-full">

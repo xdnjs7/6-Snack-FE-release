@@ -6,9 +6,28 @@ export enum Role {
   SUPER_ADMIN = "SUPER_ADMIN",
 }
 
-export async function getUserInfo() {
-  const { user } = await cookieFetch("/users/me");
-  return user;
+export interface UserInfo {
+  id: string;
+  name: string;
+  email: string;
+  role: Role;
+  company: {
+    name: string;
+  };
+}
+
+export async function getUserInfo(): Promise<UserInfo> {
+  const response = await cookieFetch("/users/me");
+  return (response as { user: UserInfo }).user;
+}
+
+export async function updateCompany(userId: string, company: string) {
+  return await cookieFetch(`/super-admin/users/${userId}/company`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      companyName: company,
+    }),
+  });
 }
 
 export async function updateSuper(userId: string, company: string, password: string) {
