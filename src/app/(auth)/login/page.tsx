@@ -30,7 +30,7 @@ export default function LoginPage() {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isValid },
   } = useForm<TLoginFormData>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
@@ -154,10 +154,10 @@ export default function LoginPage() {
 
             <Button
               type="black"
-              label={isSubmitting ? "로그인 중..." : "로그인"}
-              disabled={!isValid || isSubmitting}
+              label={isDisabled ? "로그인 중..." : "로그인"}
+              disabled={!isValid || isDisabled}
               className={clsx(
-                (!isValid || isSubmitting) && "text-primary-300 bg-primary-100 cursor-default",
+                (!isValid || isDisabled) && "text-primary-300 bg-primary-100 cursor-default",
                 "w-full mb-[24px] font-bold text-[16px]/[20px] h-[64px]",
               )}
             />
