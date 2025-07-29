@@ -10,7 +10,7 @@ import Button from "@/components/ui/Button";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { useModal } from "@/providers/ModalProvider";
 import ProductRegistrationForm from "@/components/common/ProductRegistrationForm";
-import { useProducts } from "@/hooks/useProductsInfinite";
+import useProducts from "@/hooks/useProductsInfinite";
 import PlusToggleIconSvg from "@/components/svg/PlusToggleIconSvg";
 import Dropdown from "@/components/common/DropDown";
 import { useCategoryStore } from "@/stores/categoryStore";
