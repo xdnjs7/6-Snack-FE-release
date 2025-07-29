@@ -6,9 +6,9 @@ import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { useOrderDetail } from "@/hooks/useOrderDetail";
 import Button from "@/components/ui/Button";
 import Image from "next/image";
-import { updateOrderStatus } from "@/lib/api/orderManage.api";
-import useOrderStatusUpdate from "@/hooks/useOrderStatusUpdate";
 import Toast from "@/components/common/Toast";
+import { formatDate } from "@/lib/utils/formatDate.util";
+import useOrderStatusUpdate from "@/hooks/useOrderStatusUpdate";
 
 export default function OrderManageDetailPage() {
   const params = useParams();
@@ -75,22 +75,6 @@ export default function OrderManageDetailPage() {
     }
   };
 
-  // TODO 유틸함수로 분리예정
-  const formatDate = (dateString: string | undefined | null): string => {
-    if (!dateString) return "-";
-    try {
-      return new Date(dateString).toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    } catch (error) {
-      console.error("Date formatting error:", error);
-      return "-";
-    }
-  };
   // TODO 유틸함수로 분리예정
   const formatPrice = (price: number | undefined | null): string => {
     if (price === undefined || price === null) return "0";
@@ -252,7 +236,7 @@ export default function OrderManageDetailPage() {
               </div>
               <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
                 <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
-                  {formatDate(orderRequest.createdAt)}
+                  {orderRequest.createdAt ? formatDate(orderRequest.createdAt) : "-"}
                 </div>
               </div>
             </div>
