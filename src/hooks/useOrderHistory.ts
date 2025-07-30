@@ -3,12 +3,6 @@ import { useBudgets } from "@/hooks/useBudgets";
 import { useAdminOrders } from "@/hooks/useAdminOrders";
 import { formatDate } from "@/lib/utils/formatDate.util";
 
-/**
- * @rakaso598
- * 1. 인터페이스 -> 타입
- * 2. 앞에 T 붙이기
- */
-
 export type TPurchaseItem = {
   id: string;
   requestDate: string;
@@ -44,7 +38,7 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
   // 데이터 파싱 및 정렬
   const statusMap: Record<string, "요청" | "승인"> = { approved: "승인" };
 
-  interface OrderItem {
+  type TOrderItem = {
     id: number | string;
     requestDate?: string;
     createdAt?: string;
@@ -63,7 +57,7 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
     adminMessage?: string;
   }
 
-  const parse = (item: OrderItem): TPurchaseItem => ({
+  const parse = (item: TOrderItem): TPurchaseItem => ({
     id: String(item.id),
     requestDate: item.requestDate ? formatDate(item.requestDate) : item.createdAt ? formatDate(item.createdAt) : "-",
     requester: item.requesterName || item.requester || "-",
@@ -81,7 +75,7 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
   });
 
   // 모든 아이템을 파싱
-  const allPurchaseItems: TPurchaseItem[] = ((approvedData as { orders?: OrderItem[] })?.orders || []).map((item: OrderItem) => parse(item));
+  const allPurchaseItems: TPurchaseItem[] = ((approvedData as { orders?: TOrderItem[] })?.orders || []).map((item: TOrderItem) => parse(item));
 
   // 클라이언트 사이드에서 정렬 처리
   const sortedItems = useCallback(() => {

@@ -140,7 +140,7 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
                               alt={item.productName}
                               width={56}
                               height={96}
-                              className="w-10 h-16 sm:w-14 sm:h-24 relative" 
+                              className="w-10 h-16 sm:w-14 sm:h-24 relative object-contain" 
                             />
                           )}
                         </div>

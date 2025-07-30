@@ -18,7 +18,7 @@ export type TProductData = {
 };
 
 // 폼 데이터 타입 정의
-type FormData = {
+type TFormData = {
   productName: string;
   price: string;
   productLink: string;
@@ -45,7 +45,7 @@ export default function ProductRegistrationForm({
     watch,
     formState: { errors },
     reset,
-  } = useForm<FormData>({
+  } = useForm<TFormData>({
     defaultValues: {
       productName: "",
       price: "",
@@ -98,7 +98,7 @@ export default function ProductRegistrationForm({
     setValue("subCategory", value);
   };
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: TFormData) => {
     // 필수 필드 검증
     if (!imageFile) {
       alert("이미지를 업로드해주세요!");
@@ -166,8 +166,8 @@ export default function ProductRegistrationForm({
   const selectedParentCategory = watchedValues.mainCategory;
   const childrenCategoryOptions = selectedParentCategory
     ? CATEGORIES.childrenCategory[selectedParentCategory as keyof typeof CATEGORIES.childrenCategory]?.map(
-        (category) => category.name,
-      ) || []
+      (category) => category.name,
+    ) || []
     : [];
 
   return (
@@ -274,7 +274,7 @@ export default function ProductRegistrationForm({
             {...register("productLink", {
               required: "제품 링크를 입력해주세요",
               pattern: {
-                value: /^https?:\/\/.+/,
+                value: /^https?:\/\/.+/, // 올바른 URL
                 message: "올바른 URL을 입력해주세요",
               },
             })}
