@@ -9,7 +9,7 @@ import Image from "next/image";
 import Toast from "@/components/common/Toast";
 import { formatDate } from "@/lib/utils/formatDate.util";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
-import useOrderStatusUpdate from "@/hooks/useOrderStatusUpdate";
+import { useOrderStatusUpdate } from "@/hooks/useOrderStatusUpdate";
 
 export default function OrderManageDetailPage() {
   const params = useParams();
@@ -251,7 +251,6 @@ export default function OrderManageDetailPage() {
         </div>
 
         {/* Budget Info Section */}
-        {/* TODO- api로 가져온 정보 활용해서 이번달 지출액, 남은 예산 보여주고 구매후 예산 계산해서 보여주기 */}
         <div className="self-stretch flex flex-col justify-start items-start">
           <div className="self-stretch px-2 py-3 sm:py-3.5 border-b border-neutral-800 inline-flex justify-start items-center gap-2">
             <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm md:text-base font-extrabold font-['SUIT']">

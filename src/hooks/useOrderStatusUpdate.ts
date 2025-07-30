@@ -1,7 +1,7 @@
 import { updateOrderStatus } from "@/lib/api/orderManage.api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export default function useOrderStatusUpdate() {
+export const useOrderStatusUpdate = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -13,4 +13,4 @@ export default function useOrderStatusUpdate() {
       queryClient.invalidateQueries({ queryKey: ["orderDetail"] });
     },
   });
-}
+};

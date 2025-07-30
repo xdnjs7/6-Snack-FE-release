@@ -7,7 +7,7 @@ type TUseProductsParams = {
   limit: number;
 };
 
-export default function useProducts(params: TUseProductsParams) {
+export const useProducts = (params: TUseProductsParams) => {
   return useInfiniteQuery({
     queryKey: ["products", params.category, params.sort, params.limit],
     queryFn: ({ pageParam }: { pageParam: number | undefined }) =>
@@ -19,4 +19,4 @@ export default function useProducts(params: TUseProductsParams) {
     getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
     staleTime: 2 * 60 * 1000,
   });
-}
+};
