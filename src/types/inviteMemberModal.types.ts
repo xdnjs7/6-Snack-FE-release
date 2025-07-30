@@ -1,6 +1,6 @@
 export type TUserRole = "USER" | "ADMIN";
 
-export type Role = "USER" | "ADMIN" | "SUPER_ADMIN";
+export type TRole = "USER" | "ADMIN" | "SUPER_ADMIN";
 
 export type TInviteMemberModalProps = {
   onCancel: () => void;

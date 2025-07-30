@@ -17,8 +17,8 @@ export default function ProfileSubmitButton({ isFormValid, isSubmitting, onSubmi
       type={buttonType}
       label={isSubmitting ? "변경 중..." : "변경하기"}
       className={`self-stretch h-16 p-4 ${!isFormValid ? "bg-primary-100 text-primary-300" : ""}`}
-      onClick={onSubmit}
       disabled={!isFormValid || isSubmitting}
+      onClick={onSubmit}
     />
   );
 }
