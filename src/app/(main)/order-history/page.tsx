@@ -188,7 +188,7 @@ const OrderHistoryPage = () => {
                     </div>
                   </div>
                   <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
-                    {item.amount}
+                    {item.amount}원
                   </div>
                 </div>
                 <div className="self-stretch flex flex-col justify-center items-start">
@@ -414,7 +414,7 @@ const OrderHistoryPage = () => {
                     </div>
                   </div>
                   <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
-                    {item.amount}
+                    {item.amount}원
                   </div>
                 </div>
                 <div className="self-stretch flex flex-col justify-center items-start">
@@ -712,7 +712,7 @@ const OrderHistoryPage = () => {
                       <div className="justify-start text-zinc-500 text-sm font-normal font-['SUIT']">총 수량 4개</div>
                     </div>
                     <div className="w-32 justify-start text-neutral-800 text-base font-normal font-['SUIT']">
-                      {item.amount}
+                      {item.amount}원
                     </div>
                     <div className="flex justify-start items-center gap-5">
                       <div className="w-32 justify-start text-neutral-800 text-base font-normal font-['SUIT']">
