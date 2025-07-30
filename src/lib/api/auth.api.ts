@@ -24,7 +24,7 @@ export const logoutApi = async () => {
   });
 };
 
-export const registerApi = async (_name: string, _email: string, _password: string) => {
+export const registerApi = async () => {
   // 일반 회원가입은 초대 링크가 필요하므로 에러 반환
   throw new Error("일반 회원가입은 초대 링크가 필요합니다");
 };

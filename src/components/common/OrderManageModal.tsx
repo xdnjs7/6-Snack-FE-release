@@ -50,7 +50,7 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
         <div className="flex flex-col justify-center items-center w-full max-w-[480px] mb-[24px] gap-[32px] sm:mb-[36px]">
           <div className="flex flex-col justify-center items-center w-full p-[20px] pb-[30px] gap-[20px] rounded-[2px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.12)]">
             <div className="flex flex-col items-center overflow-auto scrollbar w-full h-[160px] sm:h-[180px]">
-              {order.products.map((product, i) => {
+              {order.products.map((product) => {
                 return (
                   <div
                     key={product.id}

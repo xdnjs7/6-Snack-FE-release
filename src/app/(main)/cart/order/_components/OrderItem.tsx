@@ -26,7 +26,7 @@ export default function OrderItem({ isPending, cartItems }: TOrderItemProps) {
           ) : !cartItems?.cart.length ? (
             <div className="flex justify-center items-center h-[200px]">올바른 요청이 아닙니다.</div>
           ) : (
-            cartItems.cart.map((item, i) => {
+            cartItems.cart.map((item) => {
               return (
                 <div
                   key={item.id}
