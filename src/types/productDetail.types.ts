@@ -3,6 +3,7 @@ export type Product = {
   name: string;
   price: number;
   imageUrl: string;
+  cumulativeSales: number;
   category: {
     id: number;
     name: string;
