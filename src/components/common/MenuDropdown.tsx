@@ -9,12 +9,7 @@ type TMenuDropdownProps = {
   className?: string;
 };
 
-export default function MenuDropdown({
-  menuType,
-  onEdit,
-  onDelete,
-  className = "",
-}: TMenuDropdownProps) {
+export default function MenuDropdown({ menuType, onEdit, onDelete, className = "" }: TMenuDropdownProps) {
   const [showDropdown, setShowDropdown] = useState(false);
 
   const handleEdit = () => {
@@ -43,7 +38,7 @@ export default function MenuDropdown({
               className="h-12 px-4 py-2 flex justify-start items-center gap-1 hover:bg-primary-50 cursor-pointer"
               onClick={handleEdit}
             >
-            <div className="text-neutral-800 text-base font-suit whitespace-nowrap">{editLabel}</div>
+              <div className="text-neutral-800 text-base font-suit whitespace-nowrap">{editLabel}</div>
             </div>
             <div
               className="h-12 px-4 py-2 flex justify-start items-center gap-1 hover:bg-primary-50 cursor-pointer"

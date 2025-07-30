@@ -5,7 +5,6 @@ import DeleteAccountConfirmModal from "./DeleteAccountConfirmModal";
 import InviteMemberModal from "./InviteMemberModal";
 import MenuDropdown from "./MenuDropdown";
 
-
 type TMemberListProps = TMemberItem & {
   onClickDeleteUser?: (id: string) => void;
 };

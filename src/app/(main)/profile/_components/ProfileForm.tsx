@@ -15,7 +15,8 @@ import ProfileSubmitButton from "./ProfileSubmitButton";
 import Toast from "@/components/common/Toast";
 
 export default function ProfileForm() {
-  const { user }: { user: TUser | null } = useAuth();
+  const { user } = useAuth();
+  const typedUser = user as TUser | null;
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -46,7 +47,9 @@ export default function ProfileForm() {
   const password = watch("password");
 
   // 변경사항 확인
-  const hasCompanyChanged = Boolean(user?.role === Role.SUPER_ADMIN && company?.trim() !== (user?.company?.name || ""));
+  const hasCompanyChanged = Boolean(
+    typedUser?.role === Role.SUPER_ADMIN && company?.trim() !== ((typedUser as any)?.company?.name || ""),
+  );
   const hasPasswordChanged = Boolean(password && password.length > 0);
 
   const hasAnyChanges = hasCompanyChanged || hasPasswordChanged;
@@ -78,7 +81,11 @@ export default function ProfileForm() {
         if (hasCompanyChanged && !data.password) {
           return await updateCompany(user.id, data.company!.trim());
         } else if (data.password) {
-          return await updateSuper(user.id, data.company?.trim() || user.company?.name || "", data.password);
+          return await updateSuper(
+            user.id,
+            data.company?.trim() || (typedUser as any)?.company?.name || "",
+            data.password,
+          );
         }
       } else {
         if (data.password) {
@@ -91,7 +98,7 @@ export default function ProfileForm() {
       setIsSuccess(true);
 
       // 성공 시 처리
-      if (user?.role === Role.SUPER_ADMIN) {
+      if (typedUser?.role === Role.SUPER_ADMIN) {
         if (hasCompanyChanged && !variables.password) {
           showToast("회사명이 변경되었습니다.", "success");
         } else if (variables.password) {
@@ -122,14 +129,14 @@ export default function ProfileForm() {
 
   // 유저 정보 로드 및 폼 초기화
   useEffect(() => {
-    if (user) {
+    if (typedUser) {
       reset({
-        company: user.company?.name || "",
+        company: (typedUser as any)?.company?.name || "",
         password: "",
         confirmPassword: "",
       });
     }
-  }, [user, reset]);
+  }, [typedUser, reset]);
 
   // 타이머 언마운트 시 클린업
   useEffect(() => {
@@ -189,20 +196,20 @@ export default function ProfileForm() {
                 <ProfileField
                   label="기업명"
                   {...register("company")}
-                  isEditable={user?.role === Role.SUPER_ADMIN}
-                  role={user?.role}
+                  isEditable={typedUser?.role === Role.SUPER_ADMIN}
+                  role={typedUser?.role}
                   type="input"
                   error={errors.company?.message}
                 />
 
                 {/* 권한 */}
-                <ProfileField label="권한" value={getRoleLabel(user?.role as Role)} type="display" />
+                <ProfileField label="권한" value={getRoleLabel(typedUser?.role as Role)} type="display" />
 
                 {/* 이름 */}
-                <ProfileField label="이름" value={user?.name || ""} type="display" />
+                <ProfileField label="이름" value={typedUser?.name || ""} type="display" />
 
                 {/* 이메일 */}
-                <ProfileField label="이메일" value={user?.email || ""} type="display" />
+                <ProfileField label="이메일" value={typedUser?.email || ""} type="display" />
 
                 {/* 비밀번호 섹션 */}
                 <ProfilePasswordSection

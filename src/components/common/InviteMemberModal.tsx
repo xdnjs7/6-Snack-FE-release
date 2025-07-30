@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
-import { TInviteMemberModalProps, TUserRole } from "@/types/inviteMemberModal.types";
+import { TInviteMemberModalProps, TUserRole } from "@/types/InviteMemberModal.types";
 import { sendInvite } from "@/lib/api/invite.api";
 import { getUserApi } from "@/lib/api/user.api";
 
@@ -9,12 +9,7 @@ const roleLabels: Record<TUserRole, string> = {
   ADMIN: "관리자",
 };
 
-export default function InviteMemberModal({
-  onCancel,
-  onSubmit,
-  mode = "invite",
-  defaultValues,
-}: TInviteMemberModalProps) {
+const InviteMemberModal = ({ onCancel, onSubmit, mode = "invite", defaultValues }: TInviteMemberModalProps) => {
   const [name, setName] = useState(defaultValues?.name ?? "");
   const [email, setEmail] = useState(defaultValues?.email ?? "");
   const [selectedRole, setSelectedRole] = useState<TUserRole>(defaultValues?.role ?? "USER");
@@ -143,7 +138,7 @@ export default function InviteMemberModal({
                           key={role}
                           className="px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-neutral-800 text-base font-normal font-['SUIT']"
                           onClick={() => {
-                            setSelectedRole(role as UserRole);
+                            setSelectedRole(role as TUserRole);
                             setIsDropdownOpen(false);
                           }}
                         >
@@ -256,7 +251,7 @@ export default function InviteMemberModal({
                       key={role}
                       className="self-stretch h-12 pl-4 pr-5 py-2 inline-flex justify-start items-center gap-1 cursor-pointer hover:bg-gray-50"
                       onClick={() => {
-                        setSelectedRole(role as UserRole);
+                        setSelectedRole(role as TUserRole);
                         setIsDropdownOpen(false);
                       }}
                     >
@@ -295,4 +290,6 @@ export default function InviteMemberModal({
       </div>
     </>
   );
-}
+};
+
+export default InviteMemberModal;

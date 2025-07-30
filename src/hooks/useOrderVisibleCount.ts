@@ -2,7 +2,7 @@
 import { useMemo } from "react";
 import { useDeviceType } from "./useDeviceType";
 
-export default function useOrderVisibleCount() {
+const useOrderVisibleCount = () => {
   const { isMobile, isTablet, isDesktop } = useDeviceType();
 
   const visibleCount = useMemo(() => {
@@ -13,4 +13,6 @@ export default function useOrderVisibleCount() {
   }, [isMobile, isTablet, isDesktop]);
 
   return { visibleCount };
-}
+};
+
+export default useOrderVisibleCount;
