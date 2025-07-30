@@ -23,7 +23,7 @@ export default function ProfilePasswordSection({
     <>
       {/* 비밀번호 */}
       <Input
-        label="비밀번호"
+        label="비밀번호(선택)"
         type="password"
         value={password}
         onChange={(e) => onPasswordChange(e.target.value)}
@@ -31,7 +31,7 @@ export default function ProfilePasswordSection({
         error={passwordError}
         id="password"
         autoComplete="new-password"
-        placeholder="새로운 비밀번호를 입력하세요요"
+        placeholder="새로운 비밀번호를 입력하세요(선택)"
       />
 
       {/* 비밀번호 확인 */}

@@ -99,7 +99,7 @@ export default function Input(
 
         {/* Input Field Container */}
         <div className={clsx(
-          type === "password" && showPasswordToggle ? "flex justify-between items-end gap-[4px]" : "flex flex-col justify-center",
+          type === "password" && showPasswordToggle ? "flex justify-between gap-[4px]" : "flex flex-col justify-center",
           hasValue && type === "password" && showPasswordToggle ? "items-end" : type === "password" && showPasswordToggle ? "items-center" : ""
         )}>
           {/* Input */}

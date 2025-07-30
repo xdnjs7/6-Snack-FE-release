@@ -26,7 +26,8 @@ export default function ProfileForm() {
 
   // 회사명 유효성 검사
   const trimmedCompany = company.trim();
-  const isCompanyChanged = role === Role.SUPER_ADMIN && trimmedCompany !== originalCompany && trimmedCompany !== "";
+  const isCompanyChanged = role === Role.SUPER_ADMIN && trimmedCompany !== originalCompany;
+  const isCompanyValid = isCompanyChanged ? trimmedCompany !== "" : true;
 
   // 비밀번호 유효성 검사
   const isPasswordValid =
@@ -35,7 +36,8 @@ export default function ProfileForm() {
     password.length > 0 &&
     /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/.test(password);
 
-  const isFormValid = isCompanyChanged || isPasswordValid;
+  // 폼 유효성 검사: 기업명이 변경된 경우 공백이 아니어야 하고, 비밀번호가 입력된 경우 유효해야 함
+  const isFormValid = isCompanyValid && (isPasswordValid || (!isPasswordValid && isCompanyChanged));
 
   // 비밀번호 에러 메시지
   const getPasswordError = () => {
@@ -103,13 +105,13 @@ export default function ProfileForm() {
   // 제출 핸들러
   const handleSubmit = async () => {
     if (!isFormValid) {
-      if (role === Role.SUPER_ADMIN && isCompanyChanged && !isPasswordValid) {
-        if (trimmedCompany === "") {
-          showToast("회사명을 입력해주세요.", "error");
-          return;
-        }
+      // 기업명이 변경되었지만 공백인 경우
+      if (role === Role.SUPER_ADMIN && isCompanyChanged && trimmedCompany === "") {
+        showToast("회사명을 입력해주세요.", "error");
+        return;
       }
 
+      // 비밀번호가 입력되었지만 유효하지 않은 경우
       if (password.length > 0) {
         if (passwordError) {
           showToast(passwordError, "error");
