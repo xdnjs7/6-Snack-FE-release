@@ -47,7 +47,7 @@ export default function ProfileField({
             isSuperAdmin ? "border-primary-950 text-primary-900" : "border-primary-200 text-primary-300 bg-transparent",
           )}
           value={value}
-          onChange={handleChange}
+          onChange={(e) => onChange?.(e.target.value)}
           readOnly={readOnly}
         />
       ) : (
