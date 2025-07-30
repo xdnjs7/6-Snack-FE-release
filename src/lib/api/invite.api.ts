@@ -15,7 +15,7 @@ export type TInviteInfo = {
   isUsed: boolean;
 };
 // 초대 정보 조회
-export const getInviteApi = async (inviteId: string) => {
+export const getInviteApi = async (inviteId: string): Promise<TInviteInfo> => {
   return defaultFetch(`/invite/${inviteId}`);
 };
 

@@ -1,45 +1,122 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { useOrderDetail } from "@/hooks/useOrderDetail";
 import Button from "@/components/ui/Button";
 import Image from "next/image";
+import Toast from "@/components/common/Toast";
+import { formatDate } from "@/lib/utils/formatDate.util";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
+import { useOrderStatusUpdate } from "@/hooks/useOrderStatusUpdate";
+import { useModal } from "@/providers/ModalProvider";
+import OrderActionModal from "../_components/OrderActionModal";
 
-// type TOrderManageDetailPageProps = {
-//   // 현재는 props가 없지만 향후 확장성을 위해 타입 정의
-// };
-// export default function OrderManageDetailPage({}: TOrderManageDetailPageProps);
 export default function OrderManageDetailPage() {
   const params = useParams();
-  // const router = useRouter();
+  const router = useRouter();
   const orderId: string = params.orderId as string;
 
   const [isItemsExpanded, setIsItemsExpanded] = useState<boolean>(true);
+  const [toastConfig, setToastConfig] = useState<{
+    isVisible: boolean;
+    text: string;
+    variant: "success" | "error";
+  }>({
+    isVisible: false,
+    text: "",
+    variant: "success",
+  });
 
-  // React Query를 사용한 주문 상세 조회
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 타이머 언마운트 시 클린업
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
+  // React Query 훅 불러오기
+  // 주문 상세 조회
   const { data: orderRequest, isLoading, error } = useOrderDetail(orderId);
-  // TODO 유틸함수로 분리예정
-  const formatDate = (dateString: string | undefined | null): string => {
-    if (!dateString) return "-";
+  // 주문 상태 승인/거절
+  const updateOrderMutation = useOrderStatusUpdate();
+  const { openModal } = useModal();
+
+  // 토스트 함수
+  const showToast = (text: string, variant: "success" | "error" = "success") => {
+    setToastConfig({
+      isVisible: true,
+      text,
+      variant,
+    });
+
+    // 기존 타이머가 있다면 클리어
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    // 새 타이머 설정
+    timerRef.current = setTimeout(() => {
+      setToastConfig((prev) => ({ ...prev, isVisible: false }));
+      timerRef.current = null;
+    }, 3000);
+  };
+
+  const handleApprove = async () => {
     try {
-      return new Date(dateString).toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
+      await updateOrderMutation.mutateAsync({
+        orderId: orderId,
+        status: "APPROVED",
       });
-    } catch (error) {
-      console.error("Date formatting error:", error);
-      return "-";
+
+      openModal(
+        <OrderActionModal
+          modalTitle="승인 완료"
+          modalDescription="승인이 완료되었어요!<br />구매 내역을 통해 배송 현황을 확인해보세요"
+          leftButtonText="홈으로"
+          rightButtonText="구매 내역 보기"
+          onLeftClick={() => {
+            router.push("/products");
+          }}
+          onRightClick={() => {
+            router.push("/order-history");
+          }}
+        />,
+      );
+    } catch {
+      showToast("승인 처리에 실패했습니다.", "error");
     }
   };
-  // TODO 유틸함수로 분리예정
-  const formatPrice = (price: number | undefined | null): string => {
-    if (price === undefined || price === null) return "0";
-    return price.toLocaleString("ko-KR");
+
+  const handleReject = async () => {
+    try {
+      await updateOrderMutation.mutateAsync({
+        orderId: orderId,
+        status: "REJECTED",
+      });
+
+      openModal(
+        <OrderActionModal
+          modalTitle="요청 반려"
+          modalDescription="요청이 반려되었어요<br />목록에서 다른 요청을 확인해보세요"
+          leftButtonText="홈으로"
+          rightButtonText="구매 요청 내역 보기"
+          onLeftClick={() => {
+            router.push("/products");
+          }}
+          onRightClick={() => {
+            router.push("/order-manage");
+          }}
+        />,
+      );
+    } catch {
+      showToast("반려 처리에 실패했습니다.", "error");
+    }
   };
 
   if (isLoading) {
@@ -73,6 +150,7 @@ export default function OrderManageDetailPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Toast text={toastConfig.text} variant={toastConfig.variant} isVisible={toastConfig.isVisible} />
       {/* Main Content */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-4 sm:pt-6 md:pt-8 flex flex-col justify-start items-start gap-5 sm:gap-6 md:gap-7">
         <div className="self-stretch justify-center text-[--color-primary-800] text-base sm:text-lg md:text-xl lg:text-2xl font-bold font-['SUIT']">
@@ -111,12 +189,7 @@ export default function OrderManageDetailPage() {
                         <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-36 lg:h-36 bg-[--color-white] shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
                           {typeof item.imageUrl === "string" && (
                             <div className="w-7 h-12 sm:w-10 sm:h-16 md:w-14 md:h-24 relative">
-                              <Image
-                                src={item.imageUrl}
-                                alt={item.productName}
-                                fill
-                                className="object-contain"
-                              />
+                              <Image src={item.imageUrl} alt={item.productName} fill className="object-contain" />
                             </div>
                           )}
                         </div>
@@ -201,7 +274,7 @@ export default function OrderManageDetailPage() {
               </div>
               <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
                 <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
-                  {formatDate(orderRequest.createdAt)}
+                  {orderRequest.createdAt ? formatDate(orderRequest.createdAt) : "-"}
                 </div>
               </div>
             </div>
@@ -221,7 +294,6 @@ export default function OrderManageDetailPage() {
         </div>
 
         {/* Budget Info Section */}
-        {/* TODO- api로 가져온 정보 활용해서 이번달 지출액, 남은 예산 보여주고 구매후 예산 계산해서 보여주기 */}
         <div className="self-stretch flex flex-col justify-start items-start">
           <div className="self-stretch px-2 py-3 sm:py-3.5 border-b border-neutral-800 inline-flex justify-start items-center gap-2">
             <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm md:text-base font-extrabold font-['SUIT']">
@@ -271,8 +343,20 @@ export default function OrderManageDetailPage() {
         </div>
         {/* 요청 반려, 요청 승인 버튼 */}
         <div className="flex w-full justify-center gap-4 sm:gap-5">
-          <Button type="white" label="요청 반려" className="w-full h-16 md:max-w-[300px]" />
-          <Button type="primary" label="요청 승인" className="w-full h-16 md:max-w-[300px]" />
+          <Button
+            type="white"
+            label={updateOrderMutation.isPending ? "처리중..." : "요청 반려"}
+            className="w-full h-16 md:max-w-[300px]"
+            onClick={handleReject}
+            disabled={updateOrderMutation.isPending}
+          />
+          <Button
+            type="primary"
+            label={updateOrderMutation.isPending ? "처리중..." : "요청 승인"}
+            className="w-full h-16 md:max-w-[300px]"
+            onClick={handleApprove}
+            disabled={updateOrderMutation.isPending}
+          />
         </div>
       </div>
     </div>
