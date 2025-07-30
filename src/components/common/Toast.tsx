@@ -7,7 +7,7 @@ import exclamationIc from "@/assets/icons/ic_exclamation_mark_red.svg";
 import checkIc from "@/assets/icons/ic_check_white.svg";
 import xIc from "@/assets/icons/ic_x_gray.svg";
 import { twMerge } from "tailwind-merge";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 type TToastProps = {
   text: string | React.ReactNode;
@@ -20,32 +20,10 @@ type TToastProps = {
 
 const Toast = ({ text, budget, onClose, variant = "error", isVisible, className = "" }: TToastProps) => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  useEffect(() => {
-    if (isVisible && onClose) {
-      // 기존 타이머가 있다면 클리어
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-
-      // 새로운 타이머 설정 (3초 후 자동 닫기)
-      timerRef.current = setTimeout(() => {
-        onClose();
-      }, 3000);
-    }
-
-    // 컴포넌트 언마운트 시 타이머 클리어
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, [isVisible, onClose]);
 
   const iconSrc = variant === "success" ? checkIc : exclamationIc;
   const iconAlt = variant === "success" ? "성공 아이콘" : "경고 아이콘";
