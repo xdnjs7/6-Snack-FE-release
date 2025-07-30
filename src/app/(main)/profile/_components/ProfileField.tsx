@@ -42,7 +42,7 @@ export default function ProfileField({
     onChange?.(e);
   };
 
-  const finalError = error || (rest as any).error;
+  const finalError = error || (rest as { error?: string }).error;
 
   return (
     <div className="self-stretch flex flex-col gap-1 sm:gap-1">

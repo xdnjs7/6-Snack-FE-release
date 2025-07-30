@@ -1,6 +1,5 @@
-import { StaticImageData } from "next/image";
+import Image, { StaticImageData } from "next/image";
 import React from "react";
-
 
 type TCardProps = {
   name: string;
@@ -13,11 +12,14 @@ export default function Card({ name, purchaseCount, price, imageUrl }: TCardProp
   return (
     <div className="w-40 h-64 md:w-96 md:h-auto flex flex-col justify-start items-start gap-3.5 md:gap-5">
       <div className="w-full h-40 px-4 py-5 md:h-96 md:px-28 md:py-20 relative bg-neutral-100 rounded-sm shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
-        <img
+        <Image
           data-type="cola"
           className="w-14 h-24 md:w-36 md:h-60"
           src={typeof imageUrl === "string" ? imageUrl : imageUrl.src}
           alt={name}
+          width={144}
+          height={240}
+          style={{ width: "auto", height: "auto" }}
         />
       </div>
       <div className="w-32 md:w-auto flex-1 flex flex-col justify-start items-start gap-2">

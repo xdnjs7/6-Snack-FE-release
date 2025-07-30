@@ -1,8 +1,9 @@
 import React from "react";
 import OrderPageContent from "./_components/OrderPageContent";
 
-export default function OrderPage({ searchParams }: { searchParams: { cartItemId?: string } }) {
-  const cartItemId = searchParams.cartItemId;
+export default async function OrderPage({ searchParams }: { searchParams: Promise<{ cartItemId?: string }> }) {
+  const params = await searchParams;
+  const cartItemId = params.cartItemId;
 
   return <OrderPageContent cartItemId={cartItemId} />;
 }

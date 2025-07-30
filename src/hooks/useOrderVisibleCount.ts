@@ -8,7 +8,8 @@ export default function useOrderVisibleCount() {
   const visibleCount = useMemo(() => {
     if (isDesktop) return 6;
     if (isTablet) return 8;
-    return 3; 
+    if (isMobile) return 3;
+    return 3;
   }, [isMobile, isTablet, isDesktop]);
 
   return { visibleCount };
