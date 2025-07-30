@@ -1,11 +1,6 @@
 import React, { FC, useRef } from "react";
 import XIconSvg from "@/components/svg/XIconSvg";
 
-/**
- * @rakaso598
- * 1. export default function으로 변경
- */
-
 type TConfirmationModalProps = {
   isOpen: boolean;
   productName: string;
@@ -17,7 +12,7 @@ type TConfirmationModalProps = {
   cancelButtonText?: string;
 };
 
-const ConfirmationModal: FC<TConfirmationModalProps> = ({
+export default function ConfirmationModal({
   isOpen,
   productName,
   onCancel,
@@ -26,7 +21,7 @@ const ConfirmationModal: FC<TConfirmationModalProps> = ({
   modalDescription = "삭제 후에는 복구할 수 없습니다.",
   confirmButtonText = "상품 삭제",
   cancelButtonText = "더 생각해볼게요",
-}) => {
+}: TConfirmationModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   if (!isOpen) return null;
@@ -63,6 +58,4 @@ const ConfirmationModal: FC<TConfirmationModalProps> = ({
       </div>
     </div>
   );
-};
-
-export default ConfirmationModal;
+}
