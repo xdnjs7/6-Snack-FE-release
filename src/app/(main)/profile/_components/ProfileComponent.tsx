@@ -9,16 +9,6 @@ import { TButtonType } from "@/types/button.types";
 import { Role } from "@/types/InviteMemberModal.types";
 import { useEffect, useState } from "react";
 
-/**
- * @wooju01
- * 1. 하나의 컴포넌트 안에서 너무 많은 useState가 작성되어 있는 것 같습니다. 상태 관리에 있어서 어려움이 생기거나, 의도치 않은 리렌더링이 발생할 가능성이 높아지는 것 같아서, 컴포넌트를 분리하면 좋을 것 같습니다.
- * 2. 현재 로그인, 회원가입에서 리액트 훅 폼과 zod를 사용해서 폼 상태 관리 및 유효성 검사를 진행중이기 때문에 함께 통일성을 맞춰주시면 좋을 것 같습니다. 마이그레이션 요청드립니다(저한테 물어보셔도 돼요!)
- * 3. useEffect로 유저 정보를 가져오고 계신 것 같은데, 이미 useAuth가 있기 때문에 불러오셔서 유저 정보 가져오시면 좋을 것 같습니다.(저한테 문의하셔도 좋습니다.)
- * 4. getRoleLabel util 함수로 따로 만들어서, 사용하면 좋을 것 같습니다. 만드시게 되면 다른 분들 사용하시는 분들 물어보셔서 함께 재사용하시면 좋을 것 같습니다.
- * 5. 오류 해결
- * 6. useQuery, useMutation 사용하기
- */
-
 export default function ProfileComponent() {
   const [userId, setUserId] = useState("");
   const [company, setCompany] = useState("");
