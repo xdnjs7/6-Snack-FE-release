@@ -61,7 +61,7 @@ export default function InviteSignUpPage() {
     const fetchInviteInfo = async () => {
       try {
         setIsLoading(true);
-        const data: TInviteInfo = await getInviteApi(inviteId);
+        const data = (await getInviteApi(inviteId)) as TInviteInfo;
         setInviteInfo(data);
       } catch (error) {
         setInviteError(error instanceof Error ? error.message : "초대 링크가 유효하지 않습니다.");
@@ -83,7 +83,7 @@ export default function InviteSignUpPage() {
     try {
       await signUpWithInviteApi(inviteId, data.password, data.passwordConfirm);
       router.push("/login");
-    } catch (error) {
+    } catch {
       setFormError("root", { message: "회원가입에 실패했습니다. 다시 시도해주세요." });
     }
   };

@@ -10,7 +10,8 @@ import Toast from "@/components/common/Toast";
 import { formatDate } from "@/lib/utils/formatDate.util";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 import { useOrderStatusUpdate } from "@/hooks/useOrderStatusUpdate";
-import { showOrderActionModal } from "../_components/OrderActionModal";
+import { useModal } from "@/providers/ModalProvider";
+import OrderActionModal from "../_components/OrderActionModal";
 
 export default function OrderManageDetailPage() {
   const params = useParams();
@@ -33,6 +34,7 @@ export default function OrderManageDetailPage() {
   const { data: orderRequest, isLoading, error } = useOrderDetail(orderId);
   // 주문 상태 승인/거절
   const updateOrderMutation = useOrderStatusUpdate();
+  const { openModal } = useModal();
 
   // 토스트 함수
   const showToast = (text: string, variant: "success" | "error" = "success") => {
@@ -53,19 +55,21 @@ export default function OrderManageDetailPage() {
         status: "APPROVED",
       });
 
-      showOrderActionModal({
-        modalTitle: "승인 완료",
-        modalDescription: "승인이 완료되었어요!<br />구매 내역을 통해 배송 현황을 확인해보세요",
-        confirmButtonText: "홈으로",
-        cancelButtonText: "구매 내역 보기",
-        onConfirm: () => {
-          router.push("/products");
-        },
-        onCancel: () => {
-          router.push("/order-history");
-        },
-      });
-    } catch (error) {
+      openModal(
+        <OrderActionModal
+          modalTitle="승인 완료"
+          modalDescription="승인이 완료되었어요!<br />구매 내역을 통해 배송 현황을 확인해보세요"
+          confirmButtonText="홈으로"
+          cancelButtonText="구매 내역 보기"
+          onConfirm={() => {
+            router.push("/products");
+          }}
+          onCancel={() => {
+            router.push("/order-history");
+          }}
+        />,
+      );
+    } catch {
       showToast("승인 처리에 실패했습니다.", "error");
     }
   };
@@ -77,19 +81,21 @@ export default function OrderManageDetailPage() {
         status: "REJECTED",
       });
 
-      showOrderActionModal({
-        modalTitle: "요청 반려",
-        modalDescription: "요청이 반려되었어요<br />목록에서 다른 요청을 확인해보세요",
-        confirmButtonText: "홈으로",
-        cancelButtonText: "구매 요청 내역 보기",
-        onConfirm: () => {
-          router.push("/products");
-        },
-        onCancel: () => {
-          router.push("/order-manage");
-        },
-      });
-    } catch (error) {
+      openModal(
+        <OrderActionModal
+          modalTitle="요청 반려"
+          modalDescription="요청이 반려되었어요<br />목록에서 다른 요청을 확인해보세요"
+          confirmButtonText="홈으로"
+          cancelButtonText="구매 요청 내역 보기"
+          onConfirm={() => {
+            router.push("/products");
+          }}
+          onCancel={() => {
+            router.push("/order-manage");
+          }}
+        />,
+      );
+    } catch {
       showToast("반려 처리에 실패했습니다.", "error");
     }
   };

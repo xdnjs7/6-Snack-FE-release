@@ -10,15 +10,15 @@ type TOrderActionModalProps = {
   onCancel?: () => void;
 };
 
-export const showOrderActionModal = ({
+export default function OrderActionModal({
   modalTitle,
   modalDescription,
   confirmButtonText,
   cancelButtonText,
   onConfirm,
   onCancel,
-}: TOrderActionModalProps) => {
-  const { openModal, closeModal } = useModal();
+}: TOrderActionModalProps) {
+  const { closeModal } = useModal();
 
   const handleConfirm = () => {
     onConfirm();
@@ -32,7 +32,7 @@ export const showOrderActionModal = ({
     closeModal();
   };
 
-  const modalComponent = (
+  return (
     <div className="fixed inset-0 z-50 flex items-center backdrop-blur-xs justify-center font-suit">
       <div className="bg-white rounded-md p-6 w-full max-w-md mx-4 sm:mx-0">
         {/* Title */}
@@ -75,6 +75,4 @@ export const showOrderActionModal = ({
       </div>
     </div>
   );
-
-  openModal(modalComponent);
-};
+}
