@@ -1,18 +1,12 @@
 import React from "react";
 import clsx from "clsx";
 
-/**
- * @rakaso598
- * 1. type으로 변경
- * 2. rfc 스니펫 사용
- */
-
-interface FloatingLabelInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+type TFloatingLabelInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   error?: string;
-}
+};
 
-const FloatingLabelInput = React.forwardRef<HTMLInputElement, FloatingLabelInputProps>(
+const FloatingLabelInput = React.forwardRef<HTMLInputElement, TFloatingLabelInputProps>(
   ({ label, error, className, ...props }, ref) => {
     return (
       <div className="w-full max-w-[480px] flex flex-col">

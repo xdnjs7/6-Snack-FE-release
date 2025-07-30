@@ -1,4 +1,4 @@
-import React, { FormEvent, ChangeEvent, useEffect } from "react";
+import React, { ChangeEvent, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Input from "./Input";
 import Dropdown from "./DropDown";
@@ -6,12 +6,6 @@ import photoIcon from "@/assets/icons/ic_photo.svg";
 import Image from "next/image";
 import { CATEGORIES } from "../../lib/utils/categories.util";
 import { useCreateProduct } from "@/hooks/useProductMutations";
-
-/**
- * @rakaso598
- * 1. 타입 앞에 T
- * 2. 오류 해결
- */
 
 // 상품 데이터를 위한 타입 정의
 export type TProductData = {
@@ -24,7 +18,7 @@ export type TProductData = {
 };
 
 // 폼 데이터 타입 정의
-type FormData = {
+type TFormData = {
   productName: string;
   price: string;
   productLink: string;
@@ -51,7 +45,7 @@ export default function ProductRegistrationForm({
     watch,
     formState: { errors },
     reset,
-  } = useForm<FormData>({
+  } = useForm<TFormData>({
     defaultValues: {
       productName: "",
       price: "",
@@ -104,7 +98,7 @@ export default function ProductRegistrationForm({
     setValue("subCategory", value);
   };
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: TFormData) => {
     // 필수 필드 검증
     if (!imageFile) {
       alert("이미지를 업로드해주세요!");
@@ -172,8 +166,8 @@ export default function ProductRegistrationForm({
   const selectedParentCategory = watchedValues.mainCategory;
   const childrenCategoryOptions = selectedParentCategory
     ? CATEGORIES.childrenCategory[selectedParentCategory as keyof typeof CATEGORIES.childrenCategory]?.map(
-        (category) => category.name,
-      ) || []
+      (category) => category.name,
+    ) || []
     : [];
 
   return (
@@ -252,6 +246,7 @@ export default function ProductRegistrationForm({
             {...register("productName", { required: "상품명을 입력해주세요" })}
             placeholder="상품명을 입력해주세요"
             label="상품명"
+            // @ts-expect-error Input 컴포넌트에 hasValue prop이 타입에 정의되어 있지 않음
             hasValue={!!watchedValues.productName}
           />
           {errors.productName && <p className="text-red-500 text-sm mt-1">{errors.productName.message}</p>}
@@ -270,6 +265,7 @@ export default function ProductRegistrationForm({
             })}
             placeholder="가격을 입력해주세요"
             label="가격"
+            // @ts-expect-error Input 컴포넌트에 hasValue prop이 타입에 정의되어 있지 않음
             hasValue={!!watchedValues.price}
           />
           {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>}
@@ -282,12 +278,13 @@ export default function ProductRegistrationForm({
             {...register("productLink", {
               required: "제품 링크를 입력해주세요",
               pattern: {
-                value: /^https?:\/\/.+/,
+                value: /^https?:\/\/.+/, // 올바른 URL
                 message: "올바른 URL을 입력해주세요",
               },
             })}
             placeholder="제품 링크를 입력해주세요"
             label="제품 링크"
+            // @ts-expect-error Input 컴포넌트에 hasValue prop이 타입에 정의되어 있지 않음
             hasValue={!!watchedValues.productLink}
           />
           {errors.productLink && <p className="text-red-500 text-sm mt-1">{errors.productLink.message}</p>}

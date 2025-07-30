@@ -4,28 +4,9 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { getUserApi } from "@/lib/api/user.api";
 import { loginApi, logoutApi, registerApi } from "@/lib/api/auth.api";
 import { usePathname } from "next/navigation";
+import { TUser, TAuthContextType } from "@/types/auth.types";
 
-/**
- * @rakaso598
- * 1. 타입 앞에 T 붙이기
- * 2. export 해서 사용하는 타입이라면 types 파일 만들어서 불러오기
- */
-
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  role?: string;
-};
-
-type AuthContextType = {
-  user: User | null;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
-};
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<TAuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -36,7 +17,7 @@ export const useAuth = () => {
 };
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<TUser | null>(null);
   const pathname = usePathname();
 
   const getUser = async () => {
@@ -48,8 +29,8 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     }
   };
 
-  const register = async (name: string, email: string, password: string) => {
-    await registerApi(name, email, password);
+  const register = async () => {
+    await registerApi();
   };
 
   const login = async (email: string, password: string) => {

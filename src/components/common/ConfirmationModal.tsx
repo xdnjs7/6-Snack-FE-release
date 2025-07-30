@@ -1,9 +1,4 @@
-import React, { FC } from "react";
-
-/**
- * @rakaso598
- * 1. export default function으로 변경
- */
+import React from "react";
 
 type TConfirmationModalProps = {
   isOpen: boolean; // 모달을 열고 닫는 상태
@@ -18,17 +13,17 @@ type TConfirmationModalProps = {
   cancelButtonText?: string; // 취소 버튼 텍스트 (선택 사항, 기본값 제공)
 };
 
-const ConfirmationModal: FC<TConfirmationModalProps> = ({
+// 변경: export default function으로 변경
+export default function ConfirmationModal({
   isOpen,
   productName,
   onCancel,
   onDelete,
-  // props에 기본값 할당
   modalTitle = "상품을 삭제하시겠어요?",
   modalDescription = "삭제 후에는 복구할 수 없습니다.",
   confirmButtonText = "상품 삭제",
   cancelButtonText = "더 생각해볼게요",
-}) => {
+}: TConfirmationModalProps) {
   // isOpen이 false이면 모달을 렌더링하지 않음
   if (!isOpen) {
     return null;
@@ -83,6 +78,4 @@ const ConfirmationModal: FC<TConfirmationModalProps> = ({
       </div>
     </div>
   );
-};
-
-export default ConfirmationModal;
+}
