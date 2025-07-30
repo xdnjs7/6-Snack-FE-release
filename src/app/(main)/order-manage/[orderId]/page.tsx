@@ -10,6 +10,7 @@ import Toast from "@/components/common/Toast";
 import { formatDate } from "@/lib/utils/formatDate.util";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 import { useOrderStatusUpdate } from "@/hooks/useOrderStatusUpdate";
+import { showOrderActionModal } from "../_components/OrderActionModal";
 
 export default function OrderManageDetailPage() {
   const params = useParams();
@@ -51,13 +52,21 @@ export default function OrderManageDetailPage() {
         orderId: orderId,
         status: "APPROVED",
       });
-      // TODO: 토스트 달기
-      // showToast("구매 요청이 승인되었습니다.", "success");
-      // setTimeout(() => {
-      //   router.push("/order-manage");
-      // }, 2000);
+
+      showOrderActionModal({
+        modalTitle: "승인 완료",
+        modalDescription: "승인이 완료되었어요!<br />구매 내역을 통해 배송 현황을 확인해보세요",
+        confirmButtonText: "홈으로",
+        cancelButtonText: "구매 내역 보기",
+        onConfirm: () => {
+          router.push("/products");
+        },
+        onCancel: () => {
+          router.push("/order-history");
+        },
+      });
     } catch (error) {
-      // showToast("승인 처리에 실패했습니다.", "error");
+      showToast("승인 처리에 실패했습니다.", "error");
     }
   };
 
@@ -67,12 +76,21 @@ export default function OrderManageDetailPage() {
         orderId: orderId,
         status: "REJECTED",
       });
-      // showToast("구매 요청이 반려되었습니다.", "success");
-      // setTimeout(() => {
-      //   router.push("/order-manage");
-      // }, 2000);
+
+      showOrderActionModal({
+        modalTitle: "요청 반려",
+        modalDescription: "요청이 반려되었어요<br />목록에서 다른 요청을 확인해보세요",
+        confirmButtonText: "홈으로",
+        cancelButtonText: "구매 요청 내역 보기",
+        onConfirm: () => {
+          router.push("/products");
+        },
+        onCancel: () => {
+          router.push("/order-manage");
+        },
+      });
     } catch (error) {
-      // showToast("반려 처리에 실패했습니다.", "error");
+      showToast("반려 처리에 실패했습니다.", "error");
     }
   };
 
