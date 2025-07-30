@@ -4,23 +4,7 @@ import React, { useState } from "react";
 import clsx from "clsx";
 import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
 import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
-
-/**
- * @rakaso598
- * 1. 타입 앞에 T
- * 2. export 타입은 types 파일로 정의하기
- */
-
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  label?: string;
-  error?: string;
-  type?: "text" | "email" | "password" | "number" | "tel" | "url";
-  showPasswordToggle?: boolean;
-  containerClassName?: string;
-  isCompanyName?: boolean;
-  isBizNumber?: boolean;
-  inputRef?: React.Ref<HTMLInputElement>;
-};
+import { TInputProps } from "@/types/input.types";
 
 export default function Input({
   label,
@@ -34,7 +18,7 @@ export default function Input({
   isCompanyName = false,
   isBizNumber = false,
   ...props
-}: InputProps & { inputRef?: React.Ref<HTMLInputElement>; ref?: React.Ref<HTMLInputElement> }) {
+}: TInputProps & { inputRef?: React.Ref<HTMLInputElement>; ref?: React.Ref<HTMLInputElement> }) {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [internalValue, setInternalValue] = useState<string>("");
 
@@ -71,6 +55,8 @@ export default function Input({
     if (!isControlled) {
       setInternalValue(newValue);
     }
+
+    // react-hook-form의 onChange가 제대로 호출되도록
     props.onChange?.(e);
   };
 
@@ -104,7 +90,7 @@ export default function Input({
         <div
           className={clsx(
             type === "password" && showPasswordToggle
-              ? "flex justify-between items-end gap-[4px]"
+              ? "flex justify-between  gap-[4px]"
               : "flex flex-col justify-center",
             hasValue && type === "password" && showPasswordToggle
               ? "items-end"
@@ -116,10 +102,7 @@ export default function Input({
           {/* Input */}
           <input
             {...props}
-            ref={
-              (props.inputRef ?? // explicit prop
-                (props as any).ref) as React.Ref<HTMLInputElement>
-            }
+            ref={(props.inputRef as React.Ref<HTMLInputElement>) ?? props.ref ?? undefined}
             type={actualType}
             value={inputValue}
             onChange={handleChange}
