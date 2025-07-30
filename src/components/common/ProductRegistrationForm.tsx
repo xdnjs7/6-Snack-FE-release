@@ -189,12 +189,10 @@ export default function ProductRegistrationForm({
           </label>
         ) : (
           <>
-            <Image
+            <img
               src={imagePreviewUrl}
               alt="Product Preview"
-              width={140}
-              height={140}
-              className="object-contain border border-primary-300 rounded-[2px]"
+              className="w-[140px] h-[140px] object-contain border border-primary-300 rounded-[2px]"
             />
             <button
               onClick={handleImageRemove}
