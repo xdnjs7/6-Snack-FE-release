@@ -3,12 +3,9 @@ import { getAdminOrders } from '@/lib/api/order.api';
 
 interface UseAdminOrdersParams {
   status: 'pending' | 'approved';
-  offset?: number;
-  limit?: number;
-  orderBy?: string;
 }
 
-export const useAdminOrders = ({ status, offset = 0, limit = 100, orderBy = 'latest' }: UseAdminOrdersParams) => {
+export const useAdminOrders = ({ status }: UseAdminOrdersParams) => {
   return useQuery({
     queryKey: ['adminOrders', status], // offset, limit, orderBy 제거하여 캐시 활용
     queryFn: () => getAdminOrders({ status, offset: 0, limit: 100, orderBy: 'latest' }), // 모든 데이터를 한 번에 가져옴

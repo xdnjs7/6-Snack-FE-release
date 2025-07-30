@@ -45,7 +45,7 @@ export const cookieFetch = async <T>(path: string, options: RequestInit = {}): P
       console.log("🔄 액세스 토큰 갱신 시도");
       await refreshAccessToken();
       response = await request();
-    } catch (error) {
+    } catch {
       console.error("❌ 액세스 토큰 재발급 실패");
       logout();
       throw new Error("세션이 만료되었습니다. 다시 로그인해주세요.");
