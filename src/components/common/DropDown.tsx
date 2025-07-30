@@ -7,11 +7,6 @@ import { twMerge } from "tailwind-merge";
 import ChevronUpIcon from "@/assets/icons/ic_chevron_up.svg";
 import ChevronDownIcon from "@/assets/icons/ic_chevron_down.svg";
 
-/**
- * @JJOBO
- * 1. export default function으로 변경
- */
-
 type TDropdownProps = {
   options?: string[];
   placeholder?: string;
@@ -21,7 +16,7 @@ type TDropdownProps = {
 
 const defaultOptions = ["최신순", "판매순", "낮은 가격순", "높은 가격순"];
 
-const Dropdown = ({ options = [], placeholder = "정렬", onChange, className }: TDropdownProps) => {
+export default function Dropdown({ options = [], placeholder = "정렬", onChange, className }: TDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [sort, setSort] = useState<string>(placeholder);
 
@@ -69,6 +64,4 @@ const Dropdown = ({ options = [], placeholder = "정렬", onChange, className }:
       )}
     </div>
   );
-};
-
-export default Dropdown;
+}

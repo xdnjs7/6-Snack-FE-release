@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ToastVariant } from "@/types/toast.types";
+import { TToastVariant } from "@/types/toast.types";
 
 import exclamationIc from "@/assets/icons/ic_exclamation_mark_red.svg";
 import checkIc from "@/assets/icons/ic_check_white.svg";
@@ -13,7 +13,7 @@ type TToastProps = {
   text: string | React.ReactNode;
   budget?: number;
   onClose?: () => void;
-  variant?: ToastVariant;
+  variant?: TToastVariant;
   isVisible?: boolean;
   className?: string;
 };

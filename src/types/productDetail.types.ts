@@ -1,4 +1,4 @@
-export type Product = {
+export type TProduct = {
   id: number;
   name: string;
   price: number;
@@ -14,8 +14,3 @@ export type Product = {
   };
   creatorId: string;
 };
-
-/**
- * @JJOBO
- * 1. 앞에 T 붙이기
- */
