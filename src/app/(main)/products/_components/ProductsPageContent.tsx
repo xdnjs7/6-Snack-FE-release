@@ -3,7 +3,7 @@
 import CategoryNavigation from "@/components/common/ProductDetail/CategoryNavigation";
 import SubCategoryItem from "@/components/common/SubCategoryItem";
 import ProductGrid from "@/components/common/ProductGrid";
-import { CATEGORIES } from "@/lib/utils/categories.util";
+import { CATEGORIES } from "@/lib/constants/categories";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Button from "@/components/ui/Button";
@@ -108,10 +108,7 @@ export default function ProductsPageContent() {
         <div className="flex flex-col sm:flex-row sm:justify-between">
           {/* 모바일, 태블릿, 데스크탑에서 전부 보이는 상위/하위 카테고리 바 */}
 
-          <CategoryNavigation
-            parentCategory={selectedCategory?.parent}
-            childCategory={selectedCategory?.child}
-          />
+          <CategoryNavigation parentCategory={selectedCategory?.parent} childCategory={selectedCategory?.child} />
           {/* 정렬, 상품등록 버튼 wrapper */}
           <div className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5 border-b border-primary-100 sm:border-0">
             <Dropdown options={sortOptions.map((option) => option.label)} onChange={handleSortChange} />

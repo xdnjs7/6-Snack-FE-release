@@ -4,7 +4,7 @@ import Input from "./Input";
 import Dropdown from "./DropDown";
 import photoIcon from "@/assets/icons/ic_photo.svg";
 import Image from "next/image";
-import { CATEGORIES } from "../../lib/utils/categories.util";
+import { CATEGORIES } from "../../lib/constants/categories";
 import { useCreateProduct } from "@/hooks/useProductMutations";
 
 // 상품 데이터를 위한 타입 정의
@@ -166,8 +166,8 @@ export default function ProductRegistrationForm({
   const selectedParentCategory = watchedValues.mainCategory;
   const childrenCategoryOptions = selectedParentCategory
     ? CATEGORIES.childrenCategory[selectedParentCategory as keyof typeof CATEGORIES.childrenCategory]?.map(
-      (category) => category.name,
-    ) || []
+        (category) => category.name,
+      ) || []
     : [];
 
   return (

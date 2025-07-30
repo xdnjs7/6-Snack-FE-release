@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import ArrowIconSvg from "../svg/ArrowIconSvg";
 import { TCategoryItem } from "@/types/subCategoryMenu.types";
 import { useCategoryStore } from "@/stores/categoryStore";
-import { CATEGORIES } from "@/lib/utils/categories.util";
+import { CATEGORIES } from "@/lib/constants/categories";
 
 export default function AuthenticatedHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
