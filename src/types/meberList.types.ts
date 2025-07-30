@@ -6,8 +6,3 @@ export type TMemberItem = {
   email: string;
   role: UserRole;
 };
-
-/**
- * @JJOBO
- * 1. 앞에 T 붙이기
- */

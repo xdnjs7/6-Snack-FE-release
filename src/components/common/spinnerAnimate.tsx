@@ -3,13 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-/**
- * @JJOBO
- * 1. 파일 이름과, 컴포넌트 이름 동기화
- * 2. 파일 이름 파스칼 케이스로 변경
- */
-
-export default function DogSpinner() {
+export default function SpinnerAnimate() {
   const [frame, setFrame] = useState(1);
 
   useEffect(() => {
