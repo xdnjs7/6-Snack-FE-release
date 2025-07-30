@@ -2,13 +2,9 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
-/**
- * @Jam1eL1
- * 1. 타입 앞에 T 붙이기
- */
-
-type Product = {
+type TProduct = {
   id: number;
   categoryId: number;
   creatorId: string;
@@ -34,15 +30,17 @@ type Product = {
 };
 
 type ProductGridProps = {
-  products: Product[];
+  products: TProduct[];
   currentCategoryId?: number; // 현재 선택된 카테고리 ID 추가
 };
 
+
 export default function ProductGrid({ products, currentCategoryId }: ProductGridProps) {
+  
   if (!products || products.length === 0) {
     return <div className="flex justify-center items-center py-16 text-primary-500">상품이 없습니다.</div>;
   }
-
+  
   return (
     <div className="min-w-[] grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-3.5 sm:gap-y-7.5 md:grid-cols-3 md:gap-x-10 md:gap-y-15 justify-items-center">
       {products.map((product) => {
@@ -64,9 +62,8 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
             </div>
             <div className="flex flex-col justify-start items-start gap-2 w-full">
               <div className="justify-start text-stone-900 text-lg font-normal">{product.name}</div>
-              {/* 상품 팔린갯수 api 연동되면 가져와야함, 변경예정 */}
               <div className="justify-start text-stone-900 text-lg font-extrabold">
-                {product.price.toLocaleString("ko-KR")}원
+                {formatPrice(product.price)}원
               </div>
               <div className="justify-center text-blue-500 text-sm font-bold ">{product.cumulativeSales}회 구매</div>
             </div>
