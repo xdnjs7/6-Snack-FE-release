@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 import Image from "next/image";
 import Toast from "@/components/common/Toast";
 import { formatDate } from "@/lib/utils/formatDate.util";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 import useOrderStatusUpdate from "@/hooks/useOrderStatusUpdate";
 
 export default function OrderManageDetailPage() {
@@ -73,12 +74,6 @@ export default function OrderManageDetailPage() {
     } catch (error) {
       showToast("반려 처리에 실패했습니다.", "error");
     }
-  };
-
-  // TODO 유틸함수로 분리예정
-  const formatPrice = (price: number | undefined | null): string => {
-    if (price === undefined || price === null) return "0";
-    return price.toLocaleString("ko-KR");
   };
 
   if (isLoading) {
