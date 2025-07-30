@@ -59,12 +59,12 @@ export default function OrderManageDetailPage() {
         <OrderActionModal
           modalTitle="승인 완료"
           modalDescription="승인이 완료되었어요!<br />구매 내역을 통해 배송 현황을 확인해보세요"
-          confirmButtonText="홈으로"
-          cancelButtonText="구매 내역 보기"
-          onConfirm={() => {
+          leftButtonText="홈으로"
+          rightButtonText="구매 내역 보기"
+          onLeftClick={() => {
             router.push("/products");
           }}
-          onCancel={() => {
+          onRightClick={() => {
             router.push("/order-history");
           }}
         />,
@@ -85,13 +85,13 @@ export default function OrderManageDetailPage() {
         <OrderActionModal
           modalTitle="요청 반려"
           modalDescription="요청이 반려되었어요<br />목록에서 다른 요청을 확인해보세요"
-          confirmButtonText="홈으로"
-          cancelButtonText="구매 요청 내역 보기"
-          onConfirm={() => {
-            router.push("/products");
-          }}
-          onCancel={() => {
+          leftButtonText="홈으로"
+          rightButtonText="구매 요청 내역 보기"
+          onLeftClick={() => {
             router.push("/order-manage");
+          }}
+          onRightClick={() => {
+            router.push("/products");
           }}
         />,
       );
