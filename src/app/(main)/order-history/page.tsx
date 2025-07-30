@@ -6,6 +6,7 @@ import Dropdown from "@/components/common/DropDown";
 import { useOrderHistory } from "@/hooks/useOrderHistory";
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 // Budget 데이터 타입 정의
 type TBudgetData = {
@@ -18,6 +19,8 @@ type TBudgetData = {
 }
 
 const OrderHistoryPage = () => {
+  const router = useRouter();
+  
   // 공통 로직 훅 사용
   const {
     budgetData,
@@ -32,6 +35,13 @@ const OrderHistoryPage = () => {
 
   // budgetData 타입 안전성을 위한 타입 가드
   const safeBudgetData = budgetData as TBudgetData | undefined;
+
+  // 상품명 클릭 시 상세 페이지로 이동하는 함수
+  const handleProductClick = (orderId: string) => {
+    if (orderId) {
+      router.push(`/order-history/${orderId}?status=approved`);
+    }
+  };
 
   return (
     <>
@@ -180,9 +190,12 @@ const OrderHistoryPage = () => {
               <div key={item.id} className="self-stretch pb-2.5 flex flex-col justify-start items-start">
                 <div className="self-stretch py-3.5 border-b border-zinc-400 inline-flex justify-between items-center">
                   <div className="flex justify-start items-center gap-2">
-                    <div className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT']">
+                    <button
+                      onClick={() => handleProductClick(item.id)}
+                      className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT'] cursor-pointer hover:text-blue-600 transition-colors"
+                    >
                       {item.item}
-                    </div>
+                    </button>
                     <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
                       총수량 4개
                     </div>
@@ -406,9 +419,12 @@ const OrderHistoryPage = () => {
               <div key={item.id} className="self-stretch pb-5 flex flex-col justify-start items-start">
                 <div className="self-stretch py-3.5 border-b border-zinc-400 inline-flex justify-between items-center">
                   <div className="flex justify-start items-center gap-2">
-                    <div className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT']">
+                    <button
+                      onClick={() => handleProductClick(item.id)}
+                      className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT'] cursor-pointer hover:text-blue-600 transition-colors"
+                    >
                       {item.item}
-                    </div>
+                    </button>
                     <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
                       총수량 4개
                     </div>
@@ -706,9 +722,12 @@ const OrderHistoryPage = () => {
                       )}
                     </div>
                     <div className="w-44 inline-flex flex-col justify-center items-start gap-1">
-                      <div className="justify-start text-neutral-800 text-base font-normal font-['SUIT']">
+                      <button
+                        onClick={() => handleProductClick(item.id)}
+                        className="justify-start text-neutral-800 text-base font-normal font-['SUIT'] cursor-pointer hover:text-blue-600 transition-colors"
+                      >
                         {item.item}
-                      </div>
+                      </button>
                       <div className="justify-start text-zinc-500 text-sm font-normal font-['SUIT']">총 수량 4개</div>
                     </div>
                     <div className="w-32 justify-start text-neutral-800 text-base font-normal font-['SUIT']">
