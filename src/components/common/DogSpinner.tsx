@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-export default function SpinnerAnimate() {
+export default function DogSpinner() {
   const [frame, setFrame] = useState(1);
 
   useEffect(() => {

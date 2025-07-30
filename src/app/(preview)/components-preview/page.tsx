@@ -35,7 +35,7 @@ import Header from "@/components/layout/Header";
 import CartItem from "@/app/(main)/cart/_components/CartItem";
 import OrderItem from "@/app/(main)/cart/order/_components/OrderItem";
 import { categories, order, orderRequests, products } from "./MockData";
-import SpinnerAnimate from "@/components/common/SpinnerAnimate";
+import DogSpinner from "@/components/common/DogSpinner";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -98,7 +98,7 @@ export default function ComponentsPreviewPage() {
         <h2 className="text-lg font-semibold bg-blue-100">🐶 Spinner 컴포넌트</h2>
 
         <div className="flex flex-col items-center">
-          <SpinnerAnimate />
+          <DogSpinner />
           <p className="text-black text-sm font-medium animate-pulse -mt-7">Loading...</p>
         </div>
 
