@@ -75,13 +75,13 @@ export default function Input(
     (isPasswordVisible ? "text" : "password") : type;
 
   return (
-    <div className={clsx("flex flex-col w-full max-w-[480px] gap-[4px]", containerClassName)}>
+    <div className={clsx("flex flex-col w-full gap-[4px]", containerClassName)}>
       <div
         className={clsx(
           error ? "border-error-500" : "border-primary-600",
           hasValue ? "justify-end" : "justify-center",
           type === "password" && showPasswordToggle ? "justify-between" : "",
-          "relative flex flex-col h-[56px] py-[8px] pr-[24px] px-[4px] gap-[5px] border-b-1",
+          "relative flex flex-col h-[56px] py-[8px] px-[4px] gap-[5px] border-b-1",
         )}
       >
         {/* Label */}

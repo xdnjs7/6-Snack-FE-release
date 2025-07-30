@@ -32,8 +32,8 @@ export default function ProfileComponent() {
     confirmPassword.length > 0 && confirmPassword.length < 8
       ? "비밀번호는 8자 이상이어야 합니다."
       : password !== confirmPassword && confirmPassword.length > 0
-      ? "비밀번호가 일치하지 않습니다."
-      : "";
+        ? "비밀번호가 일치하지 않습니다."
+        : "";
 
   useEffect(() => {
     (async () => {
@@ -65,7 +65,6 @@ export default function ProfileComponent() {
   }
 
   const handleSubmit = async () => {
-    // isFormValid가 아니면 아무 동작도 하지 않음 (alert 제거)
     if (!isFormValid) return;
     try {
       setIsSubmitting(true);
@@ -103,7 +102,7 @@ export default function ProfileComponent() {
           <div className="self-stretch flex flex-col justify-start items-start gap-8">
             <div className="self-stretch flex flex-col justify-start items-start gap-5">
               {/* 기업명 */}
-            <div className="self-stretch flex flex-col gap-1">
+              <div className="self-stretch flex flex-col gap-1">
                 <label className="text-primary-600 text-xs">기업명</label>
                 <input
                   className={`w-full border-b py-2 text-base outline-none ${
@@ -147,12 +146,8 @@ export default function ProfileComponent() {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                hasValue={!!password}
-                isPassword
-                onToggleVisibility={() => setShowPassword((prev) => !prev)}
-                VisibilityOnIcon={VisibilityOnIconSvg}
-                VisibilityOffIcon={VisibilityOffIconSvg}
-                errorMessage={passwordError}
+                showPasswordToggle={true}
+                error={passwordError}
                 id="password"
                 autoComplete="new-password"
                 placeholder="비밀번호를 입력하세요"
@@ -164,12 +159,8 @@ export default function ProfileComponent() {
                 type={showCheckPw ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                hasValue={!!confirmPassword}
-                isPassword
-                onToggleVisibility={() => setShowCheckPw((prev) => !prev)}
-                VisibilityOnIcon={VisibilityOnIconSvg}
-                VisibilityOffIcon={VisibilityOffIconSvg}
-                errorMessage={confirmPasswordError}
+                showPasswordToggle={true}
+                error={confirmPasswordError}
                 id="confirmPassword"
                 autoComplete="new-password"
                 placeholder="비밀번호 확인을 입력하세요"
@@ -181,7 +172,7 @@ export default function ProfileComponent() {
           <Button
             type={buttonType}
             label={isSubmitting ? "변경 중..." : "변경하기"}
-            className="self-stretch h-16 p-4"
+            className={`self-stretch h-16 p-4 ${!isFormValid ? "bg-primary-100 text-primary-300" : ""}`}
             onClick={handleSubmit}
             disabled={!isFormValid || isSubmitting}
           />
