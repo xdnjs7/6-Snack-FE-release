@@ -1,19 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { getMyOrderDetail, TMyOrderDetail, TOrderedItem } from '@/lib/api/orderHistory.api';
 import { cookieFetch } from '@/lib/api/fetchClient.api';
 import ArrowIconSvg from '@/components/svg/ArrowIconSvg';
-import Button from '@/components/ui/Button';
 
 // 타입 정의
-type TOrderStatus = 'pending' | 'approved' | 'rejected' | 'canceled' | null;
-type TArrowDirection = 'up' | 'down' | 'left' | 'right';
-
-type TMyOrderDetailPageProps = {
-  // 현재는 props가 없지만 향후 확장성을 위해 타입 정의
-};
+type TMyOrderDetailPageProps = Record<string, never>;
 
 type TStatusTextMap = {
   [key: string]: string;
@@ -22,9 +16,7 @@ type TStatusTextMap = {
 export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
   const params = useParams();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const orderId: string = params.orderId as string;
-  const status: TOrderStatus = searchParams.get('status') as TOrderStatus;
 
   const [orderData, setOrderData] = useState<TMyOrderDetail | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -187,7 +179,7 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
               <div className="self-stretch px-3 sm:px-4 md:px-5 pt-3 sm:pt-4 md:pt-5 pb-5 sm:pb-6 md:pb-7 bg-white rounded-sm shadow-[0px_0px_6px_0px_rgba(0,0,0,0.0)] sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline sm:outline-1 sm:outline-neutral-200 flex flex-col justify-start items-start gap-4 sm:gap-5">
                 {/* Items List */}
                 <div className="self-stretch flex flex-col justify-start items-start">
-                  {orderData.orderedItems?.map((item: TOrderedItem, index: number) => (
+                  {orderData.orderedItems?.map((item: TOrderedItem) => (
                     <div 
                       key={item.id} 
                       className="self-stretch py-3 sm:py-4 md:py-5 md:pr-5 border-b border-neutral-200 inline-flex justify-between items-center"
@@ -195,6 +187,7 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
                       <div className="flex justify-start items-center gap-3 sm:gap-4 md:gap-5">
                         <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-36 lg:h-36 bg-[--color-white] shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
                           {item.receipt.imageUrl && (
+                            // eslint-disable-next-line @next/next/no-img-element
                             <img 
                               src={item.receipt.imageUrl} 
                               alt={item.receipt.productName}

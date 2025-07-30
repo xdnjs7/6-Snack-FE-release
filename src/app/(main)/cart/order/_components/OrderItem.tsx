@@ -29,8 +29,8 @@ export default function OrderItem({ isPending, cartItems }: TOrderItemProps) {
             cartItems.cart.map((item, i) => {
               return (
                 <div
-                  key={`${item}_${i}`}
-                  className="flex justify-between items-center w-full py-[20px] pr-[8px] border-b-1 border-primary-100"
+                  key={item.id}
+                  className="flex justify-between items-center w-full py-[20px] border-b-1 border-primary-100"
                 >
                   <div className="flex justify-start items-center w-full gap-[12px] sm:gap-[20px]">
                     <div className="flex justify-center items-center min-w-[72px] h-[72px] bg-primary-50 sm:min-w-[140px] sm:h-[140px] sm:bg-transparent">
@@ -41,7 +41,7 @@ export default function OrderItem({ isPending, cartItems }: TOrderItemProps) {
 
                     <div className="flex flex-col justify-center items-center w-full gap-[12px] sm:flex-row sm:justify-between">
                       <div className="flex flex-col justify-center items-start w-full gap-[4px] sm:gap-[10px] sm:w-auto">
-                        <p className="font-normal text-[14px]/[17px] tracking-tight text-primary-900 sm:font-medium sm:text-[16px]/[20px]">
+                        <p className="font-normal text-[14px]/[17px] tracking-tight text-primary-900 line-clamp-1 sm:font-medium sm:text-[16px]/[20px]">
                           {item.product.name}
                         </p>
                         <p className="font-bold text-[14px]/[17px] tracking-tight text-primary-950 sm:text-[16px]/[20px]">
@@ -56,7 +56,7 @@ export default function OrderItem({ isPending, cartItems }: TOrderItemProps) {
                         <p className="font-normal text-[13px]/[16px] tracking-tight text-[#6b6b6b] sm:hidden">
                           수량 {item.quantity}개
                         </p>
-                        <p className="font-extrabold text-[16px]/[20px] tracking-tight text-primary-700 sm:text-[20px]/[32px] sm:tracking-normal">
+                        <p className="font-extrabold text-[16px]/[20px] tracking-tight text-primary-700 sm:min-w-[89px] sm:text-[20px]/[32px] sm:tracking-normal">
                           {(item.product.price * item.quantity).toLocaleString("ko-KR")}원
                         </p>
                       </div>
