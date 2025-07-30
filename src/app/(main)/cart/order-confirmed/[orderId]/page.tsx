@@ -6,10 +6,12 @@ import Button from "@/components/ui/Button";
 import clsx from "clsx";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { getMyOrderDetail, TMyOrderDetail } from "@/lib/api/orderHistory.api";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function OrderConfirmedPage() {
   const router = useRouter();
   const params = useParams();
+  const { user } = useAuth();
   const [orderData, setOrderData] = useState<TMyOrderDetail | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -111,21 +113,39 @@ export default function OrderConfirmedPage() {
       >
         {/* 진행 단계 */}
         <div className="flex flex-col sm:flex-row md:gap-5 justify-center items-center gap-2.5 sm:gap-4">
-          <div className="justify-center text-zinc-400 text-base sm:text-lg md:text-lg font-bold font-['SUIT']">
-            1. Shopping Cart
-          </div>
-          <div className="hidden sm:block">
-            <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400" />
-          </div>
-          <div className="justify-center text-zinc-400 text-base sm:text-lg md:text-lg font-bold font-['SUIT']">
-            2. Order
-          </div>
-          <div className="hidden sm:block">
-            <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400" />
-          </div>
-          <div className="justify-center text-neutral-800 text-base sm:text-lg md:text-lg font-bold font-['SUIT']">
-            3. Order Confirmed
-          </div>
+          {user?.role === "USER" ? (
+            // 일반 유저: 3단계 표시
+            <>
+              <div className="justify-center text-zinc-400 text-base sm:text-lg md:text-lg font-bold font-['SUIT']">
+                1. Shopping Cart
+              </div>
+              <div className="hidden sm:block">
+                <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400" />
+              </div>
+              <div className="justify-center text-zinc-400 text-base sm:text-lg md:text-lg font-bold font-['SUIT']">
+                2. Order
+              </div>
+              <div className="hidden sm:block">
+                <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400" />
+              </div>
+              <div className="justify-center text-neutral-800 text-base sm:text-lg md:text-lg font-bold font-['SUIT']">
+                3. Order Confirmed
+              </div>
+            </>
+          ) : (
+            // 관리자 이상: 2단계 표시
+            <>
+              <div className="justify-center text-zinc-400 text-base sm:text-lg md:text-lg font-bold font-['SUIT']">
+                1. Shopping Cart
+              </div>
+              <div className="hidden sm:block">
+                <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400" />
+              </div>
+              <div className="justify-center text-neutral-800 text-base sm:text-lg md:text-lg font-bold font-['SUIT']">
+                2. Order Confirmed
+              </div>
+            </>
+          )}
         </div>
 
         {/* 주문 완료 메시지 */}
@@ -134,75 +154,76 @@ export default function OrderConfirmedPage() {
         </div>
 
         {/* 주문 상품 목록 */}
-        <div className="self-stretch flex flex-col justify-start items-center gap-12 md:gap-14">
-          <div className="self-stretch flex flex-col justify-start items-start gap-10">
-            <div className="self-stretch flex flex-col justify-start items-start gap-5">
-              {/* 요청 품목 헤더 */}
-              <div className="inline-flex justify-start items-center gap-1.5">
-                <div className="justify-center text-neutral-800 text-base font-bold font-['SUIT']">요청 품목</div>
-                <div className="justify-center text-neutral-800 text-base font-normal font-['SUIT']">
-                  총 {orderData.orderedItems.length}개
-                </div>
+        <div className="self-stretch flex flex-col justify-start items-start gap-10">
+          <div className="self-stretch flex flex-col justify-start items-start gap-[15px]">
+            <div className="inline-flex justify-start items-start gap-1.5">
+              <div className="justify-center text-gray-950 text-base font-bold font-['SUIT']">구매 품목</div>
+              <div className="justify-center text-gray-950 text-base font-normal font-['SUIT']">
+                총 {orderData.receipts.length}개
+              </div>
+            </div>
+
+            <div className="self-stretch bg-white rounded-sm sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline-1 sm:outline-neutral-200 flex flex-col justify-start items-start gap-5 sm:px-5 sm:pt-5 sm:pb-[30px] md:px-[60px] md:py-[40px]">
+              {/* 상품 목록 */}
+              <div className="self-stretch flex flex-col justify-start items-start gap-[16px] sm:gap-0">
+                {orderData.receipts.map((receipt) => (
+                  <div
+                    key={receipt.id}
+                    className="self-stretch border-b border-neutral-200 inline-flex justify-between items-center sm:py-5 sm:pr-5"
+                  >
+                    <div className="flex gap-5 flex-1 sm:flex sm:justify-start sm:items-center sm:gap-5">
+                      <div className="w-24 h-24 sm:w-[140px] sm:h-[140px] bg-[--color-white] shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          className="w-10 h-16 sm:w-14 sm:h-24 relative object-contain"
+                          src={receipt.imageUrl}
+                          alt={receipt.productName}
+                        />
+                      </div>
+                      <div className="flex-1 inline-flex flex-col items-start gap-3 sm:justify-start sm:inline-flex sm:flex-col sm:justify-start sm:items-start sm:gap-7">
+                        <div className="flex flex-col justify-center items-start gap-1 sm:justify-start sm:gap-2.5">
+                          <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-medium font-['SUIT']">
+                            {receipt.productName}
+                          </div>
+                          <div className="justify-start text-gray-950 text-sm sm:text-base font-bold font-['SUIT']">
+                            {formatPrice(receipt.price)}원
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center w-full sm:justify-start sm:flex sm:justify-start">
+                          <div className="justify-center text-gray-500 text-[13px] sm:text-base font-bold font-['SUIT']">
+                            수량 {receipt.quantity}개
+                          </div>
+                          <div className="text-center justify-center text-gray-700 text-base font-bold font-['SUIT'] sm:hidden">
+                            {formatPrice(receipt.price * receipt.quantity)}원
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="hidden sm:block text-center justify-center text-gray-700 text-[20px] font-extrabold font-['SUIT']">
+                      {formatPrice(receipt.price * receipt.quantity)}원
+                    </div>
+                  </div>
+                ))}
               </div>
 
-              {/* 상품 목록 카드 */}
-              <div className="self-stretch px-5 md:px-14 pt-5 md:pt-10 pb-7 md:pb-10 bg-transparent sm:bg-white/10 rounded-sm shadow-[0px_0px_6px_0px_rgba(0,0,0,0.0)] sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline-1 sm:outline-neutral-200 flex flex-col justify-start items-start gap-5">
-                {/* 상품 목록 */}
-                <div className="self-stretch flex flex-col justify-start items-start">
-                  {orderData.orderedItems.map((orderedItem) => (
-                    <div
-                      key={orderedItem.id}
-                      className="self-stretch pr-5 py-5 border-b border-neutral-200 inline-flex justify-between items-center"
-                    >
-                      <div className="flex justify-start items-center gap-5">
-                        <div className="w-36 h-36 bg-white shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            className="w-14 h-24 relative"
-                            src={orderedItem.receipt.imageUrl}
-                            alt={orderedItem.receipt.productName}
-                          />
-                        </div>
-                        <div className="inline-flex flex-col justify-center items-start gap-7">
-                          <div className="flex flex-col justify-center items-start gap-2.5">
-                            <div className="text-center justify-center text-zinc-800 text-base font-medium font-['SUIT']">
-                              {orderedItem.receipt.productName}
-                            </div>
-                            <div className="justify-start text-zinc-800 text-base font-bold font-['SUIT']">
-                              {formatPrice(orderedItem.receipt.price)}원
-                            </div>
-                          </div>
-                          <div className="justify-center text-zinc-500 text-base font-bold font-['SUIT']">
-                            수량 {orderedItem.receipt.quantity}개
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-center justify-center text-neutral-600 text-xl font-extrabold font-['SUIT'] leading-loose">
-                        {formatPrice(orderedItem.receipt.price * orderedItem.receipt.quantity)}원
-                      </div>
-                    </div>
-                  ))}
+              {/* 주문 금액 정보 */}
+              <div className="self-stretch flex flex-col gap-3 sm:gap-[7px] sm:px-5">
+                <div className="flex justify-between items-center">
+                  <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">주문금액</div>
+                  <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
+                    {formatPrice(orderData.totalPrice)}원
+                  </div>
                 </div>
-
-                {/* 주문 금액 정보 */}
-                <div className="self-stretch flex flex-col justify-start items-start gap-2">
-                  <div className="w-full px-5 flex justify-between items-center">
-                    <div className="text-neutral-600 text-base font-bold font-['SUIT']">주문금액</div>
-                    <div className="text-neutral-600 text-base font-bold font-['SUIT']">
-                      {formatPrice(orderData.totalPrice)}원
-                    </div>
+                <div className="flex justify-between items-center">
+                  <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">배송비</div>
+                  <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
+                    {formatPrice(shippingFee)}원
                   </div>
-                  <div className="w-full px-5 flex justify-between items-center">
-                    <div className="text-neutral-600 text-base font-bold font-['SUIT']">배송비</div>
-                    <div className="text-neutral-600 text-base font-bold font-['SUIT']">
-                      {formatPrice(shippingFee)}원
-                    </div>
-                  </div>
-                  <div className="w-full px-5 flex justify-between items-center">
-                    <div className="text-neutral-800 text-lg font-bold font-['SUIT']">총 주문금액</div>
-                    <div className="text-neutral-800 text-2xl font-extrabold font-['SUIT']">
-                      {formatPrice(totalAmount)}원
-                    </div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <div className="text-center justify-center text-gray-950 text-lg sm:text-lg font-bold font-['SUIT']">총 주문금액</div>
+                  <div className="text-center justify-center text-gray-950 text-lg sm:text-2xl font-bold sm:font-extrabold font-['SUIT']">
+                    {formatPrice(totalAmount)}원
                   </div>
                 </div>
               </div>
