@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { useOrderDetail } from "@/hooks/useOrderDetail";
@@ -29,6 +29,17 @@ export default function OrderManageDetailPage() {
     variant: "success",
   });
 
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 타이머 언마운트 시 클린업
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
   // React Query 훅 불러오기
   // 주문 상세 조회
   const { data: orderRequest, isLoading, error } = useOrderDetail(orderId);
@@ -43,8 +54,16 @@ export default function OrderManageDetailPage() {
       text,
       variant,
     });
-    setTimeout(() => {
+
+    // 기존 타이머가 있다면 클리어
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    // 새 타이머 설정
+    timerRef.current = setTimeout(() => {
       setToastConfig((prev) => ({ ...prev, isVisible: false }));
+      timerRef.current = null;
     }, 3000);
   };
 

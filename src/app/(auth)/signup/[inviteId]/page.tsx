@@ -61,7 +61,7 @@ export default function InviteSignUpPage() {
     const fetchInviteInfo = async () => {
       try {
         setIsLoading(true);
-        const data = (await getInviteApi(inviteId)) as TInviteInfo;
+        const data = await getInviteApi(inviteId);
         setInviteInfo(data);
       } catch (error) {
         setInviteError(error instanceof Error ? error.message : "초대 링크가 유효하지 않습니다.");
