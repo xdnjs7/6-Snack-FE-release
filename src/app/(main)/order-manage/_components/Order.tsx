@@ -8,6 +8,7 @@ import { fetchOrderDetail, fetchPendingOrders } from "@/lib/api/orderManage.api"
 import { useModal } from "@/providers/ModalProvider";
 import { TOrderSummary } from "@/types/order.types";
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 
 /**
  * @wooju01
@@ -88,7 +89,9 @@ export default function Order() {
         ) : (
           <div className="flex flex-1 justify-center items-center min-h-screen">
             <div className="w-80 inline-flex flex-col justify-start items-center gap-7 py-12">
-              <div className="w-24 h-24 relative bg-neutral-50 rounded-full overflow-hidden" />
+              <div className="w-24 h-24 relative">
+                <Image src="/ic_no_order.svg" alt="주문 내역 없음" fill className="object-contain" />
+              </div>
               <div className="self-stretch flex flex-col justify-start items-center gap-12">
                 <div className="w-72 flex flex-col justify-start items-center gap-2.5">
                   <div className="self-stretch text-center text-neutral-800 text-2xl font-extrabold">

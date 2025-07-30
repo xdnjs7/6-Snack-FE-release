@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { useRouter } from "next/navigation";
 import Mobile from "./Mobile";
 import Button from "../ui/Button";
 import { formatDate } from "@/lib/utils/formatDate.util";
@@ -22,6 +23,12 @@ type TRequestListProps = {
 };
 
 export default function RequestList({ orderRequests, onClickReject, onClickApprove }: TRequestListProps) {
+  const router = useRouter();
+
+  const handleProductNameClick = (orderId: number, status: string) => {
+    router.push(`/order-manage/${orderId}?status=${status}`);
+  };
+
   return (
     <>
       {/* PC 테이블 헤더 */}
@@ -46,13 +53,16 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
                       <div className="flex justify-center items-center w-[24px] h-[24px] rounded-full py-[6px] px-[5.5px] bg-primary-50 font-medium text-[10px]/[12px] tracking-tight">
                         {request.requester.slice(0, 1)}
                       </div>
-                      <div className="font-normal text-[14px]/[17px] tracking-tight text-primary-950">
+                      <div className="font-normal text-[14px]/[17px] tracking-tight text-primary-950 truncate">
                         {request.requester}
                       </div>
                     </div>
                   </div>
                   <div className="flex flex-col gap-[8px]">
-                    <div className="font-normal text-[14px]/[17px] tracking-tight text-primary-950">
+                    <div
+                      className="font-normal text-[14px]/[17px] tracking-tight text-primary-950 truncate cursor-pointer hover:text-primary-700"
+                      onClick={() => handleProductNameClick(request.id, request.status.toLowerCase())}
+                    >
                       {request.productName}
                     </div>
                     <div className="font-extrabold text-[20px]/[25px] tracking-tight text-primary-950">
@@ -78,11 +88,14 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
             </div>
           </Mobile>
           <div className="flex justify-center w-full">
-            <div className="hidden sm:flex justify-between items-center w-full max-w-[1352px] h-[100px] md:px-[40px]">
+            <div className="hidden sm:flex justify-between items-center w-full max-w-[1352px] h-[100px] md:px-[40px] border-b border-neutral-200">
               <div className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[100px] md:w-[142px]">
                 {formatDate(request.createdAt)}
               </div>
-              <div className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[140px] md:w-[360px]">
+              <div
+                className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[140px] md:w-[360px] truncate cursor-pointer hover:text-primary-700"
+                onClick={() => handleProductNameClick(request.id, request.status.toLowerCase())}
+              >
                 {request.productName}
               </div>
               <div className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[100px] md:w-[142px]">
@@ -92,7 +105,7 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
                 <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full py-[10px] px-[9.5px] bg-primary-50 font-medium text-[10px]/[12px] tracking-tight">
                   {request.requester.slice(0, 1)}
                 </div>
-                <div className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[64px] md:w-[90px]">
+                <div className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[64px] md:w-[90px] truncate">
                   {request.requester}
                 </div>
               </div>
