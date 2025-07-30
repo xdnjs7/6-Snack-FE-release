@@ -1,13 +1,14 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { getMyOrderDetail, TMyOrderDetail, TReceipt } from '@/lib/api/orderHistory.api';
-import { cookieFetch } from '@/lib/api/fetchClient.api';
-import ArrowIconSvg from '@/components/svg/ArrowIconSvg';
-import Toast from '@/components/common/Toast';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
+import { getMyOrderDetail, TMyOrderDetail, TReceipt } from "@/lib/api/orderHistory.api";
+import { cookieFetch } from "@/lib/api/fetchClient.api";
+import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
+import Toast from "@/components/common/Toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 // 타입 정의
 type TMyOrderDetailPageProps = Record<string, never>;
@@ -29,24 +30,24 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
   const [toast, setToast] = useState<{
     isVisible: boolean;
     text: string;
-    variant: 'success' | 'error';
+    variant: "success" | "error";
   }>({
     isVisible: false,
-    text: '',
-    variant: 'error'
+    text: "",
+    variant: "error",
   });
 
   useEffect(() => {
     const fetchOrderDetail = async (): Promise<void> => {
       try {
         setIsLoading(true);
-        console.log('Fetching order detail for:', orderId);
+        console.log("Fetching order detail for:", orderId);
         const data: TMyOrderDetail = await getMyOrderDetail(orderId);
-        console.log('Received data:', data);
+        console.log("Received data:", data);
         setOrderData(data);
       } catch (err) {
-        setError('주문 내역을 불러오는데 실패했습니다.');
-        console.error('Error fetching order detail:', err);
+        setError("주문 내역을 불러오는데 실패했습니다.");
+        console.error("Error fetching order detail:", err);
       } finally {
         setIsLoading(false);
       }
@@ -59,62 +60,57 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
 
   const getStatusText = (status: string): string => {
     const statusTextMap: TStatusTextMap = {
-      'PENDING': '승인 대기',
-      'APPROVED': '구매 승인',
-      'REJECTED': '구매 반려'
+      PENDING: "승인 대기",
+      APPROVED: "구매 승인",
+      REJECTED: "구매 반려",
     };
-    
+
     return statusTextMap[status] || status;
   };
 
   const formatDate = (dateString: string | undefined | null): string => {
-    if (!dateString) return '-';
+    if (!dateString) return "-";
     try {
       const date = new Date(dateString);
       const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
       return `${year}.${month}.${day}`;
     } catch (error) {
-      console.error('Date formatting error:', error);
-      return '-';
+      console.error("Date formatting error:", error);
+      return "-";
     }
-  };
-
-  const formatPrice = (price: number | undefined | null): string => {
-    if (price === undefined || price === null) return '0';
-    return price.toLocaleString('ko-KR');
   };
 
   // 목록으로 돌아가기
   const handleBackToList = () => {
-    router.push('/my/order-list');
+    router.push("/my/order-list");
   };
 
   // Toast 표시 함수
-  const showToast = (text: string, variant: 'success' | 'error' = 'error') => {
+  const showToast = (text: string, variant: "success" | "error" = "error") => {
     setToast({
       isVisible: true,
       text,
-      variant
+      variant,
     });
-    
+
     // 3초 후 자동으로 숨기기
     setTimeout(() => {
-      setToast(prev => ({ ...prev, isVisible: false }));
+      setToast((prev) => ({ ...prev, isVisible: false }));
     }, 3000);
   };
 
   // Toast 닫기 함수
   const closeToast = () => {
-    setToast(prev => ({ ...prev, isVisible: false }));
+    setToast((prev) => ({ ...prev, isVisible: false }));
   };
 
   // 장바구니에 상품 추가하는 API 함수
   const addToCart = async (productId: number, quantity: number): Promise<void> => {
     try {
-      await cookieFetch('/cart', {
-        method: 'POST',
+      await cookieFetch("/cart", {
+        method: "POST",
         body: JSON.stringify({
           productId,
           quantity,
@@ -129,7 +125,7 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
   const { mutate: addToCartMutation, isPending: isAddingToCart } = useMutation({
     mutationFn: async () => {
       if (!orderData || !orderData.receipts) return;
-      
+
       // 주문 내역의 각 상품을 개별적으로 장바구니에 추가
       for (const item of orderData.receipts) {
         await addToCart(item.productId, item.quantity);
@@ -137,14 +133,14 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
     },
     onSuccess: () => {
       // 강제로 refetch 실행
-      queryClient.refetchQueries({ 
-        predicate: (query) => query.queryKey[0] === 'cart' 
+      queryClient.refetchQueries({
+        predicate: (query) => query.queryKey[0] === "cart",
       });
-      showToast('장바구니에 상품이 추가되었습니다.', 'success');
+      showToast("장바구니에 상품이 추가되었습니다.", "success");
     },
     onError: (error) => {
-      console.error('장바구니 추가 실패:', error);
-      showToast('장바구니에 상품을 추가하는데 실패했습니다.', 'error');
+      console.error("장바구니 추가 실패:", error);
+      showToast("장바구니에 상품을 추가하는데 실패했습니다.", "error");
     },
   });
 
@@ -153,11 +149,6 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
     if (!orderData || !orderData.receipts) return;
     addToCartMutation();
   };
-
-
-
-
-
 
   if (isLoading) {
     return (
@@ -170,37 +161,29 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
   if (error || !orderData) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-lg text-red-600">{error || '주문 내역을 찾을 수 없습니다.'}</div>
+        <div className="text-lg text-red-600">{error || "주문 내역을 찾을 수 없습니다."}</div>
       </div>
     );
   }
 
-  const calculatedTotal: number = orderData.receipts?.reduce((sum: number, item: TReceipt) => 
-    sum + (item.price * item.quantity), 0
-  ) || 0;
+  const calculatedTotal: number =
+    orderData.receipts?.reduce((sum: number, item: TReceipt) => sum + item.price * item.quantity, 0) || 0;
   const shippingFee: number = 3000;
   const finalTotal: number = calculatedTotal + shippingFee;
 
   return (
     <div className="min-h-screen bg-white">
       {/* Toast */}
-      <Toast 
-        text={toast.text}
-        variant={toast.variant}
-        isVisible={toast.isVisible}
-        onClose={closeToast}
-      />
-      
+      <Toast text={toast.text} variant={toast.variant} isVisible={toast.isVisible} onClose={closeToast} />
+
       {/* Main Content */}
       <div className="w-full max-w-7xl mx-auto pt-[30px] flex flex-col justify-start items-start gap-[23px]">
-        <div className="self-stretch justify-center text-gray-950 text-lg font-bold font-['SUIT']">
-          구매 요청 내역
-        </div>
+        <div className="self-stretch justify-center text-gray-950 text-lg font-bold font-['SUIT']">구매 요청 내역</div>
 
         {/* Items Section */}
         <div className="self-stretch flex flex-col justify-start items-start gap-10">
           <div className="self-stretch flex flex-col justify-start items-start gap-[15px]">
-            <div 
+            <div
               className="inline-flex justify-start items-start gap-1.5 cursor-pointer"
               onClick={() => setIsItemsExpanded(!isItemsExpanded)}
             >
@@ -208,10 +191,7 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
               <div className="justify-center text-gray-950 text-base font-normal font-['SUIT']">
                 총 {orderData.receipts?.length || 0}개
               </div>
-              <ArrowIconSvg 
-                direction={isItemsExpanded ? "up" : "down"} 
-                className="w-5 h-5 text-gray-950" 
-              />
+              <ArrowIconSvg direction={isItemsExpanded ? "up" : "down"} className="w-5 h-5 text-gray-950" />
             </div>
 
             {isItemsExpanded && (
@@ -219,19 +199,19 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
                 {/* Items List */}
                 <div className="self-stretch flex flex-col justify-start items-start gap-[16px] sm:gap-0">
                   {orderData.receipts?.map((item: TReceipt) => (
-                    <div 
-                      key={item.id} 
+                    <div
+                      key={item.id}
                       className="self-stretch border-b border-neutral-200 inline-flex justify-between items-center sm:py-5 sm:pr-5"
                     >
                       <div className="flex gap-5 flex-1 sm:flex sm:justify-start sm:items-center sm:gap-5">
                         <div className="w-24 h-24 sm:w-[140px] sm:h-[140px] bg-[--color-white] shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
                           {item.imageUrl && (
-                            <Image 
-                              src={item.imageUrl} 
+                            <Image
+                              src={item.imageUrl}
                               alt={item.productName}
                               width={56}
                               height={96}
-                              className="w-10 h-16 sm:w-14 sm:h-24 relative object-contain" 
+                              className="w-10 h-16 sm:w-14 sm:h-24 relative object-contain"
                             />
                           )}
                         </div>
@@ -264,19 +244,25 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
                 {/* Order Amount Info */}
                 <div className="self-stretch flex flex-col gap-3 sm:gap-[7px] sm:px-5">
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">주문금액</div>
+                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
+                      주문금액
+                    </div>
                     <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
                       {formatPrice(calculatedTotal)}원
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">배송비</div>
+                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
+                      배송비
+                    </div>
                     <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
                       {formatPrice(shippingFee)}원
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-gray-950 text-lg sm:text-lg font-bold font-['SUIT']">총 주문금액</div>
+                    <div className="text-center justify-center text-gray-950 text-lg sm:text-lg font-bold font-['SUIT']">
+                      총 주문금액
+                    </div>
                     <div className="text-center justify-center text-gray-950 text-lg sm:text-2xl font-bold sm:font-extrabold font-['SUIT']">
                       {formatPrice(finalTotal)}원
                     </div>
@@ -290,12 +276,16 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
         {/* Request Info Section */}
         <div className="self-stretch flex flex-col justify-start items-start">
           <div className="self-stretch py-3.5 border-b border-neutral-800 inline-flex justify-start items-center gap-2 sm:pl-2">
-            <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-extrabold font-['SUIT']">요청 정보</div>
+            <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-extrabold font-['SUIT']">
+              요청 정보
+            </div>
           </div>
           <div className="self-stretch flex flex-col justify-center items-start sm:flex sm:flex-row sm:justify-start sm:items-stretch">
             <div className="self-stretch inline-flex justify-start items-center sm:flex-1">
               <div className="w-36 h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">요청인</div>
+                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">
+                  요청인
+                </div>
               </div>
               <div className="flex-1 h-12 px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2 sm:border-r">
                 <div className="text-center justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT']">
@@ -305,7 +295,9 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
             </div>
             <div className="self-stretch inline-flex justify-start items-center sm:flex-1">
               <div className="w-36 h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">요청 날짜</div>
+                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">
+                  요청 날짜
+                </div>
               </div>
               <div className="flex-1 h-12 px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
                 <div className="text-center justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT']">
@@ -316,7 +308,9 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
           </div>
           <div className="self-stretch inline-flex justify-start items-start">
             <div className="w-36 self-stretch px-2 py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
-              <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">요청 메시지</div>
+              <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">
+                요청 메시지
+              </div>
             </div>
             <div className="flex-1 p-4 border-b border-neutral-200 flex justify-start items-center gap-2">
               <div className="flex-1 justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT'] leading-snug">
@@ -329,12 +323,16 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
         {/* Approval Info Section */}
         <div className="self-stretch flex flex-col justify-start items-start">
           <div className="self-stretch py-3.5 border-b border-neutral-800 inline-flex justify-start items-center gap-2 sm:pl-2">
-            <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-extrabold font-['SUIT']">승인 정보</div>
+            <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-extrabold font-['SUIT']">
+              승인 정보
+            </div>
           </div>
           <div className="self-stretch flex flex-col justify-center items-start sm:flex sm:flex-row sm:justify-start sm:items-stretch">
             <div className="self-stretch inline-flex justify-start items-center sm:flex-1">
               <div className="w-36 h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">담당자</div>
+                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">
+                  담당자
+                </div>
               </div>
               <div className="flex-1 h-12 px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2 sm:border-r">
                 <div className="text-center justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT']">
@@ -344,7 +342,9 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
             </div>
             <div className="self-stretch inline-flex justify-start items-center sm:flex-1">
               <div className="w-36 h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">승인 날짜</div>
+                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">
+                  승인 날짜
+                </div>
               </div>
               <div className="flex-1 h-12 px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
                 <div className="text-center justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT']">
@@ -356,7 +356,9 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
           <div className="self-stretch flex flex-col justify-center items-start sm:flex sm:flex-row sm:justify-start sm:items-stretch">
             <div className="self-stretch inline-flex justify-start items-center sm:flex-1">
               <div className="w-36 self-stretch px-2 py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
-                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">상태</div>
+                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">
+                  상태
+                </div>
               </div>
               <div className="flex-1 self-stretch p-4 border-b border-neutral-200 flex justify-start items-start gap-2 sm:border-r">
                 <div className="text-center justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT']">
@@ -366,7 +368,9 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
             </div>
             <div className="self-stretch inline-flex justify-start items-start sm:flex-1">
               <div className="w-36 self-stretch px-2 py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
-                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">결과 메시지</div>
+                <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-normal font-['SUIT']">
+                  결과 메시지
+                </div>
               </div>
               <div className="flex-1 p-4 border-b border-neutral-200 flex justify-start items-center gap-2">
                 <div className="flex-1 justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT'] leading-snug">
@@ -379,19 +383,21 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
 
         {/* Bottom Action Buttons */}
         <div className="self-stretch flex justify-center items-center gap-4 pt-6 sm:pt-8">
-          <div 
+          <div
             className="w-[155.5px] sm:w-[338px] md:w-[296px] h-16 px-4 py-3 bg-white rounded-sm outline outline-1 outline-offset-[-1px] outline-zinc-400 inline-flex justify-center items-center cursor-pointer hover:bg-gray-50"
             onClick={handleBackToList}
           >
-            <div className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT']">목록 보기</div>
+            <div className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT']">
+              목록 보기
+            </div>
           </div>
-          <div 
+          <div
             className="w-[155.5px] sm:w-[338px] md:w-[300px] h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center cursor-pointer hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleAddToCart}
-            style={{ pointerEvents: isAddingToCart ? 'none' : 'auto' }}
+            style={{ pointerEvents: isAddingToCart ? "none" : "auto" }}
           >
             <div className="text-center justify-center text-white text-base font-bold font-['SUIT']">
-              {isAddingToCart ? '처리 중...' : '장바구니 다시 담기'}
+              {isAddingToCart ? "처리 중..." : "장바구니 다시 담기"}
             </div>
           </div>
         </div>

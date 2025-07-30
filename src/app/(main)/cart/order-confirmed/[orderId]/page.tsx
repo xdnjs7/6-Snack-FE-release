@@ -7,6 +7,7 @@ import clsx from "clsx";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { getMyOrderDetail, TMyOrderDetail } from "@/lib/api/orderHistory.api";
 import { useAuth } from "@/providers/AuthProvider";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 export default function OrderConfirmedPage() {
   const router = useRouter();
@@ -43,10 +44,6 @@ export default function OrderConfirmedPage() {
 
     fetchOrderDetail();
   }, [orderId]);
-
-  const formatPrice = (price: number): string => {
-    return price.toLocaleString("ko-KR");
-  };
 
   const handleViewOrderHistory = () => {
     router.push("/my/order-list");
@@ -209,19 +206,25 @@ export default function OrderConfirmedPage() {
               {/* 주문 금액 정보 */}
               <div className="self-stretch flex flex-col gap-3 sm:gap-[7px] sm:px-5">
                 <div className="flex justify-between items-center">
-                  <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">주문금액</div>
+                  <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
+                    주문금액
+                  </div>
                   <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
                     {formatPrice(orderData.totalPrice)}원
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
-                  <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">배송비</div>
+                  <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
+                    배송비
+                  </div>
                   <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
                     {formatPrice(shippingFee)}원
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
-                  <div className="text-center justify-center text-gray-950 text-lg sm:text-lg font-bold font-['SUIT']">총 주문금액</div>
+                  <div className="text-center justify-center text-gray-950 text-lg sm:text-lg font-bold font-['SUIT']">
+                    총 주문금액
+                  </div>
                   <div className="text-center justify-center text-gray-950 text-lg sm:text-2xl font-bold sm:font-extrabold font-['SUIT']">
                     {formatPrice(totalAmount)}원
                   </div>

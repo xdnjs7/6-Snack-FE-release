@@ -1,3 +1,4 @@
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 import { StaticImageData } from "next/image";
 import React from "react";
 
@@ -32,7 +33,7 @@ function Card({ name, purchaseCount, price, imageUrl }: TCardProps) {
           )}
         </div>
         <div className="text-stone-900 text-base md:text-lg font-extrabold font-suit">
-          {Number(price).toLocaleString("ko-KR")}원
+          {formatPrice(Number(price))}원
         </div>
       </div>
     </div>

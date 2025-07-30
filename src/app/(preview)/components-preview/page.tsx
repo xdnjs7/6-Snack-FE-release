@@ -17,7 +17,6 @@ import Card from "@/components/ui/Card";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 import SearchBar from "@/components/ui/SearchBar";
 import Badge from "@/components/ui/Badge";
-//import SubCategoryMenu from "@/components/common/SubCategoryMenu";
 import SideMenu from "@/components/common/SideMenu";
 import Pagination from "@/components/common/Pagination";
 import OrderManageModal from "@/components/common/OrderManageModal";
@@ -280,7 +279,7 @@ export default function ComponentsPreviewPage() {
       <div className="rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] p-6">
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">[상품 등록 모달]</h2>
-          <ProductRegistrationForm />
+          <Button type="black" label="열기" onClick={() => openModal(<ProductRegistrationForm />)} />
           <h2 className="text-lg font-semibold bg-blue-100">[My Request List(요청 취소 가능)]</h2>
           <MyRequestList
             requestDate="2024. 07. 04"

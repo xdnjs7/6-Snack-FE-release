@@ -4,6 +4,7 @@ import ChevronLeftIcon from "@/assets/icons/ic_chevron_left.svg";
 import ChevronRightIcon from "@/assets/icons/ic_chevron_right.svg";
 import Dropdown from "@/components/common/DropDown";
 import { useOrderHistory } from "@/hooks/useOrderHistory";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -19,15 +20,8 @@ interface BudgetData {
 
 const OrderHistoryPage = () => {
   // 공통 로직 훅 사용
-  const {
-    budgetData,
-    currentItems,
-    totalPages,
-    currentPage,
-    handlePageChange,
-    setSortBy,
-    formatNumber,
-  } = useOrderHistory();
+  const { budgetData, currentItems, totalPages, currentPage, handlePageChange, setSortBy, formatNumber } =
+    useOrderHistory();
   const [isHovered, setIsHovered] = useState(false);
 
   // budgetData 타입 안전성을 위한 타입 가드
@@ -72,7 +66,8 @@ const OrderHistoryPage = () => {
                   </div>
                 </div>
                 <div className="relative w-34 justify-center text-stone-500 text-sm font-normal font-['SUIT'] leading-snug">
-                  지난 달 예산은 {safeBudgetData ? formatNumber(safeBudgetData.previousMonthBudget) : "2,000,000원"}이었어요
+                  지난 달 예산은 {safeBudgetData ? formatNumber(safeBudgetData.previousMonthBudget) : "2,000,000원"}
+                  이었어요
                 </div>
               </div>
               <div
@@ -96,13 +91,16 @@ const OrderHistoryPage = () => {
                     <div
                       className="h-1.5 bg-blue-500 rounded-md"
                       style={{
-                        width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                          ? Math.max(
-                            1,
-                            Math.round((safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100),
-                          )
-                          : 0
-                          }%`,
+                        width: `${
+                          safeBudgetData && safeBudgetData.currentMonthBudget > 0
+                            ? Math.max(
+                                1,
+                                Math.round(
+                                  (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
+                                ),
+                              )
+                            : 0
+                        }%`,
                       }}
                     />
                   </div>
@@ -130,7 +128,9 @@ const OrderHistoryPage = () => {
               <div className="self-stretch justify-center text-stone-500 text-sm font-normal font-['SUIT'] leading-snug">
                 작년보다{" "}
                 {safeBudgetData
-                  ? Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense).toLocaleString()
+                  ? formatPrice(
+                      Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
+                    )
                   : "6,000,000"}
                 원<br />
                 {safeBudgetData && safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense > 0
@@ -163,7 +163,7 @@ const OrderHistoryPage = () => {
                 <div className="justify-center text-white text-sm font-normal font-['SUIT']">
                   지난 달보다{" "}
                   {safeBudgetData
-                    ? Math.abs(safeBudgetData.currentMonthExpense - safeBudgetData.previousMonthExpense).toLocaleString()
+                    ? formatPrice(Math.abs(safeBudgetData.currentMonthExpense - safeBudgetData.previousMonthExpense))
                     : "24,000"}
                   원{" "}
                   {safeBudgetData && safeBudgetData.currentMonthExpense - safeBudgetData.previousMonthExpense > 0
@@ -357,13 +357,16 @@ const OrderHistoryPage = () => {
                   <div
                     className="h-1.5 bg-blue-500 rounded-md"
                     style={{
-                      width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                        ? Math.max(
-                          1,
-                          Math.round((safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100),
-                        )
-                        : 0
-                        }%`,
+                      width: `${
+                        safeBudgetData && safeBudgetData.currentMonthBudget > 0
+                          ? Math.max(
+                              1,
+                              Math.round(
+                                (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
+                              ),
+                            )
+                          : 0
+                      }%`,
                     }}
                   />
                 </div>
@@ -390,7 +393,9 @@ const OrderHistoryPage = () => {
               <div className="self-stretch justify-center text-stone-500 text-base font-normal font-['SUIT'] leading-relaxed">
                 작년보다{" "}
                 {safeBudgetData
-                  ? Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense).toLocaleString()
+                  ? formatPrice(
+                      Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
+                    )
                   : "6,000,000"}
                 원<br />
                 {safeBudgetData && safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense > 0
@@ -549,7 +554,7 @@ const OrderHistoryPage = () => {
               <div className="justify-center text-white text-sm font-normal font-['SUIT']">
                 지난 달보다{" "}
                 {safeBudgetData
-                  ? Math.abs(safeBudgetData.currentMonthExpense - safeBudgetData.previousMonthExpense).toLocaleString()
+                  ? formatPrice(Math.abs(safeBudgetData.currentMonthExpense - safeBudgetData.previousMonthExpense))
                   : "24,000"}
                 원{" "}
                 {safeBudgetData && safeBudgetData.currentMonthExpense - safeBudgetData.previousMonthExpense > 0
@@ -627,13 +632,16 @@ const OrderHistoryPage = () => {
                   <div
                     className="h-1.5 bg-blue-500 rounded-md"
                     style={{
-                      width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                        ? Math.max(
-                          1,
-                          Math.round((safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100),
-                        )
-                        : 0
-                        }%`,
+                      width: `${
+                        safeBudgetData && safeBudgetData.currentMonthBudget > 0
+                          ? Math.max(
+                              1,
+                              Math.round(
+                                (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
+                              ),
+                            )
+                          : 0
+                      }%`,
                     }}
                   />
                 </div>
@@ -661,7 +669,9 @@ const OrderHistoryPage = () => {
                 올해 작년보다
                 <br />
                 {safeBudgetData
-                  ? Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense).toLocaleString()
+                  ? formatPrice(
+                      Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
+                    )
                   : "6,000,000"}
                 원{" "}
                 {safeBudgetData && safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense > 0
@@ -789,7 +799,7 @@ const OrderHistoryPage = () => {
               <div className="justify-center text-white text-sm font-normal font-['SUIT']">
                 지난 달보다{" "}
                 {safeBudgetData
-                  ? Math.abs(safeBudgetData.currentMonthExpense - safeBudgetData.previousMonthExpense).toLocaleString()
+                  ? formatPrice(Math.abs(safeBudgetData.currentMonthExpense - safeBudgetData.previousMonthExpense))
                   : "24,000"}
                 원{" "}
                 {safeBudgetData && safeBudgetData.currentMonthExpense - safeBudgetData.previousMonthExpense > 0

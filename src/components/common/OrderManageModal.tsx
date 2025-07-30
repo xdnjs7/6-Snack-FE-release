@@ -6,6 +6,7 @@ import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import Button from "../ui/Button";
 import TextArea from "./TextArea";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 type TOrderManageModalProps = {
   type: "reject" | "approve";
@@ -67,7 +68,7 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
                           {product.productName}
                         </p>
                         <p className="font-bold text-[14px]/[17px] tracking-tight text-primary-950 sm:text-[16px]/[20px]">
-                          {product.price.toLocaleString("ko-KR")}원
+                          {formatPrice(product.price)}원
                         </p>
                       </div>
                     </div>
@@ -81,7 +82,7 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
                         수량 {product.quantity}개
                       </p>
                       <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-700 sm:min-w-[88px] sm:font-extrabold sm:text-[20px]/[32px] sm:tracking-normal">
-                        {(product.price * product.quantity).toLocaleString("ko-KR")}원
+                        {formatPrice(product.price * product.quantity)}원
                       </p>
                     </div>
                   </div>
@@ -93,7 +94,7 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
               <div className="flex justify-between items-center w-full px-[8px]">
                 <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-700">주문금액</p>
                 <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-700">
-                  {order.totalPrice.toLocaleString("ko-KR")}원
+                  {formatPrice(order.totalPrice)}원
                 </p>
               </div>
 
@@ -107,7 +108,7 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
                   총 주문금액
                 </p>
                 <p className="font-extrabold text-[20px]/[25px] tracking-tight text-primary-950 sm:text-[24px]/[30px]">
-                  {(order.totalPrice + 3000).toLocaleString("ko-KR")}원
+                  {formatPrice(order.totalPrice + 3000)}원
                 </p>
               </div>
             </div>
@@ -122,7 +123,7 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
                   남은 예산 금액
                 </p>
                 <p className="font-extrabold text-[20px]/[25px] tracking-tight text-primary-950 sm:text-[24px]/[30px]">
-                  {(order.budget.currentMonthBudget - order.budget.currentMonthExpense).toLocaleString("ko-KR")}원
+                  {formatPrice(order.budget.currentMonthBudget - order.budget.currentMonthExpense)}원
                 </p>
               </div>
             </>

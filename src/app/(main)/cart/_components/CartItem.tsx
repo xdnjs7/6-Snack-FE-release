@@ -12,6 +12,7 @@ import clsx from "clsx";
 import { orderNow } from "@/lib/api/order.api";
 import { useRouter } from "next/navigation";
 import { TOrderNowResponse } from "@/types/order.types";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 type TCartItemProps = {
   cartItems: TGetCartItemsResponse | undefined;
@@ -171,7 +172,7 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
                         {item.product.name}
                       </p>
                       <p className="font-extrabold text-[14px]/[17px] tracking-tight text-primary-950 sm:font-bold sm:text-[16px]/[20px] sm:text-[#1f1f1f]">
-                        {item.product.price.toLocaleString("ko-KR")}원
+                        {formatPrice(item.product.price)}원
                       </p>
                     </div>
 
@@ -182,7 +183,7 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
                       />
 
                       <p className="hidden sm:block sm:font-extrabold sm:text-[24px]/[32px] sm:text-[#1f1f1f] md:tracking-tight md:leading-[30px]">
-                        총 {(item.product.price * item.quantity).toLocaleString("ko-KR")}원
+                        총 {formatPrice(item.product.price * item.quantity)}원
                       </p>
                     </div>
                   </div>
