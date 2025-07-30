@@ -1,9 +1,9 @@
-import ProfileComponent from "./_components/ProfileComponent";
+import ProfileForm from "./_components/ProfileForm";
 
 function Page() {
   return (
     <div className="pt-[77px] sm:pt-[110px] flex justify-center bg-white">
-      <ProfileComponent />
+      <ProfileForm />;
     </div>
   );
 }
