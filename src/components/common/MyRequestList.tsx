@@ -1,10 +1,7 @@
+"use client";
+
 import React from "react";
 import Badge from "@/components/ui/Badge";
-
-/**
- * @JJOBO
- * 1. rfc 스니펫 사용
- */
 
 type TRequestListItemProps = {
   requestDate: string;
@@ -14,7 +11,13 @@ type TRequestListItemProps = {
   onRequestCancel?: () => void;
 };
 
-const RequestListItem = ({ requestDate, productName, price, status, onRequestCancel }: TRequestListItemProps) => {
+export default function RequestListItem({
+  requestDate,
+  productName,
+  price,
+  status,
+  onRequestCancel,
+}: TRequestListItemProps) {
   const getBadgeType = (): "pending" | "approved" | "rejected" => {
     switch (status) {
       case "대기중":
@@ -79,6 +82,4 @@ const RequestListItem = ({ requestDate, productName, price, status, onRequestCan
       </div>
     </div>
   );
-};
-
-export default RequestListItem;
+}

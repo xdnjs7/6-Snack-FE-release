@@ -14,16 +14,11 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useCurrentSubCategory } from "@/hooks/useCurrentSubCategory";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-/**
- * @JJOBO
- * 1. 타입 앞에 T
- */
-
-type ProductDetailProps = {
+type TProductDetailProps = {
   productId: number;
 };
 
-export default function ProductDetail({ productId }: ProductDetailProps) {
+export default function ProductDetail({ productId }: TProductDetailProps) {
   const [selectedQuantity, setSelectedQuantity] = useState(0);
   const { data: product, isLoading, isError } = useProductDetail(productId);
   const { user } = useAuth();
@@ -86,11 +81,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
               />
             </div>
             <div className="flex flex-col justify-center items-center w-full">
-              <CartAndLikeButtons
-                productId={product.id}
-                selectedQuantity={selectedQuantity}
-                onAddToCart={handleAddToCart}
-              />
+              <CartAndLikeButtons onAddToCart={handleAddToCart} />
               <ProductInfoSections />
             </div>
           </div>
