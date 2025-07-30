@@ -139,7 +139,7 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
       ) : !cartItems?.cart.length ? (
         <div className="flex justify-center items-center h-[200px]">장바구니에 담은 상품이 없습니다.</div>
       ) : (
-        cartItems.cart.map((item, i) => (
+        cartItems.cart.map((item) => (
           <div
             key={item.id}
             className="h-[121px] py-[20px] border-b-1 border-primary-100 sm:py-[30px] sm:h-[200px] sm:last:border-0"
