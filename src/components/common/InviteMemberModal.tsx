@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
-import { TInviteMemberModalProps, TUserRole } from "@/types/InviteMemberModal.types";
+import { TInviteMemberModalProps, TUserRole } from "@/types/inviteMemberModal.types";
 import { sendInvite } from "@/lib/api/invite.api";
 import { getUserApi } from "@/lib/api/user.api";
 
