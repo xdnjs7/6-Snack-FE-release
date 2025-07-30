@@ -52,12 +52,12 @@ export default function OrderManageDetailPage() {
         status: "APPROVED",
       });
       // TODO: 토스트 달기
-      showToast("구매 요청이 승인되었습니다.", "success");
-      setTimeout(() => {
-        router.push("/order-manage");
-      }, 2000);
+      // showToast("구매 요청이 승인되었습니다.", "success");
+      // setTimeout(() => {
+      //   router.push("/order-manage");
+      // }, 2000);
     } catch (error) {
-      showToast("승인 처리에 실패했습니다.", "error");
+      // showToast("승인 처리에 실패했습니다.", "error");
     }
   };
 
@@ -67,12 +67,12 @@ export default function OrderManageDetailPage() {
         orderId: orderId,
         status: "REJECTED",
       });
-      showToast("구매 요청이 반려되었습니다.", "success");
-      setTimeout(() => {
-        router.push("/order-manage");
-      }, 2000);
+      // showToast("구매 요청이 반려되었습니다.", "success");
+      // setTimeout(() => {
+      //   router.push("/order-manage");
+      // }, 2000);
     } catch (error) {
-      showToast("반려 처리에 실패했습니다.", "error");
+      // showToast("반려 처리에 실패했습니다.", "error");
     }
   };
 
