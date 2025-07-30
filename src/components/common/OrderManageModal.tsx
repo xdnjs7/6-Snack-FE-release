@@ -50,20 +50,20 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
         <div className="flex flex-col justify-center items-center w-full max-w-[480px] mb-[24px] gap-[32px] sm:mb-[36px]">
           <div className="flex flex-col justify-center items-center w-full p-[20px] pb-[30px] gap-[20px] rounded-[2px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.12)]">
             <div className="flex flex-col items-center overflow-auto scrollbar w-full h-[160px] sm:h-[180px]">
-              {order.products.map((product, i) => {
+              {order.products.map((product) => {
                 return (
                   <div
-                    key={`${product}_${i}`}
-                    className="flex justify-between items-center w-full py-[20px] pr-[8px] border-b-1 border-primary-100"
+                    key={product.id}
+                    className="flex justify-between items-center w-full min-w-[287px] gap-[8px] py-[20px] pr-[8px] border-b-1 border-primary-100"
                   >
                     <div className="flex justify-center items-center gap-[12px] sm:gap-[20px]">
-                      <div className="flex justify-center items-center w-[40px] h-[40px]">
+                      <div className="flex justify-center items-center min-w-[40px] h-[40px]">
                         <div className="relative w-[20px] h-[34.71px]">
                           <Image src={product.imageUrl} alt="상품" fill className="object-contain" />
                         </div>
                       </div>
                       <div className="flex flex-col justify-center items-start gap-[4px] sm:gap-[10px]">
-                        <p className="font-normal text-[14px]/[17px] tracking-tight text-primary-900 sm:font-medium sm:text-[16px]/[20px]">
+                        <p className="font-normal text-[14px]/[17px] tracking-tight text-primary-900 line-clamp-1 sm:w-[150px] sm:font-medium sm:text-[16px]/[20px]">
                           {product.productName}
                         </p>
                         <p className="font-bold text-[14px]/[17px] tracking-tight text-primary-950 sm:text-[16px]/[20px]">
@@ -72,15 +72,15 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
                       </div>
                     </div>
 
-                    <p className="hidden sm:block sm:font-bold sm:text-[16px]/[20px] sm:tracking-normal text-primary-500">
+                    <p className="hidden sm:block sm:min-w-[56px] sm:font-bold sm:text-[16px]/[20px] sm:tracking-normal text-primary-500">
                       수량 {product.quantity}개
                     </p>
 
-                    <div className="flex flex-col justify-center items-start gap-[4px]">
+                    <div className="flex flex-col justify-center items-start min-w-[67px] gap-[4px]">
                       <p className="font-bold text-[13px]/[16px] tracking-tight text-primary-500 sm:hidden">
                         수량 {product.quantity}개
                       </p>
-                      <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-700 sm:font-extrabold sm:text-[20px]/[32px] sm:tracking-normal">
+                      <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-700 sm:min-w-[88px] sm:font-extrabold sm:text-[20px]/[32px] sm:tracking-normal">
                         {(product.price * product.quantity).toLocaleString("ko-KR")}원
                       </p>
                     </div>

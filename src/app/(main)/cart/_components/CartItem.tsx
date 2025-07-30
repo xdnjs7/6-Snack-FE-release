@@ -139,9 +139,9 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
       ) : !cartItems?.cart.length ? (
         <div className="flex justify-center items-center h-[200px]">장바구니에 담은 상품이 없습니다.</div>
       ) : (
-        cartItems.cart.map((item, i) => (
+        cartItems.cart.map((item) => (
           <div
-            key={`${item}_${i}`}
+            key={item.id}
             className="h-[121px] py-[20px] border-b-1 border-primary-100 sm:py-[30px] sm:h-[200px] sm:last:border-0"
           >
             <div className="flex justify-center items-center gap-[10px] sm:gap-[20px]">
@@ -165,9 +165,9 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
                 </div>
 
                 <div className="w-full flex flex-col sm:gap-[20px]">
-                  <div className="flex justify-between items-center sm:items-end">
+                  <div className="flex justify-between items-center gap-[16px] sm:items-end">
                     <div className="flex flex-col justify-center items-start gap-[4px] sm:gap-[8px]">
-                      <p className="font-normal text-[14px]/[17px] tracking-tight text-primary-950 sm:font-medium sm:text-[16px]/[20px] sm:text-[#1f1f1f]">
+                      <p className="min-w-[115px] font-normal text-[14px]/[17px] tracking-tight text-primary-950 line-clamp-1 sm:font-medium sm:text-[16px]/[20px] sm:text-[#1f1f1f]">
                         {item.product.name}
                       </p>
                       <p className="font-extrabold text-[14px]/[17px] tracking-tight text-primary-950 sm:font-bold sm:text-[16px]/[20px] sm:text-[#1f1f1f]">
@@ -175,7 +175,7 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
                       </p>
                     </div>
 
-                    <div className="relative flex sm:flex-col sm:justify-center sm:items-end sm:gap-[4px]">
+                    <div className="relative flex sm:flex-col sm:justify-center sm:items-end sm:min-w-[132px] sm:gap-[4px]">
                       <QuantityDropdown
                         value={item.quantity}
                         onClick={(value: number) => updateCartItemQuantity({ cartItemId: item.id, quantity: value })}

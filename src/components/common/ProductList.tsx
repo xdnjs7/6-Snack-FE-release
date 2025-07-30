@@ -52,8 +52,8 @@ type TProductListProps = {
 export default function ProductList({ products }: TProductListProps) {
   return (
     <>
-      {products.items.map((item, i) => (
-        <Fragment key={`${item}_${i}`}>
+      {products.items.map((item) => (
+        <Fragment key={item.id}>
           <div className="border-b-[1px] border-primary-100 md:hidden">
             <div className="flex flex-col w-full gap-[10px] min-w-[327px] max-w-[696px] h-[120px] mt-[20px] mb-[30px] sm:mt-[30px]">
               <p className="font-extrabold text-[16px]/[20px]">{formatDate(item.createdAt)}</p>
@@ -66,7 +66,7 @@ export default function ProductList({ products }: TProductListProps) {
                 <div className="flex flex-col min-w-[217px] gap-[10px]">
                   <div className="flex flex-col gap-[6px] sm:gap-[4px]">
                     <p className="font-normal text-[12px]/[15px] text-primary-500">{item.category.name}</p>
-                    <p className="font-normal text-[14px]/[17px] tracking-tight text-primary-950 sm:text-[16px]/[20px]">
+                    <p className="font-normal text-[14px]/[17px] tracking-tight text-primary-950 line-clamp-1 sm:text-[16px]/[20px]">
                       {item.name}
                     </p>
                     <p className="font-extrabold text-[14px]/[17px] tracking-tight text-primary-950">
@@ -89,7 +89,9 @@ export default function ProductList({ products }: TProductListProps) {
                       <Image src={item.imageUrl} alt="상품" fill className="object-contain" />
                     </div>
                   </div>
-                  <p className="font-normal text-[16px]/[20px] tracking-tight text-primary-950">{item.name}</p>
+                  <p className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 line-clamp-2">
+                    {item.name}
+                  </p>
                 </div>
                 <p className="w-[180px] font-normal text-[16px]/[20px] tracking-tight text-primary-950">
                   {formatDate(item.createdAt)}

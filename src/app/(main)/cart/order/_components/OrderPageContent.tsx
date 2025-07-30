@@ -54,7 +54,7 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
     setRequestMessage(e.target.value);
   };
 
-  if (user?.role) {
+  if (user?.role !== "USER") {
     return <div className="flex h-[80vh] justify-center items-center">일반 유저만 이용가능한 페이지입니다.</div>;
   }
 
