@@ -9,7 +9,7 @@ type TMemberListProps = TMemberItem & {
   onClickDeleteUser?: (id: string) => void;
 };
 
-const MemberList = ({ id, name, email, role, onClickDeleteUser }: TMemberListProps) => {
+export default function MemberList({ id, name, email, role, onClickDeleteUser }: TMemberListProps) {
   const { openModal, closeModal } = useModal();
   return (
     <>
@@ -116,6 +116,4 @@ const MemberList = ({ id, name, email, role, onClickDeleteUser }: TMemberListPro
       </div>
     </>
   );
-};
-
-export default MemberList;
+}

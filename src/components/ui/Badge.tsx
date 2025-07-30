@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Image, { StaticImageData } from "next/image";
 import XIconSvg from "@/components/svg/XIconSvg";
 import IcPending from "@/assets/icons/ic_time.svg";
-import { TBadgeProps, TBadgeType } from "@/types/Badge.types";
+import { TBadgeProps, TBadgeType } from "@/types/badge.types";
 import CheckIconSvg from "@/components/svg/CheckIconSvg";
 
 const badgeStyleMap: Record<
@@ -48,7 +48,7 @@ const badgeStyleMap: Record<
   },
 };
 
-const Badge = ({ type }: TBadgeProps) => {
+export default function Badge({ type }: TBadgeProps) {
   const { bg, text, textColor, iconSrc } = badgeStyleMap[type];
   const SmallBadge = type === "admin" || type === "user";
 
@@ -82,6 +82,4 @@ const Badge = ({ type }: TBadgeProps) => {
       </span>
     </div>
   );
-};
-
-export default Badge;
+}

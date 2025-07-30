@@ -9,7 +9,12 @@ const roleLabels: Record<TUserRole, string> = {
   ADMIN: "관리자",
 };
 
-const InviteMemberModal = ({ onCancel, onSubmit, mode = "invite", defaultValues }: TInviteMemberModalProps) => {
+export default function InviteMemberModal({
+  onCancel,
+  onSubmit,
+  mode = "invite",
+  defaultValues,
+}: TInviteMemberModalProps) {
   const [name, setName] = useState(defaultValues?.name ?? "");
   const [email, setEmail] = useState(defaultValues?.email ?? "");
   const [selectedRole, setSelectedRole] = useState<TUserRole>(defaultValues?.role ?? "USER");
@@ -290,6 +295,4 @@ const InviteMemberModal = ({ onCancel, onSubmit, mode = "invite", defaultValues 
       </div>
     </>
   );
-};
-
-export default InviteMemberModal;
+}
