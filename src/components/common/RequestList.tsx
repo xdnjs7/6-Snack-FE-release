@@ -34,7 +34,7 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
           <div className="font-bold text-zinc-500 text-base w-[168px] h-[40px] flex items-center">비고</div>
         </div>
       </div>
-      {orderRequests.map((request, i) => (
+      {orderRequests.map((request) => (
         <Fragment key={request.id}>
           <Mobile>
             <div className="border-b-[1px] border-primary-100">
