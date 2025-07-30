@@ -14,3 +14,8 @@ export type Product = {
   };
   creatorId: string;
 };
+
+/**
+ * @JJOBO
+ * 1. 앞에 T 붙이기
+ */
