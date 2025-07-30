@@ -28,7 +28,6 @@ export default function ProfilePasswordSection({
         autoComplete="new-password"
         placeholder="새로운 비밀번호를 입력하세요(선택)"
         {...passwordRegister}
-        // onChange 제거 - register의 onChange가 처리하도록
       />
 
       {/* 비밀번호 확인 */}
@@ -41,7 +40,6 @@ export default function ProfilePasswordSection({
         autoComplete="new-password"
         placeholder="비밀번호를 한번 더 입력해주세요"
         {...confirmPasswordRegister}
-        // onChange 제거 - register의 onChange가 처리하도록
       />
     </>
   );

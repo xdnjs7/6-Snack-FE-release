@@ -1,19 +1,31 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { updatePassword, updateSuper, updateCompany, Role } from "@/lib/api/profile.api";
 import { profileSchema, TProfileFormData } from "@/lib/schemas/profile.schema";
 import { useAuth } from "@/providers/AuthProvider";
 import ProfileField from "./ProfileField";
 import ProfilePasswordSection from "./ProfilePasswordSection";
 import ProfileSubmitButton from "./ProfileSubmitButton";
+import Toast from "@/components/common/Toast";
 
 export default function ProfileForm() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const router = useRouter();
+
+  // Toast 상태
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastVariant, setToastVariant] = useState<"success" | "error">("success");
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 성공 후 버튼 비활성화 상태
+  const [isSuccess, setIsSuccess] = useState(false);
 
   // 리액트 훅 폼 설정
   const {
@@ -31,7 +43,6 @@ export default function ProfileForm() {
   // 폼 값들 감시
   const company = watch("company");
   const password = watch("password");
-  const confirmPassword = watch("confirmPassword");
 
   // 변경사항 확인
   const hasCompanyChanged = Boolean(user?.role === Role.SUPER_ADMIN && company?.trim() !== (user?.company?.name || ""));
@@ -39,32 +50,21 @@ export default function ProfileForm() {
 
   const hasAnyChanges = hasCompanyChanged || hasPasswordChanged;
 
-  // 비밀번호 유효성 검사 - 별도로 처리
-  const isPasswordValid = !hasPasswordChanged || (
-    password && 
-    password.length >= 8 && 
-    /[a-zA-Z]/.test(password) && 
-    /[0-9]/.test(password) && 
-    /[^a-zA-Z0-9]/.test(password) &&
-    password === confirmPassword
-  );
+  // 폼 유효성 검사
+  const isFormValid = Boolean(hasAnyChanges && isValid);
 
-  // 폼 유효성 검사 - 조건부로 처리
-  const isFormValid = Boolean(hasAnyChanges && (
-    hasCompanyChanged ? isValid : isPasswordValid
-  ));
+  // Toast 표시 함수
+  const showToast = (message: string, variant: "success" | "error") => {
+    // 기존 타이머가 있다면 클리어
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
 
-  // 디버깅용 로그 추가
-  console.log({
-    hasCompanyChanged,
-    hasPasswordChanged,
-    hasAnyChanges,
-    isPasswordValid,
-    isValid,
-    password,
-    confirmPassword,
-    errors: Object.keys(errors),
-  });
+    setToastMessage(message);
+    setToastVariant(variant);
+    setToastVisible(true);
+    timerRef.current = setTimeout(() => setToastVisible(false), 3000);
+  };
 
   // Profile 업데이트 Mutation
   const updateProfile = useMutation({
@@ -81,16 +81,37 @@ export default function ProfileForm() {
         }
       }
     },
-    onSuccess: () => {
-      // 성공 시 폼 초기화
+    onSuccess: (data, variables) => {
+      // 성공 상태 설정
+      setIsSuccess(true);
+
+      // 성공 시 처리
+      if (user?.role === Role.SUPER_ADMIN) {
+        if (hasCompanyChanged && !variables.password) {
+          showToast("회사명이 변경되었습니다.", "success");
+        } else if (variables.password) {
+          showToast("정보가 변경되었습니다.", "success");
+        }
+      } else {
+        if (variables.password) {
+          showToast("비밀번호가 변경되었습니다.", "success");
+        }
+      }
+
+      // 폼 초기화
       setValue("password", "");
       setValue("confirmPassword", "");
 
       // 캐시 무효화
       queryClient.invalidateQueries({ queryKey: ["user"] });
+
+      setTimeout(() => {
+        router.push("/products");
+      }, 1000);
     },
     onError: (error: Error) => {
-      console.error("업데이트 실패:", error.message);
+      const errorMessage = error.message || "업데이트 실패";
+      showToast(errorMessage, "error");
     },
   });
 
@@ -104,6 +125,15 @@ export default function ProfileForm() {
       });
     }
   }, [user, reset]);
+
+  // 타이머 언마운트 시 클린업
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   // 권한 라벨 함수
   const getRoleLabel = (role: Role | null) => {
@@ -122,7 +152,7 @@ export default function ProfileForm() {
   // 제출 핸들러
   const onSubmit = async (data: TProfileFormData) => {
     if (!isFormValid) {
-      console.log("폼이 유효하지 않습니다:", errors);
+      showToast("입력 정보를 확인해주세요.", "error");
       return;
     }
 
@@ -130,55 +160,64 @@ export default function ProfileForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="w-full sm:w-[600px] sm:px-14 sm:rounded-sm sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] sm:outline-offset-[-1px] py-10 inline-flex flex-col justify-center items-start gap-5"
-    >
-      <div>
-        <div className="text-center justify-center text-xl font-bold font-suit">내 프로필 변경</div>
-      </div>
+    <>
+      <Toast
+        text={toastMessage}
+        variant={toastVariant}
+        isVisible={toastVisible}
+        onClose={() => setToastVisible(false)}
+      />
 
-      <div className="self-stretch flex flex-col justify-start items-center gap-6">
-        <div className="self-stretch flex flex-col justify-start items-start gap-7">
-          <div className="self-stretch flex flex-col justify-start items-start gap-8">
-            <div className="self-stretch flex flex-col justify-start items-start gap-5">
-              {/* 기업명 */}
-              <ProfileField
-                label="기업명"
-                {...register("company")}
-                isEditable={user?.role === Role.SUPER_ADMIN}
-                role={user?.role}
-                type="input"
-                error={errors.company?.message}
-              />
-
-              {/* 권한 */}
-              <ProfileField label="권한" value={getRoleLabel(user?.role as Role)} type="display" />
-
-              {/* 이름 */}
-              <ProfileField label="이름" value={user?.name || ""} type="display" />
-
-              {/* 이메일 */}
-              <ProfileField label="이메일" value={user?.email || ""} type="display" />
-
-              {/* 비밀번호 섹션 */}
-              <ProfilePasswordSection
-                passwordRegister={register("password")}
-                confirmPasswordRegister={register("confirmPassword")}
-                passwordError={errors.password?.message}
-                confirmPasswordError={errors.confirmPassword?.message}
-              />
-            </div>
-          </div>
-
-          {/* 제출 버튼 */}
-          <ProfileSubmitButton
-            isFormValid={isFormValid}
-            isSubmitting={updateProfile.isPending}
-            onSubmit={handleSubmit(onSubmit)}
-          />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full sm:w-[600px] sm:px-14 sm:rounded-sm sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] sm:outline-offset-[-1px] py-10 inline-flex flex-col justify-center items-start gap-5"
+      >
+        <div>
+          <div className="text-center justify-center text-xl font-bold font-suit">내 프로필 변경</div>
         </div>
-      </div>
-    </form>
+
+        <div className="self-stretch flex flex-col justify-start items-center gap-6">
+          <div className="self-stretch flex flex-col justify-start items-start gap-7">
+            <div className="self-stretch flex flex-col justify-start items-start gap-8">
+              <div className="self-stretch flex flex-col justify-start items-start gap-5">
+                {/* 기업명 */}
+                <ProfileField
+                  label="기업명"
+                  {...register("company")}
+                  isEditable={user?.role === Role.SUPER_ADMIN}
+                  role={user?.role}
+                  type="input"
+                  error={errors.company?.message}
+                />
+
+                {/* 권한 */}
+                <ProfileField label="권한" value={getRoleLabel(user?.role as Role)} type="display" />
+
+                {/* 이름 */}
+                <ProfileField label="이름" value={user?.name || ""} type="display" />
+
+                {/* 이메일 */}
+                <ProfileField label="이메일" value={user?.email || ""} type="display" />
+
+                {/* 비밀번호 섹션 */}
+                <ProfilePasswordSection
+                  passwordRegister={register("password")}
+                  confirmPasswordRegister={register("confirmPassword")}
+                  passwordError={errors.password?.message}
+                  confirmPasswordError={errors.confirmPassword?.message}
+                />
+              </div>
+            </div>
+
+            {/* 제출 버튼 */}
+            <ProfileSubmitButton
+              isFormValid={isFormValid && !isSuccess}
+              isSubmitting={updateProfile.isPending}
+              onSubmit={handleSubmit(onSubmit)}
+            />
+          </div>
+        </div>
+      </form>
+    </>
   );
 }
