@@ -32,8 +32,8 @@ export default function ProfileComponent() {
     confirmPassword.length > 0 && confirmPassword.length < 8
       ? "비밀번호는 8자 이상이어야 합니다."
       : password !== confirmPassword && confirmPassword.length > 0
-        ? "비밀번호가 일치하지 않습니다."
-        : "";
+      ? "비밀번호가 일치하지 않습니다."
+      : "";
 
   useEffect(() => {
     (async () => {
@@ -103,7 +103,7 @@ export default function ProfileComponent() {
           <div className="self-stretch flex flex-col justify-start items-start gap-8">
             <div className="self-stretch flex flex-col justify-start items-start gap-5">
               {/* 기업명 */}
-              <div className="self-stretch flex flex-col gap-1">
+            <div className="self-stretch flex flex-col gap-1">
                 <label className="text-primary-600 text-xs">기업명</label>
                 <input
                   className={`w-full border-b py-2 text-base outline-none ${
