@@ -7,8 +7,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
-import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
-import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
 import { superAdminSignUpApi } from "@/lib/api/superAdmin.api";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
@@ -40,7 +38,6 @@ type TSignUpFormData = z.infer<typeof signUpSchema>;
 export default function SuperAdminSignUpPage() {
   const router = useRouter();
 
-  const [error, setError] = useState<string | null>(null);
   const [toastVisible, setToastVisible] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
   const [toastVariant, setToastVariant] = useState<ToastVariant>("success");
@@ -48,7 +45,6 @@ export default function SuperAdminSignUpPage() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting, isValid },
   } = useForm<TSignUpFormData>({
     resolver: zodResolver(signUpSchema),
@@ -77,7 +73,6 @@ export default function SuperAdminSignUpPage() {
 
   // 회원가입 처리
   const onSubmit = async (data: TSignUpFormData) => {
-    setError(null);
     try {
       await superAdminSignUpApi(data);
       showToast("회원가입이 성공했습니다!", "success");
@@ -88,7 +83,6 @@ export default function SuperAdminSignUpPage() {
     } catch (error) {
       const message = error instanceof Error ? error.message : "회원가입에 실패했습니다.";
       showToast(message, "error");
-      setError(message);
     }
   };
 

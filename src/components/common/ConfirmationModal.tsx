@@ -1,4 +1,4 @@
-import React, { FC, useRef } from "react";
+import React, { useRef } from "react";
 import XIconSvg from "@/components/svg/XIconSvg";
 
 type TConfirmationModalProps = {
