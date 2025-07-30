@@ -88,10 +88,10 @@ export default function OrderManageDetailPage() {
           leftButtonText="홈으로"
           rightButtonText="구매 요청 내역 보기"
           onLeftClick={() => {
-            router.push("/order-manage");
+            router.push("/products");
           }}
           onRightClick={() => {
-            router.push("/products");
+            router.push("/order-manage");
           }}
         />,
       );
