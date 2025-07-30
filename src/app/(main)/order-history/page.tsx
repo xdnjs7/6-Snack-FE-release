@@ -109,7 +109,7 @@ const OrderHistoryPage = () => {
                   <div className="justify-center text-neutral-800 text-xs font-normal font-['SUIT']">
                     {safeBudgetData && safeBudgetData.currentMonthBudget > 0
                       ? `${Math.max(1, Math.round((safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100))}%`
-                      : "74%"}
+                      : "0%"}
                   </div>
                 </div>
               </div>
@@ -370,7 +370,7 @@ const OrderHistoryPage = () => {
                 <div className="justify-center text-neutral-800 text-sm font-normal font-['SUIT']">
                   {safeBudgetData && safeBudgetData.currentMonthBudget > 0
                     ? `${Math.max(1, Math.round((safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100))}%`
-                    : "74%"}
+                    : "0%"}
                 </div>
               </div>
             </div>
@@ -640,7 +640,7 @@ const OrderHistoryPage = () => {
                 <div className="justify-center text-neutral-800 text-sm font-normal font-['SUIT']">
                   {safeBudgetData && safeBudgetData.currentMonthBudget > 0
                     ? `${Math.max(1, Math.round((safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100))}%`
-                    : "74%"}
+                    : "0%"}
                 </div>
               </div>
             </div>
