@@ -8,19 +8,20 @@ import { useRouter } from "next/navigation";
 import { updatePassword, updateSuper, updateCompany, Role } from "@/lib/api/profile.api";
 import { profileSchema, TProfileFormData } from "@/lib/schemas/profile.schema";
 import { useAuth } from "@/providers/AuthProvider";
+import { TUser } from "@/types/auth.types";
 import ProfileField from "./ProfileField";
 import ProfilePasswordSection from "./ProfilePasswordSection";
 import ProfileSubmitButton from "./ProfileSubmitButton";
 import Toast from "@/components/common/Toast";
 
 export default function ProfileForm() {
-  const { user } = useAuth();
+  const { user }: { user: TUser | null } = useAuth();
   const queryClient = useQueryClient();
   const router = useRouter();
 
   // Toast 상태
-  const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastVisible, setToastVisible] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>("");
   const [toastVariant, setToastVariant] = useState<"success" | "error">("success");
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -69,7 +70,11 @@ export default function ProfileForm() {
   // Profile 업데이트 Mutation
   const updateProfile = useMutation({
     mutationFn: async (data: TProfileFormData) => {
-      if (user?.role === Role.SUPER_ADMIN) {
+      if (!user) {
+        throw new Error("사용자 정보를 찾을 수 없습니다.");
+      }
+
+      if (user.role === Role.SUPER_ADMIN) {
         if (hasCompanyChanged && !data.password) {
           return await updateCompany(user.id, data.company!.trim());
         } else if (data.password) {
@@ -77,7 +82,7 @@ export default function ProfileForm() {
         }
       } else {
         if (data.password) {
-          return await updatePassword(user!.id, data.password);
+          return await updatePassword(user.id, data.password);
         }
       }
     },
