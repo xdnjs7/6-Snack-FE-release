@@ -246,8 +246,6 @@ export default function ProductRegistrationForm({
             {...register("productName", { required: "상품명을 입력해주세요" })}
             placeholder="상품명을 입력해주세요"
             label="상품명"
-            // @ts-expect-error Input 컴포넌트에 hasValue prop이 타입에 정의되어 있지 않음
-            hasValue={!!watchedValues.productName}
           />
           {errors.productName && <p className="text-red-500 text-sm mt-1">{errors.productName.message}</p>}
         </div>
@@ -265,8 +263,6 @@ export default function ProductRegistrationForm({
             })}
             placeholder="가격을 입력해주세요"
             label="가격"
-            // @ts-expect-error Input 컴포넌트에 hasValue prop이 타입에 정의되어 있지 않음
-            hasValue={!!watchedValues.price}
           />
           {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>}
         </div>
@@ -284,8 +280,6 @@ export default function ProductRegistrationForm({
             })}
             placeholder="제품 링크를 입력해주세요"
             label="제품 링크"
-            // @ts-expect-error Input 컴포넌트에 hasValue prop이 타입에 정의되어 있지 않음
-            hasValue={!!watchedValues.productLink}
           />
           {errors.productLink && <p className="text-red-500 text-sm mt-1">{errors.productLink.message}</p>}
         </div>
