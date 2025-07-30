@@ -36,7 +36,7 @@ export default function Input(
 
   // value가 제어되는지 확인
   const isControlled = value !== undefined;
-  let inputValue = isControlled ? value : internalValue;
+  const inputValue = isControlled ? value : internalValue;
 
   const hasValue = Boolean(inputValue);
 
@@ -105,8 +105,7 @@ export default function Input(
           {/* Input */}
           <input
             {...props}
-            ref={(props.inputRef // explicit prop
-              ?? (props as any).ref) as React.Ref<HTMLInputElement>}
+            ref={props.inputRef ?? props.ref}
             type={actualType}
             value={inputValue}
             onChange={handleChange}

@@ -82,7 +82,7 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
   });
 
   // 모든 아이템을 파싱
-  const allPurchaseItems: TPurchaseItem[] = ((approvedData as any)?.orders || []).map((item: OrderItem) => parse(item));
+  const allPurchaseItems: TPurchaseItem[] = ((approvedData as { orders?: OrderItem[] })?.orders || []).map((item: OrderItem) => parse(item));
 
   // 클라이언트 사이드에서 정렬 처리
   const sortedItems = useCallback(() => {

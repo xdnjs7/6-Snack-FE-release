@@ -17,7 +17,7 @@ import Card from "@/components/ui/Card";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 import SearchBar from "@/components/ui/SearchBar";
 import Badge from "@/components/ui/Badge";
-import SubCategoryMenu from "@/components/common/SubCategoryMenu";
+//import SubCategoryMenu from "@/components/common/SubCategoryMenu";
 import SideMenu from "@/components/common/SideMenu";
 import Pagination from "@/components/common/Pagination";
 import OrderManageModal from "@/components/common/OrderManageModal";
@@ -345,34 +345,6 @@ export default function ComponentsPreviewPage() {
 
       <p className="mb-4 font-bold text-xl bg-violet-100">장원빈</p>
       <div className="rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] p-6">
-        <div className="space-y-4 mb-4">
-          <h2 className="text-lg font-semibold bg-blue-100">SubCategoryMenu 컴포넌트</h2>
-          <div className="h-96 border border-gray-200 rounded-lg overflow-hidden">
-            <SubCategoryMenu
-              categories={[
-                {
-                  id: 1,
-                  name: "스낵",
-                  children: [
-                    { id: 11, name: "과자", parentId: 1, href: "/products/snack/cookies" },
-                    { id: 12, name: "쿠키", parentId: 1, href: "/products/snack/cookies" },
-                    { id: 13, name: "파이", parentId: 1, href: "/products/snack/pie" },
-                  ],
-                },
-                {
-                  id: 2,
-                  name: "음료",
-                  children: [
-                    { id: 21, name: "청량/탄산음료", parentId: 2, href: "/products/beverage/soda" },
-                    { id: 22, name: "과즙음료", parentId: 2, href: "/products/beverage/juice" },
-                  ],
-                },
-              ]}
-              currentPath="/preview"
-              onItemClick={(item) => console.log("Clicked:", item)}
-            />
-          </div>
-        </div>
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">SideMenu 컴포넌트</h2>

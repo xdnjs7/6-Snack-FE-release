@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
-import { TInviteMemberModalProps, Role, UserRole } from "@/types/InviteMemberModal.types";
+import { TInviteMemberModalProps, UserRole } from "@/types/InviteMemberModal.types";
 import { sendInvite } from "@/lib/api/invite.api";
 import { getUserApi } from "@/lib/api/user.api";
 
@@ -39,15 +39,15 @@ export default function InviteMemberModal({
         });
 
         if (!res.ok) {
-          const errorBody = await res.text();
           throw new Error("권한 수정 실패");
         }
 
         const data = await res.json();
         alert(data.message || "권한이 성공적으로 변경되었습니다.");
         onSubmit?.({ name, email, role: selectedRole });
-      } catch (err: any) {
-        alert(err.message || "권한 수정 중 오류 발생");
+      } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : "권한 수정 중 오류 발생";
+        alert(errorMessage);
       }
     } else {
       // 초대 모드일 때
@@ -80,8 +80,9 @@ export default function InviteMemberModal({
         
         onSubmit?.({ name, email, role: selectedRole });
         onCancel?.();
-      } catch (err: any) {
-        alert(err.message || "초대 발송 중 오류가 발생했습니다.");
+      } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : "초대 발송 중 오류가 발생했습니다.";
+        alert(errorMessage);
       }
     }
   };
