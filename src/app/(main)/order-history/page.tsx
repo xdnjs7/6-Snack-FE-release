@@ -192,7 +192,8 @@ const OrderHistoryPage = () => {
                   <div className="flex justify-start items-center gap-2">
                     <button
                       onClick={() => handleProductClick(item.id)}
-                      className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT'] cursor-pointer hover:text-blue-600 transition-colors"
+                      className="text-blue-600 underline cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none"
+                      type="button"
                     >
                       {item.item}
                     </button>
@@ -421,7 +422,8 @@ const OrderHistoryPage = () => {
                   <div className="flex justify-start items-center gap-2">
                     <button
                       onClick={() => handleProductClick(item.id)}
-                      className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT'] cursor-pointer hover:text-blue-600 transition-colors"
+                      className="text-blue-600 underline cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none"
+                      type="button"
                     >
                       {item.item}
                     </button>
@@ -724,7 +726,8 @@ const OrderHistoryPage = () => {
                     <div className="w-44 inline-flex flex-col justify-center items-start gap-1">
                       <button
                         onClick={() => handleProductClick(item.id)}
-                        className="justify-start text-neutral-800 text-base font-normal font-['SUIT'] cursor-pointer hover:text-blue-600 transition-colors"
+                        className="text-blue-600 underline cursor-pointer text-base font-normal font-['SUIT'] bg-transparent border-none p-0 focus:outline-none"
+                        type="button"
                       >
                         {item.item}
                       </button>
