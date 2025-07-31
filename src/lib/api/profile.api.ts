@@ -1,19 +1,12 @@
 import { cookieFetch } from "./fetchClient.api";
 
-/**
- * @wooju01
- * 1. 인터페이스 -> 타입으로 변경
- * 2. 앞에 T 붙이기.......
- * 우주님 타입 컨벤션 뭐예요~~~~~~ㅡㅡ!!!
- */
-
 export enum Role {
   USER = "USER",
   ADMIN = "ADMIN",
   SUPER_ADMIN = "SUPER_ADMIN",
 }
 
-export interface UserInfo {
+export type TUserInfo = {
   id: string;
   name: string;
   email: string;
@@ -21,11 +14,11 @@ export interface UserInfo {
   company: {
     name: string;
   };
-}
+};
 
-export async function getUserInfo(): Promise<UserInfo> {
+export async function getUserInfo(): Promise<TUserInfo> {
   const response = await cookieFetch("/users/me");
-  return (response as { user: UserInfo }).user;
+  return (response as { user: TUserInfo }).user;
 }
 
 export async function updateCompany(userId: string, company: string) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { getMyOrderDetail, TMyOrderDetail, TReceipt } from "@/lib/api/orderHistory.api";
@@ -37,6 +37,8 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
     variant: "error",
   });
 
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     const fetchOrderDetail = async (): Promise<void> => {
       try {
@@ -57,6 +59,15 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
       fetchOrderDetail();
     }
   }, [orderId]);
+
+  // 타이머 언마운트 시 클린업
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   const getStatusText = (status: string): string => {
     const statusTextMap: TStatusTextMap = {
@@ -95,15 +106,15 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
       variant,
     });
 
+    // 기존 타이머가 있다면 정리
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
     // 3초 후 자동으로 숨기기
-    setTimeout(() => {
+    timerRef.current = setTimeout(() => {
       setToast((prev) => ({ ...prev, isVisible: false }));
     }, 3000);
-  };
-
-  // Toast 닫기 함수
-  const closeToast = () => {
-    setToast((prev) => ({ ...prev, isVisible: false }));
   };
 
   // 장바구니에 상품 추가하는 API 함수
@@ -174,8 +185,7 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
   return (
     <div className="min-h-screen bg-white">
       {/* Toast */}
-      <Toast text={toast.text} variant={toast.variant} isVisible={toast.isVisible} onClose={closeToast} />
-
+      <Toast text={toast.text} variant={toast.variant} isVisible={toast.isVisible} />
       {/* Main Content */}
       <div className="w-full max-w-7xl mx-auto pt-[30px] flex flex-col justify-start items-start gap-[23px]">
         <div className="self-stretch justify-center text-gray-950 text-lg font-bold font-['SUIT']">구매 요청 내역</div>
