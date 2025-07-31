@@ -123,7 +123,7 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
 
               <div className="flex justify-between items-center w-full">
                 <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-950 sm:text-[18px]/[22px]">
-                  구매 후 남는 예산 금액
+                  구매 후 예산 금액
                 </p>
                 <p
                   className={clsx(
