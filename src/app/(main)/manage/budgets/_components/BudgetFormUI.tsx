@@ -2,7 +2,7 @@
 
 import React from "react";
 import Toast from "@/components/common/Toast";
-import { ToastVariant } from "@/types/toast.types";
+import { TToastVariant } from "@/types/toast.types";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 interface BudgetFormUIProps {
@@ -29,10 +29,10 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
 }) => {
   const [toastVisible, setToastVisible] = React.useState<boolean>(false);
   const [toastMessage, setToastMessage] = React.useState<string>("");
-  const [toastVariant, setToastVariant] = React.useState<ToastVariant>("success");
+  const [toastVariant, setToastVariant] = React.useState<TToastVariant>("success");
 
   // Toast를 보여주는 함수
-  const showToast = (message: string, variant: ToastVariant = "success") => {
+  const showToast = (message: string, variant: TToastVariant = "success") => {
     setToastMessage(message);
     setToastVariant(variant);
     setToastVisible(true);
