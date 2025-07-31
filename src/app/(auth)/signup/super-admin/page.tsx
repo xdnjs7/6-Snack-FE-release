@@ -16,7 +16,7 @@ import { ToastVariant } from "@/types/toast.types";
 const signUpSchema = z
   .object({
     email: z.string().email("유효한 이메일을 입력해주세요."),
-    name: z.string().min(1, "이름을 입력해주세요."),
+    name: z.string().min(1, "이름 (기업 담당자)을 입력해주세요"),
     companyName: z.string().min(1, "회사명을 입력해주세요."),
     bizNumber: z.string().regex(/^[0-9]{10}$/, "사업자 번호 10자리를 입력해주세요."),
     password: z
@@ -108,7 +108,7 @@ export default function SuperAdminSignUpPage() {
           </div>
           <div className="sm:hidden">
             <div className="flex flex-col items-start justify-center gap-[10px]">
-              <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle ">
+              <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle">
                 {/* 기업 담당자 회원가입 */}
                 기업 담당자 회원가입
               </h1>
@@ -133,15 +133,13 @@ export default function SuperAdminSignUpPage() {
             </div>
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full mb-[8px] gap-[20px]">
-
-
             {/* 이름 입력 필드 */}
             <Input
               {...nameReg}
               inputRef={nameReg.ref}
               type="text"
               label="이름"
-              placeholder="이름을 입력해주세요."
+              placeholder="이름 (기업 담당자)을 입력해주세요."
               error={errors.name?.message}
             />
 
