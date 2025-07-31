@@ -188,7 +188,7 @@ export default function CartPage() {
                 onClick={handleRequestOrder}
                 disabled={isDisabled}
                 type="black"
-                label={isDisabled ? "잠시만 기다려주세요..." : "구매 요청"}
+                label={isDisabled ? "잠시만 기다려주세요..." : user?.role !== "USER" ? "구매하기" : "구매 요청"}
                 className={clsx(
                   isDisabled && "text-primary-300 bg-primary-100 cursor-default",
                   "w-full h-[64px] font-bold tracking-tight",
