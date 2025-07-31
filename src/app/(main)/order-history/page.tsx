@@ -100,16 +100,15 @@ const OrderHistoryPage = () => {
                     <div
                       className="h-1.5 bg-blue-500 rounded-md"
                       style={{
-                        width: `${
-                          safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                            ? Math.max(
-                                1,
-                                Math.round(
-                                  (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
-                                ),
-                              )
-                            : 0
-                        }%`,
+                        width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
+                          ? Math.max(
+                            1,
+                            Math.round(
+                              (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
+                            ),
+                          )
+                          : 0
+                          }%`,
                       }}
                     />
                   </div>
@@ -138,8 +137,8 @@ const OrderHistoryPage = () => {
                 작년보다{" "}
                 {safeBudgetData
                   ? formatPrice(
-                      Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
-                    )
+                    Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
+                  )
                   : "0"}
                 원<br />
                 {safeBudgetData && safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense > 0
@@ -150,7 +149,7 @@ const OrderHistoryPage = () => {
 
             {/* Mobile Budget Details Box */}
             {isHovered && (
-              <div className="w-64 p-6 left-[44%] transform -translate-x-1/2 top-36 absolute bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
+              <div className="w-70 p-6 left-[42%] transform -translate-x-1/2 top-36.5 absolute bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
                 <div className="inline-flex justify-start items-center gap-2">
                   <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
                     이번 달 남은 예산:
@@ -191,7 +190,7 @@ const OrderHistoryPage = () => {
                   <div className="flex justify-start items-center gap-2">
                     <button
                       onClick={() => handleProductClick(item.id)}
-                      className="text-blue-600 underline cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none"
+                      className="text-blue-600 cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis max-w-32"
                       type="button"
                     >
                       {item.item}
@@ -201,7 +200,7 @@ const OrderHistoryPage = () => {
                     </div>
                   </div>
                   <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
-                    {item.amount}원
+                    {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
                   </div>
                 </div>
                 <div className="self-stretch flex flex-col justify-center items-start">
@@ -370,16 +369,15 @@ const OrderHistoryPage = () => {
                   <div
                     className="h-1.5 bg-blue-500 rounded-md"
                     style={{
-                      width: `${
-                        safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                          ? Math.max(
-                              1,
-                              Math.round(
-                                (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
-                              ),
-                            )
-                          : 0
-                      }%`,
+                      width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
+                        ? Math.max(
+                          1,
+                          Math.round(
+                            (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
+                          ),
+                        )
+                        : 0
+                        }%`,
                     }}
                   />
                 </div>
@@ -407,8 +405,8 @@ const OrderHistoryPage = () => {
                 작년보다{" "}
                 {safeBudgetData
                   ? formatPrice(
-                      Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
-                    )
+                    Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
+                  )
                   : "0"}
                 원<br />
                 {safeBudgetData && safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense > 0
@@ -426,7 +424,7 @@ const OrderHistoryPage = () => {
                   <div className="flex justify-start items-center gap-2">
                     <button
                       onClick={() => handleProductClick(item.id)}
-                      className="text-blue-600 underline cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none"
+                      className="text-blue-600 cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis max-w-48"
                       type="button"
                     >
                       {item.item}
@@ -436,7 +434,7 @@ const OrderHistoryPage = () => {
                     </div>
                   </div>
                   <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
-                    {item.amount}원
+                    {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
                   </div>
                 </div>
                 <div className="self-stretch flex flex-col justify-center items-start">
@@ -549,7 +547,7 @@ const OrderHistoryPage = () => {
 
           {/* Tablet Budget Details Hover Box */}
           {isHovered && (
-            <div className="w-64 p-6 absolute left-[54.5%] transform -translate-x-1/2 top-[264px] bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
+            <div className="w-74 p-6 absolute left-[56%] transform -translate-x-1/2 top-60.5 bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
               <div className="inline-flex justify-start items-center gap-1">
                 <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
                   이번 달 남은 예산:
@@ -649,16 +647,15 @@ const OrderHistoryPage = () => {
                   <div
                     className="h-1.5 bg-blue-500 rounded-md"
                     style={{
-                      width: `${
-                        safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                          ? Math.max(
-                              1,
-                              Math.round(
-                                (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
-                              ),
-                            )
-                          : 0
-                      }%`,
+                      width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
+                        ? Math.max(
+                          1,
+                          Math.round(
+                            (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
+                          ),
+                        )
+                        : 0
+                        }%`,
                     }}
                   />
                 </div>
@@ -687,8 +684,8 @@ const OrderHistoryPage = () => {
                 <br />
                 {safeBudgetData
                   ? formatPrice(
-                      Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
-                    )
+                    Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
+                  )
                   : "0"}
                 원{" "}
                 {safeBudgetData && safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense > 0
@@ -735,7 +732,7 @@ const OrderHistoryPage = () => {
                     <div className="w-44 inline-flex flex-col justify-center items-start gap-1">
                       <button
                         onClick={() => handleProductClick(item.id)}
-                        className="text-blue-600 underline cursor-pointer text-base font-normal font-['SUIT'] bg-transparent border-none p-0 focus:outline-none"
+                        className="text-blue-600 cursor-pointer text-base font-normal font-['SUIT'] bg-transparent border-none p-0 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis max-w-44"
                         type="button"
                       >
                         {item.item}
@@ -743,7 +740,7 @@ const OrderHistoryPage = () => {
                       <div className="justify-start text-zinc-500 text-sm font-normal font-['SUIT']">총 수량 4개</div>
                     </div>
                     <div className="w-32 justify-start text-neutral-800 text-base font-normal font-['SUIT']">
-                      {item.amount}원
+                      {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
                     </div>
                     <div className="flex justify-start items-center gap-5">
                       <div className="w-32 justify-start text-neutral-800 text-base font-normal font-['SUIT']">
@@ -798,7 +795,7 @@ const OrderHistoryPage = () => {
 
           {/* Desktop Budget Details Hover Box */}
           {isHovered && (
-            <div className="w-64 p-6 absolute left-[46%] transform -translate-x-1/2 top-[256px] bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
+            <div className="w-74 p-6 absolute left-[46.5%] transform -translate-x-1/2 top-54.5 bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
               <div className="inline-flex justify-start items-center gap-1">
                 <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
                   이번 달 남은 예산:

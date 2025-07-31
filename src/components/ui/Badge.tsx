@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Image, { StaticImageData } from "next/image";
 import XIconSvg from "@/components/svg/XIconSvg";
 import IcPending from "@/assets/icons/ic_time.svg";
-import { TBadgeProps, TBadgeType } from "@/types/badge.types";
+import { TBadgeProps, TBadgeType } from "@/types/Badge.types";
 import CheckIconSvg from "@/components/svg/CheckIconSvg";
 
 const badgeStyleMap: Record<
