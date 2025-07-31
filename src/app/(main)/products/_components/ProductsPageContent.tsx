@@ -111,7 +111,7 @@ export default function ProductsPageContent() {
           <CategoryNavigation parentCategory={selectedCategory?.parent} childCategory={selectedCategory?.child} />
           {/* 정렬, 상품등록 버튼 wrapper */}
           <div className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5 border-b border-primary-100 sm:border-0">
-            <Dropdown options={sortOptions.map((option) => option.label)} onChange={handleSortChange} />
+            <Dropdown options={sortOptions.map((option) => option.label)} onChange={handleSortChange}/>
             <Button
               type="black"
               label={
@@ -121,7 +121,7 @@ export default function ProductsPageContent() {
                 </div>
               }
               onClick={handleProductRegistration}
-              className="h-[44px] py-[10px]"
+              className="h-[44px] py-[10px] rounded"
             />
           </div>
         </div>
