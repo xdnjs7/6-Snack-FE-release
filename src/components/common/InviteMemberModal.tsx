@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
-import { TInviteMemberModalProps, UserRole } from "@/types/InviteMemberModal.types";
+import { TInviteMemberModalProps, TUserRole } from "@/types/inviteMemberModal.types";
 import { sendInvite } from "@/lib/api/invite.api";
 import { getUserApi } from "@/lib/api/user.api";
 
-const roleLabels: Record<UserRole, string> = {
+const roleLabels: Record<TUserRole, string> = {
   USER: "유저",
   ADMIN: "관리자",
 };
@@ -17,7 +17,7 @@ export default function InviteMemberModal({
 }: TInviteMemberModalProps) {
   const [name, setName] = useState(defaultValues?.name ?? "");
   const [email, setEmail] = useState(defaultValues?.email ?? "");
-  const [selectedRole, setSelectedRole] = useState<UserRole>(defaultValues?.role ?? "USER");
+  const [selectedRole, setSelectedRole] = useState<TUserRole>(defaultValues?.role ?? "USER");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleSubmit = async () => {
@@ -59,7 +59,7 @@ export default function InviteMemberModal({
 
         // 현재 사용자 정보 가져오기
         const currentUser = await getUserApi();
-        
+
         // 초대 API 호출
         const inviteData = {
           email,
@@ -67,17 +67,17 @@ export default function InviteMemberModal({
           role: selectedRole,
           companyId: currentUser.company.id,
           invitedById: currentUser.id,
-          expiresInDays: 7
+          expiresInDays: 7,
         };
 
         const result = await sendInvite(inviteData);
-        
+
         if (result.emailSent) {
           alert("초대 이메일이 성공적으로 발송되었습니다.");
         } else {
           alert("초대 링크는 생성되었지만 이메일 발송에 실패했습니다.");
         }
-        
+
         onSubmit?.({ name, email, role: selectedRole });
         onCancel?.();
       } catch (err: unknown) {
@@ -143,7 +143,7 @@ export default function InviteMemberModal({
                           key={role}
                           className="px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-neutral-800 text-base font-normal font-['SUIT']"
                           onClick={() => {
-                            setSelectedRole(role as UserRole);
+                            setSelectedRole(role as TUserRole);
                             setIsDropdownOpen(false);
                           }}
                         >
@@ -256,7 +256,7 @@ export default function InviteMemberModal({
                       key={role}
                       className="self-stretch h-12 pl-4 pr-5 py-2 inline-flex justify-start items-center gap-1 cursor-pointer hover:bg-gray-50"
                       onClick={() => {
-                        setSelectedRole(role as UserRole);
+                        setSelectedRole(role as TUserRole);
                         setIsDropdownOpen(false);
                       }}
                     >

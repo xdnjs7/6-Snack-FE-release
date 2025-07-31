@@ -34,7 +34,7 @@ export type TOrderedItem = {
   receipt: TReceipt;
 };
 
-export type TUser = {
+export type TOrderUser = {
   id: string;
   email: string;
   name: string;
@@ -58,7 +58,7 @@ export type TMyOrderDetail = {
   createdAt: string;
   updatedAt: string;
   status: "PENDING" | "APPROVED" | "REJECTED" | "CANCELED";
-  user: TUser;
+  user: TOrderUser;
   receipts: TReceipt[];
 };
 
