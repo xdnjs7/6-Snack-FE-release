@@ -97,7 +97,7 @@ export default function SuperAdminSignUpPage() {
       />
 
       {/* top parent */}
-      <div className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[48px] sm:pt-[160px]">
+      <div className="sm:relative flex flex-col items-center justify-center gap-[28px] sm:gap-0 pt-[48px] sm:pt-[160px]">
         {/* mobile */}
         {/* logo + intro */}
         <div className="sm:absolute sm:top-0 flex flex-col items-center justify-center w-full max-w-[480px] sm:max-w-[600px]">
@@ -107,13 +107,13 @@ export default function SuperAdminSignUpPage() {
             </Link>
           </div>
           <div className="sm:hidden">
-            <div className="flex flex-col items-start justify-center gap-[10px]">
+            <div className="flex flex-col items-center justify-center gap-[10px]">
               <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle">
                 {/* 기업 담당자 회원가입 */}
                 기업 담당자 회원가입
               </h1>
               <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
-                * 그룹 내 유저는 기업 담당자의 초대 메일을 통해 가입이 가능합니다.
+                * 그룹 내 유저는 기업 담당자의<br />초대 메일을 통해 가입이 가능합니다.
               </p>
             </div>
           </div>
