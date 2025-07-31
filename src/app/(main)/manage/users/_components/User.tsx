@@ -61,7 +61,7 @@ export default function User() {
         email: data.email,
         name: data.name,
         role: data.role,
-        companyId: currentUser.company.id,
+        companyId: Number(currentUser.company?.id) || 0,
         invitedById: currentUser.id,
         expiresInDays: 7,
       };
