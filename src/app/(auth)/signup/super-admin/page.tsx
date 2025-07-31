@@ -15,17 +15,17 @@ import { ToastVariant } from "@/types/toast.types";
 // 리액트 훅폼에 연결할 zod 스키마 정의
 const signUpSchema = z
   .object({
-    email: z.string().email("유효한 이메일을 입력해주세요."),
-    name: z.string().min(1, "이름 (기업 담당자)을 입력해주세요"),
+    email: z.string().email("유효한 이메일이 아닙니다."),
+    name: z.string().min(1, "이름을 입력해주세요"),
     companyName: z.string().min(1, "회사명을 입력해주세요."),
-    bizNumber: z.string().regex(/^[0-9]{10}$/, "사업자 번호 10자리를 입력해주세요."),
+    bizNumber: z.string().regex(/^[0-9]{10}$/, "사업자 번호를 입력해주세요."),
     password: z
-      .string()
+      .string("비밀번호를 입력해주세요.")
       .min(8, "8자 이상 입력해주세요.")
       .regex(/[a-zA-Z]/, "비밀번호는 영문자를 포함해야 합니다.")
       .regex(/[0-9]/, "비밀번호는 숫자를 포함해야 합니다.")
       .regex(/[^a-zA-Z0-9]/, "비밀번호는 특수문자를 포함해야 합니다."),
-    passwordConfirm: z.string(),
+    passwordConfirm: z.string("비밀번호를 입력해주세요."),
   })
 
   .refine((data) => data.password === data.passwordConfirm, {
