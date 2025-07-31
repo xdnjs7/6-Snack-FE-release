@@ -72,6 +72,7 @@ export default function OrderManageDetailPage() {
       await updateOrderMutation.mutateAsync({
         orderId: orderId,
         status: "APPROVED",
+        adminMessage: "승인되었습니다.",
       });
 
       openModal(
@@ -98,6 +99,7 @@ export default function OrderManageDetailPage() {
       await updateOrderMutation.mutateAsync({
         orderId: orderId,
         status: "REJECTED",
+        adminMessage: "반려되었습니다.",
       });
 
       openModal(

@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import Mobile from "./Mobile";
 import Button from "../ui/Button";
 import { formatDate } from "@/lib/utils/formatDate.util";
-import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 type TRequestListProps = {
   orderRequests: {
@@ -21,9 +20,16 @@ type TRequestListProps = {
   }[];
   onClickReject: (order: TRequestListProps["orderRequests"][0]) => void;
   onClickApprove: (order: TRequestListProps["orderRequests"][0]) => void;
+  // 이번달 남은 예산 추가하기이잉
+  remainingBudget?: number;
 };
 
-export default function RequestList({ orderRequests, onClickReject, onClickApprove }: TRequestListProps) {
+export default function RequestList({
+  orderRequests,
+  onClickReject,
+  onClickApprove,
+  remainingBudget,
+}: TRequestListProps) {
   const router = useRouter();
 
   const handleProductNameClick = (orderId: number, status: string) => {
@@ -35,11 +41,11 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
       {/* PC 테이블 헤더 */}
       <div className="flex justify-center w-full ">
         <div className="hidden sm:flex justify-between items-center w-full max-w-[1352px] h-[100px] border-b border-neutral-200 md:px-[40px]">
-          <div className="font-bold text-zinc-500 text-base w-[100px] md:w-[142px] ">구매 요청일</div>
-          <div className="font-bold text-zinc-500 text-base w-[140px] md:w-[360px] ">상품 정보</div>
-          <div className="font-bold text-zinc-500 text-base w-[100px] md:w-[142px] ">주문 금액</div>
-          <div className="font-bold text-zinc-500 text-base w-[64px] md:w-[133px] ">요청인</div>
-          <div className="font-bold text-zinc-500 text-base w-[168px] h-[40px] flex items-center">비고</div>
+          <div className="font-bold text-primary-500 text-base w-[100px] md:w-[142px]">구매 요청일</div>
+          <div className="font-bold text-primary-500 text-base w-[140px] md:w-[360px]">상품 정보</div>
+          <div className="font-bold text-primary-500 text-base w-[100px] md:w-[142px]">주문 금액</div>
+          <div className="font-bold text-primary-500 text-base w-[108px] md:w-[134px]">요청인</div>
+          <div className="font-bold text-primary-500 text-base w-[168px] h-[40px] flex items-center">비고</div>
         </div>
       </div>
       {orderRequests.map((request) => (
@@ -61,13 +67,13 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
                   </div>
                   <div className="flex flex-col gap-[8px]">
                     <div
-                      className="font-normal text-[14px]/[17px] tracking-tight text-blue-600 underline cursor-pointer hover:text-blue-800"
+                      className="font-normal text-[14px]/[17px] tracking-tight text-blue-600 cursor-pointer hover:text-blue-800 truncate"
                       onClick={() => handleProductNameClick(request.id, request.status.toLowerCase())}
                     >
                       {request.productName}
                     </div>
                     <div className="font-extrabold text-[20px]/[25px] tracking-tight text-primary-950">
-                      {formatPrice(request.totalPrice)}원
+                      {request.totalPrice.toLocaleString("ko-KR")}원
                     </div>
                   </div>
                 </div>
@@ -79,17 +85,19 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
                     className="w-full flex justify-center items-center border-[1px] border-primary-300 min-w-[160px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
                   />
                   <Button
-                    type="black"
+                    type={
+                      remainingBudget !== undefined && remainingBudget < request.totalPrice ? "whiteDisabled" : "black"
+                    }
                     label="승인"
                     onClick={() => onClickApprove(request)}
-                    className="w-full flex justify-center items-center bg-primary-950 text-white min-w-[160px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
+                    className="w-full flex justify-center items-center min-w-[160px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
                   />
                 </div>
               </div>
             </div>
           </Mobile>
           <div className="flex justify-center w-full">
-            <div className="hidden sm:flex justify-between items-center w-full max-w-[1352px] h-[100px] md:px-[40px] border-b border-neutral-200">
+            <div className="hidden sm:flex justify-between items-center w-full max-w-[1352px] h-24 md:px-[40px] border-b border-neutral-200">
               <div className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[100px] md:w-[142px]">
                 {formatDate(request.createdAt)}
               </div>
@@ -100,7 +108,7 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
                 {request.productName}
               </div>
               <div className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[100px] md:w-[142px]">
-                {formatPrice(request.totalPrice)}원
+                {request.totalPrice.toLocaleString("ko-KR")}원
               </div>
               <div className="flex justify-center items-center gap-[12px]">
                 <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full py-[10px] px-[9.5px] bg-primary-50 font-medium text-[10px]/[12px] tracking-tight">
@@ -118,10 +126,12 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
                   className="flex justify-center items-center border-[1px] border-primary-300 w-[80px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
                 />
                 <Button
-                  type="black"
+                  type={
+                    remainingBudget !== undefined && remainingBudget < request.totalPrice ? "whiteDisabled" : "black"
+                  }
                   label="승인"
                   onClick={() => onClickApprove(request)}
-                  className="flex justify-center items-center bg-primary-950 text-white w-[80px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
+                  className="flex justify-center items-center w-[80px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
                 />
               </div>
             </div>
