@@ -120,7 +120,7 @@ export default function SuperAdminSignUpPage() {
         </div>
         {/* signup content - form, register button, link to login */}
 
-        <div className="sm:absolute sm:w-[600px] sm:top-[152.12px] flex flex-col w-full items-center justify-center sm:items-start sm:px-[60px] sm:py-[40px] sm:bg-white sm:rounded-xs sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)]">
+        <div className="sm:absolute sm:w-[600px] sm:top-[152.12px] flex flex-col w-full items-center justify-center sm:items-start sm:px-[60px] sm:py-[40px] sm:bg-white sm:rounded-xs sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] mb-[58px]">
           <div className="hidden sm:block sm:mb-[20px]">
             <div className="flex flex-col items-start justify-center gap-[10px]">
               <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle ">
