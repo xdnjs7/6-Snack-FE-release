@@ -13,6 +13,7 @@ import ProductInfoSections from "./ProductDetail/ProductInfoSections";
 import { useAuth } from "@/providers/AuthProvider";
 import { useCurrentSubCategory } from "@/hooks/useCurrentSubCategory";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Toast from "@/components/common/Toast";
 
 type TProductDetailProps = {
   productId: number;
@@ -25,6 +26,15 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
   const router = useRouter();
   const { findCategoryPath } = useCurrentSubCategory();
   const queryClient = useQueryClient();
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastVariant, setToastVariant] = useState<"success" | "error">("success");
+  const showToast = (message: string, variant: "success" | "error" = "success") => {
+    setToastMessage(message);
+    setToastVariant(variant);
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 2000);
+  };
 
   const { mutate: mutateAddToCart } = useMutation({
     mutationFn: () => {
@@ -78,6 +88,7 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
                 canEdit={canEdit}
                 productId={product.id}
                 productName={product.name}
+                showToast={showToast}
               />
             </div>
             <div className="flex flex-col justify-center items-center w-full">
@@ -87,6 +98,14 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
           </div>
         </div>
       </div>
+      {toastVisible && (
+        <Toast
+          text={toastMessage}
+          variant={toastVariant}
+          isVisible={toastVisible}
+          onClose={() => setToastVisible(false)}
+        />
+      )}
     </div>
   );
 }
