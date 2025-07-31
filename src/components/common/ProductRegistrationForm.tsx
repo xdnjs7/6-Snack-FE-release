@@ -87,8 +87,7 @@ export default function ProductRegistrationForm({
               className="absolute top-0 right-0 -mt-2 -mr-2 bg-primary-50 rounded-full p-1 border-1 border-primary-100"
               aria-label="Remove image"
             >
-             
-              <XIconSvg className="w-4 h-4"/>
+              <XIconSvg className="w-4 h-4" />
             </button>
           </>
         )}
@@ -116,6 +115,7 @@ export default function ProductRegistrationForm({
               placeholder="소분류"
               onChange={handleSubCategoryChange}
               className="w-full"
+              disabled={!parentCategoryOptions.includes(form.watch("mainCategory"))}
             />
           </div>
         </div>
