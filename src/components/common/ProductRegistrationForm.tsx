@@ -1,11 +1,10 @@
-import React, { ChangeEvent, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import React, { ChangeEvent } from "react";
 import Input from "./Input";
 import Dropdown from "./DropDown";
 import photoIcon from "@/assets/icons/ic_photo.svg";
 import Image from "next/image";
-import { CATEGORIES } from "../../lib/constants/categories";
-import { useCreateProduct } from "@/hooks/useProductMutations";
+import { useProductRegistrationForm } from "@/hooks/useProductRegistrationForm";
+import XIconSvg from "../svg/XIconSvg";
 
 // 상품 데이터를 위한 타입 정의
 export type TProductData = {
@@ -15,15 +14,6 @@ export type TProductData = {
   mainCategory: string;
   subCategory: string;
   imageUrl?: string;
-};
-
-// 폼 데이터 타입 정의
-type TFormData = {
-  productName: string;
-  price: string;
-  productLink: string;
-  mainCategory: string;
-  subCategory: string;
 };
 
 // ProductRegistrationForm 컴포넌트가 받을 수 있는 프롭스 타입 정의
@@ -39,136 +29,32 @@ export default function ProductRegistrationForm({
   initialData,
 }: TProductRegistrationFormProps) {
   const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { errors },
-    reset,
-  } = useForm<TFormData>({
-    defaultValues: {
-      productName: "",
-      price: "",
-      productLink: "",
-      mainCategory: "",
-      subCategory: "",
-    },
+    form,
+    imagePreviewUrl,
+    createProductMutation,
+    parentCategoryOptions,
+    childrenCategoryOptions,
+    handleImageChange,
+    handleImageRemove,
+    handleMainCategoryChange,
+    handleSubCategoryChange,
+    onSubmit,
+  } = useProductRegistrationForm({
+    onSubmitSuccess,
+    onClose,
+    initialData,
   });
 
-  const [imageFile, setImageFile] = React.useState<File | null>(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = React.useState<string | null>(null);
+  const {
+    register,
+    formState: { errors },
+  } = form;
 
-  // React Query Mutation
-  const createProductMutation = useCreateProduct();
-
-  // initialData가 변경될 때마다 폼 필드를 초기화
-  useEffect(() => {
-    if (initialData) {
-      setValue("productName", initialData.productName);
-      setValue("price", initialData.price);
-      setValue("productLink", initialData.productLink);
-      setValue("mainCategory", initialData.mainCategory);
-      setValue("subCategory", initialData.subCategory);
-      if (initialData.imageUrl) {
-        setImagePreviewUrl(initialData.imageUrl);
-      }
-    }
-  }, [initialData, setValue]);
-
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setImageFile(file);
-      setImagePreviewUrl(URL.createObjectURL(file));
+      handleImageChange(e.target.files[0]);
     }
   };
-
-  const handleImageRemove = () => {
-    setImageFile(null);
-    setImagePreviewUrl(null);
-  };
-
-  const handleMainCategoryChange = (value: string) => {
-    setValue("mainCategory", value);
-    // 대분류가 변경되면 소분류 초기화
-    setValue("subCategory", "");
-  };
-
-  const handleSubCategoryChange = (value: string) => {
-    setValue("subCategory", value);
-  };
-
-  const onSubmit = async (data: TFormData) => {
-    // 필수 필드 검증
-    if (!imageFile) {
-      alert("이미지를 업로드해주세요!");
-      return;
-    }
-
-    // 카테고리 ID 매핑
-    const selectedParentCategory = data.mainCategory;
-    const selectedSubCategory = data.subCategory;
-
-    let categoryId = 1; // 기본값
-
-    if (selectedParentCategory && selectedSubCategory) {
-      const parentCategory = CATEGORIES.parentCategory.find((cat) => cat.name === selectedParentCategory);
-      const childrenCategories = parentCategory
-        ? CATEGORIES.childrenCategory[selectedParentCategory as keyof typeof CATEGORIES.childrenCategory]
-        : [];
-      const subCategory = childrenCategories?.find((cat) => cat.name === selectedSubCategory);
-
-      if (subCategory) {
-        categoryId = subCategory.id;
-      }
-    }
-
-    try {
-      // FormData 생성
-      const formData = new FormData();
-      formData.append("name", data.productName);
-      formData.append("price", data.price);
-      formData.append("linkUrl", data.productLink);
-      formData.append("categoryId", categoryId.toString());
-      formData.append("image", imageFile);
-
-      // React Query Mutation 사용
-      await createProductMutation.mutateAsync(formData);
-
-      alert("상품이 등록되었습니다!");
-
-      // 폼 초기화
-      reset();
-      setImageFile(null);
-      setImagePreviewUrl(null);
-
-      // 제출 성공 콜백 호출
-      if (onSubmitSuccess) {
-        onSubmitSuccess();
-      }
-
-      // 모달 닫기
-      if (onClose) {
-        onClose();
-      }
-    } catch (error) {
-      console.error("상품 등록 실패:", error);
-      alert("상품 등록에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
-
-  const watchedValues = watch();
-
-  // Parent category 옵션 (이름만 추출)
-  const parentCategoryOptions = CATEGORIES.parentCategory.map((category) => category.name);
-
-  // 선택된 parent category에 해당하는 children category 옵션
-  const selectedParentCategory = watchedValues.mainCategory;
-  const childrenCategoryOptions = selectedParentCategory
-    ? CATEGORIES.childrenCategory[selectedParentCategory as keyof typeof CATEGORIES.childrenCategory]?.map(
-        (category) => category.name,
-      ) || []
-    : [];
 
   return (
     // <div className="min-h-screen flex items-center justify-center p-4 bg-primary-50">
@@ -185,35 +71,30 @@ export default function ProductRegistrationForm({
             className="w-[140px] h-[140px] flex flex-col items-center justify-center border border-primary-200 rounded-[2px] text-primary-400 cursor-pointer hover:bg-primary-100"
           >
             <Image src={photoIcon} alt="사진 아이콘" />
-            <input id="imageUpload" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+            <input id="imageUpload" type="file" accept="image/*" onChange={onImageChange} className="hidden" />
           </label>
         ) : (
           <>
-            <img
+            <Image
               src={imagePreviewUrl}
               alt="Product Preview"
-              className="w-[140px] h-[140px] object-contain border border-primary-300 rounded-[2px]"
+              width={140}
+              height={140}
+              className="object-contain border border-primary-100 rounded-[2px]"
             />
             <button
               onClick={handleImageRemove}
-              className="absolute top-0 right-0 -mt-2 -mr-2 bg-primary-800 text-white rounded-full p-1"
+              className="absolute top-0 right-0 -mt-2 -mr-2 bg-primary-50 rounded-full p-1 border-1 border-primary-100"
               aria-label="Remove image"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+             
+              <XIconSvg className="w-4 h-4"/>
             </button>
           </>
         )}
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-[32px]">
+      <form onSubmit={onSubmit} className="w-full flex flex-col gap-[32px]">
         <div className="grid grid-cols-2 gap-4 w-full">
           <div>
             <label htmlFor="mainCategory" className="sr-only">
