@@ -87,32 +87,32 @@ export default function Order() {
             />
           </>
         ) : (
-          <div className="flex flex-1 justify-center min-h-screen">
-            <div className="w-80 inline-flex flex-col justify-start items-center gap-7 py-12 mt-[142px] sm:mt-[222px] md:mt-[191px]">
-              <div className="w-24 h-24 relative">
-                <Image src="/ic_no_order.svg" alt="주문 내역 없음" fill className="object-contain" />
-              </div>
-              <div className="self-stretch flex flex-col justify-start items-center gap-12">
-                <div className="w-72 flex flex-col justify-start items-center gap-2.5">
-                  <div className="self-stretch text-center text-neutral-800 text-2xl font-extrabold">
-                    요청 내역이 없어요
-                  </div>
-                  <div className="self-stretch text-center text-neutral-700 text-base leading-relaxed">
-                    상품 리스트를 둘러보고
-                    <br />
-                    상품을 담아보세요
-                  </div>
+        <div className="flex flex-1 justify-center min-h-screen">
+          <div className="sm:w-80 inline-flex flex-col justify-start items-center gap-7 py-12 mt-[142px] sm:mt-[222px] md:mt-[191px]">
+            <div className="w-24 h-24 relative">
+              <Image src="/ic_no_order.svg" alt="주문 내역 없음" fill className="object-contain" />
+            </div>
+            <div className="self-stretch flex flex-col justify-start items-center gap-12">
+              <div className="w-72 flex flex-col justify-start items-center gap-2.5">
+                <div className="self-stretch text-center text-neutral-800 text-2xl font-extrabold">
+                  요청 내역이 없어요
                 </div>
-                <button
-                  className="self-stretch h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center"
-                  onClick={() => {}}
-                >
-                  <div className="text-white text-base font-bold">상품 리스트로 이동</div>
-                </button>
+                <div className="self-stretch text-center text-neutral-700 text-base leading-relaxed">
+                  상품 리스트를 둘러보고
+                  <br />
+                  상품을 담아보세요
+                </div>
               </div>
+              <button
+                className="self-stretch h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center"
+                onClick={() => {}}
+              >
+                <div className="text-white text-base font-bold">상품 리스트로 이동</div>
+              </button>
             </div>
           </div>
-        )}
+        </div>
+         )}
       </div>
     </div>
   );
