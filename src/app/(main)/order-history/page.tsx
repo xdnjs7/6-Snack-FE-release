@@ -100,16 +100,15 @@ const OrderHistoryPage = () => {
                     <div
                       className="h-1.5 bg-blue-500 rounded-md"
                       style={{
-                        width: `${
-                          safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                            ? Math.max(
-                                1,
-                                Math.round(
-                                  (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
-                                ),
-                              )
-                            : 0
-                        }%`,
+                        width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
+                          ? Math.max(
+                            1,
+                            Math.round(
+                              (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
+                            ),
+                          )
+                          : 0
+                          }%`,
                       }}
                     />
                   </div>
@@ -138,8 +137,8 @@ const OrderHistoryPage = () => {
                 작년보다{" "}
                 {safeBudgetData
                   ? formatPrice(
-                      Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
-                    )
+                    Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
+                  )
                   : "0"}
                 원<br />
                 {safeBudgetData && safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense > 0
@@ -191,7 +190,7 @@ const OrderHistoryPage = () => {
                   <div className="flex justify-start items-center gap-2">
                     <button
                       onClick={() => handleProductClick(item.id)}
-                      className="text-blue-600 underline cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none"
+                      className="text-blue-600 cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none"
                       type="button"
                     >
                       {item.item}
@@ -370,16 +369,15 @@ const OrderHistoryPage = () => {
                   <div
                     className="h-1.5 bg-blue-500 rounded-md"
                     style={{
-                      width: `${
-                        safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                          ? Math.max(
-                              1,
-                              Math.round(
-                                (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
-                              ),
-                            )
-                          : 0
-                      }%`,
+                      width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
+                        ? Math.max(
+                          1,
+                          Math.round(
+                            (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
+                          ),
+                        )
+                        : 0
+                        }%`,
                     }}
                   />
                 </div>
@@ -407,8 +405,8 @@ const OrderHistoryPage = () => {
                 작년보다{" "}
                 {safeBudgetData
                   ? formatPrice(
-                      Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
-                    )
+                    Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
+                  )
                   : "0"}
                 원<br />
                 {safeBudgetData && safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense > 0
@@ -426,7 +424,7 @@ const OrderHistoryPage = () => {
                   <div className="flex justify-start items-center gap-2">
                     <button
                       onClick={() => handleProductClick(item.id)}
-                      className="text-blue-600 underline cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none"
+                      className="text-blue-600 cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none"
                       type="button"
                     >
                       {item.item}
@@ -649,16 +647,15 @@ const OrderHistoryPage = () => {
                   <div
                     className="h-1.5 bg-blue-500 rounded-md"
                     style={{
-                      width: `${
-                        safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                          ? Math.max(
-                              1,
-                              Math.round(
-                                (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
-                              ),
-                            )
-                          : 0
-                      }%`,
+                      width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
+                        ? Math.max(
+                          1,
+                          Math.round(
+                            (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
+                          ),
+                        )
+                        : 0
+                        }%`,
                     }}
                   />
                 </div>
@@ -687,8 +684,8 @@ const OrderHistoryPage = () => {
                 <br />
                 {safeBudgetData
                   ? formatPrice(
-                      Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
-                    )
+                    Math.abs(safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense),
+                  )
                   : "0"}
                 원{" "}
                 {safeBudgetData && safeBudgetData.currentYearTotalExpense - safeBudgetData.previousYearTotalExpense > 0
@@ -735,7 +732,7 @@ const OrderHistoryPage = () => {
                     <div className="w-44 inline-flex flex-col justify-center items-start gap-1">
                       <button
                         onClick={() => handleProductClick(item.id)}
-                        className="text-blue-600 underline cursor-pointer text-base font-normal font-['SUIT'] bg-transparent border-none p-0 focus:outline-none"
+                        className="text-blue-600 cursor-pointer text-base font-normal font-['SUIT'] bg-transparent border-none p-0 focus:outline-none"
                         type="button"
                       >
                         {item.item}
