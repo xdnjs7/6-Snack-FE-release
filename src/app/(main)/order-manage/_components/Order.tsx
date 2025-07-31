@@ -4,7 +4,7 @@ import OrderManageModal from "@/components/common/OrderManageModal";
 import Pagination from "@/components/common/Pagination";
 import RequestList from "@/components/common/RequestList";
 import DogSpinner from "@/components/common/DogSpinner";
-import useOrderVisibleCount from "@/hooks/useOrderVisibleCount";
+import { useOrderVisibleCount } from "@/hooks/useOrderVisibleCount";
 import { fetchOrderDetail } from "@/lib/api/orderManage.api";
 import { useModal } from "@/providers/ModalProvider";
 import { useMemo, useState, useRef, useEffect } from "react";

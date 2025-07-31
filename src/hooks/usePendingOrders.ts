@@ -21,7 +21,7 @@ export const usePendingOrders = ({ offset, limit, orderBy }: TUsePendingOrdersPa
   return useQuery<TPendingOrdersResponse>({
     queryKey: ["pendingOrders", offset, limit, orderBy],
     queryFn: () => fetchPendingOrders({ offset, limit, orderBy }),
-    staleTime: 5 * 60 * 1000, // 5분간 캐시된 데이터 사용
-    gcTime: 10 * 60 * 1000, // 10분간 메모리에 보관
+    staleTime: 5 * 60 * 1000, 
+    gcTime: 10 * 60 * 1000, 
   });
 };
