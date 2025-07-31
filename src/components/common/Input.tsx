@@ -55,6 +55,8 @@ export default function Input({
     if (!isControlled) {
       setInternalValue(newValue);
     }
+
+    // react-hook-form의 onChange가 제대로 호출되도록
     props.onChange?.(e);
   };
 
@@ -62,13 +64,13 @@ export default function Input({
   const actualType = type === "password" && showPasswordToggle ? (isPasswordVisible ? "text" : "password") : type;
 
   return (
-    <div className={clsx("flex flex-col w-full max-w-[480px] gap-[4px]", containerClassName)}>
+    <div className={clsx("flex flex-col w-full gap-[4px]", containerClassName)}>
       <div
         className={clsx(
           error ? "border-error-500" : "border-primary-600",
           hasValue ? "justify-end" : "justify-center",
           type === "password" && showPasswordToggle ? "justify-between" : "",
-          "relative flex flex-col h-[56px] py-[8px] pr-[24px] px-[4px] gap-[5px] border-b-1",
+          "relative flex flex-col h-[56px] py-[8px] px-[4px] gap-[5px] border-b-1",
         )}
       >
         {/* Label */}
@@ -88,7 +90,7 @@ export default function Input({
         <div
           className={clsx(
             type === "password" && showPasswordToggle
-              ? "flex justify-between items-end gap-[4px]"
+              ? "flex justify-between  gap-[4px]"
               : "flex flex-col justify-center",
             hasValue && type === "password" && showPasswordToggle
               ? "items-end"
@@ -100,9 +102,7 @@ export default function Input({
           {/* Input */}
           <input
             {...props}
-            ref={
-              (props.inputRef as React.Ref<HTMLInputElement>) ?? undefined
-            }
+            ref={(props.inputRef as React.Ref<HTMLInputElement>) ?? props.ref ?? undefined}
             type={actualType}
             value={inputValue}
             onChange={handleChange}
