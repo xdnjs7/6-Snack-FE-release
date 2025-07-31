@@ -17,7 +17,10 @@ const signUpSchema = z
   .object({
     email: z.string().email("유효한 이메일을 입력해주세요."),
     name: z.string().min(1, "이름을 입력해주세요."),
-    companyName: z.string().min(1, "회사명을 입력해주세요."),
+    companyName: z
+      .string()
+      .min(1, "회사명을 입력해주세요.")
+      .regex(/^[\p{L}\p{N}().,_\- ]+$/u, "회사명에는 한글, 영문, 숫자, 괄호(), 온점(.), 반점(,), 대쉬(-), 언더바(_)만 사용할 수 있습니다."),
     bizNumber: z.string().regex(/^[0-9]{10}$/, "사업자 번호 10자리를 입력해주세요."),
     password: z
       .string()
