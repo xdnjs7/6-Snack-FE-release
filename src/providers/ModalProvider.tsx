@@ -61,7 +61,7 @@ export default function ModalProvider({ children }: TChildrenProps) {
               closeModal();
             }
           }}
-          className="fixed inset-0 bg-white/60 backdrop-blur-[5px]"
+          className="fixed inset-0 bg-white/60 backdrop-blur-[5px] z-[100]"
         >
           {modal}
         </div>

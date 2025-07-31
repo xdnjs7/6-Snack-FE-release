@@ -46,8 +46,6 @@ export default function ProductRegistrationForm({
     initialData,
   });
 
-  // FormInput은 useFormContext를 사용하므로 register와 errors를 직접 사용하지 않음
-
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       handleImageChange(e.target.files[0]);
@@ -56,7 +54,7 @@ export default function ProductRegistrationForm({
 
   return (
     <FormProvider {...form}>
-      <div className="w-full h-full z-[99999] sm:w-[512px] sm:h-[696px] sm:fixed sm:inset-0 sm:top-1/2 sm:left-1/2 sm:-translate-1/2 rounded-[6px] p-[30px] bg-white shadow-xl flex flex-col gap-[32px] items-center">
+      <div className="w-full h-full sm:w-[512px] sm:h-[696px] sm:fixed sm:inset-0 sm:top-1/2 sm:left-1/2 sm:-translate-1/2 rounded-[6px] p-[30px] bg-white shadow-xl flex flex-col gap-[32px] items-center">
         <h2 className="font-bold text-[18px] leading-[100%] tracking-[-0.45px] text-primary-950 text-center">
           상품 등록
         </h2>
