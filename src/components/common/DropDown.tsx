@@ -57,7 +57,7 @@ export default function Dropdown({
 
       {/* 드롭다운 메뉴 */}
       {isOpen && (
-        <div className="absolute w-full z-10 bg-white border border-primary-100 border-t-0 rounded-b max-h-[300px] overflow-y-auto">
+        <div className="absolute w-full z-20 bg-white border border-primary-100 border-t-0 rounded-b max-h-[300px] overflow-y-auto">
           {menuOptions.map((option) => (
             <div
               key={option}
