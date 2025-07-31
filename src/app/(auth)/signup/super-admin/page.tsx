@@ -133,15 +133,7 @@ export default function SuperAdminSignUpPage() {
             </div>
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full mb-[8px] gap-[20px]">
-            {/* 이메일 입력 필드 */}
-            <Input
-              {...emailReg}
-              inputRef={emailReg.ref}
-              type="email"
-              label="이메일"
-              placeholder="이메일을 입력해주세요."
-              error={errors.email?.message}
-            />
+
 
             {/* 이름 입력 필드 */}
             <Input
@@ -151,6 +143,16 @@ export default function SuperAdminSignUpPage() {
               label="이름"
               placeholder="이름을 입력해주세요."
               error={errors.name?.message}
+            />
+
+            {/* 이메일 입력 필드 */}
+            <Input
+              {...emailReg}
+              inputRef={emailReg.ref}
+              type="email"
+              label="이메일"
+              placeholder="이메일을 입력해주세요."
+              error={errors.email?.message}
             />
 
             {/* 비밀번호 input wrapper*/}
