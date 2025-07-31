@@ -60,7 +60,7 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
                   </div>
                   <div className="flex flex-col gap-[8px]">
                     <div
-                      className="font-normal text-[14px]/[17px] tracking-tight text-primary-950 truncate cursor-pointer hover:text-primary-700"
+                      className="font-normal text-[14px]/[17px] tracking-tight text-blue-600 underline cursor-pointer hover:text-blue-800"
                       onClick={() => handleProductNameClick(request.id, request.status.toLowerCase())}
                     >
                       {request.productName}
@@ -93,7 +93,7 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
                 {formatDate(request.createdAt)}
               </div>
               <div
-                className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[140px] md:w-[360px] truncate cursor-pointer hover:text-primary-700"
+                className="font-normal text-[16px]/[20px] tracking-tight text-blue-600 underline w-[140px] md:w-[360px] truncate cursor-pointer hover:text-blue-800"
                 onClick={() => handleProductNameClick(request.id, request.status.toLowerCase())}
               >
                 {request.productName}

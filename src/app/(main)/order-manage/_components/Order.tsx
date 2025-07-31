@@ -87,8 +87,8 @@ export default function Order() {
             />
           </>
         ) : (
-          <div className="flex flex-1 justify-center items-center min-h-screen">
-            <div className="w-80 inline-flex flex-col justify-start items-center gap-7 py-12">
+          <div className="flex flex-1 justify-center min-h-screen">
+            <div className="w-80 inline-flex flex-col justify-start items-center gap-7 py-12 mt-[142px] sm:mt-[222px] md:mt-[191px]">
               <div className="w-24 h-24 relative">
                 <Image src="/ic_no_order.svg" alt="주문 내역 없음" fill className="object-contain" />
               </div>
