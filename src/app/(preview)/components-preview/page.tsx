@@ -36,10 +36,9 @@ import Header from "@/components/layout/Header";
 import { categories, order, orderRequests, products } from "./MockData";
 import DogSpinner from "@/components/common/DogSpinner";
 import Image from "next/image";
-import loading from "@/assets/images/loading.png";
-import bucket from "@/assets/images/bucket.png";
-import dog from "@/assets/images/dog.png";
-import dot from "@/assets/images/dot.svg";
+import img_bucket_logo from "@/assets/images/img_bucket_logo.png";
+import img_dog_logo from "@/assets/images/img_dog_logo.png";
+import ic_dot from "@/assets/icons/ic_dot.svg";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
@@ -139,28 +138,24 @@ export default function ComponentsPreviewPage() {
         <div className="space-y-4 mb-4 h-[300px]">
           <h2 className="text-lg font-semibold bg-blue-100">Spinner 컴포넌트</h2>
           <div className="relative w-20 h-20">
-            <Image src={loading} alt="기본" fill className="object-contain animate-pulse" />
-          </div>
-
-          <div className="relative w-20 h-20">
-            <Image src={bucket} alt="깜빡" fill className="object-contain" />
+            <Image src={img_bucket_logo} alt="깜빡" fill className="object-contain" />
           </div>
 
           <div className="flex flex-col justify-center items-center">
             <div className="flex gap-3">
               <div className="relative w-2 h-2">
-                <Image src={dot} alt="깜빡" fill className="object-contain" />
+                <Image src={ic_dot} alt="깜빡" fill className="object-contain" />
               </div>
               <div className="relative w-2 h-2">
-                <Image src={dot} alt="깜빡" fill className="object-contain" />
+                <Image src={ic_dot} alt="깜빡" fill className="object-contain" />
               </div>
               <div className="relative w-2 h-2">
-                <Image src={dot} alt="깜빡" fill className="object-contain" />
+                <Image src={ic_dot} alt="깜빡" fill className="object-contain" />
               </div>
             </div>
 
             <div className="relative w-20 h-16 animate-moveUpDown">
-              <Image src={dog} alt="깜빡" fill className="object-contain" />
+              <Image src={img_dog_logo} alt="깜빡" fill className="object-contain" />
             </div>
 
             <p>아니면 빈 장바구니에 간식이 담겨지는 애니메이션</p>
