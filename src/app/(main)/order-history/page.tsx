@@ -149,7 +149,7 @@ const OrderHistoryPage = () => {
 
             {/* Mobile Budget Details Box */}
             {isHovered && (
-              <div className="w-64 p-6 left-[44%] transform -translate-x-1/2 top-36 absolute bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
+              <div className="w-70 p-6 left-[42%] transform -translate-x-1/2 top-36.5 absolute bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
                 <div className="inline-flex justify-start items-center gap-2">
                   <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
                     이번 달 남은 예산:
@@ -547,7 +547,7 @@ const OrderHistoryPage = () => {
 
           {/* Tablet Budget Details Hover Box */}
           {isHovered && (
-            <div className="w-64 p-6 absolute left-[54.5%] transform -translate-x-1/2 top-[264px] bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
+            <div className="w-74 p-6 absolute left-[56%] transform -translate-x-1/2 top-60.5 bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
               <div className="inline-flex justify-start items-center gap-1">
                 <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
                   이번 달 남은 예산:
@@ -795,7 +795,7 @@ const OrderHistoryPage = () => {
 
           {/* Desktop Budget Details Hover Box */}
           {isHovered && (
-            <div className="w-64 p-6 absolute left-[46%] transform -translate-x-1/2 top-[256px] bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
+            <div className="w-74 p-6 absolute left-[46.5%] transform -translate-x-1/2 top-54.5 bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
               <div className="inline-flex justify-start items-center gap-1">
                 <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
                   이번 달 남은 예산:
