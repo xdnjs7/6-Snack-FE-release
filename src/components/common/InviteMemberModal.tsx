@@ -15,10 +15,10 @@ export default function InviteMemberModal({
   mode = "invite",
   defaultValues,
 }: TInviteMemberModalProps) {
-  const [name, setName] = useState(defaultValues?.name ?? "");
-  const [email, setEmail] = useState(defaultValues?.email ?? "");
+  const [name, setName] = useState<string>(defaultValues?.name ?? "");
+  const [email, setEmail] = useState<string>(defaultValues?.email ?? "");
   const [selectedRole, setSelectedRole] = useState<TUserRole>(defaultValues?.role ?? "USER");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
   const handleSubmit = async () => {
     if (mode === "edit") {
