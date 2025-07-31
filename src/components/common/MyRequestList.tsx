@@ -5,12 +5,14 @@ import Badge from "@/components/ui/Badge";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 import ConfirmationModal from "@/components/common/ConfirmationModal";
 import { useModal } from "@/providers/ModalProvider";
+import Link from "next/link";
 
 type TRequestListItemProps = {
   requestDate: string;
   productName: string;
   price: number;
   status: "대기중" | "요청반려" | "요청완료" | "요청취소";
+  orderId: number; // ✅ 추가
   onRequestCancel?: () => void;
 };
 
@@ -19,6 +21,7 @@ export default function RequestListItem({
   productName,
   price,
   status,
+  orderId,
   onRequestCancel,
 }: TRequestListItemProps) {
   const { openModal, closeModal } = useModal();
@@ -84,7 +87,9 @@ export default function RequestListItem({
       {/* 태블릿 & 데스크탑 */}
       <div className="hidden sm:grid grid-cols-[1fr_1.5fr_1fr_1fr_1fr] items-center w-full h-24 md:gap-10 lg:gap-20 border-b border-primary-100">
         <div className="min-w-[90px] text-sm md:text-base text-primary-950">{requestDate}</div>
-        <div className="min-w-[140px] text-sm md:text-base text-primary-950">{productName}</div>
+        <Link href={`/my/order-list/${orderId}`} className="text-secondary-500 underline">
+          {productName}
+        </Link>
         <div className="min-w-[90px] text-sm md:text-base text-primary-950">{formatPrice(price)}원</div>
         <div className="flex justify-center w-18">
           <Badge type={getBadgeType()} />

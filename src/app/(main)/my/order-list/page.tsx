@@ -89,6 +89,7 @@ export default function MyOrderListPage() {
               productName={getProductName(item.receipts)}
               price={item.totalPrice}
               status={convertStatus(item.status)}
+              orderId={item.id} // ✅ 추가
               onRequestCancel={() => {
                 handleCancel(item.id);
               }}
