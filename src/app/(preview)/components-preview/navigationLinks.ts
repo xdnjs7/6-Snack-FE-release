@@ -36,7 +36,7 @@ export const navLinks: DevNavSection[] = [
   {
     category: "관리",
     links: [
-      { name: "회원 관리", path: "/manage/users", role: "최고 관리자", progress: "진행 중" },
+      { name: "회원 관리", path: "/manage/users", role: "최고 관리자", progress: "QA 중" },
       { name: "예산 관리", path: "/manage/budgets", role: "최고 관리자", progress: "QA 중" },
       { name: "프로필", path: "/profile", role: "일반유저", progress: "QA 중" },
     ],
@@ -55,18 +55,18 @@ export const navLinks: DevNavSection[] = [
     links: [
       { name: "장바구니", path: "/cart", role: "일반유저", progress: "완성" },
       { name: "주문", path: "/cart/order", role: "일반유저", progress: "완성" },
-      { name: "구매 완료", path: "/cart/order-confirmed", role: "일반유저", progress: "리팩터링 중" },
+      { name: "구매 완료", path: "/cart/order-confirmed", role: "일반유저", progress: "QA 중" },
     ],
   },
   {
     category: "구매 요청",
     links: [
       { name: "구매 요청 관리", path: "/order-manage", role: "관리자", progress: "QA 중" },
-      { name: "구매 요청 관리 상세", path: "/order-manage/:orderId", role: "관리자", progress: "리팩터링 중" },
+      { name: "구매 요청 관리 상세", path: "/order-manage/:orderId", role: "관리자", progress: "진행 중" },
       { name: "구매 내역 확인", path: "/order-history", role: "관리자", progress: "QA 중" },
       { name: "구매 내역 확인 상세", path: "/order-history/:orderId", role: "관리자", progress: "QA 중" },
       { name: "내 구매 요청 내역", path: "/my/order-list", role: "일반유저", progress: "QA 중" },
-      { name: "내 구매 요청 내역 상세", path: "/my/order-list/:orderId", role: "일반유저", progress: "리팩터링 중" },
+      { name: "내 구매 요청 내역 상세", path: "/my/order-list/:orderId", role: "일반유저", progress: "QA 중" },
     ],
   },
 ];

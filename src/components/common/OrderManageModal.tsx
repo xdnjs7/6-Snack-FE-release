@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 import Button from "../ui/Button";
 import TextArea from "./TextArea";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
+import clsx from "clsx";
 
 type TOrderManageModalProps = {
   type: "reject" | "approve";
@@ -17,6 +18,8 @@ type TOrderManageModalProps = {
 export default function OrderManageModal({ type, order, onClick }: TOrderManageModalProps) {
   const { closeModal } = useModal();
   const [adminMessage, setAdminMessage] = useState("");
+
+  const remainingBudget = order.budget.currentMonthBudget - order.budget.currentMonthExpense - order.totalPrice - 3000;
 
   return (
     <div
@@ -120,10 +123,15 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
 
               <div className="flex justify-between items-center w-full">
                 <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-950 sm:text-[18px]/[22px]">
-                  남은 예산 금액
+                  구매 후 남는 예산 금액
                 </p>
-                <p className="font-extrabold text-[20px]/[25px] tracking-tight text-primary-950 sm:text-[24px]/[30px]">
-                  {formatPrice(order.budget.currentMonthBudget - order.budget.currentMonthExpense)}원
+                <p
+                  className={clsx(
+                    Number(remainingBudget) < 0 ? "text-error-500" : "text-primary-950",
+                    "font-extrabold text-[20px]/[25px] tracking-tight sm:text-[24px]/[30px]",
+                  )}
+                >
+                  {formatPrice(remainingBudget)}원
                 </p>
               </div>
             </>
