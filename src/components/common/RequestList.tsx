@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import Mobile from "./Mobile";
 import Button from "../ui/Button";
 import { formatDate } from "@/lib/utils/formatDate.util";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 type TRequestListProps = {
   orderRequests: {
@@ -73,7 +74,7 @@ export default function RequestList({
                       {request.productName}
                     </div>
                     <div className="font-extrabold text-[20px]/[25px] tracking-tight text-primary-950">
-                      {request.totalPrice.toLocaleString("ko-KR")}원
+                      {formatPrice(request.totalPrice)}원
                     </div>
                   </div>
                 </div>
@@ -108,7 +109,7 @@ export default function RequestList({
                 {request.productName}
               </div>
               <div className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[100px] md:w-[142px]">
-                {request.totalPrice.toLocaleString("ko-KR")}원
+                {formatPrice(request.totalPrice)}원
               </div>
               <div className="flex justify-center items-center gap-[12px]">
                 <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full py-[10px] px-[9.5px] bg-primary-50 font-medium text-[10px]/[12px] tracking-tight">

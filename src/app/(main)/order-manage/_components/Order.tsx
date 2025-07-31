@@ -11,7 +11,8 @@ import { useMemo, useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useBudgets } from "@/hooks/useBudgets";
 import { usePendingOrders } from "@/hooks/usePendingOrders";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { updateOrderStatus } from "@/lib/api/orderManage.api";
 
 export default function Order() {
   const [currentPaginationPage, setCurrentPaginationPage] = useState<number>(1);
@@ -38,6 +39,14 @@ export default function Order() {
   // 남은 예산 계산
   const remainingBudget = budgetData?.currentMonthBudget ? budgetData.currentMonthBudget : undefined;
 
+  // 주문 상태 업데이트 mutation
+  const { mutate: updateOrderStatusMutation } = useMutation({
+    mutationFn: updateOrderStatus,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pendingOrders"] });
+    },
+  });
+
   // 주문 목록 조회
   const offset = (currentPaginationPage - 1) * visibleCount;
   const {
@@ -53,11 +62,6 @@ export default function Order() {
   const orderRequests = orderData?.orders || [];
   const totalCount = orderData?.meta?.totalCount || 0;
   const totalPages = Math.ceil(totalCount / visibleCount);
-
-  // 승인/반려 완료 후 캐시 무효화 및 모달 닫기
-  const handleOrderActionComplete = () => {
-    queryClient.invalidateQueries({ queryKey: ["pendingOrders"] });
-  };
 
   // visibleCount가 변경될 때 페이지 조정
   useEffect(() => {
@@ -102,11 +106,25 @@ export default function Order() {
               remainingBudget={remainingBudget}
               onClickReject={async (orderSummary) => {
                 const fullOrder = await fetchOrderDetail(orderSummary.id);
-                openModal(<OrderManageModal order={fullOrder} type="reject" onClick={handleOrderActionComplete} />);
+                openModal(
+                  <OrderManageModal
+                    order={fullOrder}
+                    type="reject"
+                    onClick={() => {}}
+                    onUpdateOrderStatus={updateOrderStatusMutation}
+                  />,
+                );
               }}
               onClickApprove={async (orderSummary) => {
                 const fullOrder = await fetchOrderDetail(orderSummary.id);
-                openModal(<OrderManageModal order={fullOrder} type="approve" onClick={handleOrderActionComplete} />);
+                openModal(
+                  <OrderManageModal
+                    order={fullOrder}
+                    type="approve"
+                    onClick={() => {}}
+                    onUpdateOrderStatus={updateOrderStatusMutation}
+                  />,
+                );
               }}
             />
             <Pagination
@@ -120,7 +138,7 @@ export default function Order() {
           <div className="flex flex-1 justify-center min-h-screen">
             <div className="sm:w-80 inline-flex flex-col justify-start items-center gap-7 py-12 mt-[142px] sm:mt-[222px] md:mt-[191px]">
               <div className="w-24 h-24 relative">
-                <Image src="/ic_no_order.svg" alt="주문 내역 없음" fill className="object-contain" />
+                <Image src="/images/ic_no_order.svg" alt="주문 내역 없음" fill className="object-contain" />
               </div>
               <div className="self-stretch flex flex-col justify-start items-center gap-12">
                 <div className="w-72 flex flex-col justify-start items-center gap-2.5">
