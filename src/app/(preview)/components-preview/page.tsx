@@ -35,16 +35,21 @@ import Header from "@/components/layout/Header";
 // import OrderItem from "@/app/(main)/cart/order/_components/OrderItem";
 import { categories, order, orderRequests, products } from "./MockData";
 import DogSpinner from "@/components/common/DogSpinner";
+import Image from "next/image";
+import loading from "@/assets/images/loading.png";
+import bucket from "@/assets/images/bucket.png";
+import dog from "@/assets/images/dog.png";
+import dot from "@/assets/images/dot.svg";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
-  const [,setCategoryOption] = useState("다른거");
+  const [, setCategoryOption] = useState("다른거");
   const [budget] = useState(60000);
   const categoryOptions = ["음료", "과자", "아이스크림", "도시락", "라면", "사탕", "초콜릿", "떡볶이", "비빔밥"];
   const [isToastVisible, setIsToastVisible] = useState(false);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
-  const [inputValue,] = useState("");
+  const [inputValue] = useState("");
   const { openModal, closeModal } = useModal();
 
   const [members, setMembers] = useState<TMemberItem[]>([
@@ -131,6 +136,37 @@ export default function ComponentsPreviewPage() {
 
       <p className="mb-4 font-bold text-xl bg-violet-100">이태빈</p>
       <div className="rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] p-6">
+        <div className="space-y-4 mb-4 h-[300px]">
+          <h2 className="text-lg font-semibold bg-blue-100">Spinner 컴포넌트</h2>
+          <div className="relative w-20 h-20">
+            <Image src={loading} alt="기본" fill className="object-contain animate-pulse" />
+          </div>
+
+          <div className="relative w-20 h-20">
+            <Image src={bucket} alt="깜빡" fill className="object-contain" />
+          </div>
+
+          <div className="flex flex-col justify-center items-center">
+            <div className="flex gap-3">
+              <div className="relative w-2 h-2">
+                <Image src={dot} alt="깜빡" fill className="object-contain" />
+              </div>
+              <div className="relative w-2 h-2">
+                <Image src={dot} alt="깜빡" fill className="object-contain" />
+              </div>
+              <div className="relative w-2 h-2">
+                <Image src={dot} alt="깜빡" fill className="object-contain" />
+              </div>
+            </div>
+
+            <div className="relative w-20 h-16 animate-moveUpDown">
+              <Image src={dog} alt="깜빡" fill className="object-contain" />
+            </div>
+
+            <p>아니면 빈 장바구니에 간식이 담겨지는 애니메이션</p>
+          </div>
+        </div>
+
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">SubCategoryItem 컴포넌트</h2>
           <Suspense fallback={<div>로딩 중...</div>}>
@@ -282,6 +318,7 @@ export default function ComponentsPreviewPage() {
           <Button type="black" label="열기" onClick={() => openModal(<ProductRegistrationForm />)} />
           <h2 className="text-lg font-semibold bg-blue-100">[My Request List(요청 취소 가능)]</h2>
           <MyRequestList
+            orderId={1}
             requestDate="2024. 07. 04"
             productName="코카콜라 제로"
             price={1900}
