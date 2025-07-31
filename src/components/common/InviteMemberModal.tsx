@@ -65,7 +65,7 @@ export default function InviteMemberModal({
           email,
           name,
           role: selectedRole,
-          companyId: currentUser.company.id,
+          companyId: Number(currentUser.company?.id) || 0,
           invitedById: currentUser.id,
           expiresInDays: 7,
         };

@@ -57,7 +57,7 @@ export default function MyOrderListPage() {
     <main className="flex flex-col items-center px-4 md:px-0 pt-10 pb-40 min-h-[calc(100vh-112px)]">
       <div className="w-full max-w-[1400px] py-4 flex justify-between items-center">
         <h1 className="text-lg font-bold text-primary-950">구매 요청 내역</h1>
-        <Dropdown value={sortOption} onChange={setSortOption} options={["최신순", "낮은 가격순", "높은 가격순"]} />
+        <Dropdown onChange={setSortOption} options={["최신순", "낮은 가격순", "높은 가격순"]} />
       </div>
 
       <div className="w-full max-w-[1400px] flex-1">

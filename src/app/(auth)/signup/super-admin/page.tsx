@@ -10,7 +10,7 @@ import clsx from "clsx";
 import { superAdminSignUpApi } from "@/lib/api/superAdmin.api";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
-import { ToastVariant } from "@/types/toast.types";
+import { TToastVariant } from "@/types/toast.types";
 
 // 리액트 훅폼에 연결할 zod 스키마 정의
 const signUpSchema = z
@@ -40,7 +40,7 @@ export default function SuperAdminSignUpPage() {
 
   const [toastVisible, setToastVisible] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
-  const [toastVariant, setToastVariant] = useState<ToastVariant>("success");
+  const [toastVariant, setToastVariant] = useState<TToastVariant>("success");
 
   const {
     register,
@@ -60,7 +60,7 @@ export default function SuperAdminSignUpPage() {
   const bizNumberReg = register("bizNumber");
 
   // Toast를 보여주는 함수
-  const showToast = (message: string, variant: ToastVariant = "success") => {
+  const showToast = (message: string, variant: TToastVariant = "success") => {
     setToastMessage(message);
     setToastVariant(variant);
     setToastVisible(true);
@@ -203,7 +203,7 @@ export default function SuperAdminSignUpPage() {
               className={clsx(
                 "w-full h-[64px] mb-[24px] rounded-[2px] inline-flex justify-center items-center text-base cursor-pointer",
                 isValid && !isSubmitting ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
-                "font-bold"
+                "font-bold",
               )}
               disabled={isSubmitting || !isValid}
             >
