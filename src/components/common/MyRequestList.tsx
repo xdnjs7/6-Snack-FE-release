@@ -2,6 +2,7 @@
 
 import React from "react";
 import Badge from "@/components/ui/Badge";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 type TRequestListItemProps = {
   requestDate: string;
@@ -45,7 +46,7 @@ export default function RequestListItem({
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-sm text-primary-950">{productName}</div>
-          <div className="text-sm text-primary-950">{price.toLocaleString()}원</div>
+          <div className="text-sm text-primary-950">{formatPrice(price)}원</div>
         </div>
 
         {showCancelButton && (
@@ -62,7 +63,7 @@ export default function RequestListItem({
       <div className="hidden sm:grid grid-cols-[1fr_1.5fr_1fr_1fr_1fr] items-center w-full px-6 md:px-10 h-24 md:gap-10 lg:gap-20 border-b border-primary-100">
         <div className="min-w-[90px] text-sm md:text-base text-primary-950">{requestDate}</div>
         <div className="min-w-[140px] text-sm md:text-base text-primary-950">{productName}</div>
-        <div className="min-w-[90px] text-sm md:text-base text-primary-950">{price.toLocaleString()}원</div>
+        <div className="min-w-[90px] text-sm md:text-base text-primary-950">{formatPrice(price)}원</div>
         <div className="flex justify-center w-18">
           <Badge type={getBadgeType()} />
         </div>

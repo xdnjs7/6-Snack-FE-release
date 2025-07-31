@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { TGetCartItemsResponse } from "@/types/cart.types";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 type TOrderItemProps = {
   cartItems: TGetCartItemsResponse | undefined;
@@ -45,7 +46,7 @@ export default function OrderItem({ isPending, cartItems }: TOrderItemProps) {
                           {item.product.name}
                         </p>
                         <p className="font-bold text-[14px]/[17px] tracking-tight text-primary-950 sm:text-[16px]/[20px]">
-                          {item.product.price.toLocaleString("ko-KR")}원
+                          {formatPrice(item.product.price)}원
                         </p>
                         <p className="hidden sm:block sm:font-bold sm:text-[16px]/[20px] sm:tracking-normal sm:text-primary-500 sm:mt-[20px]">
                           수량 {item.quantity}개
@@ -57,7 +58,7 @@ export default function OrderItem({ isPending, cartItems }: TOrderItemProps) {
                           수량 {item.quantity}개
                         </p>
                         <p className="font-extrabold text-[16px]/[20px] tracking-tight text-primary-700 sm:min-w-[89px] sm:text-[20px]/[32px] sm:tracking-normal">
-                          {(item.product.price * item.quantity).toLocaleString("ko-KR")}원
+                          {formatPrice(item.product.price * item.quantity)}원
                         </p>
                       </div>
                     </div>
@@ -74,7 +75,7 @@ export default function OrderItem({ isPending, cartItems }: TOrderItemProps) {
               주문금액
             </p>
             <p className="font-bold text-[14px]/[17px] tracking-tight text-primary-700 sm:text-[16px]/[20px]">
-              {totalPrice?.toLocaleString("ko-KR") ?? 0}원
+              {formatPrice(totalPrice)}원
             </p>
           </div>
 
@@ -88,7 +89,7 @@ export default function OrderItem({ isPending, cartItems }: TOrderItemProps) {
           <div className="flex justify-between items-center w-full">
             <p className="font-bold text-[18px]/[22px] tracking-tight text-primary-950">총 주문금액</p>
             <p className="font-extrabold text-[18px]/[22px] tracking-tight text-primary-950 sm:text-[24px]/[30px]">
-              {totalPrice ? (totalPrice + 3000).toLocaleString("ko-KR") : 0}원
+              {formatPrice(totalPrice ? totalPrice + 3000 : 0)}원
             </p>
           </div>
         </div>

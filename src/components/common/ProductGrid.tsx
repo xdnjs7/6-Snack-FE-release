@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 /**
  * @Jam1eL1
@@ -63,9 +64,7 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
             <div className="flex flex-col justify-start items-start gap-2 w-full">
               <div className="justify-start text-stone-900 text-lg font-normal">{product.name}</div>
               {/* 상품 팔린갯수 api 연동되면 가져와야함, 변경예정 */}
-              <div className="justify-start text-stone-900 text-lg font-extrabold">
-                {product.price.toLocaleString("ko-KR")}원
-              </div>
+              <div className="justify-start text-stone-900 text-lg font-extrabold">{formatPrice(product.price)}원</div>
               <div className="justify-center text-blue-500 text-sm font-bold ">{product.cumulativeSales}회 구매</div>
             </div>
           </Link>

@@ -8,6 +8,7 @@ import checkIc from "@/assets/icons/ic_check_white.svg";
 import xIc from "@/assets/icons/ic_x_gray.svg";
 import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 type TToastProps = {
   text: string | React.ReactNode;
@@ -53,7 +54,7 @@ const Toast = ({ text, budget, onClose, variant = "error", isVisible, className 
         <div className="flex items-center gap-3 sm:gap-6">
           <div className="flex items-center gap-1.5 sm:gap-3">
             <span>남은 예산</span>
-            <span>{budget.toLocaleString()}원</span>
+            <span>{formatPrice(budget)}원</span>
           </div>
 
           {onClose && (

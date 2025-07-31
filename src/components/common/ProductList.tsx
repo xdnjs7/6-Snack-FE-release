@@ -2,6 +2,7 @@ import Image, { StaticImageData } from "next/image";
 import React, { Fragment } from "react";
 import Desktop from "./Desktop";
 import { formatDate } from "@/lib/utils/formatDate.util";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 type TCategory = {
   id: number;
@@ -70,7 +71,7 @@ export default function ProductList({ products }: TProductListProps) {
                       {item.name}
                     </p>
                     <p className="font-extrabold text-[14px]/[17px] tracking-tight text-primary-950">
-                      {item.price.toLocaleString("ko-KR")}원
+                      {formatPrice(item.price)}원
                     </p>
                   </div>
                   <p className="font-normal text-[14px]/[17px] tracking-tight text-primary-600 truncate">
@@ -100,7 +101,7 @@ export default function ProductList({ products }: TProductListProps) {
                   {item.category.name}
                 </p>
                 <p className="w-[160px] font-normal text-[16px]/[20px] tracking-tight text-primary-950">
-                  {item.price.toLocaleString("ko-KR")}원
+                  {formatPrice(item.price)}원
                 </p>
                 <p className="w-[112px] font-normal text-[16px]/[20px] tracking-tight text-primary-950 truncate">
                   {item.linkUrl.split("https://")}
