@@ -131,7 +131,7 @@ export default function OrderConfirmedPage() {
         <div className="self-stretch flex flex-col justify-start items-start gap-10">
           <div className="self-stretch flex flex-col justify-start items-start gap-[15px]">
             <div className="inline-flex justify-start items-start gap-1.5">
-              <div className="justify-center text-gray-950 text-base font-bold font-['SUIT']">구매 품목</div>
+              <div className="justify-center text-gray-950 text-base font-bold font-['SUIT']">요청 품목</div>
               <div className="justify-center text-gray-950 text-base font-normal font-['SUIT']">
                 총 {orderData.receipts.length}개
               </div>

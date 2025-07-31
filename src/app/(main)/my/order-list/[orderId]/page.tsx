@@ -163,7 +163,7 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
         {/* Items Section */}
         <OrderItemsSection 
           receipts={orderData.receipts}
-          title="구매 품목"
+          title="요청 품목"
         />
 
         {/* Request Info Section */}
