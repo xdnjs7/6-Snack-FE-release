@@ -126,7 +126,7 @@ export default function ProductsPageContent() {
           </div>
         </div>
         {/* 상품 목록 */}
-        <div className="container mx-auto py-5">
+        <div className="container mx-auto pt-[20px] sm:pt-[30px]">
           {isLoading ? (
             <div className="flex justify-center items-center py-16">
               <div className="text-primary-500">로딩 중...</div>
@@ -145,7 +145,7 @@ export default function ProductsPageContent() {
                     </div>
                   }
                   onClick={handleLoadMore}
-                  className="w-full h-[44px] sm:h-[64px] py-[16px] text-sm/[17px] font-medium tracking-tight"
+                  className="w-full h-[44px] sm:h-[64px] px-6 py-4 text-sm/[17px] font-medium tracking-tight"
                   disabled={isFetchingNextPage}
                 />
               )}
