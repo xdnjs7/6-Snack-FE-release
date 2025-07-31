@@ -12,8 +12,8 @@ type UseProductRegistrationFormProps = {
     productName: string;
     price: string;
     productLink: string;
-    mainCategory: string;
-    subCategory: string;
+    parentCategory: string;
+    childrenCategory: string;
     imageUrl?: string;
   };
 };
@@ -32,8 +32,8 @@ export const useProductRegistrationForm = ({
       productName: "",
       price: "",
       productLink: "",
-      mainCategory: "",
-      subCategory: "",
+      parentCategory: "",
+      childrenCategory: "",
     },
   });
 
@@ -46,8 +46,8 @@ export const useProductRegistrationForm = ({
       setValue("productName", initialData.productName);
       setValue("price", initialData.price);
       setValue("productLink", initialData.productLink);
-      setValue("mainCategory", initialData.mainCategory);
-      setValue("subCategory", initialData.subCategory);
+      setValue("parentCategory", initialData.parentCategory);
+      setValue("childrenCategory", initialData.childrenCategory);
       if (initialData.imageUrl) {
         setImagePreviewUrl(initialData.imageUrl);
       }
@@ -71,25 +71,25 @@ export const useProductRegistrationForm = ({
   };
 
   // 카테고리 처리
-  const handleMainCategoryChange = (value: string) => {
-    setValue("mainCategory", value);
-    setValue("subCategory", "");
+  const handleParentCategoryChange = (value: string) => {
+    setValue("parentCategory", value);
+    setValue("childrenCategory", "");
   };
 
-  const handleSubCategoryChange = (value: string) => {
-    setValue("subCategory", value);
+  const handleChildrenCategoryChange = (value: string) => {
+    setValue("childrenCategory", value);
   };
 
   // 폼 제출
   const onSubmit = async (data: ProductRegistrationFormData) => {
     try {
       // 카테고리 ID 매핑
-      const categoryId = getCategoryId(data.mainCategory, data.subCategory);
+      const categoryId = getCategoryId(data.parentCategory, data.childrenCategory);
 
       // FormData 생성
       const formData = new FormData();
       formData.append("name", data.productName);
-      formData.append("price", data.price.toString());
+      formData.append("price", data.price);
       formData.append("linkUrl", data.productLink);
       formData.append("categoryId", categoryId.toString());
       formData.append("image", data.imageFile);
@@ -108,8 +108,8 @@ export const useProductRegistrationForm = ({
 
   // 카테고리 옵션
   const parentCategoryOptions = CATEGORIES.parentCategory.map((category) => category.name);
-  const childrenCategoryOptions = watchedValues.mainCategory
-    ? CATEGORIES.childrenCategory[watchedValues.mainCategory as keyof typeof CATEGORIES.childrenCategory]?.map(
+  const childrenCategoryOptions = watchedValues.parentCategory
+    ? CATEGORIES.childrenCategory[watchedValues.parentCategory as keyof typeof CATEGORIES.childrenCategory]?.map(
         (category) => category.name,
       ) || []
     : [];
@@ -122,8 +122,8 @@ export const useProductRegistrationForm = ({
     childrenCategoryOptions,
     handleImageChange,
     handleImageRemove,
-    handleMainCategoryChange,
-    handleSubCategoryChange,
+    handleParentCategoryChange,
+    handleChildrenCategoryChange,
     onSubmit: form.handleSubmit(onSubmit),
   };
 };

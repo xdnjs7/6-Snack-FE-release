@@ -7,12 +7,12 @@ import { useProductRegistrationForm } from "@/hooks/useProductRegistrationForm";
 import XIconSvg from "../svg/XIconSvg";
 
 // 상품 데이터를 위한 타입 정의
-export type TProductData = {
+type TProductData = {
   productName: string;
   price: string;
   productLink: string;
-  mainCategory: string;
-  subCategory: string;
+  parentCategory: string;
+  childrenCategory: string;
   imageUrl?: string;
 };
 
@@ -36,8 +36,8 @@ export default function ProductRegistrationForm({
     childrenCategoryOptions,
     handleImageChange,
     handleImageRemove,
-    handleMainCategoryChange,
-    handleSubCategoryChange,
+    handleParentCategoryChange,
+    handleChildrenCategoryChange,
     onSubmit,
   } = useProductRegistrationForm({
     onSubmitSuccess,
@@ -57,8 +57,6 @@ export default function ProductRegistrationForm({
   };
 
   return (
-    // <div className="min-h-screen flex items-center justify-center p-4 bg-primary-50">
-
     <div className="w-[512px] h-[696px] fixed inset-0 top-1/2 left-1/2 -translate-1/2 rounded-[6px] p-[30px] bg-white shadow-xl flex flex-col gap-[32px] items-center">
       <h2 className="font-suit font-bold text-[18px] leading-[100%] tracking-[-0.45px] text-primary-950 text-center">
         상품 등록
@@ -70,18 +68,18 @@ export default function ProductRegistrationForm({
             htmlFor="imageUpload"
             className="w-[140px] h-[140px] flex flex-col items-center justify-center border border-primary-200 rounded-[2px] text-primary-400 cursor-pointer hover:bg-primary-100"
           >
-            <Image src={photoIcon} alt="사진 아이콘" />
+            <div className="relative w-[30px] h-[30px]">
+              <Image src={photoIcon} fill alt="사진 아이콘" className="object-contain" />
+            </div>
             <input id="imageUpload" type="file" accept="image/*" onChange={onImageChange} className="hidden" />
           </label>
         ) : (
           <>
-            <Image
-              src={imagePreviewUrl}
-              alt="Product Preview"
-              width={140}
-              height={140}
-              className="object-contain border border-primary-100 rounded-[2px]"
-            />
+            <div className="w-[140px] h-[140px] flex flex-col items-center justify-center border border-primary-200 rounded-[2px]">
+              <div className="relative w-[75%] h-[75%]">
+                <Image src={imagePreviewUrl} alt="Product Preview" fill className="object-contain" />
+              </div>
+            </div>
             <button
               onClick={handleImageRemove}
               className="absolute top-0 right-0 -mt-2 -mr-2 bg-primary-50 rounded-full p-1 border-1 border-primary-100"
@@ -102,7 +100,7 @@ export default function ProductRegistrationForm({
             <Dropdown
               options={parentCategoryOptions}
               placeholder="대분류"
-              onChange={handleMainCategoryChange}
+              onChange={handleParentCategoryChange}
               className="w-full"
             />
           </div>
@@ -113,9 +111,9 @@ export default function ProductRegistrationForm({
             <Dropdown
               options={childrenCategoryOptions}
               placeholder="소분류"
-              onChange={handleSubCategoryChange}
+              onChange={handleChildrenCategoryChange}
               className="w-full"
-              disabled={!parentCategoryOptions.includes(form.watch("mainCategory"))}
+              disabled={!parentCategoryOptions.includes(form.watch("parentCategory"))}
             />
           </div>
         </div>
