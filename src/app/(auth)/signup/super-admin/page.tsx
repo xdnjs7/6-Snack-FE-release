@@ -76,13 +76,10 @@ export default function SuperAdminSignUpPage() {
     try {
       await superAdminSignUpApi(data);
       showToast("회원가입이 성공했습니다!", "success");
-      // 토스트가 보여진 후 1초 뒤에 페이지 이동
-      setTimeout(() => {
-        router.push("/login");
-      }, 1000);
+      router.push("/login");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      const message = error instanceof Error ? error.message : "회원가입에 실패했습니다.";
-      showToast(message, "error");
+      showToast("회원가입에 실패했습니다.", "error");
     }
   };
 
