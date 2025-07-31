@@ -28,6 +28,7 @@ export const useProductRegistrationForm = ({
 
   const form = useForm<ProductRegistrationFormData>({
     resolver: zodResolver(productRegistrationSchema),
+    mode: "onChange", 
     defaultValues: {
       productName: "",
       price: "",

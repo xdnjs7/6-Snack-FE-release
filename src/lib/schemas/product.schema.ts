@@ -1,13 +1,28 @@
 import { z } from "zod";
 
 export const productRegistrationSchema = z.object({
-  productName: z.string().min(1, "상품명을 입력해주세요").max(15, "상품명은 15자 이하여야 합니다"),
+  productName: z
+    .string()
+    .min(1, "상품명을 입력해주세요")
+    .max(15, "상품명은 15자 이하여야 합니다")
+    .regex(/^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\s]+$/, "특수문자는 사용할 수 없습니다"),
   price: z
     .string()
     .min(1, "가격을 입력해주세요")
-    .regex(/^\d+$/, "숫자만 입력해주세요")
-    .refine((val) => parseInt(val, 10) > 0, "가격은 0보다 커야 합니다"),
-  productLink: z.string().min(1, "제품 링크를 입력해주세요").url("올바른 URL을 입력해주세요"),
+    .regex(/^\d*$/, "숫자만 입력해주세요")
+    .refine((val) => val === "" || parseInt(val, 10) > 0, "가격은 0보다 커야 합니다"),
+  productLink: z
+    .string()
+    .min(1, "제품 링크를 입력해주세요")
+    .refine((val) => {
+      if (val === "") return true;
+      try {
+        new URL(val);
+        return true;
+      } catch {
+        return false;
+      }
+    }, "올바른 URL 형식을 입력해주세요 (예: https://example.com)"),
   parentCategory: z.string().min(1, "대분류를 선택해주세요"),
   childrenCategory: z.string().min(1, "소분류를 선택해주세요"),
   imageFile: z
