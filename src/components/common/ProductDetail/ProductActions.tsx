@@ -14,6 +14,7 @@ type TProductActionsProps = {
   canEdit: boolean;
   productId: number;
   productName: string;
+  showToast: (message: string, variant?: "success" | "error") => void;
 };
 
 export default function ProductActions({
@@ -22,6 +23,7 @@ export default function ProductActions({
   canEdit,
   productId,
   productName,
+  showToast,
 }: TProductActionsProps) {
   const router = useRouter();
   const { openModal, closeModal } = useModal();
@@ -31,12 +33,15 @@ export default function ProductActions({
   const handleDelete = () => {
     deleteProduct(productId, {
       onSuccess: () => {
-        alert("상품이 삭제되었습니다.");
+        showToast("상품이 삭제되었습니다.", "success");
         closeModal();
-        router.push("/products");
+
+        setTimeout(() => {
+          router.push("/products");
+        }, 3000);
       },
       onError: () => {
-        alert("상품 삭제 실패");
+        showToast("상품 삭제 실패", "error");
       },
     });
   };
