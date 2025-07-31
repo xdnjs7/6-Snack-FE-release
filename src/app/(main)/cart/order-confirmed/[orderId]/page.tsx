@@ -127,7 +127,7 @@ export default function OrderConfirmedPage() {
 
         {/* 주문 완료 메시지 */}
         <div className="self-stretch text-center justify-center text-neutral-800 text-2xl sm:text-3xl md:text-3xl font-bold font-['SUIT']">
-          구매 요청이 완료되었습니다.
+          {user?.role === "USER" ? "구매 요청이 완료되었습니다." : "구매가 완료되었습니다."}
         </div>
 
         {/* 주문 상품 목록 */}
