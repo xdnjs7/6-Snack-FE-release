@@ -53,7 +53,7 @@ export default function User() {
     staleTime: 5 * 60 * 1000, // 5분
   });
 
-  const members = membersData?.users ?? [];
+  const members = useMemo(() => membersData?.users ?? [], [membersData?.users]);
   const totalPages = Math.ceil(members.length / MEMVERS_PAGE);
 
   // 회원 삭제 mutation
@@ -153,7 +153,7 @@ export default function User() {
             key={member.id}
             {...member}
             onClickDeleteUser={handleDeleteUser}
-            onRoleUpdate={(data) => showToast("권한이 성공적으로 변경되었습니다.", "success")}
+            onRoleUpdate={() => showToast("권한이 성공적으로 변경되었습니다.", "success")}
           />
         ))
       )}

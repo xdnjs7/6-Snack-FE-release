@@ -28,7 +28,7 @@ export default function InviteMemberModal({
   // 권한 수정 mutation
   const updateRoleMutation = useMutation({
     mutationFn: ({ userId, role }: { userId: string; role: TUserRole }) => updateUserRole(userId, role),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["companyUsers"] });
       onSubmit?.({ name, email, role: selectedRole });
       closeModal();
@@ -62,7 +62,11 @@ export default function InviteMemberModal({
   };
 
   const handleCancel = () => {
-    onCancel?.() || closeModal();
+    if (onCancel) {
+      onCancel();
+    } else {
+      closeModal();
+    }
   };
 
   return (
