@@ -3,7 +3,7 @@
 import CategoryNavigation from "@/components/common/ProductDetail/CategoryNavigation";
 import SubCategoryItem from "@/components/common/SubCategoryItem";
 import ProductGrid from "@/components/common/ProductGrid";
-import { CATEGORIES } from "@/lib/utils/categories.util";
+import { CATEGORIES } from "@/lib/constants/categories";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Button from "@/components/ui/Button";
@@ -101,21 +101,17 @@ export default function ProductsPageContent() {
         <SubCategoryItem categories={categories} />
       </div>
 
-      <div className="flex flex-col sm:h-16 sm:w-full sm:border-b sm:border-primary-100">
+      <div className="flex flex-col sm:h-16 w-full sm:border-b sm:border-primary-100">
         {/* TODO: 모바일 전용 하위 카테고리 TabMenu - 선택된 카테고리가 있을 때만 표시 */}
         <SubCategoryTabs />
 
         <div className="flex flex-col sm:flex-row sm:justify-between">
           {/* 모바일, 태블릿, 데스크탑에서 전부 보이는 상위/하위 카테고리 바 */}
 
-          <CategoryNavigation
-            parentCategory={selectedCategory?.parent}
-            childCategory={selectedCategory?.child}
-            className="sm:border-b-0 px-6 sm:px-0"
-          />
+          <CategoryNavigation parentCategory={selectedCategory?.parent} childCategory={selectedCategory?.child} />
           {/* 정렬, 상품등록 버튼 wrapper */}
-          <div className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5 px-[24px] sm:px-0">
-            <Dropdown options={sortOptions.map((option) => option.label)} onChange={handleSortChange} />
+          <div className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5 border-b border-primary-100 sm:border-0">
+            <Dropdown options={sortOptions.map((option) => option.label)} onChange={handleSortChange}/>
             <Button
               type="black"
               label={
@@ -125,12 +121,12 @@ export default function ProductsPageContent() {
                 </div>
               }
               onClick={handleProductRegistration}
-              className="h-[44px] py-[10px]"
+              className="h-[44px] py-[10px] rounded"
             />
           </div>
         </div>
         {/* 상품 목록 */}
-        <div className="container mx-auto py-6 px-[24px] sm:px-0 ">
+        <div className="container mx-auto pt-[20px] sm:pt-[30px]">
           {isLoading ? (
             <div className="flex justify-center items-center py-16">
               <div className="text-primary-500">로딩 중...</div>
@@ -149,7 +145,7 @@ export default function ProductsPageContent() {
                     </div>
                   }
                   onClick={handleLoadMore}
-                  className="w-full h-[44px] sm:h-[64px] py-[16px] px-[24px] text-sm/[17px] font-medium tracking-tight"
+                  className="w-full h-[44px] sm:h-[64px] px-6 py-4 text-sm/[17px] font-medium tracking-tight"
                   disabled={isFetchingNextPage}
                 />
               )}
