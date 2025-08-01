@@ -8,7 +8,6 @@ import { useProductRegistrationForm } from "@/hooks/useProductRegistrationForm";
 import XIconSvg from "../svg/XIconSvg";
 import Button from "../ui/Button";
 
-// 상품 데이터를 위한 타입 정의
 type TProductData = {
   productName: string;
   price: string;
@@ -18,7 +17,6 @@ type TProductData = {
   imageUrl?: string;
 };
 
-// ProductRegistrationForm 컴포넌트가 받을 수 있는 프롭스 타입 정의
 type TProductRegistrationFormProps = {
   onSubmitSuccess?: () => void;
   onClose?: () => void;
