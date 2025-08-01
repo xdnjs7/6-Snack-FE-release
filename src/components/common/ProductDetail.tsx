@@ -79,7 +79,7 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
         />
         <div className="w-full flex flex-col md:flex-row md:gap-10">
           <ProductImage imageUrl={product.imageUrl} />
-          <div className="flex flex-col justify-center md:justify-start items-center w-full gap-8 sm:gap-10 md:gap-7.5 pt-7.5 sm:pt-8 md:pt-8">
+          <div className="flex flex-col justify-center md:justify-start items-center w-full gap-8 md:gap-7.5 pt-7.5 md:pt-8">
             <div className="self-stretch inline-flex justify-between items-start">
               <ProductBasicInfo product={product} />
               <ProductActions
