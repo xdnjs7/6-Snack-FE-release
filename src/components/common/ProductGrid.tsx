@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
-
+import ic_like_active from "@/assets/icons/ic_like_active.svg";
 type TProduct = {
   id: number;
   categoryId: number;
@@ -16,6 +16,7 @@ type TProduct = {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+  // isFavorite: boolean 찜목록 기능 추가되면 넣기
   category: {
     id: number;
     name: string;
@@ -53,9 +54,17 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
             href={productDetailUrl}
             className="flex flex-col justify-start items-center gap-[14px] md:gap-[20px] hover:opacity-80 transition-opacity w-full"
           >
-            <div className="w-full flex justify-center items-center aspect-square min-w-[154.5px] min-h-[154.5px] max-h-[366.67px] max-w-[366.67px] round-xs bg-primary-50 overflow-hidden">
+            <div className="relative w-full flex justify-center items-center aspect-square min-w-[154.5px] min-h-[154.5px] max-h-[366.67px] max-w-[366.67px] round-xs bg-primary-50 overflow-hidden">
               <div className="relative w-[70%] h-[70%] md:w-[75%] md:h-[75%] min-w-[53.8px] min-h-[93.39px] ">
                 <Image src={product.imageUrl} alt={product.name} fill className="object-contain" />
+              </div>
+              {/* 우주님이 상품조회 api 업데이트 하면 여기에 조건문으로 하트 보이게 추가 */}
+              {/*  */}
+              {/* { product.isFavorite && <div className="absolute right-[11.5px] bottom-[11.5px] w-[20px] h-[20px]  sm:w-[25px] sm:h-[25px] md:right-[20.3px] md:bottom-[20.3px] md:w-[30px] md:h-[30px]">
+                  <Image src={ic_like_active} alt="하트" fill className="object-cover" />
+                </div>} */}
+              <div className="absolute right-[11.5px] bottom-[11.5px] w-[20px] h-[20px]  sm:w-[25px] sm:h-[25px] md:right-[20.3px] md:bottom-[20.3px] md:w-[30px] md:h-[30px]">
+                <Image src={ic_like_active} alt="하트" fill className="object-cover" />
               </div>
             </div>
             <div className="flex flex-col justify-start items-start gap-2 w-full">
