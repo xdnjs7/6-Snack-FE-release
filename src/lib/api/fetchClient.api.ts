@@ -1,7 +1,7 @@
 import { logout } from "@/app/actions/auth";
 import { refreshAccessToken } from "./auth.api";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_BASE_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
 
 export const cookieFetch = async <T>(path: string, options: RequestInit = {}): Promise<T> => {
   const method = options.method || "GET";
