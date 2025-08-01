@@ -3,7 +3,7 @@
 import Button from "@/components/ui/Button";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import img_error_logo from "@/assets/images/img_error_logo.png";
+import img_dog_error from "@/assets/images/img_dog_error.png";
 import { useAuth } from "@/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 
@@ -44,7 +44,7 @@ export default function ErrorPage() {
         <>
           <div className="flex flex-col gap-[16px] justify-center items-center">
             <div className="relative w-[40vw] h-[30vh] max-w-[300px] aspect-[7/8]">
-              <Image src={img_error_logo} alt="로고" fill className="object-contain" />
+              <Image src={img_dog_error} alt="로고" fill className="object-contain" />
             </div>
 
             <div className="text-center font-medium text-[16px]/[24px] sm:text-[20px]/[30px]">
