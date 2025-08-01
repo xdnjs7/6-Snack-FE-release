@@ -1,5 +1,5 @@
 // src/stores/categoryStore.ts
-import { CATEGORIES } from "@/lib/utils/categories.util";
+import { CATEGORIES } from "@/lib/constants/categories";
 import { create } from "zustand";
 
 type TCategoryState = {

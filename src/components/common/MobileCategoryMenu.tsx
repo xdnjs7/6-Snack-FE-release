@@ -1,7 +1,7 @@
 "use client";
 import { createPortal } from "react-dom";
 import { TCategoryItem } from "@/types/subCategoryMenu.types";
-import { CATEGORIES } from "@/lib/utils/categories.util";
+import { CATEGORIES } from "@/lib/constants/categories";
 
 type TMobileCategoryMenuProps = {
   items?: TCategoryItem[];

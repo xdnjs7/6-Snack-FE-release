@@ -12,11 +12,18 @@ type TDropdownProps = {
   placeholder?: string;
   onChange: (value: string) => void;
   className?: string;
+  disabled?: boolean;
 };
 
 const defaultOptions = ["최신순", "판매순", "낮은 가격순", "높은 가격순"];
 
-export default function Dropdown({ options = [], placeholder = "정렬", onChange, className }: TDropdownProps) {
+export default function Dropdown({
+  options = [],
+  placeholder = "정렬",
+  onChange,
+  className,
+  disabled = false,
+}: TDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [sort, setSort] = useState<string>(placeholder);
 
@@ -34,8 +41,8 @@ export default function Dropdown({ options = [], placeholder = "정렬", onChang
       <div
         className={`h-11 w-full px-4 py-2.5 bg-white border border-primary-100 ${
           isOpen ? "border-b-0" : "border"
-        } flex justify-between items-center cursor-pointer`}
-        onClick={() => setIsOpen((prev) => !prev)}
+        } flex justify-between items-center ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+        onClick={() => !disabled && setIsOpen((prev) => !prev)}
       >
         <div className="text-primary-950 text-base/[20px] font-normal whitespace-nowrap">{sort}</div>
         <div className="w-4 h-4 relative">
@@ -50,7 +57,7 @@ export default function Dropdown({ options = [], placeholder = "정렬", onChang
 
       {/* 드롭다운 메뉴 */}
       {isOpen && (
-        <div className="absolute w-full z-10 bg-white border border-primary-100 border-t-0 rounded-b max-h-[300px] overflow-y-auto">
+        <div className="absolute w-full z-20 bg-white border border-primary-100 border-t-0 rounded-b max-h-[300px] overflow-y-auto">
           {menuOptions.map((option) => (
             <div
               key={option}

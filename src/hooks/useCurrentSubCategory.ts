@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { CATEGORIES } from "@/lib/utils/categories.util";
+import { CATEGORIES } from "@/lib/constants/categories";
 
 type TCurrentSubCategory = {
   id: number;
