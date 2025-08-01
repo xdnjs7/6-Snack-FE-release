@@ -10,7 +10,6 @@ import { sendInvite } from "@/lib/api/invite.api";
 import { deleteUserById } from "@/lib/api/superAdmin.api";
 import { getUserApi } from "@/lib/api/user.api";
 import { useModal } from "@/providers/ModalProvider";
-import { TMemberItem } from "@/types/meberList.types";
 import { TToastVariant } from "@/types/toast.types";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useMemo, useState, useRef } from "react";
@@ -139,20 +138,33 @@ export default function User() {
 
       <div className="w-full mt-10 self-stretch p-5 border-t border-b border-neutral-200 hidden sm:flex justify-start items-center gap-8">
         <div className="px-14 flex justify-start items-center mr-2">
-          <div className="justify-center text-zinc-500 text-base font-bold">이름</div>
+          <div className="justify-center text-primary-500 text-base font-bold">이름</div>
         </div>
-        <div className="flex-1 justify-center text-zinc-500 text-base font-bold">메일</div>
-        <div className="w-20 text-center justify-center text-zinc-500 text-base font-bold">권한</div>
-        <div className="w-48 text-center justify-center text-zinc-500 text-base font-bold">비고</div>
+        <div className="flex-1 justify-center text-primary-500 text-base font-bold">메일</div>
+        <div className="w-20 text-center justify-center text-primary-500 text-base font-bold">권한</div>
+        <div className="w-48 text-center justify-center text-primary-500 text-base font-bold">비고</div>
       </div>
 
       {isLoadingMembers || deleteUserMutation.isPending || inviteUserMutation.isPending ? (
         <div className="text-center py-10">로딩 중...</div>
       ) : (
-        paginateMembers.map((member) => <MemberList key={member.id} {...member} onClickDeleteUser={handleDeleteUser} />)
+        paginateMembers.map((member) => (
+          <MemberList
+            key={member.id}
+            {...member}
+            onClickDeleteUser={handleDeleteUser}
+            onRoleUpdate={(data) => showToast("권한이 성공적으로 변경되었습니다.", "success")}
+          />
+        ))
       )}
 
-      <Pagination currentPage={currentPaginationPage} totalPages={totalPages} onPageChange={setCurrentPaginationPage} />
+      <div className="mt-6">
+        <Pagination
+          currentPage={currentPaginationPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPaginationPage}
+        />
+      </div>
 
       <div className="w-full flex justify-center">
         <Button

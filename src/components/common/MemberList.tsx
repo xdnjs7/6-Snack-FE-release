@@ -7,9 +7,10 @@ import MenuDropdown from "./MenuDropdown";
 
 type TMemberListProps = TMemberItem & {
   onClickDeleteUser?: (id: string) => void;
+  onRoleUpdate?: (data: { name: string; email: string; role: "USER" | "ADMIN" }) => void;
 };
 
-export default function MemberList({ id, name, email, role, onClickDeleteUser }: TMemberListProps) {
+export default function MemberList({ id, name, email, role, onClickDeleteUser, onRoleUpdate }: TMemberListProps) {
   const { openModal, closeModal } = useModal();
   return (
     <>
@@ -36,7 +37,7 @@ export default function MemberList({ id, name, email, role, onClickDeleteUser }:
                 defaultValues={{ name, email, role, id }}
                 onCancel={closeModal}
                 onSubmit={(data) => {
-                  console.log("권한 수정:", data);
+                  onRoleUpdate?.(data);
                   closeModal();
                 }}
               />,
@@ -85,7 +86,7 @@ export default function MemberList({ id, name, email, role, onClickDeleteUser }:
                   defaultValues={{ name, email, role, id }}
                   onCancel={closeModal}
                   onSubmit={(data) => {
-                    console.log("권한 수정:", data);
+                    onRoleUpdate?.(data);
                     closeModal();
                   }}
                 />,
