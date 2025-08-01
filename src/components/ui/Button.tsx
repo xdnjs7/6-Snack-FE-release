@@ -38,10 +38,9 @@ const buttonStyleMap: Record<TButtonType, TButtonStyle> = {
     border: "border-1 border-primary-300",
   },
   whiteDisabled: {
-    bg: "bg-white",
-    textColor: "text-primary-400",
+    bg: "bg-primary-100",
+    textColor: "text-primary-300",
     padding: "px-4 py-3",
-    border: "border-1 border-primary-300",
   },
 };
 

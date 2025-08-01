@@ -68,9 +68,13 @@ export default function ProductActions({
   }, [selectedQuantity, onQuantityChange]);
 
   return (
-    <div className="flex items-center gap-3.5 sm:gap-5">
-      <span className="min-w-[32px] whitespace-nowrap text-sm sm:text-base">수량</span>
-      <QuantityDropdown value={selectedQuantity === 0 ? 1 : selectedQuantity} onClick={onQuantityChange} />
+    <div className="flex items-center">
+      <span className="min-w-[32px] whitespace-nowrap px-4 text-[16px] sm:text-base">수량</span>
+      <QuantityDropdown
+        value={selectedQuantity === 0 ? 1 : selectedQuantity}
+        onClick={onQuantityChange}
+        type="product"
+      />
       {canEdit && <MenuDropdown menuType="product" onDelete={handleOpenConfirmModal} />}
     </div>
   );

@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import ArrowIconSvg from "../svg/ArrowIconSvg";
 import { TCategoryItem } from "@/types/subCategoryMenu.types";
 import { useCategoryStore } from "@/stores/categoryStore";
-import { CATEGORIES } from "@/lib/utils/categories.util";
+import { CATEGORIES } from "@/lib/constants/categories";
 
 export default function AuthenticatedHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -68,7 +68,7 @@ export default function AuthenticatedHeader() {
   // 현재 선택된 카테고리 이름 표시 (전역 상태에서 가져옴)
   const currentCategoryName = selectedCategory?.parent || "전체";
   return (
-    <header className="sticky top-0 w-full h-14 sm:h-25 md:h-[90px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] sm:px-[24px] sm:py-[28px] md:px-[100px] md:py-[32px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg z-[10000]">
+    <header className="sticky top-0 w-full h-14 sm:h-25 md:h-[90px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] sm:px-[24px] sm:py-[28px] md:px-[100px] md:py-[32px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg z-50">
       <div className="flex items-center justify-center md:gap-10">
         <Link href="/">
           <SnackIconSvg className="w-[102.75px] h-[44px]" />
