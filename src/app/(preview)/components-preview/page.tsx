@@ -17,12 +17,11 @@ import Card from "@/components/ui/Card";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
 import SearchBar from "@/components/ui/SearchBar";
 import Badge from "@/components/ui/Badge";
-//import SubCategoryMenu from "@/components/common/SubCategoryMenu";
 import SideMenu from "@/components/common/SideMenu";
 import Pagination from "@/components/common/Pagination";
 import OrderManageModal from "@/components/common/OrderManageModal";
 import { useModal } from "@/providers/ModalProvider";
-import ProductDetail from "@/components/common/ProductDetail";
+// import ProductDetail from "@/components/common/ProductDetail";
 import Menu from "@/components/common/Menu";
 import TabMenu from "@/components/common/TabMenu";
 import ProductRegistrationForm from "@/components/common/ProductRegistrationForm";
@@ -30,22 +29,26 @@ import MyRequestList from "@/components/common/MyRequestList";
 import Input from "@/components/common/Input";
 import ConfirmationModal from "@/components/common/ConfirmationModal";
 import InviteMemberModal from "@/components/common/InviteMemberModal";
-import DeleteAccountConfirmModal from "@/components/common/DeleteAccountConfirmModal";
+// import DeleteAccountConfirmModal from "@/components/common/DeleteAccountConfirmModal";
 import Header from "@/components/layout/Header";
-import CartItem from "@/app/(main)/cart/_components/CartItem";
-import OrderItem from "@/app/(main)/cart/order/_components/OrderItem";
+// import CartItem from "@/app/(main)/cart/_components/CartItem";
+// import OrderItem from "@/app/(main)/cart/order/_components/OrderItem";
 import { categories, order, orderRequests, products } from "./MockData";
 import DogSpinner from "@/components/common/DogSpinner";
+import Image from "next/image";
+import img_bucket_logo from "@/assets/images/img_bucket_logo.png";
+import img_dog_logo from "@/assets/images/img_dog_logo.png";
+import ic_dot from "@/assets/icons/ic_dot.svg";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
-  const [categoryOption, setCategoryOption] = useState("다른거");
+  const [, setCategoryOption] = useState("다른거");
   const [budget] = useState(60000);
   const categoryOptions = ["음료", "과자", "아이스크림", "도시락", "라면", "사탕", "초콜릿", "떡볶이", "비빔밥"];
   const [isToastVisible, setIsToastVisible] = useState(false);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue] = useState("");
   const { openModal, closeModal } = useModal();
 
   const [members, setMembers] = useState<TMemberItem[]>([
@@ -67,7 +70,7 @@ export default function ComponentsPreviewPage() {
     setMembers((prev) => prev.filter((member) => member.id !== id));
   };
 
-  const [sort, setSort] = useState("");
+  const [, setSort] = useState("");
 
   const handleShowToast = () => {
     setIsToastVisible(true);
@@ -111,8 +114,8 @@ export default function ComponentsPreviewPage() {
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">Dropdown 컴포넌트</h2>
-          <Dropdown value={sort} onChange={setSort} />
-          <Dropdown value={categoryOption} onChange={setCategoryOption} options={categoryOptions} />
+          <Dropdown onChange={setSort} />
+          <Dropdown onChange={setCategoryOption} options={categoryOptions} />
         </div>
 
         <div className="space-y-4 mb-4">
@@ -132,6 +135,33 @@ export default function ComponentsPreviewPage() {
 
       <p className="mb-4 font-bold text-xl bg-violet-100">이태빈</p>
       <div className="rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] p-6">
+        <div className="space-y-4 mb-4 h-[300px]">
+          <h2 className="text-lg font-semibold bg-blue-100">Spinner 컴포넌트</h2>
+          <div className="relative w-20 h-20">
+            <Image src={img_bucket_logo} alt="깜빡" fill className="object-contain" />
+          </div>
+
+          <div className="flex flex-col justify-center items-center">
+            <div className="flex gap-3">
+              <div className="relative w-2 h-2">
+                <Image src={ic_dot} alt="깜빡" fill className="object-contain" />
+              </div>
+              <div className="relative w-2 h-2">
+                <Image src={ic_dot} alt="깜빡" fill className="object-contain" />
+              </div>
+              <div className="relative w-2 h-2">
+                <Image src={ic_dot} alt="깜빡" fill className="object-contain" />
+              </div>
+            </div>
+
+            <div className="relative w-20 h-16 animate-moveUpDown">
+              <Image src={img_dog_logo} alt="깜빡" fill className="object-contain" />
+            </div>
+
+            <p>아니면 빈 장바구니에 간식이 담겨지는 애니메이션</p>
+          </div>
+        </div>
+
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">SubCategoryItem 컴포넌트</h2>
           <Suspense fallback={<div>로딩 중...</div>}>
@@ -164,12 +194,12 @@ export default function ComponentsPreviewPage() {
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">CartItem 컴포넌트</h2>
-          <CartItem />
+          {/* <CartItem /> */}
         </div>
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">OrderItem 컴포넌트</h2>
-          <OrderItem />
+          {/* <OrderItem /> */}
         </div>
       </div>
 
@@ -236,12 +266,12 @@ export default function ComponentsPreviewPage() {
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">[ProductDetail] 컴포넌트</h2>
-          <ProductDetail />
+          {/* <ProductDetail /> */}
         </div>
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">[DeleteAccountConfirmModal] 컴포넌트</h2>
-          <Button
+          {/* <Button
             type="black"
             label="회원삭제 모달 버튼"
             onClick={() =>
@@ -254,7 +284,7 @@ export default function ComponentsPreviewPage() {
                 />,
               )
             }
-          />
+          /> */}
         </div>
 
         <div className="space-y-4 mb-4">
@@ -280,9 +310,10 @@ export default function ComponentsPreviewPage() {
       <div className="rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] p-6">
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">[상품 등록 모달]</h2>
-          <ProductRegistrationForm />
+          <Button type="black" label="열기" onClick={() => openModal(<ProductRegistrationForm />)} />
           <h2 className="text-lg font-semibold bg-blue-100">[My Request List(요청 취소 가능)]</h2>
           <MyRequestList
+            orderId={1}
             requestDate="2024. 07. 04"
             productName="코카콜라 제로"
             price={1900}
@@ -291,7 +322,7 @@ export default function ComponentsPreviewPage() {
           />
           <h2 className="text-lg font-semibold bg-blue-100">[Input]</h2>
           <div>
-            <Input value={inputValue} onChange={setInputValue} unit="원" label="floating label" />
+            <Input value={inputValue} label="floating label" />
             <p>현재 입력된 값: {inputValue}</p>
           </div>
           <h2 className="text-lg font-semibold bg-blue-100">

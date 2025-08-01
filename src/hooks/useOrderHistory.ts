@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useBudgets } from "@/hooks/useBudgets";
 import { useAdminOrders } from "@/hooks/useAdminOrders";
 import { formatDate } from "@/lib/utils/formatDate.util";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 export type TPurchaseItem = {
   id: string;
@@ -55,7 +56,7 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
     managerName?: string;
     manager?: string;
     adminMessage?: string;
-  }
+  };
 
   const parse = (item: TOrderItem): TPurchaseItem => ({
     id: String(item.id),
@@ -65,9 +66,9 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
     item: item.productName || item.itemSummary || item.item || "-",
     amount:
       typeof item.totalPrice === "number"
-        ? item.totalPrice.toLocaleString()
+        ? formatPrice(item.totalPrice)
         : typeof item.amount === "number"
-          ? item.amount.toLocaleString()
+          ? formatPrice(item.amount)
           : "-",
     approvalDate: item.approvalDate ? formatDate(item.approvalDate) : item.updatedAt ? formatDate(item.updatedAt) : "-",
     manager: item.approver || item.managerName || item.manager || "-",
@@ -75,7 +76,9 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
   });
 
   // 모든 아이템을 파싱
-  const allPurchaseItems: TPurchaseItem[] = ((approvedData as { orders?: TOrderItem[] })?.orders || []).map((item: TOrderItem) => parse(item));
+  const allPurchaseItems: TPurchaseItem[] = ((approvedData as { orders?: TOrderItem[] })?.orders || []).map(
+    (item: TOrderItem) => parse(item),
+  );
 
   // 클라이언트 사이드에서 정렬 처리
   const sortedItems = useCallback(() => {
@@ -141,7 +144,7 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
   }, [dropdownOpen]);
 
   // 숫자 포맷 유틸
-  const formatNumber = (num: number | undefined) => (typeof num === "number" ? num.toLocaleString() + "원" : "-");
+  const formatNumber = (num: number | undefined) => (typeof num === "number" ? formatPrice(num) + "원" : "-");
 
   return {
     // 예산 관련

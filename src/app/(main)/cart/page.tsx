@@ -15,6 +15,7 @@ import { orderNow } from "@/lib/api/order.api";
 import { TOrderNowResponse } from "@/types/order.types";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import clsx from "clsx";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 export default function CartPage() {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
@@ -151,12 +152,12 @@ export default function CartPage() {
                   총 주문금액
                 </p>
                 <p className="font-extrabold text-[24px]/[30px] tracking-tight text-primary-950 sm:text-[30px]/[37px]">
-                  {selectedTotalPrice ? (selectedTotalPrice + 3000).toLocaleString("ko-KR") : 0}원
+                  {formatPrice(selectedTotalPrice ? selectedTotalPrice + 3000 : 0)}원
                 </p>
               </div>
               <div className="flex flex-col gap-[6px]">
                 <p className="font-normal text-[16px]/[20px] tracking-tight text-[#6b6b6b]">
-                  주문 상품은 {selectedTotalPrice?.toLocaleString("ko-KR") ?? 0}원
+                  주문 상품은 {formatPrice(selectedTotalPrice)}원
                 </p>
                 <p className="font-normal text-[16px]/[20px] tracking-tight text-[#6b6b6b] mb-[6px] sm:mb-[10px]">
                   배송비는 3,000원입니다.
@@ -168,7 +169,7 @@ export default function CartPage() {
                   <div className="flex justify-start items-center gap-[4px] mt-[2px] sm:mt-[6px]">
                     <p className="font-bold text-[18px]/[22px] tracking-tight text-primary-700">남은 예산 금액</p>
                     <p className="font-extrabold text-[18px]/[22px] tracking-tight text-primary-700">
-                      {remainingBudget.toLocaleString("ko-KR")}원
+                      {formatPrice(remainingBudget)}원
                     </p>
                   </div>
                 </>
@@ -188,7 +189,7 @@ export default function CartPage() {
                 onClick={handleRequestOrder}
                 disabled={isDisabled}
                 type="black"
-                label={isDisabled ? "잠시만 기다려주세요..." : "구매 요청"}
+                label={isDisabled ? "잠시만 기다려주세요..." : user?.role !== "USER" ? "구매하기" : "구매 요청"}
                 className={clsx(
                   isDisabled && "text-primary-300 bg-primary-100 cursor-default",
                   "w-full h-[64px] font-bold tracking-tight",

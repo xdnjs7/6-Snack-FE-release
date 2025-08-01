@@ -1,19 +1,23 @@
 import { cookieFetch } from "./fetchClient.api";
+import { getUserApi } from "./user.api";
 
-const companyId = 1; // TODO: 추후 동적으로 변경 예정
-
-interface BudgetResponse {
+type TBudgetResponse = {
   currentMonthBudget?: number;
   monthlyBudget?: number;
 }
 
-export const getBudgets = async (): Promise<BudgetResponse> => {
+export const getBudgets = async (): Promise<TBudgetResponse> => {
+  const currentUser = await getUserApi();
+  const companyId = currentUser.company?.id;
+  
   return cookieFetch(`/admin/${companyId}/budgets`, {
     method: "GET",
   });
 };
 
 export const patchBudgets = async (data: { currentMonthBudget: number; monthlyBudget: number }) => {
+  const currentUser = await getUserApi();
+  const companyId = currentUser.company?.id;
   return cookieFetch(`/super-admin/${companyId}/budgets`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },

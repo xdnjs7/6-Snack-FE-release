@@ -1,52 +1,24 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useRouter, useParams } from "next/navigation";
 import Button from "@/components/ui/Button";
 import clsx from "clsx";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
-import { getMyOrderDetail, TMyOrderDetail } from "@/lib/api/orderHistory.api";
+import { useMyOrderDetail } from "@/hooks/useOrderDetail";
 import { useAuth } from "@/providers/AuthProvider";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 export default function OrderConfirmedPage() {
   const router = useRouter();
   const params = useParams();
   const { user } = useAuth();
-  const [orderData, setOrderData] = useState<TMyOrderDetail | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
+  
   // orderId 우선순위: props > URL params
   const orderId = params.orderId as string;
 
-  useEffect(() => {
-    const fetchOrderDetail = async (): Promise<void> => {
-      if (!orderId) {
-        setError("주문 ID가 없습니다.");
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        setIsLoading(true);
-        console.log("Fetching order detail for:", orderId);
-        const data: TMyOrderDetail = await getMyOrderDetail(orderId);
-        console.log("Received order data:", data);
-        setOrderData(data);
-      } catch (err) {
-        setError("주문 내역을 불러오는데 실패했습니다.");
-        console.error("Error fetching order detail:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchOrderDetail();
-  }, [orderId]);
-
-  const formatPrice = (price: number): string => {
-    return price.toLocaleString("ko-KR");
-  };
+  // useQuery를 사용한 데이터 페칭
+  const { data: orderData, isLoading, error } = useMyOrderDetail(orderId);
 
   const handleViewOrderHistory = () => {
     router.push("/my/order-list");
@@ -67,7 +39,9 @@ export default function OrderConfirmedPage() {
   if (error || !orderData) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-base sm:text-lg md:text-xl text-red-600">{error || "주문 내역을 찾을 수 없습니다."}</div>
+        <div className="text-base sm:text-lg md:text-xl text-red-600">
+          {error?.message || "주문 내역을 찾을 수 없습니다."}
+        </div>
       </div>
     );
   }
@@ -150,7 +124,7 @@ export default function OrderConfirmedPage() {
 
         {/* 주문 완료 메시지 */}
         <div className="self-stretch text-center justify-center text-neutral-800 text-2xl sm:text-3xl md:text-3xl font-bold font-['SUIT']">
-          구매 요청이 완료되었습니다.
+          {user?.role === "USER" ? "구매 요청이 완료되었습니다." : "구매가 완료되었습니다."}
         </div>
 
         {/* 주문 상품 목록 */}
@@ -209,19 +183,25 @@ export default function OrderConfirmedPage() {
               {/* 주문 금액 정보 */}
               <div className="self-stretch flex flex-col gap-3 sm:gap-[7px] sm:px-5">
                 <div className="flex justify-between items-center">
-                  <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">주문금액</div>
+                  <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
+                    주문금액
+                  </div>
                   <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
                     {formatPrice(orderData.totalPrice)}원
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
-                  <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">배송비</div>
+                  <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
+                    배송비
+                  </div>
                   <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
                     {formatPrice(shippingFee)}원
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
-                  <div className="text-center justify-center text-gray-950 text-lg sm:text-lg font-bold font-['SUIT']">총 주문금액</div>
+                  <div className="text-center justify-center text-gray-950 text-lg sm:text-lg font-bold font-['SUIT']">
+                    총 주문금액
+                  </div>
                   <div className="text-center justify-center text-gray-950 text-lg sm:text-2xl font-bold sm:font-extrabold font-['SUIT']">
                     {formatPrice(totalAmount)}원
                   </div>

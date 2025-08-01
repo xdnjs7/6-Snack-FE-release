@@ -3,6 +3,10 @@ export type TUser = {
   name: string;
   email: string;
   role?: string;
+  company?: {
+    id: string;
+    name: string;
+  };
 };
 
 export type TAuthContextType = {

@@ -5,17 +5,11 @@ import DeleteAccountConfirmModal from "./DeleteAccountConfirmModal";
 import InviteMemberModal from "./InviteMemberModal";
 import MenuDropdown from "./MenuDropdown";
 
-/**
- * @wooju01
- * 1. rfc 스니펫 사용
- * 2. onEdit 에러 해결
- */
-
 type TMemberListProps = TMemberItem & {
   onClickDeleteUser?: (id: string) => void;
 };
 
-const MemberList = ({ id, name, email, role, onClickDeleteUser }: TMemberListProps) => {
+export default function MemberList({ id, name, email, role, onClickDeleteUser }: TMemberListProps) {
   const { openModal, closeModal } = useModal();
   return (
     <>
@@ -122,6 +116,4 @@ const MemberList = ({ id, name, email, role, onClickDeleteUser }: TMemberListPro
       </div>
     </>
   );
-};
-
-export default MemberList;
+}

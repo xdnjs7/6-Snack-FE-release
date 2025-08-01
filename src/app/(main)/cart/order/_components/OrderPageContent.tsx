@@ -102,8 +102,8 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
             type="black"
             label={isDisabled ? "잠시만 기다려주세요..." : "구매 요청"}
             className={clsx(
-              isDisabled && "text-primary-300 bg-primary-100 cursor-default",
               "w-full max-w-[300px] h-[64px] font-bold text-[16px]/[20px] tracking-tight",
+              isDisabled && "text-primary-300 bg-primary-100 cursor-default text-[14px]/[17px] sm:text-[16px]/[20px]",
             )}
           />
         </div>

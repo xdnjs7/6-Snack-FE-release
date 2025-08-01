@@ -7,19 +7,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
-import VisibilityOffIconSvg from "@/components/svg/VisibilityOffIconSvg";
-import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
 import { superAdminSignUpApi } from "@/lib/api/superAdmin.api";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
-import { ToastVariant } from "@/types/toast.types";
+import { TToastVariant } from "@/types/toast.types";
 
 // 리액트 훅폼에 연결할 zod 스키마 정의
 const signUpSchema = z
   .object({
     email: z.string().email("유효한 이메일을 입력해주세요."),
     name: z.string().min(1, "이름을 입력해주세요."),
-    companyName: z.string().min(1, "회사명을 입력해주세요."),
+    companyName: z
+      .string()
+      .min(1, "회사명을 입력해주세요.")
+      .regex(/^[가-힣a-zA-Z\d().,_\- ]+$/, "회사명에는 한글, 영문, 숫자, 괄호(), 온점(.), 반점(,), 대쉬(-), 언더바(_)만 사용할 수 있습니다."),
     bizNumber: z.string().regex(/^[0-9]{10}$/, "사업자 번호 10자리를 입력해주세요."),
     password: z
       .string()
@@ -40,15 +41,13 @@ type TSignUpFormData = z.infer<typeof signUpSchema>;
 export default function SuperAdminSignUpPage() {
   const router = useRouter();
 
-  const [error, setError] = useState<string | null>(null);
   const [toastVisible, setToastVisible] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
-  const [toastVariant, setToastVariant] = useState<ToastVariant>("success");
+  const [toastVariant, setToastVariant] = useState<TToastVariant>("success");
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting, isValid },
   } = useForm<TSignUpFormData>({
     resolver: zodResolver(signUpSchema),
@@ -64,7 +63,7 @@ export default function SuperAdminSignUpPage() {
   const bizNumberReg = register("bizNumber");
 
   // Toast를 보여주는 함수
-  const showToast = (message: string, variant: ToastVariant = "success") => {
+  const showToast = (message: string, variant: TToastVariant = "success") => {
     setToastMessage(message);
     setToastVariant(variant);
     setToastVisible(true);
@@ -77,7 +76,6 @@ export default function SuperAdminSignUpPage() {
 
   // 회원가입 처리
   const onSubmit = async (data: TSignUpFormData) => {
-    setError(null);
     try {
       await superAdminSignUpApi(data);
       showToast("회원가입이 성공했습니다!", "success");
@@ -88,7 +86,6 @@ export default function SuperAdminSignUpPage() {
     } catch (error) {
       const message = error instanceof Error ? error.message : "회원가입에 실패했습니다.";
       showToast(message, "error");
-      setError(message);
     }
   };
 
@@ -209,7 +206,7 @@ export default function SuperAdminSignUpPage() {
               className={clsx(
                 "w-full h-[64px] mb-[24px] rounded-[2px] inline-flex justify-center items-center text-base cursor-pointer",
                 isValid && !isSubmitting ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
-                "font-bold"
+                "font-bold",
               )}
               disabled={isSubmitting || !isValid}
             >

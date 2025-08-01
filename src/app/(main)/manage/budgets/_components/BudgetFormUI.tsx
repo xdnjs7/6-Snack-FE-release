@@ -2,7 +2,8 @@
 
 import React from "react";
 import Toast from "@/components/common/Toast";
-import { ToastVariant } from "@/types/toast.types";
+import { TToastVariant } from "@/types/toast.types";
+import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 interface BudgetFormUIProps {
   currentMonthBudget: string;
@@ -28,10 +29,10 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
 }) => {
   const [toastVisible, setToastVisible] = React.useState<boolean>(false);
   const [toastMessage, setToastMessage] = React.useState<string>("");
-  const [toastVariant, setToastVariant] = React.useState<ToastVariant>("success");
+  const [toastVariant, setToastVariant] = React.useState<TToastVariant>("success");
 
   // Toast를 보여주는 함수
-  const showToast = (message: string, variant: ToastVariant = "success") => {
+  const showToast = (message: string, variant: TToastVariant = "success") => {
     setToastMessage(message);
     setToastVariant(variant);
     setToastVisible(true);
@@ -57,7 +58,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
     if (!value || value === "") return "";
     const num = Number(value);
     if (isNaN(num)) return "";
-    return num.toLocaleString();
+    return formatPrice(num);
   }
 
   // 한글 금액 단위 포맷 함수 (3백5십만원 등)
@@ -117,7 +118,9 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
           <form onSubmit={onSubmit} className="w-full flex flex-col gap-20 mt-[20px]">
             <div className="self-stretch flex flex-col justify-start items-start gap-12">
               <div className="self-stretch flex flex-col justify-start items-start gap-2">
-                <div className="self-stretch text-[color:var(--color-primary-950)] text-lg md:text-2xl font-bold">예산 관리</div>
+                <div className="self-stretch text-[color:var(--color-primary-950)] text-lg md:text-2xl font-bold">
+                  예산 관리
+                </div>
                 <div className="self-stretch text-[color:var(--color-primary-400)] text-sm md:text-base font-normal">
                   이번 달 예산을 정해서 지출을 관리해보세요
                 </div>
@@ -125,20 +128,30 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
               <div className="self-stretch flex flex-col justify-center items-start gap-16">
                 {/* 이번 달 예산 */}
                 <div className="self-stretch flex flex-col justify-center items-start gap-3">
-                  <div className="self-stretch text-[color:var(--color-primary-950)] text-sm md:text-base font-bold">이번 달</div>
+                  <div className="self-stretch text-[color:var(--color-primary-950)] text-sm md:text-base font-bold">
+                    이번 달
+                  </div>
                   <div className="self-stretch border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 w-full max-w-full h-[49px] pb-[12px] scrollbar-hide overflow-x-visible">
                     <input
                       type="text"
                       inputMode="numeric"
-                      style={currentMonthBudget ? { color: 'var(--color-primary-950)', height: '37px' } : { height: '37px' }}
+                      style={
+                        currentMonthBudget ? { color: "var(--color-primary-950)", height: "37px" } : { height: "37px" }
+                      }
                       className={
                         `flex-1 min-w-0 bg-transparent outline-none border-none` +
                         (currentMonthBudget
-                          ? ' text-[color:var(--color-primary-950)] font-extrabold text-[20px] sm:text-[32px] md:text-[40px] tracking-tight leading-[100%] align-middle'
-                          : ' text-neutral-300 text-xl sm:text-3xl md:text-3xl font-bold placeholder:text-neutral-300 placeholder:font-bold placeholder:text-[18px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-bottom placeholder:tracking-tight')
+                          ? " text-[color:var(--color-primary-950)] font-extrabold text-[20px] sm:text-[32px] md:text-[40px] tracking-tight leading-[100%] align-middle"
+                          : " text-neutral-300 text-xl sm:text-3xl md:text-3xl font-bold placeholder:text-neutral-300 placeholder:font-bold placeholder:text-[18px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-bottom placeholder:tracking-tight")
                       }
                       placeholder="예산을 입력해주세요"
-                      value={currentMonthBudget && currentMonthBudget !== "0" ? formatNumberWithCommas(currentMonthBudget) : currentMonthBudget === "0" ? "0" : ""}
+                      value={
+                        currentMonthBudget && currentMonthBudget !== "0"
+                          ? formatNumberWithCommas(currentMonthBudget)
+                          : currentMonthBudget === "0"
+                            ? "0"
+                            : ""
+                      }
                       onChange={(e) => {
                         const onlyNums = e.target.value.replace(/[^0-9]/g, "");
                         // 99999999 (천만원 미만)까지만 입력 가능
@@ -148,9 +161,9 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                       }}
                       disabled={loading}
                     />
-                    <div
-                      className="text-[color:var(--color-primary-950)] font-bold leading-[100%] align-middle tracking-tight sm:text-3xl md:text-4xl"
-                    >원</div>
+                    <div className="text-[color:var(--color-primary-950)] font-bold leading-[100%] align-middle tracking-tight sm:text-3xl md:text-4xl">
+                      원
+                    </div>
                   </div>
                   {errors?.currentMonthBudget && (
                     <p className="text-red-500 text-xs mt-1 ml-2">{errors.currentMonthBudget}</p>
@@ -161,20 +174,30 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                 </div>
                 {/* 다음 달 예산 */}
                 <div className="self-stretch flex flex-col justify-center items-start gap-3">
-                  <div className="self-stretch text-[color:var(--color-primary-950)] text-sm md:text-base font-bold">매달 시작</div>
+                  <div className="self-stretch text-[color:var(--color-primary-950)] text-sm md:text-base font-bold">
+                    매달 시작
+                  </div>
                   <div className="self-stretch border-b-2 border-neutral-700 inline-flex justify-center items-center gap-1 w-full max-w-full h-[49px] pb-[12px] scrollbar-hide overflow-x-visible">
                     <input
                       type="text"
                       inputMode="numeric"
-                      style={nextMonthBudget ? { color: 'var(--color-primary-950)', height: '37px' } : { height: '37px' }}
+                      style={
+                        nextMonthBudget ? { color: "var(--color-primary-950)", height: "37px" } : { height: "37px" }
+                      }
                       className={
                         `flex-1 min-w-0 bg-transparent outline-none border-none` +
                         (nextMonthBudget
-                          ? ' text-[color:var(--color-primary-950)] font-extrabold text-[20px] sm:text-[32px] md:text-[40px] tracking-tight leading-[100%] align-middle'
-                          : ' text-neutral-300 text-xl sm:text-3xl md:text-3xl font-bold placeholder:text-neutral-300 placeholder:font-bold placeholder:text-[18px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-bottom placeholder:tracking-tight')
+                          ? " text-[color:var(--color-primary-950)] font-extrabold text-[20px] sm:text-[32px] md:text-[40px] tracking-tight leading-[100%] align-middle"
+                          : " text-neutral-300 text-xl sm:text-3xl md:text-3xl font-bold placeholder:text-neutral-300 placeholder:font-bold placeholder:text-[18px] sm:placeholder:text-[32px] md:placeholder:text-[32px] placeholder:leading-[100%] placeholder:align-bottom placeholder:tracking-tight")
                       }
                       placeholder="예산을 입력해주세요"
-                      value={nextMonthBudget && nextMonthBudget !== "0" ? formatNumberWithCommas(nextMonthBudget) : nextMonthBudget === "0" ? "0" : ""}
+                      value={
+                        nextMonthBudget && nextMonthBudget !== "0"
+                          ? formatNumberWithCommas(nextMonthBudget)
+                          : nextMonthBudget === "0"
+                            ? "0"
+                            : ""
+                      }
                       onChange={(e) => {
                         const onlyNums = e.target.value.replace(/[^0-9]/g, "");
                         // 99999999 (천만원 미만)까지만 입력 가능
@@ -184,11 +207,13 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
                       }}
                       disabled={loading}
                     />
-                    <div
-                      className="text-[color:var(--color-primary-950)] font-bold leading-[100%] align-middle tracking-tight sm:text-3xl md:text-4xl"
-                    >원</div>
+                    <div className="text-[color:var(--color-primary-950)] font-bold leading-[100%] align-middle tracking-tight sm:text-3xl md:text-4xl">
+                      원
+                    </div>
                   </div>
-                  {errors?.nextMonthBudget && <p className="text-red-500 text-xs mt-1 ml-2">{errors.nextMonthBudget}</p>}
+                  {errors?.nextMonthBudget && (
+                    <p className="text-red-500 text-xs mt-1 ml-2">{errors.nextMonthBudget}</p>
+                  )}
                   <div className="self-stretch text-[color:var(--color-primary-400)] text-sm md:text-base font-bold">
                     {formatKoreanCurrencyUnit(nextMonthBudget)}
                   </div>
