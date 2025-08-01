@@ -188,8 +188,8 @@ export default function ComponentsPreviewPage() {
           {/* <Button
             type="black"
             label="열기"
-            onClick={() => openModal(<OrderManageModal type="approve" order={order} onClick={() => {}} onUpdateOrderStatus={() => {}} />)}
-          />
+            onClick={() => openModal(<OrderManageModal type="approve" order={order} onClick={() => {}} />)}
+          /> */}
         </div>
 
         <div className="space-y-4 mb-4">
