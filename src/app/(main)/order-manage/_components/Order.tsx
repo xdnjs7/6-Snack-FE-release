@@ -4,23 +4,43 @@ import OrderManageModal from "@/components/common/OrderManageModal";
 import Pagination from "@/components/common/Pagination";
 import RequestList from "@/components/common/RequestList";
 import DogSpinner from "@/components/common/DogSpinner";
+import Toast from "@/components/common/Toast";
 import { useOrderVisibleCount } from "@/hooks/useOrderVisibleCount";
 import { fetchOrderDetail } from "@/lib/api/orderManage.api";
 import { useModal } from "@/providers/ModalProvider";
 import { useMemo, useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { useBudgets } from "@/hooks/useBudgets";
 import { usePendingOrders } from "@/hooks/usePendingOrders";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { updateOrderStatus } from "@/lib/api/orderManage.api";
 import icNoOrder from "@/assets/icons/ic_no_order.svg";
 import { useAuth } from "@/providers/AuthProvider";
+import { TToastVariant } from "@/types/toast.types";
 
 export default function Order() {
   const [currentPaginationPage, setCurrentPaginationPage] = useState<number>(1);
   const { openModal } = useModal();
   const queryClient = useQueryClient();
   const { user } = useAuth();
+
+  // Toast 상태
+  const [toastVisible, setToastVisible] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>("");
+  const [toastVariant, setToastVariant] = useState<TToastVariant>("success");
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Toast 표시 함수
+  const showToast = (message: string, variant: TToastVariant) => {
+    // 기존 타이머가 있다면 클리어
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    setToastMessage(message);
+    setToastVariant(variant);
+    setToastVisible(true);
+    timerRef.current = setTimeout(() => setToastVisible(false), 3000);
+  };
 
   const orderByMap = useMemo(
     (): Record<string, string> => ({
@@ -35,12 +55,6 @@ export default function Order() {
   const { visibleCount } = useOrderVisibleCount();
 
   const prevVisibleCountRef = useRef(visibleCount);
-
-  // 예산 정보 가져오기
-  const { data: budgetData } = useBudgets();
-
-  // 남은 예산 계산
-  const remainingBudget = budgetData?.currentMonthBudget ? budgetData.currentMonthBudget : undefined;
 
   // 주문 상태 업데이트 mutation
   const { mutate: updateOrderStatusMutation } = useMutation({
@@ -114,7 +128,6 @@ export default function Order() {
           <>
             <RequestList
               orderRequests={orderRequests}
-              remainingBudget={remainingBudget}
               onClickReject={async (orderSummary) => {
                 const fullOrder = await fetchOrderDetail(orderSummary.id);
                 openModal(
@@ -123,6 +136,7 @@ export default function Order() {
                     type="reject"
                     onClick={() => {}}
                     onUpdateOrderStatus={updateOrderStatusMutation}
+                    showToast={showToast}
                   />,
                 );
               }}
@@ -134,6 +148,7 @@ export default function Order() {
                     type="approve"
                     onClick={() => {}}
                     onUpdateOrderStatus={updateOrderStatusMutation}
+                    showToast={showToast}
                   />,
                 );
               }}
@@ -173,6 +188,14 @@ export default function Order() {
           </div>
         )}
       </div>
+
+      {/* Toast 컴포넌트 */}
+      <Toast
+        text={toastMessage}
+        variant={toastVariant}
+        isVisible={toastVisible}
+        onClose={() => setToastVisible(false)}
+      />
     </div>
   );
 }

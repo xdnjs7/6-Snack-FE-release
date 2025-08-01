@@ -10,16 +10,9 @@ type TRequestListProps = {
   orderRequests: TOrderSummary[];
   onClickReject: (order: TOrderSummary) => void;
   onClickApprove: (order: TOrderSummary) => void;
-  // 이번달 남은 예산 추가하기이잉
-  remainingBudget?: number;
 };
 
-export default function RequestList({
-  orderRequests,
-  onClickReject,
-  onClickApprove,
-  remainingBudget,
-}: TRequestListProps) {
+export default function RequestList({ orderRequests, onClickReject, onClickApprove }: TRequestListProps) {
   const router = useRouter();
 
   const handleProductNameClick = (orderId: number, status: string) => {
@@ -75,9 +68,7 @@ export default function RequestList({
                     className="w-full flex justify-center items-center border-[1px] border-primary-300 min-w-[160px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
                   />
                   <Button
-                    type={
-                      remainingBudget !== undefined && remainingBudget < request.totalPrice ? "whiteDisabled" : "black"
-                    }
+                    type="black"
                     label="승인"
                     onClick={() => onClickApprove(request)}
                     className="w-full flex justify-center items-center min-w-[160px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
@@ -116,9 +107,7 @@ export default function RequestList({
                   className="flex justify-center items-center border-[1px] border-primary-300 w-[80px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
                 />
                 <Button
-                  type={
-                    remainingBudget !== undefined && remainingBudget < request.totalPrice ? "whiteDisabled" : "black"
-                  }
+                  type="black"
                   label="승인"
                   onClick={() => onClickApprove(request)}
                   className="flex justify-center items-center w-[80px] h-[40px] py-[10px] px-[20px] font-normal text-[16px]/[20px] tracking-tight"
