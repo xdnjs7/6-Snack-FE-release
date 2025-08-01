@@ -13,11 +13,14 @@ import { useBudgets } from "@/hooks/useBudgets";
 import { usePendingOrders } from "@/hooks/usePendingOrders";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { updateOrderStatus } from "@/lib/api/orderManage.api";
+import icNoOrder from "@/assets/icons/ic_no_order.svg";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function Order() {
   const [currentPaginationPage, setCurrentPaginationPage] = useState<number>(1);
   const { openModal } = useModal();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   const orderByMap = useMemo(
     (): Record<string, string> => ({
@@ -46,6 +49,14 @@ export default function Order() {
       queryClient.invalidateQueries({ queryKey: ["pendingOrders"] });
     },
   });
+
+  // 사용자 정보가 변경될 때 쿼리 무효화
+  useEffect(() => {
+    if (user?.company?.id) {
+      queryClient.invalidateQueries({ queryKey: ["pendingOrders"] });
+      queryClient.invalidateQueries({ queryKey: ["budgets"] });
+    }
+  }, [user?.company?.id, queryClient]);
 
   // 주문 목록 조회
   const offset = (currentPaginationPage - 1) * visibleCount;
@@ -138,7 +149,7 @@ export default function Order() {
           <div className="flex flex-1 justify-center min-h-screen">
             <div className="sm:w-80 inline-flex flex-col justify-start items-center gap-7 py-12 mt-[142px] sm:mt-[222px] md:mt-[191px]">
               <div className="w-24 h-24 relative">
-                <Image src="/images/ic_no_order.svg" alt="주문 내역 없음" fill className="object-contain" />
+                <Image src={icNoOrder} alt="주문 내역 없음" fill className="object-contain" />
               </div>
               <div className="self-stretch flex flex-col justify-start items-center gap-12">
                 <div className="w-72 flex flex-col justify-start items-center gap-2.5">

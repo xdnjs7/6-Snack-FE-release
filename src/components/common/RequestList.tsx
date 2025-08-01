@@ -4,23 +4,12 @@ import Mobile from "./Mobile";
 import Button from "../ui/Button";
 import { formatDate } from "@/lib/utils/formatDate.util";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
+import { TOrderSummary } from "@/types/order.types";
 
 type TRequestListProps = {
-  orderRequests: {
-    id: number;
-    userId: string;
-    approver: null;
-    adminMessage: string;
-    requestMessage: string;
-    totalPrice: number;
-    createdAt: string;
-    updatedAt: string;
-    status: string;
-    requester: string;
-    productName: string;
-  }[];
-  onClickReject: (order: TRequestListProps["orderRequests"][0]) => void;
-  onClickApprove: (order: TRequestListProps["orderRequests"][0]) => void;
+  orderRequests: TOrderSummary[];
+  onClickReject: (order: TOrderSummary) => void;
+  onClickApprove: (order: TOrderSummary) => void;
   // 이번달 남은 예산 추가하기이잉
   remainingBudget?: number;
 };

@@ -21,7 +21,7 @@ export const usePendingOrders = ({ offset, limit, orderBy }: TUsePendingOrdersPa
   return useQuery<TPendingOrdersResponse>({
     queryKey: ["pendingOrders", offset, limit, orderBy],
     queryFn: () => fetchPendingOrders({ offset, limit, orderBy }),
-    staleTime: 5 * 60 * 1000, 
-    gcTime: 10 * 60 * 1000, 
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 };
