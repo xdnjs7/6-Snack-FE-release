@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ic_lock from "@/assets/icons/ic_lock.svg";
-import ic_manager from "@/assets/icons/ic_manager.svg";
+// import ic_manager from "@/assets/icons/ic_manager.svg";
 import SnackIconSvg from "../svg/SnackIconSvg";
 import { usePathname, useRouter } from "next/navigation";
 import { TSideMenuItem } from "@/types/sideMenu.types";
@@ -34,7 +34,7 @@ export default function GuestHeader() {
     }
   };
   return (
-    <header className="w-full h-14 sm:h-25 md:h-[90px] sm:px-[24px] sm:py-[32px] md:px-[100px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg">
+    <header className="w-full h-14 sm:h-25 md:h-[90px] sm:px-[24px] sm:py-[32px] md:px-[100px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] ">
       <Link href="/">
         <SnackIconSvg className="w-[102.75px] h-[44px]" />
       </Link>
@@ -61,9 +61,9 @@ export default function GuestHeader() {
           </Link>
           {/* 기업담당자 회원가입 */}
           <Link href="/signup/super-admin" className="flex gap-1 items-center">
-            <div className="relative w-[24px] h-[24px]">
+            {/* <div className="relative w-[24px] h-[24px]">
               <Image src={ic_manager} alt="스낵 로고" fill className="object-contain" />
-            </div>
+            </div> */}
             <p className="font-normal text-primary-950">기업 담당자 회원가입</p>
           </Link>
         </div>
