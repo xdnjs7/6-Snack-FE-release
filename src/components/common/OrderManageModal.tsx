@@ -1,4 +1,3 @@
-import { updateOrderStatus } from "@/lib/api/orderManage.api";
 import { useModal } from "@/providers/ModalProvider";
 import { TOrder } from "@/types/order.types";
 import Image from "next/image";
@@ -13,9 +12,10 @@ type TOrderManageModalProps = {
   type: "reject" | "approve";
   order: TOrder;
   onClick: () => void;
+  onUpdateOrderStatus: (variables: { orderId: string; status: "APPROVED" | "REJECTED"; adminMessage?: string }) => void;
 };
 
-export default function OrderManageModal({ type, order, onClick }: TOrderManageModalProps) {
+export default function OrderManageModal({ type, order, onClick, onUpdateOrderStatus }: TOrderManageModalProps) {
   const { closeModal } = useModal();
   const [adminMessage, setAdminMessage] = useState("");
 
@@ -158,19 +158,14 @@ export default function OrderManageModal({ type, order, onClick }: TOrderManageM
             className="flex justify-center items-center w-full min-w-[153.5px] max-w-[230px] h-[64px] py-[12px] px-[16px] font-bold"
           />
           <Button
-            onClick={async () => {
-              try {
-                await updateOrderStatus({
-                  orderId: String(order.id),
-                  status: type === "approve" ? "APPROVED" : "REJECTED",
-                  adminMessage,
-                });
-
-                onClick();
-                closeModal();
-              } catch {
-                alert("실패!");
-              }
+            onClick={() => {
+              onUpdateOrderStatus({
+                orderId: String(order.id),
+                status: type === "approve" ? "APPROVED" : "REJECTED",
+                adminMessage,
+              });
+              onClick();
+              closeModal();
             }}
             type="black"
             label={type === "approve" ? "승인하기" : "반려하기"}
