@@ -28,7 +28,7 @@ export const useProductRegistrationForm = ({
 
   const form = useForm<ProductRegistrationFormData>({
     resolver: zodResolver(productRegistrationSchema),
-    mode: "onChange", 
+    mode: "onChange",
     defaultValues: {
       productName: "",
       price: "",
@@ -61,13 +61,13 @@ export const useProductRegistrationForm = ({
       setValue("imageFile", file);
       setImagePreviewUrl(URL.createObjectURL(file));
     } else {
-      setValue("imageFile", undefined as any);
+      setValue("imageFile", new File([], "empty") as File);
       setImagePreviewUrl(null);
     }
   };
 
   const handleImageRemove = () => {
-    setValue("imageFile", undefined as any);
+    setValue("imageFile", new File([], "empty") as File);
     setImagePreviewUrl(null);
   };
 
@@ -93,7 +93,10 @@ export const useProductRegistrationForm = ({
       formData.append("price", data.price);
       formData.append("linkUrl", data.productLink);
       formData.append("categoryId", categoryId.toString());
-      formData.append("image", data.imageFile);
+      // 빈 파일이 아닌 경우에만 추가
+      if (data.imageFile.size > 0) {
+        formData.append("image", data.imageFile);
+      }
 
       await createProductMutation.mutateAsync(formData);
 
