@@ -32,14 +32,16 @@ export default function MenuDropdown({ menuType, onEdit, onDelete, className = "
       </div>
 
       {showDropdown && (
-        <div className="absolute top-0 right-6 md:left-6 bg-white border border-primary-200 rounded-md shadow-lg z-10 w-[95px]">
+        <div className="absolute top-0 right-6 md:left-6 bg-white border border-primary-200 shadow-lg z-10 w-[95px]">
           <div className="py-1">
-            <div
-              className="h-12 px-4 py-2 flex justify-start items-center gap-1 hover:bg-primary-50 cursor-pointer"
-              onClick={handleEdit}
-            >
-              <div className="text-neutral-800 text-base font-suit whitespace-nowrap">{editLabel}</div>
-            </div>
+            {menuType !== "product" && (
+              <div
+                className="h-12 px-4 py-2 flex justify-start items-center gap-1 hover:bg-primary-50 cursor-pointer"
+                onClick={handleEdit}
+              >
+                <div className="text-neutral-800 text-base font-suit whitespace-nowrap">{editLabel}</div>
+              </div>
+            )}
             <div
               className="h-12 px-4 py-2 flex justify-start items-center gap-1 hover:bg-primary-50 cursor-pointer"
               onClick={handleDelete}

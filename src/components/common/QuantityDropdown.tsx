@@ -7,9 +7,10 @@ import debounce from "lodash.debounce";
 type TQuantityDropdownProps = {
   value: number;
   onClick?: (value: number) => void;
+  type?: "default" | "product";
 };
 
-export default function QuantityDropdown({ value, onClick: updateQuantity }: TQuantityDropdownProps) {
+export default function QuantityDropdown({ value, onClick: updateQuantity, type }: TQuantityDropdownProps) {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [quantity, setQuantity] = useState<number>(value);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -97,7 +98,12 @@ export default function QuantityDropdown({ value, onClick: updateQuantity }: TQu
 
   return (
     <div className="relative w-[72px]">
-      <div className="flex justify-end items-center h-[40px] pl-[20px] gap-[4px] sm:pl-[16px]">
+      <div
+        className={`
+      flex justify-end items-center h-[40px] gap-[4px]
+      ${type === "product" ? "border border-primary-200 rounded-none pl-[8px] pr-[8px]" : "pl-[20px] sm:pl-[16px]"}
+    `}
+      >
         <input
           ref={inputRef}
           type="text"
@@ -111,7 +117,10 @@ export default function QuantityDropdown({ value, onClick: updateQuantity }: TQu
               setQuantity(value);
             }
           }}
-          className="w-full font-bold text-[14px]/[17px] text-right tracking-tight text-primary-950 outline-none select-all sm:text-[16px]/[20px]"
+          className={`
+            w-full font-bold text-[14px]/[17px] text-right tracking-tight text-primary-950 outline-none select-all sm:text-[16px]/[20px]
+            ${type === "product" ? "border-none rounded-none" : ""}
+          `}
         />
         <div ref={toggleRef} onClick={handleDropdownToggle} className="cursor-pointer">
           <ArrowIconSvg direction="down" className="w-[20px] h-[20px] text-primary-950 sm:w-[24px] sm:h-[24px]" />
@@ -121,7 +130,11 @@ export default function QuantityDropdown({ value, onClick: updateQuantity }: TQu
       {isDropdownVisible && (
         <div
           ref={dropdownRef}
-          className="absolute h-[80px] top-[40px] right-0 shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)] overflow-auto overflow-x-hidden bg-white scrollbar-hide cursor-pointer z-10"
+          className={`
+        absolute h-[80px] top-[40px] left-0 w-full z-10
+        bg-white overflow-auto overflow-x-hidden shadow-[0_0_10px_0_rgba(0,0,0,0.1)] scrollbar-hide cursor-pointer
+        ${type === "product" ? "border-l border-r border-b border-primary-200 rounded-none" : ""}
+      `}
         >
           {quantityOptions.map((qty, idx) => (
             <div
