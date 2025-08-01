@@ -11,7 +11,7 @@ import { TMemberItem } from "@/types/meberList.types";
 import ProductList from "@/components/common/ProductList";
 import Toast from "@/components/common/Toast";
 import Button from "@/components/ui/Button";
-import RequestList from "@/components/common/RequestList";
+// import RequestList from "@/components/common/RequestList";
 import SubCategoryItem from "@/components/common/SubCategoryItem";
 import Card from "@/components/ui/Card";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
@@ -19,7 +19,7 @@ import SearchBar from "@/components/ui/SearchBar";
 import Badge from "@/components/ui/Badge";
 import SideMenu from "@/components/common/SideMenu";
 import Pagination from "@/components/common/Pagination";
-import OrderManageModal from "@/components/common/OrderManageModal";
+// import OrderManageModal from "@/components/common/OrderManageModal";
 import { useModal } from "@/providers/ModalProvider";
 // import ProductDetail from "@/components/common/ProductDetail";
 import Menu from "@/components/common/Menu";
@@ -33,7 +33,7 @@ import InviteMemberModal from "@/components/common/InviteMemberModal";
 import Header from "@/components/layout/Header";
 // import CartItem from "@/app/(main)/cart/_components/CartItem";
 // import OrderItem from "@/app/(main)/cart/order/_components/OrderItem";
-import { categories, order, orderRequests, products } from "./MockData";
+import { categories, products } from "./MockData";
 import DogSpinner from "@/components/common/DogSpinner";
 import Image from "next/image";
 import img_bucket_logo from "@/assets/images/img_bucket_logo.png";
@@ -176,20 +176,20 @@ export default function ComponentsPreviewPage() {
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">RequestList 컴포넌트</h2>
-          <RequestList
+          {/* <RequestList
             orderRequests={orderRequests}
             onClickReject={() => openModal(<OrderManageModal type="reject" order={order} onClick={() => {}} />)}
             onClickApprove={() => openModal(<OrderManageModal type="approve" order={order} onClick={() => {}} />)}
-          />
+          /> */}
         </div>
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">OrderManageModal 컴포넌트</h2>
-          <Button
+          {/* <Button
             type="black"
             label="열기"
             onClick={() => openModal(<OrderManageModal type="approve" order={order} onClick={() => {}} />)}
-          />
+          /> */}
         </div>
 
         <div className="space-y-4 mb-4">
