@@ -36,12 +36,12 @@ export default function Dropdown({
   const menuOptions = options.length === 0 ? defaultOptions : options;
 
   return (
-    <div className={twMerge("relative inline-block w-[110px]", className)}>
+    <div className={twMerge("relative inline-block min-w-[110px]", className)}>
       {/* 드롭다운 버튼 */}
       <div
         className={`h-11 w-full px-4 py-2.5 bg-white border border-primary-100 ${
           isOpen ? "border-b-0" : "border"
-        } flex justify-between items-center ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+        } flex justify-between items-center gap-2 ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
         onClick={() => !disabled && setIsOpen((prev) => !prev)}
       >
         <div className="text-primary-950 text-base/[20px] font-normal whitespace-nowrap">{sort}</div>
