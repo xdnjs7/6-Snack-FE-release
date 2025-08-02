@@ -8,6 +8,7 @@ type TMobileCategoryMenuProps = {
   isOpen: boolean;
   currentCategory?: string;
   onItemClick?: (item: TCategoryItem) => void;
+  onAllCategoriesClick?: () => void;
   onClose: () => void;
   className?: string;
   useExternalState?: boolean;
@@ -18,6 +19,7 @@ export default function MobileCategoryMenu({
   isOpen,
   currentCategory,
   onItemClick,
+  onAllCategoriesClick,
   onClose,
   className = "",
 }: TMobileCategoryMenuProps) {
@@ -28,6 +30,8 @@ export default function MobileCategoryMenu({
     if (!currentCategory || !item.id) return false;
     return currentCategory === item.id.toString();
   };
+
+  const isCategoryNotSelected = currentCategory === undefined;
 
   const categoryMenuContent = (
     <div className="sm:hidden">
@@ -53,6 +57,18 @@ export default function MobileCategoryMenu({
             </div>
           );
         })}
+        {!isCategoryNotSelected && (
+          <div
+            className="w-full p-2 inline-flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-50 transition-colors group"
+            onClick={onAllCategoriesClick}
+          >
+            <div
+              className={`justify-start text-base font-bold transition-all duration-200 ${isCategoryNotSelected ? "text-primary-950" : "text-primary-400 group-hover:text-primary-700"}`}
+            >
+              전체
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

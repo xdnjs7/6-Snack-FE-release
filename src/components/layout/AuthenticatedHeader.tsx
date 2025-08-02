@@ -17,7 +17,7 @@ import ArrowIconSvg from "../svg/ArrowIconSvg";
 import { TCategoryItem } from "@/types/subCategoryMenu.types";
 import { useCategoryStore } from "@/stores/categoryStore";
 import { CATEGORIES } from "@/lib/constants/categories";
-import img_logo from "@/assets/images/img_logo.webp"
+import img_logo from "@/assets/images/img_logo.webp";
 
 export default function AuthenticatedHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,13 +26,13 @@ export default function AuthenticatedHeader() {
   const router = useRouter();
 
   // 전역 카테고리 상태 사용
-  const { selectedCategory } = useCategoryStore();
+  const { selectedCategory, clearSelectedCategory } = useCategoryStore();
 
   const menuItems = [
     { id: "products", label: "상품 리스트", href: "/products" },
     { id: "my-order-list", label: "구매 요청 내역", href: "/my/order-list" },
     { id: "my-products", label: "상품 등록 내역", href: "/my/products" },
-    
+
     // 관리자
     { id: "order-manage", label: "구매 요청 관리", href: "/order-manage" },
     { id: "order-history", label: "구매 내역 확인", href: "/order-history" },
@@ -66,6 +66,13 @@ export default function AuthenticatedHeader() {
     router.push(`/products?category=${item.id}`);
   };
 
+  // '전체' 클릭 핸들러
+  const handleAllCategoriesClick = () => {
+    setIsCategoryMenuOpen(false);
+    clearSelectedCategory(); // 전역 상태를 null로 초기화
+    router.push("/products"); // category 파라미터 없이 이동
+  };
+
   // 현재 선택된 카테고리 이름 표시 (전역 상태에서 가져옴)
   const currentCategoryName = selectedCategory?.parent || "전체";
   return (
@@ -73,7 +80,7 @@ export default function AuthenticatedHeader() {
       <div className="flex items-center justify-center md:gap-10">
         <Link href="/">
           <div className="relative w-[102.75px] h-[44px]">
-            <Image src={img_logo} fill alt="스낵 로고" className="object-contain"/>
+            <Image src={img_logo} fill alt="스낵 로고" className="object-contain" />
           </div>
         </Link>
         {/* nav - 상품 리스트, 구매요청내역, 상품등록내역, 구매요청관리, 구매내역확인, 관리  */}
@@ -162,6 +169,7 @@ export default function AuthenticatedHeader() {
           isOpen={isCategoryMenuOpen}
           currentCategory={selectedCategory?.id?.toString()}
           onItemClick={handleCategoryItemClick}
+          onAllCategoriesClick={handleAllCategoriesClick}
           onClose={() => setIsCategoryMenuOpen(false)}
           useExternalState
         />
