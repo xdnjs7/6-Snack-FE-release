@@ -6,7 +6,6 @@ import ic_cart from "@/assets/icons/ic_cart.svg";
 import ProfileAvatar from "../common/ProfileAvatar";
 import VerticalBarIconSvg from "../svg/VerticalBarIconSvg";
 import Link from "next/link";
-import SnackIconSvg from "../svg/SnackIconSvg";
 import LikeIconSvg from "../svg/LikeIconSvg";
 import HamburgerMenuIconSvg from "../svg/HamburgerMenuIconSvg";
 import SideMenu from "../common/SideMenu";
@@ -18,6 +17,7 @@ import ArrowIconSvg from "../svg/ArrowIconSvg";
 import { TCategoryItem } from "@/types/subCategoryMenu.types";
 import { useCategoryStore } from "@/stores/categoryStore";
 import { CATEGORIES } from "@/lib/constants/categories";
+import img_logo from "@/assets/images/img_logo.webp"
 
 export default function AuthenticatedHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,6 +32,7 @@ export default function AuthenticatedHeader() {
     { id: "products", label: "상품 리스트", href: "/products" },
     { id: "my-order-list", label: "구매 요청 내역", href: "/my/order-list" },
     { id: "my-products", label: "상품 등록 내역", href: "/my/products" },
+    
     // 관리자
     { id: "order-manage", label: "구매 요청 관리", href: "/order-manage" },
     { id: "order-history", label: "구매 내역 확인", href: "/order-history" },
@@ -71,7 +72,9 @@ export default function AuthenticatedHeader() {
     <header className="sticky top-0 w-full h-14 sm:h-25 md:h-[90px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] sm:px-[24px] sm:py-[28px] md:px-[100px] md:py-[32px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg z-50">
       <div className="flex items-center justify-center md:gap-10">
         <Link href="/">
-          <SnackIconSvg className="w-[102.75px] h-[44px]" />
+          <div className="relative w-[102.75px] h-[44px]">
+            <Image src={img_logo} fill alt="스낵 로고" className="object-contain"/>
+          </div>
         </Link>
         {/* nav - 상품 리스트, 구매요청내역, 상품등록내역, 구매요청관리, 구매내역확인, 관리  */}
         <div className="hidden md:block">
