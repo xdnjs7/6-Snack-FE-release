@@ -1,26 +1,57 @@
 "use client";
 
 import ProductGrid from "@/components/common/ProductGrid";
+import { useDeviceType } from "@/hooks/useDeviceType";
 import { getFavorites } from "@/lib/api/favorite.api";
 import { TGetFavoriteProductResponse } from "@/types/favorite.types";
-import { useQuery } from "@tanstack/react-query";
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
+import { useInView } from "react-intersection-observer";
 
 export default function MyFavoritesPage() {
+  const { isMobile, isTablet } = useDeviceType();
+
+  const limit = isMobile ? "4" : isTablet ? "9" : "6";
+
   const {
-    data: products,
-    isPending,
+    data: favorites,
+    isLoading,
     error,
-  } = useQuery<TGetFavoriteProductResponse, Error, TGetFavoriteProductResponse, [string]>({
-    queryKey: ["favorite"],
-    queryFn: () => getFavorites(),
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<
+    TGetFavoriteProductResponse,
+    Error,
+    InfiniteData<TGetFavoriteProductResponse>,
+    [string, string],
+    string
+  >({
+    queryKey: ["favorites", limit],
+    queryFn: ({ pageParam }) => getFavorites({ cursor: pageParam ?? "", limit }),
+    initialPageParam: "",
+    getNextPageParam: (lastPage) => {
+      const nextCursor = lastPage.meta?.nextCursor;
+      return nextCursor !== undefined ? String(nextCursor) : undefined;
+    },
   });
 
-  if (isPending) {
+  const { ref } = useInView({
+    threshold: 0.5,
+    onChange: (inView) => {
+      if (inView && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+  });
+
+  const products = favorites?.pages.flatMap((data) => data.favorites.map((favorite) => favorite.product)) ?? [];
+
+  if (isLoading) {
     return <div>로딩 중...</div>;
   }
 
-  if (!products) {
+  if (!favorites || favorites.pages.length === 0) {
     return (
       <div>
         <div>아직 상품을 찜하지 않았습니다.</div>
@@ -34,13 +65,22 @@ export default function MyFavoritesPage() {
   }
 
   return (
-    <div>
-      <p className="pt-[10px] pb-[20px] md:mt-[80px] font-bold text-[18px]/[22px] tracking-tight text-primary-950">
-        나의 찜목록
-      </p>
-      <div className="mx-[-24px] outline-1 outline-[#e6e6e6] md:mx-0"></div>
-      <div className="pt-[20px] sm:pt-[30px]">
-        <ProductGrid products={products} />
+    <div className="flex justify-center">
+      <div className="flex flex-col w-full max-w-[1200px]">
+        <p className="pt-[10px] pb-[20px] md:mt-[80px] font-bold text-[18px]/[22px] tracking-tight text-primary-950">
+          나의 찜목록
+        </p>
+        <div className="mx-[-24px] outline-1 outline-[#e6e6e6] md:mx-0"></div>
+        <div className="pt-[20px] sm:pt-[30px]">
+          <ProductGrid products={products} />
+        </div>
+        {hasNextPage && (
+          <div ref={ref} className="flex justify-center items-center">
+            {isFetchingNextPage && (
+              <div className="size-[20px] border-[3px] border-t-[3px] border-secondary-gray-200 border-t-primary-100 rounded-full animate-spin"></div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
