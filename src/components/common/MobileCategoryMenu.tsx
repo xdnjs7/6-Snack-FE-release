@@ -44,12 +44,12 @@ export default function MobileCategoryMenu({
           return (
             <div
               key={item.id}
-              className="w-full p-2 inline-flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-50 transition-colors group"
+              className="w-full p-2 inline-flex justify-center items-center gap-2 cursor-pointer group"
               onClick={() => onItemClick?.(item)}
             >
               <div
                 className={`justify-start text-base font-bold transition-all duration-200 ${
-                  isActive ? "text-primary-950" : "text-primary-400 group-hover:text-primary-700"
+                  isActive ? "text-primary-950" : "text-primary-400 group-hover:text-secondary-500"
                 }`}
               >
                 {item.name}
