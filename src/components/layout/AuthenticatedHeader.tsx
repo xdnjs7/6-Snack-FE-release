@@ -147,8 +147,10 @@ export default function AuthenticatedHeader() {
       {/* 카테고리 dropdown 버튼 - mobile  */}
       <div className="block sm:hidden">
         <button
-          className="flex gap-1 items-center cursor-pointer"
-          onClick={handleCategoryMenuClick}
+          className={`flex gap-1 items-center ${
+            pathname.startsWith("/products") ? "cursor-pointer" : "cursor-default opacity-0 pointer-events-none"
+          }`}
+          onClick={pathname.startsWith("/products") ? handleCategoryMenuClick : undefined}
           aria-expanded={isCategoryMenuOpen}
           aria-haspopup="true"
         >
