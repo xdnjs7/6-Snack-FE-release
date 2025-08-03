@@ -4,8 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ic_lock from "@/assets/icons/ic_lock.svg";
-// import ic_manager from "@/assets/icons/ic_manager.svg";
-import SnackIconSvg from "../svg/SnackIconSvg";
+import img_logo from "@/assets/images/img_logo.webp";
 import { usePathname, useRouter } from "next/navigation";
 import { TSideMenuItem } from "@/types/sideMenu.types";
 import HamburgerMenuIconSvg from "../svg/HamburgerMenuIconSvg";
@@ -36,7 +35,9 @@ export default function GuestHeader() {
   return (
     <header className="w-full h-14 sm:h-25 md:h-[90px] sm:px-[24px] sm:py-[32px] md:px-[100px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] ">
       <Link href="/">
-        <SnackIconSvg className="w-[102.75px] h-[44px]" />
+        <div className="relative w-[102.75px] h-[44px]">
+          <Image src={img_logo} fill alt="스낵 로고" className="object-contain" />
+        </div>
       </Link>
       <HamburgerMenuIconSvg className="sm:hidden text-primary-400" onClick={handleMenuClick} />
 

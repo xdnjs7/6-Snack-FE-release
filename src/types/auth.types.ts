@@ -3,8 +3,9 @@ export type TUser = {
   name: string;
   email: string;
   role?: string;
+  cartItemCount: number;
   company?: {
-    id: string;
+    id: number;
     name: string;
   };
 };
