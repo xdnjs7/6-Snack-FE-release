@@ -22,7 +22,7 @@ export default function RequestList({
 }: TRequestListProps) {
   const router = useRouter();
 
-  const handleProductNameClick = (orderId: number, status: string) => {
+  const handleProductNameClick = (orderId: string, status: string) => {
     router.push(`/order-manage/${orderId}?status=${status}`);
   };
 

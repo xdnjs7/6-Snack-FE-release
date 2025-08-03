@@ -15,7 +15,7 @@ export const fetchPendingOrders = async ({
   return res as { orders: TOrderSummary[]; meta: { totalCount: number; currentPage: number; totalPages: number } };
 };
 
-export const fetchOrderDetail = async (orderId: number): Promise<TOrder> => {
+export const fetchOrderDetail = async (orderId: string): Promise<TOrder> => {
   const res = await cookieFetch(`/admin/orders/${orderId}?status=pending`);
   return res as TOrder;
 };

@@ -56,7 +56,9 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
   };
 
   if (user?.role !== "USER") {
-    return <div className="flex h-[80vh] justify-center items-center">일반 유저만 이용가능한 페이지입니다.</div>;
+    return (
+      <div className="flex h-screen justify-center items-center -mb-[24px]">일반 유저만 이용가능한 페이지입니다.</div>
+    );
   }
 
   if (error) {

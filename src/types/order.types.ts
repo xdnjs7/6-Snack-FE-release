@@ -14,7 +14,7 @@ type TBudget = {
 };
 
 export type TOrderBase = {
-  id: number;
+  id: string;
   userId: string;
   approver: null;
   adminMessage: string;
@@ -62,28 +62,22 @@ export type TOrderNowResponse = {
 export type TOrderResponse = {
   message: string;
   data: {
-    id: number;
+    id: string;
     companyId: number;
     userId: string;
     approver: string | null;
     adminMessage: string | null;
-    requestMessage: string;
+    requestMessage: string | null;
     totalPrice: number;
     createdAt: string;
     updatedAt: string;
     status: string;
-    orderedItems: {
+    receipts: {
       id: number;
-      orderId: number;
-      receiptId: number;
-      productId: number;
-      receipt: {
-        id: number;
-        productName: string;
-        price: number;
-        imageUrl: string;
-        quantity: number;
-      };
+      productName: string;
+      price: number;
+      imageUrl: string;
+      quantity: number;
     }[];
   };
 };
