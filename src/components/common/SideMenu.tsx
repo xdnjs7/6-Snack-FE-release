@@ -78,7 +78,7 @@ export default function SideMenu({ items, isOpen, currentPath, onItemClick, onCl
               <div
                 key={item.id}
                 data-property-1={isActive ? "active" : "normal"}
-                className="w-44 h-12 p-2 inline-flex justify-center items-center gap-2 cursor-pointer transition-colors group"
+                className={`w-44 h-12 p-2 inline-flex justify-center items-center gap-2 cursor-pointer transition-colors group ${item.className || ""}`}
                 onClick={() => onItemClick?.(item)}
               >
                 <div

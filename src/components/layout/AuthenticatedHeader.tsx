@@ -19,6 +19,7 @@ import { useCategoryStore } from "@/stores/categoryStore";
 import { CATEGORIES } from "@/lib/constants/categories";
 import img_logo from "@/assets/images/img_logo.webp";
 import { useAuth } from "@/providers/AuthProvider";
+import { useDeviceType } from "@/hooks/useDeviceType";
 
 export default function AuthenticatedHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,9 +31,10 @@ export default function AuthenticatedHeader() {
   const { selectedCategory, clearSelectedCategory } = useCategoryStore();
 
   const { user, logout } = useAuth();
+  const { isMobile } = useDeviceType();
 
   // 모든 유저 공통 메뉴
-  const commonMenuItems = [
+  const commonMenuItems: TSideMenuItem[] = [
     { id: "products", label: "상품 리스트", href: "/products" },
     { id: "my-order-list", label: "구매 요청 내역", href: "/my/order-list" },
     { id: "my-products", label: "상품 등록 내역", href: "/my/products" },
@@ -58,10 +60,16 @@ export default function AuthenticatedHeader() {
     if (user?.role === "SUPER_ADMIN") {
       menuItems = [...menuItems, ...superAdminMenuItems];
     }
-    menuItems.push(
-      { id: "profile", label: "마이 페이지", href: "/profile" },
-      { id: "logout", label: "로그아웃", href: "" },
-    );
+
+    menuItems.push({ id: "my-favorites", label: "찜목록", href: "/my/favorites" });
+
+    // 모바일 버전에서만 마이페이지 옵션 보여야함
+    if (isMobile) {
+      menuItems.push({ id: "profile", label: "마이 페이지", href: "/profile" });
+    }
+
+    menuItems.push({ id: "logout", label: "로그아웃", href: "" });
+
     return menuItems;
   };
 
