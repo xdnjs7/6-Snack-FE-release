@@ -133,7 +133,11 @@ export default function AuthenticatedHeader() {
           <nav className="flex items-center justify-center gap-[30px]">
             {navItems.map((item) => (
               <Link key={item.id} href={item.href || "#"} className="px-2.5">
-                <p className="font-normal text-primary-950">{item.label}</p>
+                <p
+                  className={`text-primary-950 tracking-tight text-base/[20px] ${pathname === item.href ? "font-extrabold" : "font-normal"}`}
+                >
+                  {item.label}
+                </p>
               </Link>
             ))}
           </nav>
@@ -177,7 +181,12 @@ export default function AuthenticatedHeader() {
             </Link>
           </div>
           <VerticalBarIconSvg className="hidden sm:block text-primary-100" />
-          <p className="hidden sm:block font-normal text-primary-950">로그아웃</p>
+          <button
+            onClick={logout}
+            className="cursor-pointer hidden sm:block font-normal text-primary-950 hover:font-bold transition-all"
+          >
+            로그아웃
+          </button>
         </div>
         {/* 여기에 menu 누를시 SideMenu 화면 옆에 나오도록 */}
         <HamburgerMenuIconSvg className="md:hidden text-primary-400" onClick={handleMenuClick} />
