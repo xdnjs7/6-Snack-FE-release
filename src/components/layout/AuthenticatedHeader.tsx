@@ -160,10 +160,14 @@ export default function AuthenticatedHeader() {
       {/* 장바구니 + 메뉴 영역 */}
       <div className="flex items-center gap-5 sm:gap-10 md:gap-7.5">
         <div className="hidden md:block">
-          <Link href="/wishlist">
+          <Link href="/my/favorites">
             <div className="flex items-center justify-center p-1 gap-0.5">
               <LikeIconSvg className="pointer-events-none" />
-              <p className="text-primary-950 text-sm/[17px] tracking-tight">찜목록</p>
+              <p
+                className={`text-primary-950 text-sm/[17px] tracking-tight ${pathname === "/my/favorites" ? "font-bold" : "font-normal"}`}
+              >
+                찜목록
+              </p>
             </div>
           </Link>
         </div>
@@ -171,13 +175,17 @@ export default function AuthenticatedHeader() {
           <Link href="/cart">
             <div className="relative w-[24px] h-[24px]">
               <Image src={ic_cart} alt="장바구니" fill className="object-contain" />
+              {user?.cartItemCount && user.cartItemCount > 0 && (
+                <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                  {user.cartItemCount}
+                </div>
+              )}
             </div>
           </Link>
 
           <div className="hidden sm:block">
-            {/* AuthProvider 사용하여 로그인한 User의 name 가져와서 index 0값을 string으로 넣을 예정 */}
             <Link href="/profile">
-              <ProfileAvatar label="김" />
+              <ProfileAvatar label={user?.name?.[0] || ""} />
             </Link>
           </div>
           <VerticalBarIconSvg className="hidden sm:block text-primary-100" />
