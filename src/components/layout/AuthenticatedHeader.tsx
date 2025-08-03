@@ -18,6 +18,7 @@ import { TCategoryItem } from "@/types/subCategoryMenu.types";
 import { useCategoryStore } from "@/stores/categoryStore";
 import { CATEGORIES } from "@/lib/constants/categories";
 import img_logo from "@/assets/images/img_logo.webp";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function AuthenticatedHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,18 +29,43 @@ export default function AuthenticatedHeader() {
   // 전역 카테고리 상태 사용
   const { selectedCategory, clearSelectedCategory } = useCategoryStore();
 
-  const menuItems = [
+  const { user, logout } = useAuth();
+
+  // 모든 유저 공통 메뉴
+  const commonMenuItems = [
     { id: "products", label: "상품 리스트", href: "/products" },
     { id: "my-order-list", label: "구매 요청 내역", href: "/my/order-list" },
     { id: "my-products", label: "상품 등록 내역", href: "/my/products" },
+  ];
 
-    // 관리자
+  // 관리자 메뉴 (ADMIN, SUPER_ADMIN)
+  const adminMenuItems = [
     { id: "order-manage", label: "구매 요청 관리", href: "/order-manage" },
     { id: "order-history", label: "구매 내역 확인", href: "/order-history" },
-    // 최고 관리자
-    { id: "manage-users", label: "관리", href: "/manage/users" },
-    { id: "profile", label: "마이 페이지", href: "/profile" },
   ];
+
+  // 최고 관리자 메뉴 (SUPER_ADMIN만)
+  const superAdminMenuItems = [{ id: "manage-users", label: "관리", href: "/manage/users" }];
+
+  // role에 따라 메뉴 아이템 구성
+  const getMenuItems = () => {
+    let menuItems = [...commonMenuItems];
+
+    if (user?.role === "ADMIN" || user?.role === "SUPER_ADMIN") {
+      menuItems = [...menuItems, ...adminMenuItems];
+    }
+
+    if (user?.role === "SUPER_ADMIN") {
+      menuItems = [...menuItems, ...superAdminMenuItems];
+    }
+    menuItems.push(
+      { id: "profile", label: "마이 페이지", href: "/profile" },
+      { id: "logout", label: "로그아웃", href: "" },
+    );
+    return menuItems;
+  };
+
+  const menuItems = getMenuItems();
 
   // 햄버거 메뉴버튼 클릭 핸들러
   const handleMenuClick = () => {
@@ -53,7 +79,10 @@ export default function AuthenticatedHeader() {
 
   // 사이드바 메뉴에서 nav 선택시 핸들러
   const handleItemClick = (item: TSideMenuItem) => {
-    if (item.href) {
+    if (item.id === "logout") {
+      logout();
+      setIsMenuOpen(false);
+    } else if (item.href) {
       router.push(item.href);
       setIsMenuOpen(false);
     }
