@@ -1,8 +1,10 @@
-import { TAddFavoriteProductResponse, TGetFavoriteProductResponse } from "@/types/favorite.types";
+import { TAddFavoriteProductResponse, TGetFavoriteProductResponse, TMyFavoritesParams } from "@/types/favorite.types";
 import { cookieFetch } from "./fetchClient.api";
 
-export const getFavorites = async (): Promise<TGetFavoriteProductResponse> => {
-  return await cookieFetch("/favorites");
+export const getFavorites = async (params: TMyFavoritesParams): Promise<TGetFavoriteProductResponse> => {
+  const queryString = new URLSearchParams(params);
+
+  return await cookieFetch(`/favorites?${queryString.toString()}`);
 };
 
 export const createFavorite = async (productId: string): Promise<TAddFavoriteProductResponse> => {
