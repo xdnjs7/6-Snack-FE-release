@@ -4,6 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navLinks } from "@/app/(preview)/components-preview/navigationLinks";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useAuth } from "@/providers/AuthProvider";
+
+const roleLabelMap: Record<string, string> = {
+  SUPER_ADMIN: "최고 관리자",
+  ADMIN: "관리자",
+  USER: "일반유저",
+  GUEST: "비회원",
+};
 
 const roleColorMap: Record<string, string> = {
   "최고 관리자": "bg-red-600/80",
@@ -28,6 +36,8 @@ export default function DevNavBar() {
   const [selectedRole, setSelectedRole] = useState<string | undefined>(undefined);
   const [selectedProgress, setSelectedProgress] = useState<string | undefined>(undefined);
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
+
+  const { login, logout, user } = useAuth();
 
   const navRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
@@ -111,6 +121,16 @@ export default function DevNavBar() {
     return [...new Set(navLinks.map((section) => section.category))];
   }, []);
 
+  const handleLogin = (role: string) => {
+    if (role === "일반유저") return login("user@codeit.com", "1q2w3e4r!");
+    if (role === "관리자") return login("admin@codeit.com", "1q2w3e4r!");
+    if (role === "최고 관리자") return login("super_admin@codeit.com", "1q2w3e4r!");
+  };
+
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <>
       <div
@@ -142,6 +162,45 @@ export default function DevNavBar() {
             </div>
           </div>
 
+          {/* 간편 로그인 */}
+          <div className="space-y-2">
+            <h3 className="text-sm font-semibold">
+              🔐
+              {user?.role ? (
+                <>
+                  <span> 현재 로그인 : </span>
+                  <span
+                    className={`px-3 py-[2px] rounded-full text-[13px]/[14px] text-white ${roleColorMap[roleLabelMap[user.role]] ?? "bg-gray-400"}`}
+                  >
+                    {user.role}
+                  </span>
+                </>
+              ) : (
+                " 간편 로그인"
+              )}
+            </h3>
+
+            <div className="flex flex-wrap gap-2 py-1 rounded-lg">
+              {["일반유저", "관리자", "최고 관리자"].map((role) => (
+                <button
+                  key={role}
+                  onClick={() => handleLogin(role)}
+                  className="text-xs px-2 py-1 rounded font-semibold text-black cursor-pointer bg-white border border-primary-200 hover:bg-primary-100 transition-all duration-300"
+                >
+                  {role} 로그인
+                </button>
+              ))}
+              <button
+                onClick={handleLogout}
+                className={`text-xs px-2 py-1 rounded font-semibold text-black bg-white border border-primary-200 hover:bg-primary-100 transition-all duration-300 cursor-pointer ${
+                  !user ? "bg-white" : "text-black"
+                }`}
+              >
+                로그아웃
+              </button>
+            </div>
+          </div>
+
           {/* 역할 필터 버튼 */}
           <div className="space-y-2">
             <h3 className="text-sm font-semibold">🔑 역할 필터</h3>
@@ -150,7 +209,7 @@ export default function DevNavBar() {
                 <button
                   key={role}
                   onClick={() => setSelectedRole(selectedRole === role ? undefined : role)}
-                  className={`text-xs px-2 py-1 rounded font-semibold text-black cursor-pointer ${
+                  className={`text-xs px-2 py-1 rounded font-semibold text-black hover:bg-primary-100 transition-all duration-300 cursor-pointer ${
                     selectedRole === role
                       ? `${roleColorMap[role]} text-white`
                       : "bg-white outline-2 outline-primary-100"
@@ -170,7 +229,7 @@ export default function DevNavBar() {
                 <button
                   key={stage}
                   onClick={() => setSelectedProgress(selectedProgress === stage ? undefined : stage)}
-                  className={`text-xs px-2 py-1 rounded font-semibold text-black cursor-pointer ${
+                  className={`text-xs px-2 py-1 rounded font-semibold text-black hover:bg-primary-100 transition-all duration-300 cursor-pointer ${
                     selectedProgress === stage ? `${progressColorMap[stage]}` : "bg-white outline-2 outline-primary-100"
                   }`}
                 >
@@ -188,7 +247,7 @@ export default function DevNavBar() {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(selectedCategory === category ? undefined : category)}
-                  className={`text-xs px-2 py-1 rounded font-semibold text-black cursor-pointer ${
+                  className={`text-xs px-2 py-1 rounded font-semibold text-black hover:bg-primary-100 transition-all duration-300 cursor-pointer ${
                     selectedCategory === category
                       ? "bg-yellow-200 text-black"
                       : "bg-white outline-2 outline-primary-100"
@@ -207,7 +266,7 @@ export default function DevNavBar() {
               setSelectedProgress(undefined);
               setSelectedCategory(undefined);
             }}
-            className="w-full text-xs px-2 py-1 rounded bg-red-200 text-black font-semibold cursor-pointer"
+            className="w-full text-xs px-2 py-1 rounded bg-red-200/80 text-black font-semibold cursor-pointer"
           >
             필터 초기화
           </button>
