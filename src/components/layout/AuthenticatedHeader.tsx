@@ -49,8 +49,8 @@ export default function AuthenticatedHeader() {
   // 최고 관리자 메뉴 (SUPER_ADMIN만)
   const superAdminMenuItems = [{ id: "manage-users", label: "관리", href: "/manage/users" }];
 
-  // role에 따라 메뉴 아이템 구성
-  const getMenuItems = () => {
+  // 공통 메뉴 (nav와 SideMenu 모두에서 사용)
+  const getCommonMenuItems = () => {
     let menuItems = [...commonMenuItems];
 
     if (user?.role === "ADMIN" || user?.role === "SUPER_ADMIN") {
@@ -61,19 +61,27 @@ export default function AuthenticatedHeader() {
       menuItems = [...menuItems, ...superAdminMenuItems];
     }
 
-    menuItems.push({ id: "my-favorites", label: "찜목록", href: "/my/favorites" });
-
-    // 모바일 버전에서만 마이페이지 옵션 보여야함
-    if (isMobile) {
-      menuItems.push({ id: "profile", label: "마이 페이지", href: "/profile" });
-    }
-
-    menuItems.push({ id: "logout", label: "로그아웃", href: "" });
-
     return menuItems;
   };
 
-  const menuItems = getMenuItems();
+  // SideMenu 전용 메뉴 (찜목록, 마이페이지, 로그아웃 포함)
+  const getSideMenuItems = () => {
+    const commonItems = getCommonMenuItems();
+
+    commonItems.push({ id: "my-favorites", label: "찜목록", href: "/my/favorites" });
+
+    // 모바일 버전에서만 마이페이지 옵션 보여야함
+    if (isMobile) {
+      commonItems.push({ id: "profile", label: "마이 페이지", href: "/profile" });
+    }
+
+    commonItems.push({ id: "logout", label: "로그아웃", href: "" });
+
+    return commonItems;
+  };
+
+  const navItems = getCommonMenuItems();
+  const sideMenuItems = getSideMenuItems();
 
   // 햄버거 메뉴버튼 클릭 핸들러
   const handleMenuClick = () => {
@@ -120,31 +128,14 @@ export default function AuthenticatedHeader() {
             <Image src={img_logo} fill alt="스낵 로고" className="object-contain" />
           </div>
         </Link>
-        {/* nav - 상품 리스트, 구매요청내역, 상품등록내역, 구매요청관리, 구매내역확인, 관리  */}
+        {/* nav - 상품 리스트, 구매요청내역, 상품등록내역, 구매요청관리, 구매내역확인, 관리  (권한에 따라 다르게 보임) */}
         <div className="hidden md:block">
           <nav className="flex items-center justify-center gap-[30px]">
-            <Link href="/products" className="px-2.5">
-              <p className="font-normal text-primary-950">상품 리스트</p>
-            </Link>
-            <Link href="/my/order-list" className="px-2.5">
-              <p className="font-normal text-primary-950">구매 요청 내역</p>
-            </Link>
-            <Link href="my/products/registered" className="px-2.5">
-              <p className="font-normal text-primary-950">상품 등록 내역</p>
-            </Link>
-
-            {/* 관리자에게만 보임 - AuthProvider 사용하여 분기처리 예정 */}
-            <Link href="/order-manage" className="px-2.5">
-              <p className="font-normal text-primary-950">구매 요청 관리</p>
-            </Link>
-            <Link href="/order-history" className="px-2.5">
-              <p className="font-normal text-primary-950">구매 내역 확인</p>
-            </Link>
-
-            {/* 최고관리자에게만 보임 - AuthProvider 사용하여 분기처리 예정 */}
-            <Link href="/manage/users" className="px-2.5">
-              <p className="font-normal text-primary-950">관리</p>
-            </Link>
+            {navItems.map((item) => (
+              <Link key={item.id} href={item.href || "#"} className="px-2.5">
+                <p className="font-normal text-primary-950">{item.label}</p>
+              </Link>
+            ))}
           </nav>
         </div>
       </div>
@@ -192,7 +183,7 @@ export default function AuthenticatedHeader() {
         <HamburgerMenuIconSvg className="md:hidden text-primary-400" onClick={handleMenuClick} />
 
         <SideMenu
-          items={menuItems}
+          items={sideMenuItems}
           isOpen={isMenuOpen}
           currentPath={pathname}
           onItemClick={handleItemClick}
