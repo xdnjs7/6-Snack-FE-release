@@ -72,6 +72,15 @@ export default function Order() {
     }
   }, [user?.company?.id, queryClient]);
 
+  // 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
   // 주문 목록 조회
   const offset = (currentPaginationPage - 1) * visibleCount;
   const {

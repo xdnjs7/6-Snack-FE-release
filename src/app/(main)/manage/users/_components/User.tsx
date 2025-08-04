@@ -12,7 +12,7 @@ import { getUserApi } from "@/lib/api/user.api";
 import { useModal } from "@/providers/ModalProvider";
 import { TToastVariant } from "@/types/toast.types";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useMemo, useState, useRef } from "react";
+import { Suspense, useMemo, useState, useRef, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function User() {
@@ -42,6 +42,15 @@ export default function User() {
     timerRef.current = setTimeout(() => setToastVisible(false), 3000);
   };
 
+  // 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
   // 회원 목록 조회
   const {
     data: membersData,
@@ -50,7 +59,7 @@ export default function User() {
   } = useQuery({
     queryKey: ["companyUsers", name],
     queryFn: () => fetchAllCompanyUsers({ name, limit: 50 }),
-    staleTime: 5 * 60 * 1000, // 5분
+    staleTime: 5 * 60 * 1000,
   });
 
   const members = useMemo(() => membersData?.users ?? [], [membersData?.users]);
