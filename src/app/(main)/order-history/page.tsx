@@ -45,8 +45,8 @@ const OrderHistoryPage = () => {
         <div className="w-full inline-flex flex-col justify-start items-end gap-4">
           {/* Mobile Header + Sort */}
           <div className="self-stretch inline-flex justify-between items-center">
-            <div className="justify-center text-neutral-800 text-lg font-bold font-['SUIT']">구매 내역 확인</div>
-            <div className="relative custom-sort-dropdown w-auto">
+            <h1 className="justify-center text-neutral-800 text-lg font-bold font-['SUIT']">구매 내역 확인</h1>
+            <div className="relative custom-sort-dropdown w-auto" role="region" aria-label="정렬 옵션">
               <Dropdown
                 options={["최신순", "낮은 가격순", "높은 가격순"]}
                 onChange={(selectedOption: string) => {
@@ -187,14 +187,14 @@ const OrderHistoryPage = () => {
             currentItems.map((item) => (
               <div key={item.id} className="self-stretch pb-2.5 flex flex-col justify-start items-start">
                 <div className="self-stretch py-3.5 border-b border-zinc-400 inline-flex justify-between items-center">
-                  <div className="flex justify-start items-center gap-2">
-                    <button
-                      onClick={() => handleProductClick(item.id)}
-                      className="text-blue-600 cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis max-w-32"
-                      type="button"
-                    >
-                      {item.item}
-                    </button>
+                  <div className="flex justify-start items-center gap-2">                      <button
+                    onClick={() => handleProductClick(item.id)}
+                    className="text-blue-600 cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis max-w-32"
+                    type="button"
+                    aria-label={`${item.item} 상세보기로 이동`}
+                  >
+                    {item.item}
+                  </button>
                     <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
                       총수량 4개
                     </div>

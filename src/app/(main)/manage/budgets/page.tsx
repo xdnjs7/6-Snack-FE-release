@@ -76,20 +76,26 @@ function ManageBudgetsPage() {
   };
 
   return (
-    <div className="flex flex-1 flex-col justify-center">
-      <BudgetFormUI
-        currentMonthBudget={String((typeof watch === "function" ? watch("currentMonthBudget") : "") || "")}
-        nextMonthBudget={String((typeof watch === "function" ? watch("nextMonthBudget") : "") || "")}
-        onChange={handleUIChange}
-        onSubmit={handleSubmit((formData) => updateBudgets(formData))}
-        loading={isQueryLoading || isMutating}
-        success={isSuccess}
-        errors={{
-          currentMonthBudget: errors.currentMonthBudget?.message,
-          nextMonthBudget: errors.nextMonthBudget?.message,
-        }}
-      />
-    </div>
+    <main className="flex flex-1 flex-col justify-center" role="main" aria-labelledby="budget-management-heading">
+      <header className="sr-only">
+        <h1 id="budget-management-heading">예산 관리</h1>
+      </header>
+      <section aria-labelledby="budget-form-section" role="region">
+        <h2 id="budget-form-section" className="sr-only">예산 설정 폼</h2>
+        <BudgetFormUI
+          currentMonthBudget={String((typeof watch === "function" ? watch("currentMonthBudget") : "") || "")}
+          nextMonthBudget={String((typeof watch === "function" ? watch("nextMonthBudget") : "") || "")}
+          onChange={handleUIChange}
+          onSubmit={handleSubmit((formData) => updateBudgets(formData))}
+          loading={isQueryLoading || isMutating}
+          success={isSuccess}
+          errors={{
+            currentMonthBudget: errors.currentMonthBudget?.message,
+            nextMonthBudget: errors.nextMonthBudget?.message,
+          }}
+        />
+      </section>
+    </main>
   );
 }
 
