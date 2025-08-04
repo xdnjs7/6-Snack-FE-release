@@ -55,7 +55,7 @@ export default function ProductRegistrationForm({
 
   return (
     <FormProvider {...form}>
-      <div className="w-full h-full sm:w-[512px] sm:h-[696px] sm:fixed sm:inset-0 sm:top-1/2 sm:left-1/2 sm:-translate-1/2 rounded-[6px] sm:p-[30px] bg-white shadow-xl flex flex-col sm:gap-[36px] items-center">
+      <div className="w-full h-full sm:w-[512px] sm:max-h-[750px] sm:fixed sm:inset-0 sm:top-1/2 sm:left-1/2 sm:-translate-1/2 rounded-[6px] sm:p-[30px] bg-white shadow-xl flex flex-col sm:gap-[36px] items-center">
         <div className="w-full h-full flex flex-col p-6 sm:p-0">
           <div className="flex justify-center items-center p-2 -m-6 sm:mt-0 sm:p-0 mb-[30px] font-bold text-lg/[22px] tracking-tight">
             상품 등록
