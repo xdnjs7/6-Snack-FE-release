@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 
@@ -29,16 +29,34 @@ export default function Dropdown({
   const [isOpen, setIsOpen] = useState(false);
   const [sort, setSort] = useState<string>(placeholder);
 
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const handleSelect = (option: string) => {
     onChange(option);
     setSort(option);
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
   const menuOptions = options.length === 0 ? defaultOptions : options;
 
   return (
-    <div className={twMerge("relative inline-block min-w-[110px]", className)}>
+    <div ref={dropdownRef} className={twMerge("relative inline-block min-w-[110px]", className)}>
       {/* 드롭다운 버튼 */}
       <div
         className={`${height || "h-11"} w-full px-4 py-2.5 bg-white border border-primary-100 ${
