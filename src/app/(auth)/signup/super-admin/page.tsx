@@ -23,12 +23,12 @@ const signUpSchema = z
       .regex(/^[가-힣a-zA-Z\d().,_\- ]+$/, "회사명에는 한글, 영문, 숫자, 괄호(), 온점(.), 반점(,), 대쉬(-), 언더바(_)만 사용할 수 있습니다."),
     bizNumber: z.string().regex(/^[0-9]{10}$/, "사업자 번호 10자리를 입력해주세요."),
     password: z
-      .string()
+      .string("비밀번호를 입력해주세요.")
       .min(8, "8자 이상 입력해주세요.")
       .regex(/[a-zA-Z]/, "비밀번호는 영문자를 포함해야 합니다.")
       .regex(/[0-9]/, "비밀번호는 숫자를 포함해야 합니다.")
       .regex(/[^a-zA-Z0-9]/, "비밀번호는 특수문자를 포함해야 합니다."),
-    passwordConfirm: z.string(),
+    passwordConfirm: z.string("비밀번호를 입력해주세요."),
   })
 
   .refine((data) => data.password === data.passwordConfirm, {
@@ -79,13 +79,10 @@ export default function SuperAdminSignUpPage() {
     try {
       await superAdminSignUpApi(data);
       showToast("회원가입이 성공했습니다!", "success");
-      // 토스트가 보여진 후 1초 뒤에 페이지 이동
-      setTimeout(() => {
-        router.push("/login");
-      }, 1000);
+      router.push("/login");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      const message = error instanceof Error ? error.message : "회원가입에 실패했습니다.";
-      showToast(message, "error");
+      showToast("회원가입에 실패했습니다.", "error");
     }
   };
 
@@ -148,16 +145,6 @@ export default function SuperAdminSignUpPage() {
               label="이메일"
               placeholder="이메일을 입력해주세요."
               error={errors.email?.message}
-            />
-
-            {/* 이름 입력 필드 */}
-            <Input
-              {...nameReg}
-              inputRef={nameReg.ref}
-              type="text"
-              label="이름"
-              placeholder="이름을 입력해주세요."
-              error={errors.name?.message}
             />
 
             {/* 비밀번호 input wrapper*/}
