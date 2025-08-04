@@ -194,7 +194,7 @@ export default function ProfileForm() {
                   {...register("company")}
                   isEditable={typedUser?.role === Role.SUPER_ADMIN}
                   role={typedUser?.role}
-                  type="input"
+                  type={typedUser?.role === Role.SUPER_ADMIN ? "input" : "display"}
                   error={errors.company?.message}
                 />
 

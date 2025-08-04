@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { TInviteMemberModalProps, TUserRole } from "@/types/inviteMemberModal.types";
-import { sendInvite } from "@/lib/api/invite.api";
-import { getUserApi } from "@/lib/api/user.api";
+import { useModal } from "@/providers/ModalProvider";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateUserRole } from "@/lib/api/superAdmin.api";
+import Button from "@/components/ui/Button";
+import Input from "@/components/common/Input";
 
 const roleLabels: Record<TUserRole, string> = {
   USER: "유저",
@@ -15,281 +18,136 @@ export default function InviteMemberModal({
   mode = "invite",
   defaultValues,
 }: TInviteMemberModalProps) {
+  const { closeModal } = useModal();
+  const queryClient = useQueryClient();
   const [name, setName] = useState<string>(defaultValues?.name ?? "");
   const [email, setEmail] = useState<string>(defaultValues?.email ?? "");
   const [selectedRole, setSelectedRole] = useState<TUserRole>(defaultValues?.role ?? "USER");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
+  // 권한 수정 mutation
+  const updateRoleMutation = useMutation({
+    mutationFn: ({ userId, role }: { userId: string; role: TUserRole }) => updateUserRole(userId, role),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["companyUsers"] });
+      onSubmit?.({ name, email, role: selectedRole });
+      closeModal();
+    },
+    onError: (error) => {
+      const errorMessage = error instanceof Error ? error.message : "권한 수정 중 오류 발생";
+      alert(errorMessage);
+    },
+  });
+
   const handleSubmit = async () => {
     if (mode === "edit") {
-      try {
-        if (!defaultValues) {
-          alert("defaultValues가 없습니다.");
-          return;
-        }
-
-        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080";
-        const res = await fetch(`${baseUrl}/super-admin/users/${defaultValues.id}/role`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ role: selectedRole }),
-        });
-
-        if (!res.ok) {
-          throw new Error("권한 수정 실패");
-        }
-
-        const data = await res.json();
-        alert(data.message || "권한이 성공적으로 변경되었습니다.");
-        onSubmit?.({ name, email, role: selectedRole });
-      } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err.message : "권한 수정 중 오류 발생";
-        alert(errorMessage);
+      if (!defaultValues) {
+        alert("defaultValues가 없습니다.");
+        return;
       }
+
+      updateRoleMutation.mutate({
+        userId: defaultValues.id,
+        role: selectedRole,
+      });
     } else {
-      // 초대 모드일 때
-      try {
-        if (!name || !email) {
-          alert("이름과 이메일을 모두 입력해주세요.");
-          return;
-        }
-
-        // 현재 사용자 정보 가져오기
-        const currentUser = await getUserApi();
-
-        // 초대 API 호출
-        const inviteData = {
-          email,
-          name,
-          role: selectedRole,
-          companyId: Number(currentUser.company?.id) || 0,
-          invitedById: currentUser.id,
-          expiresInDays: 7,
-        };
-
-        const result = await sendInvite(inviteData);
-
-        if (result.emailSent) {
-          alert("초대 이메일이 성공적으로 발송되었습니다.");
-        } else {
-          alert("초대 링크는 생성되었지만 이메일 발송에 실패했습니다.");
-        }
-
-        onSubmit?.({ name, email, role: selectedRole });
-        onCancel?.();
-      } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err.message : "초대 발송 중 오류가 발생했습니다.";
-        alert(errorMessage);
+      if (!name || !email) {
+        alert("이름과 이메일을 모두 입력해주세요.");
+        return;
       }
+
+      onSubmit?.({ name, email, role: selectedRole });
+      closeModal();
+    }
+  };
+
+  const handleCancel = () => {
+    if (onCancel) {
+      onCancel();
+    } else {
+      closeModal();
     }
   };
 
   return (
     <>
-      {/* Desktop Layout */}
-      <div className="hidden sm:flex items-center justify-center min-h-screen">
-        <div className="w-[600px] px-14 py-10 bg-white rounded-sm shadow-[0px_0px_40px_0px_rgba(0,0,0,0.1)] inline-flex flex-col justify-start items-center gap-8 relative overflow-visible">
-          <div className="flex flex-col justify-start items-start gap-2.5">
-            <div className="justify-center text-stone-900 text-lg font-bold font-['SUIT']">
-              {mode === "edit" ? "권한 수정" : "회원 초대"}
-            </div>
-          </div>
-          <div className="self-stretch flex flex-col justify-start items-start gap-9">
-            <div className="self-stretch flex flex-col justify-start items-start gap-7">
-              <div className="self-stretch flex flex-col justify-start items-start gap-5">
-                <div className="self-stretch flex flex-col justify-start items-start gap-5">
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="이름을 입력해주세요"
-                    readOnly={mode === "edit"}
-                    className={`self-stretch h-14 px-1 py-2 border-b border-stone-500 inline-flex justify-between items-center overflow-hidden bg-transparent outline-none text-base font-normal font-['SUIT'] placeholder:text-zinc-500 ${mode === "edit" ? "text-gray-400" : "text-stone-900"}`}
-                  />
-
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="이메일을 입력해주세요"
-                    readOnly={mode === "edit"}
-                    className={`self-stretch h-14 px-1 py-2 border-b border-stone-500 inline-flex justify-between items-center overflow-hidden bg-transparent outline-none text-base font-normal font-['SUIT'] placeholder:text-zinc-500 ${mode === "edit" ? "text-gray-400" : "text-stone-900"}`}
-                  />
-                </div>
-              </div>
-              <div className="self-stretch flex flex-col justify-center items-start gap-3">
-                <div className="justify-center text-neutral-800 text-base font-bold font-['SUIT']">권한</div>
-                <div className="relative">
-                  <div
-                    data-active={isDropdownOpen ? "on" : "off"}
-                    className="w-[480px] h-11 px-4 py-2.5 bg-white outline-1 outline-offset-[-1px] outline-neutral-200 inline-flex justify-between items-center cursor-pointer"
-                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  >
-                    <div className="justify-start text-neutral-800 text-base font-normal font-['SUIT']">
-                      {roleLabels[selectedRole]}
-                    </div>
-                    <div className="w-[6px] h-[6px] flex items-center justify-center">
-                      <ArrowIconSvg direction={isDropdownOpen ? "up" : "down"} className="text-neutral-800" />
-                    </div>
-                  </div>
-
-                  {isDropdownOpen && (
-                    <div className="absolute top-full left-0 w-[480px] bg-white border border-neutral-200 z-50">
-                      {Object.entries(roleLabels).map(([role, label]) => (
-                        <div
-                          key={role}
-                          className="px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-neutral-800 text-base font-normal font-['SUIT']"
-                          onClick={() => {
-                            setSelectedRole(role as TUserRole);
-                            setIsDropdownOpen(false);
-                          }}
-                        >
-                          {label}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="self-stretch inline-flex justify-start items-center gap-5">
-              <button
-                data-size="Default"
-                data-state="normal"
-                data-type="line"
-                className="flex-1 h-16 px-4 py-3 bg-white rounded-sm outline-1 outline-offset-[-1px] outline-zinc-400 flex justify-center items-center cursor-pointer hover:bg-gray-50 transition-colors"
-                onClick={onCancel}
-              >
-                <div className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT']">
-                  취소
-                </div>
-              </button>
-              <button
-                data-size="Default"
-                data-state="normal"
-                data-type="filled"
-                className="flex-1 h-16 px-4 py-3 bg-neutral-800 rounded-sm flex justify-center items-center cursor-pointer hover:bg-neutral-700 transition-colors"
-                onClick={handleSubmit}
-              >
-                <div className="text-center justify-center text-white text-base font-bold font-['SUIT']">
-                  {mode === "edit" ? "권한 수정" : "초대하기"}
-                </div>
-              </button>
-            </div>
-          </div>
+      <div className="fixed inset-0 bg-white overflow-auto shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] sm:w-[600px] sm:h-[470px] sm:top-1/2 sm:left-1/2 sm:translate-[-50%] sm:py-[40px] sm:px-[60px]">
+        <div className="flex justify-center items-center h-[54px] py-[16px] px-[8px] sm:p-0 sm:h-auto">
+          <p className="flex justify-center items-center w-[375px] font-bold text-[18px]/[22px] tracking-tight text-[#1f1f1f]">
+            {mode === "edit" ? "권한 수정" : "회원 초대"}
+          </p>
         </div>
-      </div>
 
-      {/* Mobile Layout */}
-      <div className="block md:hidden w-full h-screen relative bg-white overflow-hidden">
-        <div className="w-full px-2 py-4 left-0 top-0 absolute inline-flex justify-center items-center gap-2">
-          <div className="justify-center text-stone-900 text-lg font-bold font-['SUIT']">회원 초대</div>
-        </div>
-        <div className="w-full px-6 left-0 top-[80px] absolute inline-flex flex-col justify-start items-start gap-7">
-          <div className="self-stretch flex flex-col justify-start items-start gap-5">
-            <div
-              data-show-eye="false"
-              data-show-floating-label="true"
-              data-size="sm"
-              data-state={name ? "completed" : "normal"}
-              className="self-stretch h-14 px-1 py-2 border-b border-stone-500 inline-flex justify-start items-end gap-1"
-            >
-              <div className="flex-1 inline-flex flex-col justify-start items-start gap-[5px]">
-                <div className="self-stretch justify-center text-neutral-400 text-xs font-normal font-['SUIT']">
-                  이름
-                </div>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="이름을 입력해주세요"
-                  className={`self-stretch justify-center text-base font-normal font-['SUIT'] bg-transparent outline-none ${mode === "edit" ? "text-gray-400" : "text-neutral-600"}`}
-                />
-              </div>
+        <div className="flex flex-col items-center p-[24px] pt-[20px] pb-[100px] sm:p-0 sm:pt-[32px] sm:pb-0">
+          <div className="flex flex-col w-full gap-[32px] mb-[20px] sm:max-w-[480px] sm:mb-0">
+            <div className="flex flex-col justify-start items-start gap-5">
+              <Input
+                label="이름"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="이름을 입력해주세요"
+                readOnly={mode === "edit"}
+              />
+
+              <Input
+                label="이메일"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="이메일을 입력해주세요"
+                readOnly={mode === "edit"}
+              />
             </div>
-            <div
-              data-show-eye="false"
-              data-show-floating-label="true"
-              data-size="sm"
-              data-state={email ? "completed" : "normal"}
-              className="self-stretch h-14 px-1 py-2 border-b border-stone-500 inline-flex justify-start items-end gap-1"
-            >
-              <div className="flex-1 inline-flex flex-col justify-start items-start gap-[5px]">
-                <div className="self-stretch justify-center text-neutral-400 text-xs font-normal font-['SUIT']">
-                  이메일
-                </div>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="이메일을 입력해주세요"
-                  className={`self-stretch justify-center text-base font-normal font-['SUIT'] bg-transparent outline-none ${mode === "edit" ? "text-gray-400" : "text-neutral-600"}`}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="self-stretch flex flex-col justify-center items-start gap-3">
-            <div className="justify-center text-neutral-800 text-base font-bold font-['SUIT']">권한</div>
-            <div className="self-stretch flex flex-col justify-start items-start">
-              <div
-                data-active={isDropdownOpen ? "on" : "off"}
-                className="self-stretch h-11 px-4 py-2.5 bg-white outline-1 outline-offset-[-1px] outline-neutral-200 inline-flex justify-between items-center cursor-pointer"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              >
-                <div className="justify-start text-neutral-800 text-base font-normal font-['SUIT']">
-                  {roleLabels[selectedRole]}
-                </div>
-                <div className="w-4 h-4 flex items-center justify-center">
-                  <ArrowIconSvg direction={isDropdownOpen ? "up" : "down"} className="text-neutral-800" />
-                </div>
-              </div>
-              {isDropdownOpen && (
+
+            <div className="flex flex-col justify-center items-start gap-3">
+              <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-950">권한</p>
+              <div className="relative w-full">
                 <div
-                  data-height-type="auto"
-                  className="w-full bg-white border-l border-r border-b border-neutral-200 flex flex-col justify-center items-start overflow-hidden"
+                  data-active={isDropdownOpen ? "on" : "off"}
+                  className="w-full h-11 px-4 py-2.5 bg-white outline-1 outline-primary-100 inline-flex justify-between items-center cursor-pointer"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  {Object.entries(roleLabels).map(([role, label]) => (
-                    <div
-                      key={role}
-                      className="self-stretch h-12 pl-4 pr-5 py-2 inline-flex justify-start items-center gap-1 cursor-pointer hover:bg-gray-50"
-                      onClick={() => {
-                        setSelectedRole(role as TUserRole);
-                        setIsDropdownOpen(false);
-                      }}
-                    >
-                      <div className="text-center justify-center text-neutral-800 text-base font-normal">{label}</div>
-                    </div>
-                  ))}
+                  <div className="justify-start text-primary-950 text-base font-normal">{roleLabels[selectedRole]}</div>
+                  <div className="w-[6px] h-[6px] flex items-center justify-center">
+                    <ArrowIconSvg direction={isDropdownOpen ? "up" : "down"} className="text-primary-950" />
+                  </div>
                 </div>
-              )}
+
+                {isDropdownOpen && (
+                  <div className="absolute top-full left-0 w-full bg-white border border-primary-100 z-50">
+                    {Object.entries(roleLabels).map(([role, label]) => (
+                      <div
+                        key={role}
+                        className="px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-primary-950 text-base font-normal"
+                        onClick={() => {
+                          setSelectedRole(role as TUserRole);
+                          setIsDropdownOpen(false);
+                        }}
+                      >
+                        {label}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="w-full p-6 left-0 bottom-0 absolute bg-white inline-flex flex-col justify-start items-start gap-2">
-          <div className="self-stretch inline-flex justify-start items-center gap-4">
-            <button
-              data-size="Default"
-              data-state="normal"
-              data-type="line"
-              className="flex-1 h-16 px-4 py-3 bg-white rounded-sm outline-1 outline-offset-[-1px] outline-zinc-400 flex justify-center items-center cursor-pointer hover:bg-gray-50 transition-colors"
-              onClick={onCancel}
-            >
-              <div className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT']">취소</div>
-            </button>
-            <button
-              data-size="Default"
-              data-state="normal"
-              data-type="filled"
-              className="flex-1 h-16 px-4 py-3 bg-neutral-800 rounded-sm flex justify-center items-center cursor-pointer hover:bg-neutral-700 transition-colors sm:hidden"
+
+          <div className="flex justify-center items-center w-full pt-[384px] gap-[20px] sm:pt-0 sm:max-w-[480px] sm:mt-8">
+            <Button
+              onClick={handleCancel}
+              type="white"
+              label="취소"
+              className="flex justify-center items-center w-full min-w-[155px] sm:max-w-[230px] h-[64px] py-[12px] px-[16px] font-bold"
+            />
+            <Button
               onClick={handleSubmit}
-            >
-              <div className="text-center justify-center text-white text-base font-bold font-['SUIT']">
-                {mode === "edit" ? "권한 수정" : "초대하기"}
-              </div>
-            </button>
+              type={updateRoleMutation.isPending ? "grayDisabled" : "black"}
+              label={updateRoleMutation.isPending ? "처리 중..." : mode === "edit" ? "권한 수정" : "초대하기"}
+              className="flex justify-center items-center w-full  min-w-[155px] sm:max-w-[230px] h-[64px] py-[12px] px-[16px] font-bold"
+              disabled={updateRoleMutation.isPending}
+            />
           </div>
         </div>
       </div>
