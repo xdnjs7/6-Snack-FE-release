@@ -36,6 +36,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
+    // 로그인한 사용자가 "/"로 접근하는 경우 /products로 리디렉션
+  if (pathname === "/" && isAuthenticated) {
+    return NextResponse.redirect(new URL("/products", request.url));
+  }
+
   // 그 외의 경우는 정상적으로 진행
   return NextResponse.next();
 }
