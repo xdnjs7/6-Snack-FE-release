@@ -191,6 +191,7 @@ export default function ProfileForm() {
                 {/* 기업명 */}
                 <ProfileField
                   label="기업명"
+                  value={typedUser?.company?.name || ""}
                   {...register("company")}
                   isEditable={typedUser?.role === Role.SUPER_ADMIN}
                   role={typedUser?.role}
