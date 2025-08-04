@@ -94,6 +94,7 @@ export default function ProductRegistrationForm({
                   placeholder="대분류"
                   onChange={handleParentCategoryChange}
                   className="w-full"
+                  height="h-14"
                 />
               </div>
               <div className="flex-1">
@@ -102,6 +103,7 @@ export default function ProductRegistrationForm({
                   placeholder="소분류"
                   onChange={handleChildrenCategoryChange}
                   className="w-full"
+                  height="h-14"
                   disabled={!parentCategoryOptions.includes(form.watch("parentCategory"))}
                 />
               </div>
@@ -128,14 +130,14 @@ export default function ProductRegistrationForm({
               }
             }}
             disabled={createProductMutation.isPending}
-            className="w-[216px] h-[64px]"
+            className="w-full sm:w-[216px] h-[64px]"
           />
           <Button
             type="black"
             label={createProductMutation.isPending ? "등록 중..." : "등록하기"}
             onClick={onSubmit}
             disabled={createProductMutation.isPending}
-            className="w-[216px] h-[64px]"
+            className="w-full sm:w-[216px] h-[64px]"
           />
         </div>
       </div>
