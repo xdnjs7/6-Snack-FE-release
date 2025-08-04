@@ -183,9 +183,9 @@ export default function ComponentsPreviewPage() {
           <h2 className="text-lg font-semibold bg-blue-100">RequestList 컴포넌트</h2>
           {/* <RequestList
             orderRequests={orderRequests}
-            onClickReject={() => openModal(<OrderManageModal type="reject" order={order} onClick={() => {}} onUpdateOrderStatus={() => {}} />)}
-            onClickApprove={() => openModal(<OrderManageModal type="approve" order={order} onClick={() => {}} onUpdateOrderStatus={() => {}} />)}
-          />
+            onClickReject={() => openModal(<OrderManageModal type="reject" order={order} onClick={() => {}} />)}
+            onClickApprove={() => openModal(<OrderManageModal type="approve" order={order} onClick={() => {}} />)}
+          /> */}
         </div>
 
         <div className="space-y-4 mb-4">
@@ -193,8 +193,8 @@ export default function ComponentsPreviewPage() {
           {/* <Button
             type="black"
             label="열기"
-            onClick={() => openModal(<OrderManageModal type="approve" order={order} onClick={() => {}} onUpdateOrderStatus={() => {}} />)}
-          />
+            onClick={() => openModal(<OrderManageModal type="approve" order={order} onClick={() => {}} />)}
+          /> */}
         </div>
 
         <div className="space-y-4 mb-4">
