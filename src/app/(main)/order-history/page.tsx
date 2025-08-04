@@ -540,7 +540,7 @@ const OrderHistoryPage = () => {
               </button>
             </div>
           </div>
-      </nav>
+        </nav>
       </main>
 
       {/* Desktop Layout */}
