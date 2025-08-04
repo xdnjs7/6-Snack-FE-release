@@ -47,7 +47,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
 
   useEffect(() => {
     // 예외 경로: 홈(랜딩)페이지와 /auth 하위 경로들
-    if (pathname === "/" || pathname.startsWith("/auth")) return;
+    if (pathname === "/" || pathname.startsWith("/auth") || pathname.startsWith("/login") || pathname.startsWith("/signup")) return;
     getUser();
   }, [pathname]);
 
