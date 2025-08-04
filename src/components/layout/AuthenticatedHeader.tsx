@@ -177,7 +177,7 @@ export default function AuthenticatedHeader() {
           <Link href="/cart">
             <div className="relative w-[24px] h-[24px]">
               <Image src={ic_cart} alt="장바구니" fill className="object-contain" />
-              {user?.cartItemCount && user.cartItemCount > 0 && (
+              {user?.cartItemCount !== undefined && user.cartItemCount > 0 && (
                 <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                   {user.cartItemCount}
                 </div>
