@@ -14,6 +14,7 @@ type TProductActionsProps = {
   canEdit: boolean;
   productId: number;
   productName: string;
+  showToast: (message: string, variant?: "success" | "error") => void;
 };
 
 export default function ProductActions({
@@ -22,6 +23,7 @@ export default function ProductActions({
   canEdit,
   productId,
   productName,
+  showToast,
 }: TProductActionsProps) {
   const router = useRouter();
   const { openModal, closeModal } = useModal();
@@ -31,12 +33,15 @@ export default function ProductActions({
   const handleDelete = () => {
     deleteProduct(productId, {
       onSuccess: () => {
-        alert("상품이 삭제되었습니다.");
+        showToast("상품이 삭제되었습니다.", "success");
         closeModal();
-        router.push("/products");
+
+        setTimeout(() => {
+          router.push("/products");
+        }, 3000);
       },
       onError: () => {
-        alert("상품 삭제 실패");
+        showToast("상품 삭제 실패", "error");
       },
     });
   };
@@ -63,9 +68,13 @@ export default function ProductActions({
   }, [selectedQuantity, onQuantityChange]);
 
   return (
-    <div className="flex items-center gap-3.5 sm:gap-5">
-      <span className="min-w-[32px] whitespace-nowrap text-sm sm:text-base">수량</span>
-      <QuantityDropdown value={selectedQuantity === 0 ? 1 : selectedQuantity} onClick={onQuantityChange} />
+    <div className="flex items-center">
+      <span className="min-w-[32px] whitespace-nowrap px-4 text-[16px] sm:text-base">수량</span>
+      <QuantityDropdown
+        value={selectedQuantity === 0 ? 1 : selectedQuantity}
+        onClick={onQuantityChange}
+        type="product"
+      />
       {canEdit && <MenuDropdown menuType="product" onDelete={handleOpenConfirmModal} />}
     </div>
   );

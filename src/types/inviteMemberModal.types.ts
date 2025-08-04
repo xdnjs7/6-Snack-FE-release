@@ -3,7 +3,7 @@ export type TUserRole = "USER" | "ADMIN";
 export type Role = "USER" | "ADMIN" | "SUPER_ADMIN";
 
 export type TInviteMemberModalProps = {
-  onCancel: () => void;
+  onCancel?: () => void;
   onSubmit: (data: { name: string; email: string; role: TUserRole }) => void;
   mode?: "invite" | "edit";
   defaultValues?: {

@@ -23,6 +23,7 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [requestMessage, setRequestMessage] = useState<string>("");
   const router = useRouter();
+  sessionStorage.setItem("previousPath", "/cart/order");
 
   const params: TGetCartItemsParams = {
     ...(cartItemId ? { cartItemId } : { isChecked: "true" }),

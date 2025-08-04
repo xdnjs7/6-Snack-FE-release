@@ -10,6 +10,8 @@ export type TSideMenuItem = {
   isActive?: boolean;
   /** 페이지 경로 (활성화 상태 결정에 사용) */
   href?: string;
+  /** 추가 CSS 클래스 - 태블릿 이상부터 특정 네비게이션 숨기기 위해서 */
+  className?: string;
 };
 
 /**
@@ -28,4 +30,4 @@ export type TSideMenuProps = {
   onClose?: () => void;
   /** 추가 CSS 클래스 */
   className?: string;
-}; 
+};

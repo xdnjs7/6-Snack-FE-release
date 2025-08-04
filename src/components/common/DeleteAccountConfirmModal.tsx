@@ -10,7 +10,7 @@ type TDeleteModalProps = {
 };
 export default function DeleteAccountConfirmModal({ name, email, onCancel, onConfirm }: TDeleteModalProps) {
   return (
-    <div className="absolute left-1/2 top-1/2 translate-[-50%] w-[327px] sm:w-[512px] px-7.5 pt-10 pb-7.5 bg-white rounded-md shadow-lg inline-flex flex-col justify-center items-center gap-9">
+    <div className="absolute left-1/2 top-1/2 translate-[-50%] w-[327px] sm:w-[512px] px-7.5 pt-10 pb-7.5 bg-white rounded-md shadow-[0px_0px_30px_0px_rgba(0,0,0,0.14)] inline-flex flex-col justify-center items-center gap-9">
       <div className="flex flex-col justify-start items-center gap-2">
         <div className="justify-center text-black text-lg font-bold">계정 탈퇴</div>
         <div className="flex flex-col justify-start items-center gap-2">
@@ -39,7 +39,6 @@ export default function DeleteAccountConfirmModal({ name, email, onCancel, onCon
         </div>
       </div>
       <div className="self-stretch inline-flex justify-start items-center gap-2.5">
-        {/* 여기 Button 공통컴포넌트 우주님이 고치시면 font-bold 적용될 예정입니다 현재 css 우선순위 문제로 부모에서 설정해도 먹히는 현상 있음*/}
         <Button
           type="white"
           label="더 생각해볼게요"

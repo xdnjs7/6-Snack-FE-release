@@ -1,7 +1,7 @@
 import { logout } from "@/app/actions/auth";
 import { refreshAccessToken } from "./auth.api";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const cookieFetch = async <T>(path: string, options: RequestInit = {}): Promise<T> => {
   const method = options.method || "GET";
@@ -28,19 +28,8 @@ export const cookieFetch = async <T>(path: string, options: RequestInit = {}): P
 
   const isRefreshRequest = path === "/auth/refresh-token";
 
-  // 예외 경로: 랜딩페이지(/), /signup, /signup/*, /login, /login/*
-  let isExceptionPath = false;
-  if (typeof window !== "undefined") {
-    const currentPath = window.location.pathname;
-    isExceptionPath =
-      currentPath === "/" ||
-      currentPath === "/login" ||
-      currentPath.startsWith("/login/") ||
-      currentPath === "/signup" ||
-      currentPath.startsWith("/signup/");
-  }
 
-  if (response.status === 401 && !isRefreshRequest && !isExceptionPath) {
+  if (response.status === 401 && !isRefreshRequest) {
     try {
       console.log("🔄 액세스 토큰 갱신 시도");
       await refreshAccessToken();

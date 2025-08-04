@@ -10,15 +10,18 @@ import clsx from "clsx";
 import { superAdminSignUpApi } from "@/lib/api/superAdmin.api";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
-import { ToastVariant } from "@/types/toast.types";
+import { TToastVariant } from "@/types/toast.types";
 
 // 리액트 훅폼에 연결할 zod 스키마 정의
 const signUpSchema = z
   .object({
-    email: z.string().email("유효한 이메일이 아닙니다."),
-    name: z.string().min(1, "이름을 입력해주세요"),
-    companyName: z.string().min(1, "회사명을 입력해주세요."),
-    bizNumber: z.string().regex(/^[0-9]{10}$/, "사업자 번호를 입력해주세요."),
+    email: z.string().email("유효한 이메일을 입력해주세요."),
+    name: z.string().min(1, "이름을 입력해주세요."),
+    companyName: z
+      .string()
+      .min(1, "회사명을 입력해주세요.")
+      .regex(/^[가-힣a-zA-Z\d().,_\- ]+$/, "회사명에는 한글, 영문, 숫자, 괄호(), 온점(.), 반점(,), 대쉬(-), 언더바(_)만 사용할 수 있습니다."),
+    bizNumber: z.string().regex(/^[0-9]{10}$/, "사업자 번호 10자리를 입력해주세요."),
     password: z
       .string("비밀번호를 입력해주세요.")
       .min(8, "8자 이상 입력해주세요.")
@@ -40,7 +43,7 @@ export default function SuperAdminSignUpPage() {
 
   const [toastVisible, setToastVisible] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
-  const [toastVariant, setToastVariant] = useState<ToastVariant>("success");
+  const [toastVariant, setToastVariant] = useState<TToastVariant>("success");
 
   const {
     register,
@@ -60,7 +63,7 @@ export default function SuperAdminSignUpPage() {
   const bizNumberReg = register("bizNumber");
 
   // Toast를 보여주는 함수
-  const showToast = (message: string, variant: ToastVariant = "success") => {
+  const showToast = (message: string, variant: TToastVariant = "success") => {
     setToastMessage(message);
     setToastVariant(variant);
     setToastVisible(true);
@@ -86,60 +89,54 @@ export default function SuperAdminSignUpPage() {
   return (
     <>
       {/* Toast 컴포넌트 */}
-      <Toast
-        text={toastMessage}
-        variant={toastVariant}
-        isVisible={toastVisible}
-        onClose={() => setToastVisible(false)}
-      />
+      <div role="alert" aria-live="polite">
+        <Toast
+          text={toastMessage}
+          variant={toastVariant}
+          isVisible={toastVisible}
+          onClose={() => setToastVisible(false)}
+        />
+      </div>
 
-      {/* top parent */}
-      <div className="sm:relative flex flex-col items-center justify-center gap-[28px] sm:gap-0 pt-[48px] sm:pt-[160px]">
-        {/* mobile */}
-        {/* logo + intro */}
-        <div className="sm:absolute sm:top-0 flex flex-col items-center justify-center w-full max-w-[480px] sm:max-w-[600px]">
+      {/* main content */}
+      <main className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[48px] sm:pt-[160px]" role="main" aria-labelledby="signup-heading">
+        {/* header section */}
+        <header className="sm:absolute sm:top-0 flex flex-col items-center justify-center w-full max-w-[480px] sm:max-w-[600px]" role="banner">
           <div className="flex justify-center items-center w-full sm:max-w-[500px] h-[140px] sm:h-[214px] py-[38.18px] sm:py-[58.4px] px-[50.92px] sm:px-[77.86px]">
-            <Link href="/">
-              <SnackIconSvg className="w-[225.16px] h-[63.64px] sm:w-[344px] sm:h-[97.3px]" />
+            <Link href="/" aria-label="홈으로 이동">
+              <SnackIconSvg className="w-[225.16px] h-[63.64px] sm:w-[344px] sm:h-[97.3px]" aria-label="스낙 로고" />
             </Link>
           </div>
           <div className="sm:hidden">
-            <div className="flex flex-col items-center justify-center gap-[10px]">
-              <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle">
-                {/* 기업 담당자 회원가입 */}
-                기업 담당자 회원가입
-              </h1>
-              <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
-                * 그룹 내 유저는 기업 담당자의<br />초대 메일을 통해 가입이 가능합니다.
-              </p>
-            </div>
-          </div>
-        </div>
-        {/* signup content - form, register button, link to login */}
-
-        <div className="sm:absolute sm:w-[600px] sm:top-[152.12px] flex flex-col w-full items-center justify-center sm:items-start sm:px-[60px] sm:py-[40px] sm:bg-white sm:rounded-xs sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] mb-[58px]">
-          <div className="hidden sm:block sm:mb-[20px]">
             <div className="flex flex-col items-start justify-center gap-[10px]">
-              <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle ">
-                {/* 기업 담당자 회원가입 */}
+              <h1 id="signup-heading" className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle">
                 기업 담당자 회원가입
               </h1>
-              <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-left align-middle">
+              <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle" role="note">
                 * 그룹 내 유저는 기업 담당자의 초대 메일을 통해 가입이 가능합니다.
               </p>
             </div>
           </div>
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full mb-[8px] gap-[20px]">
-            {/* 이름 입력 필드 */}
-            <Input
-              {...nameReg}
-              inputRef={nameReg.ref}
-              type="text"
-              label="이름"
-              placeholder="이름 (기업 담당자)을 입력해주세요."
-              error={errors.name?.message}
-            />
+        </header>
 
+        {/* signup form section */}
+        <section className="sm:absolute sm:w-[600px] sm:top-[152.12px] flex flex-col w-full items-center justify-center sm:items-start sm:px-[60px] sm:py-[40px] sm:bg-white sm:rounded-xs sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)]" aria-labelledby="signup-form-heading">
+          <div className="hidden sm:block sm:mb-[20px]">
+            <div className="flex flex-col items-start justify-center gap-[10px]">
+              <h1 id="signup-form-heading" className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle">
+                기업 담당자 회원가입
+              </h1>
+              <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-left align-middle" role="note">
+                * 그룹 내 유저는 기업 담당자의 초대 메일을 통해 가입이 가능합니다.
+              </p>
+            </div>
+          </div>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col w-full mb-[8px] gap-[20px]"
+            role="form"
+            aria-label="기업 담당자 회원가입 폼"
+          >
             {/* 이메일 입력 필드 */}
             <Input
               {...emailReg}
@@ -200,25 +197,36 @@ export default function SuperAdminSignUpPage() {
               className={clsx(
                 "w-full h-[64px] mb-[24px] rounded-[2px] inline-flex justify-center items-center text-base cursor-pointer",
                 isValid && !isSubmitting ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
-                "font-bold"
+                "font-bold",
               )}
               disabled={isSubmitting || !isValid}
+              aria-describedby={!isValid ? "form-validation-message" : undefined}
+              aria-label={isSubmitting ? "회원가입 처리 중" : "회원가입 하기"}
             >
               {isSubmitting ? "처리 중..." : "가입하기"}
             </button>
           </form>
 
-          {/* 계정이 있으신가요 */}
-          <p className="text-primary-500 text-base/[20px] tracking-tight text-center w-full">
-            이미 계정이 있으신가요?
-            <Link href="/login">
-              <span className="text-primary-950 text-base/[20px] tracking-tight font-bold underline decoration-primary-950 underline-offset-2">
-                로그인
-              </span>
-            </Link>
-          </p>
-        </div>
-      </div>
+          {/* validation message for screen readers */}
+          {!isValid && (
+            <div id="form-validation-message" className="sr-only" aria-live="polite">
+              필수 입력 항목을 모두 채워주세요
+            </div>
+          )}
+
+          {/* login link */}
+          <nav aria-label="계정 관련 링크">
+            <p className="text-primary-500 text-base/[20px] tracking-tight text-center w-full">
+              이미 계정이 있으신가요?
+              <Link href="/login" aria-label="로그인 페이지로 이동">
+                <span className="text-primary-950 text-base/[20px] tracking-tight font-bold underline decoration-primary-950 underline-offset-2">
+                  로그인
+                </span>
+              </Link>
+            </p>
+          </nav>
+        </section>
+      </main>
     </>
   );
 }

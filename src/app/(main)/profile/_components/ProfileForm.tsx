@@ -48,7 +48,7 @@ export default function ProfileForm() {
 
   // 변경사항 확인
   const hasCompanyChanged = Boolean(
-    typedUser?.role === Role.SUPER_ADMIN && company?.trim() !== ((typedUser as any)?.company?.name || ""),
+    typedUser?.role === Role.SUPER_ADMIN && company?.trim() !== (typedUser?.company?.name || ""),
   );
   const hasPasswordChanged = Boolean(password && password.length > 0);
 
@@ -81,11 +81,7 @@ export default function ProfileForm() {
         if (hasCompanyChanged && !data.password) {
           return await updateCompany(user.id, data.company!.trim());
         } else if (data.password) {
-          return await updateSuper(
-            user.id,
-            data.company?.trim() || (typedUser as any)?.company?.name || "",
-            data.password,
-          );
+          return await updateSuper(user.id, data.company?.trim() || typedUser?.company?.name || "", data.password);
         }
       } else {
         if (data.password) {
@@ -131,7 +127,7 @@ export default function ProfileForm() {
   useEffect(() => {
     if (typedUser) {
       reset({
-        company: (typedUser as any)?.company?.name || "",
+        company: typedUser?.company?.name || "",
         password: "",
         confirmPassword: "",
       });
@@ -195,10 +191,11 @@ export default function ProfileForm() {
                 {/* 기업명 */}
                 <ProfileField
                   label="기업명"
+                  value={typedUser?.company?.name || ""}
                   {...register("company")}
                   isEditable={typedUser?.role === Role.SUPER_ADMIN}
                   role={typedUser?.role}
-                  type="input"
+                  type={typedUser?.role === Role.SUPER_ADMIN ? "input" : "display"}
                   error={errors.company?.message}
                 />
 
