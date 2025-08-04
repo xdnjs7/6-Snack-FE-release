@@ -45,6 +45,8 @@ export default function ProductRegistrationForm({
     initialData,
   });
 
+  const { formState } = form;
+
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       handleImageChange(e.target.files[0]);
@@ -133,10 +135,10 @@ export default function ProductRegistrationForm({
             className="w-full sm:w-[216px] h-[64px]"
           />
           <Button
-            type="black"
-            label={createProductMutation.isPending ? "등록 중..." : "등록하기"}
+            type={createProductMutation.isPending || !formState.isValid ? "grayDisabled" : "black"}
+            label="등록하기"
             onClick={onSubmit}
-            disabled={createProductMutation.isPending}
+            disabled={createProductMutation.isPending || !formState.isValid}
             className="w-full sm:w-[216px] h-[64px]"
           />
         </div>
