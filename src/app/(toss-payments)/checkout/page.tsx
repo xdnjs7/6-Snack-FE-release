@@ -1,0 +1,195 @@
+"use client";
+
+import React from "react";
+import { loadTossPayments, TossPaymentsWidgets } from "@tosspayments/tosspayments-sdk";
+import { useEffect, useState } from "react";
+import { useOrderStore } from "@/stores/orderStore";
+import { useAuth } from "@/providers/AuthProvider";
+import img_dog_error from "@/assets/images/img_dog_error.png";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import Button from "@/components/ui/Button";
+
+export default function CheckoutPage() {
+  const [amount, setAmount] = useState<{ currency: string; value: number }>({
+    currency: "KRW",
+    value: 0,
+  });
+  const [ready, setReady] = useState<boolean>(false);
+  const [widgets, setWidgets] = useState<TossPaymentsWidgets | null>(null);
+
+  const router = useRouter();
+  const { user } = useAuth();
+
+  // Zustand로 관리하고 있는 order 정보
+  const order = useOrderStore((state) => state.order);
+
+  console.log("order", order);
+
+  const handleClick = () => {
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/products");
+    }
+  };
+
+  if (!order) {
+    return (
+      <div className="flex flex-col h-screen justify-center items-center gap-[20px] -mb-[24px]">
+        <div className="flex flex-col gap-[16px] justify-center items-center">
+          <div className="relative w-[40vw] h-[30vh] max-w-[300px] aspect-[7/8]">
+            <Image src={img_dog_error} alt="로고" fill className="object-contain" />
+          </div>
+          <div className="text-center font-medium text-[16px]/[24px] sm:text-[20px]/[30px]">
+            유효하지 않은 주문 정보입니다.
+          </div>
+        </div>
+        <Button
+          type="black"
+          label="돌아가기"
+          onClick={handleClick}
+          className="font-semibold text-[16px]/[20px] tracking-tight w-full max-w-[230px] min-h-[56px] sm:max-w-[310px] sm:h-[64px]"
+        />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="flex h-screen justify-center items-center -mb-[24px]">로그인한 유저만 이용할 수 있습니다.</div>
+    );
+  }
+
+  const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+  const customerKey = user!.id;
+
+  useEffect(() => {
+    if (order) {
+      setAmount({ currency: "KRW", value: order.data.totalPrice + 3000 });
+    }
+  }, [order]);
+
+  useEffect(() => {
+    async function fetchPaymentWidgets() {
+      // ------  결제위젯 초기화 ------
+      const tossPayments = await loadTossPayments(clientKey);
+      // 회원 결제
+      const widgets = tossPayments.widgets({ customerKey });
+      // 비회원 결제
+      // const widgets = tossPayments.widgets({ customerKey: ANONYMOUS });
+
+      setWidgets(widgets);
+    }
+
+    fetchPaymentWidgets();
+  }, [clientKey, customerKey]);
+
+  useEffect(() => {
+    async function renderPaymentWidgets() {
+      if (widgets == null) {
+        return;
+      }
+      // ------ 주문의 결제 금액 설정 ------
+      await widgets.setAmount(amount);
+
+      await Promise.all([
+        // ------  결제 UI 렌더링 ------
+        widgets.renderPaymentMethods({
+          selector: "#payment-method",
+          variantKey: "DEFAULT",
+        }),
+        // ------  이용약관 UI 렌더링 ------
+        widgets.renderAgreement({
+          selector: "#agreement",
+          variantKey: "AGREEMENT",
+        }),
+      ]);
+
+      setReady(true);
+    }
+
+    renderPaymentWidgets();
+  }, [widgets]);
+
+  useEffect(() => {
+    if (widgets == null) {
+      return;
+    }
+
+    widgets.setAmount(amount);
+  }, [widgets, amount]);
+
+  return (
+    <div className="wrapper">
+      <div className="box_section">
+        {/* 결제 UI */}
+        <div id="payment-method" />
+        {/* 이용약관 UI */}
+        <div id="agreement" />
+        {/* 쿠폰 체크박스 */}
+        {ready ? (
+          <>
+            {/* <div>
+          <div className="px-[30px] pb-[10px] font-medium">
+            <label className="flex items-center gap-[6px]" htmlFor="coupon-box">
+              <input
+                className="w-4 h-4 cursor-pointer"
+                id="coupon-box"
+                type="checkbox"
+                aria-checked="true"
+                disabled={!ready}
+                onChange={(event) => {
+                  // ------  주문서의 결제 금액이 변경되었을 경우 결제 금액 업데이트 ------
+                  setAmount((prev) => ({
+                    ...prev,
+                    value: event.target.checked ? amount.value - 5_000 : amount.value + 5_000,
+                  }));
+                }}
+              />
+              <span> 5,000원 쿠폰 적용</span>
+            </label>
+          </div>
+        </div> */}
+
+            {/* 결제하기 버튼 */}
+            <div className="px-[30px]">
+              <button
+                className="button bg-blue-500 text-white w-full rounded-[12px] h-[56px] font-semibold cursor-pointer"
+                disabled={!ready}
+                onClick={async () => {
+                  try {
+                    if (!widgets) return;
+                    // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
+                    // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
+                    // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
+                    await widgets.requestPayment({
+                      orderId: order.data.id,
+                      orderName:
+                        order.data.receipts.length > 1
+                          ? `${order.data.receipts[0].productName} 외 ${order.data.receipts.length - 1}건`
+                          : order.data.receipts[0].productName,
+                      successUrl: window.location.origin + "/success",
+                      failUrl: window.location.origin + "/fail",
+                      customerEmail: user.email,
+                      customerName: user.name,
+                    });
+                  } catch (error) {
+                    // 에러 처리하기
+                    console.error(error);
+                  }
+                }}
+              >
+                결제하기
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="flex justify-center items-center -mb-[24px]">
+            <div className="size-[20px] border-[3px] border-t-[3px] border-blue-500 border-t-primary-100 rounded-full animate-spin"></div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
