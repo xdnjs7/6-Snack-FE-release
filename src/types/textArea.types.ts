@@ -3,6 +3,7 @@ export type TTextAreaProps = {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   className?: string;
+  id?: string;
 };
 
 export type TTextAreaVariant = "cart" | "modal";

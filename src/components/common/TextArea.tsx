@@ -8,7 +8,7 @@ type TextAreaProps = TTextAreaProps & {
   variant?: TTextAreaVariant;
 };
 
-const TextArea = ({ placeholder, value, onChange, variant = "cart", className }: TextAreaProps) => {
+const TextArea = ({ placeholder, value, onChange, variant = "cart", className, id }: TextAreaProps) => {
   const [hasText, setHasText] = useState(false);
 
   useEffect(() => {
