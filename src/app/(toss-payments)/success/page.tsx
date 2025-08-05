@@ -73,7 +73,7 @@ export default function SuccessPage() {
 
   if (isPending || !success) {
     return (
-      <div role="status" className="flex justify-center items-center h-screen -mb-[24px]">
+      <div role="status" aria-label="로딩 중" className="flex justify-center items-center h-screen -mb-[24px]">
         <div className="size-[20px] border-[3px] border-t-[3px] border-blue-500 border-t-primary-100 rounded-full animate-spin"></div>
       </div>
     );
@@ -86,7 +86,7 @@ export default function SuccessPage() {
    */
 
   return (
-    <main className="flex flex-col justify-center items-center h-screen gap-[28px] -mb-[24px]">
+    <div className="flex flex-col justify-center items-center h-screen gap-[28px] -mb-[24px]">
       <CheckIconSvg stroke="white" bgColor="#3182F6" className="w-15 h-15 cursor-default sm:w-30 sm:h-30" />
       <section className="flex flex-col w-full gap-[38px] text-center justify-center items-center">
         <h2 className="font-bold text-[22px]/[30px] sm:text-[30px]/[36px]">결제를 완료했어요</h2>
@@ -98,6 +98,6 @@ export default function SuccessPage() {
           닫기
         </button>
       </section>
-    </main>
+    </div>
   );
 }

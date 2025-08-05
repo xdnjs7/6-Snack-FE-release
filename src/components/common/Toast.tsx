@@ -33,6 +33,7 @@ const Toast = ({ text, budget, onClose, variant = "error", isVisible, className 
 
   return (
     <div
+      role="alert"
       className={twMerge(
         "fixed flex justify-between items-center max-w-[1200px] h-[64px] top-[76px] inset-x-6 mx-auto transition-all duration-500 px-4 py-4 text-[14px]/[22px] text-white tracking-tight bg-black/80 rounded shadow-[0px_10px_8px_0px_rgba(0,0,0,0.1)] backdrop-blur-[30px] font-bold sm:h-[80px] sm:top-[120px] sm:px-[40px] sm:text-[20px]/[25px] md:max-w-[1152px] md:px-[50px]",
         isVisible

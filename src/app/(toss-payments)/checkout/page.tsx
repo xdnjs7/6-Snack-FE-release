@@ -93,12 +93,12 @@ export default function CheckoutPage() {
 
   if (!order) {
     return (
-      <main className="flex flex-col h-screen justify-center items-center gap-[20px] -mb-[24px]">
+      <div className="flex flex-col h-screen justify-center items-center gap-[20px] -mb-[24px]">
         <section className="flex flex-col gap-[16px] justify-center items-center">
           <div className="relative w-[40vw] h-[30vh] max-w-[300px] aspect-[7/8]">
-            <Image src={img_dog_error} alt="로고" fill className="object-contain" />
+            <Image src={img_dog_error} alt="에러를 나타내는 강아지 이미지" fill className="object-contain" />
           </div>
-          <p className="text-center font-medium text-[16px]/[24px] sm:text-[20px]/[30px]">
+          <p role="alert" className="text-center font-medium text-[16px]/[24px] sm:text-[20px]/[30px]">
             유효하지 않은 주문 정보입니다.
           </p>
         </section>
@@ -108,23 +108,25 @@ export default function CheckoutPage() {
           onClick={handleClick}
           className="font-semibold text-[16px]/[20px] tracking-tight w-full max-w-[230px] min-h-[56px] sm:max-w-[310px] sm:h-[64px]"
         />
-      </main>
+      </div>
     );
   }
 
   if (!user) {
     return (
-      <main className="flex h-screen justify-center items-center -mb-[24px]">로그인한 유저만 이용할 수 있습니다.</main>
+      <p role="status" className="flex h-screen justify-center items-center -mb-[24px]">
+        로그인한 유저만 이용할 수 있습니다.
+      </p>
     );
   }
 
   return (
     <div className="wrapper">
-      <main className="box_section">
+      <div className="box_section">
         {/* 결제 UI */}
-        <section id="payment-method" />
+        <section aria-label="결제 수단 선택" id="payment-method" />
         {/* 이용약관 UI */}
-        <aside id="agreement" />
+        <aside aria-label="이용 약관" id="agreement" />
         {/* 쿠폰 체크박스 */}
         {ready ? (
           <>
@@ -151,7 +153,7 @@ export default function CheckoutPage() {
         </div> */}
 
             {/* 결제하기 버튼 */}
-            <section className="px-[30px]">
+            <div className="px-[30px]">
               <button
                 aria-label="결제하기"
                 className="button bg-blue-500 text-white w-full rounded-[12px] h-[56px] font-semibold cursor-pointer"
@@ -181,14 +183,14 @@ export default function CheckoutPage() {
               >
                 결제하기
               </button>
-            </section>
+            </div>
           </>
         ) : (
-          <div role="status" className="flex justify-center items-center -mb-[24px]">
+          <div role="status" aria-label="로딩 중" className="flex justify-center items-center -mb-[24px]">
             <div className="size-[20px] border-[3px] border-t-[3px] border-blue-500 border-t-primary-100 rounded-full animate-spin"></div>
           </div>
         )}
-      </main>
+      </div>
     </div>
   );
 }

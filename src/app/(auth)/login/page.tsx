@@ -60,15 +60,15 @@ export default function LoginPage() {
   return (
     <div className="flex justify-center">
       <div className="flex flex-col justify-center w-full max-w-[480px] pt-[48px] sm:max-w-[600px] sm:py-[160px]">
-        <div className="flex justify-center w-full h-[140px] py-[38.18px] px-[50.92px] sm:h-auto sm:pb-0">
+        <nav className="flex justify-center w-full h-[140px] py-[38.18px] px-[50.92px] sm:h-auto sm:pb-0">
           <Link href="/">
             <SnackIconSvg className="w-[225.16px] h-[63.64px] sm:w-[344px] sm:h-[97.3px]" />
           </Link>
-        </div>
-        <div className="flex flex-col justify-center max-w-[600px] sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.1)] sm:h-[400px] sm:py-[40px] sm:px-[60px]">
-          <p className="mb-[10px] font-bold text-[20px]/[25px] tracking-tight text-[#1f1f1f] sm:mb-[20px] sm:text-[24px]/[30px]">
+        </nav>
+        <section className="flex flex-col justify-center max-w-[600px] sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.1)] sm:h-[400px] sm:py-[40px] sm:px-[60px]">
+          <h2 className="mb-[10px] font-bold text-[20px]/[25px] tracking-tight text-[#1f1f1f] sm:mb-[20px] sm:text-[24px]/[30px]">
             로그인
-          </p>
+          </h2>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col justify-center items-center w-full gap-[30px]"
@@ -137,7 +137,8 @@ export default function LoginPage() {
                     />
                   </div>
 
-                  <div
+                  <button
+                    type="button"
                     onClick={handlePasswordVisible}
                     className={clsx(
                       hasPasswordValue ? "opacity-100" : "opacity-0",
@@ -145,7 +146,7 @@ export default function LoginPage() {
                     )}
                   >
                     {isPasswordVisible ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
-                  </div>
+                  </button>
                 </div>
 
                 <FormErrorMessage message={errors.password?.message} />
@@ -163,13 +164,13 @@ export default function LoginPage() {
             />
           </form>
 
-          <div className="flex justify-center items-center gap-[4px]">
+          <nav className="flex justify-center items-center gap-[4px]">
             <p className="font-normal text-[16px]/[20px] tracking-tight text-[#999999]">기업 담당자이신가요? </p>
             <Link href="/signup/super-admin">
               <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-950 underline">가입하기</p>
             </Link>
-          </div>
-        </div>
+          </nav>
+        </section>
       </div>
     </div>
   );

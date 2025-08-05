@@ -14,12 +14,15 @@ export default function FailPage() {
    */
 
   return (
-    <main className="flex flex-col justify-center items-center h-screen gap-[28px] -mb-[24px]">
+    <div className="flex flex-col justify-center items-center h-screen gap-[28px] -mb-[24px]">
       <ExclamationMarkIconSvg stroke="black" bgColor="#FFCA51" className="w-15 h-15 cursor-default sm:w-30 sm:h-30" />
       <section className="flex flex-col w-full gap-[38px] text-center justify-center items-center">
         <div className="flex flex-col gap-[8px]">
           <h2 className="font-bold text-[22px]/[30px] sm:text-[30px]/[36px]">결제를 실패했어요</h2>
-          <p className="font-medium text-[12px]/[14px] sm:text-[16px]/[20px] md:text-[20px]/[24px]">{`실패 사유 : ${searchParams.get("message")}`}</p>
+          <p
+            role="alert"
+            className="font-medium text-[12px]/[14px] sm:text-[16px]/[20px] md:text-[20px]/[24px]"
+          >{`실패 사유 : ${searchParams.get("message")}`}</p>
         </div>
         <button
           aria-label="장바구니로 이동"
@@ -29,6 +32,6 @@ export default function FailPage() {
           닫기
         </button>
       </section>
-    </main>
+    </div>
   );
 }
