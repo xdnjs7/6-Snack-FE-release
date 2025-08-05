@@ -10,12 +10,22 @@ export const productRegistrationSchema = z.object({
     .string()
     .min(1, "가격을 입력해주세요")
     .regex(/^\d*$/, "숫자만 입력해주세요")
-    .refine((val) => val === "" || parseInt(val, 10) > 0, "가격은 0보다 커야 합니다"),
+    .refine((val) => val === "" || parseInt(val, 10) > 0, "가격은 0보다 커야 합니다")
+    .refine((val) => val === "" || parseInt(val, 10) <= 1000000, "가격은 1,000,000원 이하여야 합니다"),
   productLink: z
     .string()
     .min(1, "제품 링크를 입력해주세요")
     .refine((val) => {
       if (val === "") return true;
+      // http:// 또는 https://로 시작하는지 확인
+      if (!val.startsWith("http://") && !val.startsWith("https://")) {
+        return false;
+      }
+      // // 이후 부분에 .이 포함되어 있는지 확인 (도메인 검증)
+      const afterProtocol = val.substring(val.indexOf("//") + 2);
+      if (!afterProtocol.includes(".")) {
+        return false;
+      }
       try {
         new URL(val);
         return true;
@@ -26,11 +36,15 @@ export const productRegistrationSchema = z.object({
   parentCategory: z.string().min(1, "대분류를 선택해주세요"),
   childrenCategory: z.string().min(1, "소분류를 선택해주세요"),
   imageFile: z
-    .instanceof(File, { message: "이미지를 업로드해주세요" })
-    .refine((file) => file.size <= 5 * 1024 * 1024, "파일 크기는 5MB 이하여야 합니다")
+    .union([
+      z.instanceof(File, { message: "이미지를 업로드해주세요" }),
+      z.null().refine(() => false, { message: "이미지를 업로드해주세요" }),
+    ])
+    .refine((file) => file && file.size > 0, "이미지를 업로드해주세요")
+    .refine((file) => file && file.size <= 5 * 1024 * 1024, "파일 크기는 5MB 이하여야 합니다")
     .refine(
-      (file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type),
-      "JPG, PNG, WEBP 형식만 지원됩니다",
+      (file) => file && ["image/jpeg", "image/png", "image/webp", "image/avif"].includes(file.type),
+      "JPG, PNG, WEBP, AVIF 형식만 지원됩니다",
     ),
 });
 
