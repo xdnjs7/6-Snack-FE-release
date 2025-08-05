@@ -56,7 +56,6 @@ export default function SuperAdminSignUpPage() {
 
   // register 결과 저장
   const emailReg = register("email");
-  const nameReg = register("name");
   const passwordReg = register("password");
   const passwordConfirmReg = register("passwordConfirm");
   const companyNameReg = register("companyName");
