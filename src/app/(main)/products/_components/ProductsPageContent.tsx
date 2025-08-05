@@ -95,11 +95,15 @@ export default function ProductsPageContent() {
   }, [searchParams, findCategoryPath, clearSelectedCategory]);
 
   return (
-    <div className="w-full flex items-start justify-center sm:gap-5 md:gap-10 md:mt-[80px]">
+    <main
+      className="w-full flex items-start justify-center sm:gap-5 md:gap-10 md:mt-[80px]"
+      role="main"
+      aria-label="상품 목록 페이지"
+    >
       {/* 카테고리 태블릿,데스크탑 */}
-      <div className="hidden sm:block">
+      <aside className="hidden sm:block" role="complementary" aria-label="카테고리 네비게이션">
         <SubCategoryItem categories={categories} />
-      </div>
+      </aside>
 
       <div className="flex flex-col sm:h-16 w-full sm:border-b sm:border-primary-100">
         {/* TODO: 모바일 전용 하위 카테고리 TabMenu - 선택된 카테고리가 있을 때만 표시 */}
@@ -107,59 +111,82 @@ export default function ProductsPageContent() {
 
         <div className="flex flex-col sm:flex-row sm:justify-between">
           {/* 모바일, 태블릿, 데스크탑에서 전부 보이는 상위/하위 카테고리 바 */}
+          <nav role="navigation" aria-label="카테고리 탐색">
+            <CategoryNavigation parentCategory={selectedCategory?.parent} childCategory={selectedCategory?.child} />
+          </nav>
 
-          <CategoryNavigation parentCategory={selectedCategory?.parent} childCategory={selectedCategory?.child} />
           {/* 정렬, 상품등록 버튼 wrapper */}
-          <div className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5 border-b border-primary-100 sm:border-0">
-            <Dropdown options={sortOptions.map((option) => option.label)} onChange={handleSortChange}/>
+          <div
+            className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5 border-b border-primary-100 sm:border-0"
+            role="toolbar"
+            aria-label="상품 정렬 및 등록 도구"
+          >
+            <Dropdown
+              options={sortOptions.map((option) => option.label)}
+              onChange={handleSortChange}
+              aria-label="상품 정렬 옵션"
+            />
             <Button
               type="black"
               label={
                 <div className="flex gap-[6px]">
-                  <PlusToggleIconSvg className="w-4 h-4 text-white" />
+                  <PlusToggleIconSvg className="w-4 h-4 text-white" aria-hidden="true" />
                   <p className="text-primary-50 text-sm/[17px] font-semibold">상품 등록</p>
                 </div>
               }
               onClick={handleProductRegistration}
               className="h-[44px] py-[10px] rounded"
+              aria-label="새 상품 등록하기"
             />
           </div>
         </div>
+
         {/* 상품 목록 */}
-        <div className="container mx-auto pt-[20px] sm:pt-[30px]">
+        <section className="container mx-auto pt-[20px] sm:pt-[30px]" aria-labelledby="products-section-title">
+          <h2 id="products-section-title" className="sr-only">
+            {selectedCategory?.child || selectedCategory?.parent || "전체"} 상품 목록
+          </h2>
+
           {isLoading ? (
-            <div className="flex justify-center items-center py-16">
+            <div className="flex justify-center items-center py-16" role="status" aria-live="polite">
               <div className="text-primary-500">로딩 중...</div>
             </div>
           ) : (
             <>
               {/* 상품 그리드 */}
-              <ProductGrid products={allProducts} currentCategoryId={selectedCategory?.id} />
+              <ProductGrid
+                products={allProducts}
+                currentCategoryId={selectedCategory?.id}
+                aria-label={`${allProducts.length}개의 상품이 있습니다`}
+              />
+
               {hasNextPage && (
-                <Button
-                  type="white"
-                  label={
-                    <div className="flex items-center justify-center gap-2 whitespace-nowrap flex-shrink-0">
-                      <p>더보기</p>
-                      <ArrowIconSvg direction="down" className="w-5 h-5 text-black" />
-                    </div>
-                  }
-                  onClick={handleLoadMore}
-                  className="w-full h-[44px] sm:h-[64px] px-6 py-4 text-sm/[17px] font-medium tracking-tight"
-                  disabled={isFetchingNextPage}
-                />
+                <div className="flex justify-center mt-8">
+                  <Button
+                    type="white"
+                    label={
+                      <div className="flex items-center justify-center gap-2 whitespace-nowrap flex-shrink-0">
+                        <p>더보기</p>
+                        <ArrowIconSvg direction="down" className="w-5 h-5 text-black" aria-hidden="true" />
+                      </div>
+                    }
+                    onClick={handleLoadMore}
+                    className="w-full h-[44px] sm:h-[64px] px-6 py-4 text-sm/[17px] font-medium tracking-tight"
+                    disabled={isFetchingNextPage}
+                    aria-label={isFetchingNextPage ? "더 많은 상품을 불러오는 중입니다" : "더 많은 상품 보기"}
+                  />
+                </div>
               )}
             </>
           )}
+
           {isError && (
-            <>
-              <div className="flex justify-center items-center py-16">
-                <div className="text-error-500">에러가 발생했습니다: {error.message}</div>
-              </div>
-            </>
+            <div className="flex justify-center items-center py-16" role="alert" aria-live="assertive">
+              <div className="text-error-500">에러가 발생했습니다: {error.message}</div>
+            </div>
           )}
-        </div>
+        </section>
       </div>
-    </div>
+    </main>
   );
 }
