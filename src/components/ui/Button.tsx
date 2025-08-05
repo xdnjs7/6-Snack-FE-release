@@ -66,7 +66,12 @@ export default function Button({ type, label = "label", onClick, className = "",
   );
 
   return (
-    <button className={twMerge(baseStyle, className)} disabled={isDisabled || disabled} onClick={onClick}>
+    <button
+      aria-live="polite"
+      className={twMerge(baseStyle, className)}
+      disabled={isDisabled || disabled}
+      onClick={onClick}
+    >
       {label}
     </button>
   );

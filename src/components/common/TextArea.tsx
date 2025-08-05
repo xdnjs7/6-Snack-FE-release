@@ -22,6 +22,7 @@ const TextArea = ({ placeholder, value, onChange, variant = "cart", className }:
 
   return (
     <textarea
+      id="textarea"
       placeholder={placeholder || "메시지를 입력해주세요."}
       value={value}
       onChange={onChange}
