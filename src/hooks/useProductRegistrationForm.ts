@@ -55,10 +55,7 @@ export const useProductRegistrationForm = ({
     }
   }, [initialData, setValue]);
 
-  // 초기에 이미지 필드 유효성 검사 트리거
-  useEffect(() => {
-    trigger("imageFile");
-  }, [trigger]);
+
 
   // 이미지 처리
   const handleImageChange = (file: File | null) => {
