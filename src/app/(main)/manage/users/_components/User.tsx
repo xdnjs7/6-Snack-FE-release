@@ -209,7 +209,7 @@ export default function User() {
       </nav>
 
       {/* 모바일 초대 버튼 */}
-      <footer className="w-full flex justify-center">
+      <div className="w-full flex justify-center">
         <Button
           type="black"
           label="회원 초대하기"
@@ -219,7 +219,7 @@ export default function User() {
           }}
           aria-label="새 회원 초대하기 (모바일)"
         />
-      </footer>
+      </div>
 
       <Toast
         text={toastMessage}
