@@ -16,11 +16,7 @@ export default function SuccessPage() {
   const amount = searchParams.get("amount");
   const paymentKey = searchParams.get("paymentKey");
 
-  const {
-    data: order,
-    isPending,
-    error,
-  } = useQuery({
+  const { data: order, isPending } = useQuery({
     queryKey: ["order", orderId],
     queryFn: () => fetchOrderDetail(orderId ?? ""),
     enabled: !!orderId,
@@ -73,11 +69,11 @@ export default function SuccessPage() {
     }
 
     confirm();
-  }, [order, amount, orderId, paymentKey]);
+  }, [order, amount, orderId, paymentKey, router]);
 
   if (isPending || !success) {
     return (
-      <div className="flex justify-center items-center h-screen -mb-[24px]">
+      <div role="status" className="flex justify-center items-center h-screen -mb-[24px]">
         <div className="size-[20px] border-[3px] border-t-[3px] border-blue-500 border-t-primary-100 rounded-full animate-spin"></div>
       </div>
     );
@@ -90,17 +86,18 @@ export default function SuccessPage() {
    */
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen gap-[28px] -mb-[24px]">
+    <main className="flex flex-col justify-center items-center h-screen gap-[28px] -mb-[24px]">
       <CheckIconSvg stroke="white" bgColor="#3182F6" className="w-15 h-15 cursor-default sm:w-30 sm:h-30" />
-      <div className="flex flex-col w-full gap-[38px] text-center justify-center items-center">
+      <section className="flex flex-col w-full gap-[38px] text-center justify-center items-center">
         <h2 className="font-bold text-[22px]/[30px] sm:text-[30px]/[36px]">결제를 완료했어요</h2>
         <button
+          role="구매 완료 페이지로 이동"
           onClick={() => router.push(`/order-confirmed/${order?.id}`)}
           className="outline-none bg-blue-500 text-white text-[18px]/[30px] w-full max-w-[285px] rounded-[12px] h-[56px] font-bold cursor-pointer sm:max-w-[360px] sm:h-[64px]"
         >
           닫기
         </button>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
