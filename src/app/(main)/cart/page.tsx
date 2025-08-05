@@ -11,11 +11,12 @@ import { useAuth } from "@/providers/AuthProvider";
 import { TGetCartItemsResponse } from "@/types/cart.types";
 import { useRouter } from "next/navigation";
 import Toast from "@/components/common/Toast";
-import { orderNow } from "@/lib/api/order.api";
-import { TOrderNowResponse } from "@/types/order.types";
+import { createOrder } from "@/lib/api/order.api";
+import { TOrderResponse } from "@/types/order.types";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import clsx from "clsx";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
+import { useOrderStore } from "@/stores/orderStore";
 
 export default function CartPage() {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
@@ -25,6 +26,8 @@ export default function CartPage() {
 
   const { user } = useAuth();
   const router = useRouter();
+  // Zustand로 Order 정보 저장
+  const setOrder = useOrderStore((state) => state.setOrder);
 
   const {
     data: cartItems,
@@ -35,19 +38,32 @@ export default function CartPage() {
     queryFn: () => getCartItems(),
   });
 
-  const { mutate: adminOrderNow } = useMutation<TOrderNowResponse, Error, number[]>({
-    mutationFn: (cartItemIds) => orderNow(cartItemIds),
-    onSuccess: (order) => router.push(`/cart/order-confirmed/${order.data.id}`),
+  const { mutate: orderRequest } = useMutation<TOrderResponse, Error, number[]>({
+    mutationFn: (cartItemIds) => createOrder({ cartItemIds }),
+    onSuccess: (order) => {
+      setOrder(order);
+
+      router.push("/checkout");
+    },
     onError: () => setIsDisabled(false),
   });
 
+  // budget 예외 처리
   const { currentMonthBudget = 0, currentMonthExpense = 0 } = cartItems?.budget ?? {};
+
+  // 장바구니 선택한 상품의 총 가격: number
   const selectedTotalPrice = cartItems?.cart
     .filter((item) => item.isChecked === true)
     .reduce((totalPrice, item) => totalPrice + item.product.price * item.quantity, 0);
+
+  // 구매 가능 여부: boolean
   const canPurchase =
     currentMonthBudget - currentMonthExpense - (selectedTotalPrice ? selectedTotalPrice + 3000 : 0) >= 0;
+
+  // 남은 예산: number
   const remainingBudget = cartItems?.budget ? currentMonthBudget - currentMonthExpense : 0;
+
+  // 장바구니 선택한 상품 IDs: number[]
   const checkedCartItemIds = cartItems?.cart.filter((item) => item.isChecked).map((item) => item.id) ?? [];
 
   // 타이머 언마운트 시 클린업
@@ -60,8 +76,8 @@ export default function CartPage() {
   }, []);
 
   const handleRequestOrder = () => {
-    // 아무 상품도 선택하지 않았을 때
-    if (checkedCartItemIds.length === 0) {
+    // 아무 상품도 선택하지 않았거나, 예산이 부족할 때
+    if (checkedCartItemIds.length === 0 || !canPurchase) {
       setIsToastVisible(true);
 
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -77,23 +93,9 @@ export default function CartPage() {
     // USER일 때
     if (user?.role === "USER") return router.push("/cart/order");
 
-    // 예산 부족할 때
-    if (!canPurchase) {
-      setIsToastVisible(true);
-
-      if (timerRef.current) clearTimeout(timerRef.current);
-
-      timerRef.current = setTimeout(() => {
-        setIsToastVisible(false);
-        timerRef.current = null;
-      }, 3000);
-
-      return;
-    }
-
-    // 즉시 구매 API
+    // Order 생성 API
     setIsDisabled(true);
-    adminOrderNow(checkedCartItemIds);
+    orderRequest(checkedCartItemIds);
   };
 
   if (error) {

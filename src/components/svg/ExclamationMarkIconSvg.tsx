@@ -2,20 +2,30 @@ import React from "react";
 
 type TExclamationMarkIconSvgProps = {
   className?: string;
+  bgColor?: string;
+  stroke?: string;
 };
-export default function ExclamationMarkIconSvg({ className = "" }: TExclamationMarkIconSvgProps) {
+export default function ExclamationMarkIconSvg({
+  className = "",
+  bgColor = "currentColor",
+  stroke = "transparent",
+}: TExclamationMarkIconSvgProps) {
   return (
     <svg
       width="24"
-      height="25"
-      viewBox="0 0 24 25"
+      height="24"
+      viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
+      {/* 바깥 원 */}
+      <circle cx="12" cy="12" r="12" fill={bgColor} />
+
+      {/* 느낌표 */}
       <path
-        d="M12 2.10352C17.5228 2.10352 22 6.58067 22 12.1035C22 17.6264 17.5228 22.1035 12 22.1035C6.47715 22.1035 2 17.6264 2 12.1035C2 6.58067 6.47715 2.10352 12 2.10352ZM10.8916 15.7305V17.9473H13.1094V15.7305H10.8916ZM10.9092 14.2598H13.0977L13.2832 6.25977H10.7168L10.9092 14.2598Z"
-        fill="currentColor"
+        d="M10.8916 15.7305V17.9473H13.1094V15.7305H10.8916ZM10.9092 14.2598H13.0977L13.2832 6.25977H10.7168L10.9092 14.2598Z"
+        fill={stroke}
       />
     </svg>
   );

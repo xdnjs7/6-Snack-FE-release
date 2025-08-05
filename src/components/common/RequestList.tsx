@@ -15,7 +15,7 @@ type TRequestListProps = {
 export default function RequestList({ orderRequests, onClickReject, onClickApprove }: TRequestListProps) {
   const router = useRouter();
 
-  const handleProductNameClick = (orderId: number, status: string) => {
+  const handleProductNameClick = (orderId: string, status: string) => {
     router.push(`/order-manage/${orderId}?status=${status}`);
   };
 
