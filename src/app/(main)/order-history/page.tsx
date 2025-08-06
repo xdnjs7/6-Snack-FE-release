@@ -209,7 +209,7 @@ const OrderHistoryPage = () => {
                     {item.item}
                   </button>
                     <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
-                      총 수량 4개
+                      총 수량 {item.totalQuantity || 0}개
                     </div>
                   </div>
                   <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
@@ -438,7 +438,7 @@ const OrderHistoryPage = () => {
                       {item.item}
                     </button>
                     <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
-                      총 수량 4개
+                      총 수량 {item.totalQuantity || 0}개
                     </div>
                   </div>
                   <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
@@ -707,7 +707,7 @@ const OrderHistoryPage = () => {
                       >
                         {item.item}
                       </button>
-                      <div className="justify-start text-zinc-500 text-sm font-normal font-['SUIT']">총 수량 4개</div>
+                      <div className="justify-start text-zinc-500 text-sm font-normal font-['SUIT']">총 수량 {item.totalQuantity || 0}개</div>
                     </div>
                     <div className="w-32 justify-start text-neutral-800 text-base font-normal font-['SUIT']">
                       {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
