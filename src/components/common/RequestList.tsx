@@ -154,7 +154,7 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
                   {formatDate(request.createdAt)}
                 </div>
                 <button
-                  className="font-normal text-[16px]/[20px] tracking-tight text-blue-600 underline w-[140px] md:w-[360px] truncate cursor-pointer hover:text-blue-800"
+                  className="font-normal flex text-[16px]/[20px] tracking-tight text-blue-600 underline w-[140px] md:w-[360px] truncate cursor-pointer hover:text-blue-800"
                   onClick={() => handleProductNameClick(request.id, request.status.toLowerCase())}
                   role="cell"
                   aria-label="상품 정보"
