@@ -361,7 +361,7 @@ const OrderHistoryPage = () => {
               </div>
             </div>
             <div
-              className="flex-1 min-w-0 pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-4 relative"
+              className="flex-1 min-w-0 self-stretch p-5 bg-neutral-100 rounded inline-flex flex-col justify-between items-start relative"
               onMouseEnter={() => setIsHoveredTablet(true)}
               onMouseLeave={() => setIsHoveredTablet(false)}
               onTouchStart={() => setIsHoveredTablet(true)}
