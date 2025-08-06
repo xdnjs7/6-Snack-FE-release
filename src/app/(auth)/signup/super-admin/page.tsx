@@ -11,6 +11,7 @@ import { superAdminSignUpApi } from "@/lib/api/superAdmin.api";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
 import { TToastVariant } from "@/types/toast.types";
+import DogSpinner from "@/components/common/DogSpinner";
 
 // 리액트 훅폼에 연결할 zod 스키마 정의
 const signUpSchema = z
@@ -44,6 +45,7 @@ export default function SuperAdminSignUpPage() {
   const [toastVisible, setToastVisible] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
   const [toastVariant, setToastVariant] = useState<TToastVariant>("success");
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const {
     register,
@@ -75,12 +77,13 @@ export default function SuperAdminSignUpPage() {
 
   // 회원가입 처리
   const onSubmit = async (data: TSignUpFormData) => {
+    setShowSpinner(true);
     try {
       await superAdminSignUpApi(data);
-      showToast("회원가입이 성공했습니다!", "success");
       router.push("/login");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
+      setShowSpinner(false);
       showToast("회원가입에 실패했습니다.", "error");
     }
   };
@@ -96,6 +99,12 @@ export default function SuperAdminSignUpPage() {
           onClose={() => setToastVisible(false)}
         />
       </div>
+      {/* DogSpinner - 회원가입 처리 중일 때만 노출 */}
+      {showSpinner && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <DogSpinner />
+        </div>
+      )}
 
       {/* main content */}
       <main className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[48px] sm:pt-[160px]" role="main" aria-labelledby="signup-heading">
