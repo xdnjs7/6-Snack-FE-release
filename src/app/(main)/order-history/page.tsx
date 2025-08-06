@@ -162,7 +162,7 @@ const OrderHistoryPage = () => {
                 {/* Mobile Hover Box */}
                 {isHoveredMobile && (
                   <BudgetHoverBox
-                    className="absolute w-72 left-1/2 transform -translate-x-1/2 top-36 z-50"
+                    className="absolute w-66 left-1/2 transform -translate-x-1/2 ml-[-116px] top-38 z-50"
                     budgetData={safeBudgetData}
                   />
                 )}
