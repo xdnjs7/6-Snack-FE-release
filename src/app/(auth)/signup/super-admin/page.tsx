@@ -11,6 +11,7 @@ import { superAdminSignUpApi } from "@/lib/api/superAdmin.api";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
 import { TToastVariant } from "@/types/toast.types";
+import DogSpinner from "@/components/common/DogSpinner";
 
 // 리액트 훅폼에 연결할 zod 스키마 정의
 const signUpSchema = z
@@ -20,7 +21,7 @@ const signUpSchema = z
     companyName: z
       .string()
       .min(1, "회사명을 입력해주세요.")
-      .regex(/^[가-힣a-zA-Z\d().,_\- ]+$/, "회사명에는 한글, 영문, 숫자, 괄호(), 온점(.), 반점(,), 대쉬(-), 언더바(_)만 사용할 수 있습니다."),
+      .regex(/^[가-힣a-zA-Z\d().,_\- ]+$/, "회사명에는 한글, 영문, 숫자, (, ), ., -, _만 사용할 수 있습니다."),
     bizNumber: z.string().regex(/^[0-9]{10}$/, "사업자 번호 10자리를 입력해주세요."),
     password: z
       .string("비밀번호를 입력해주세요.")
@@ -44,6 +45,7 @@ export default function SuperAdminSignUpPage() {
   const [toastVisible, setToastVisible] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
   const [toastVariant, setToastVariant] = useState<TToastVariant>("success");
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const {
     register,
@@ -75,12 +77,13 @@ export default function SuperAdminSignUpPage() {
 
   // 회원가입 처리
   const onSubmit = async (data: TSignUpFormData) => {
+    setShowSpinner(true);
     try {
       await superAdminSignUpApi(data);
-      showToast("회원가입이 성공했습니다!", "success");
       router.push("/login");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
+      setShowSpinner(false);
       showToast("회원가입에 실패했습니다.", "error");
     }
   };
@@ -96,6 +99,12 @@ export default function SuperAdminSignUpPage() {
           onClose={() => setToastVisible(false)}
         />
       </div>
+      {/* DogSpinner - 회원가입 처리 중일 때만 노출 */}
+      {showSpinner && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <DogSpinner />
+        </div>
+      )}
 
       {/* main content */}
       <main className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[48px] sm:pt-[160px]" role="main" aria-labelledby="signup-heading">
@@ -139,17 +148,27 @@ export default function SuperAdminSignUpPage() {
             {/* 이메일 입력 필드 */}
             <Input
               {...emailReg}
-              inputRef={emailReg.ref}
+              ref={emailReg.ref}
               type="email"
               label="이메일"
               placeholder="이메일을 입력해주세요."
               error={errors.email?.message}
             />
 
+            {/* 이름 입력 필드 추가 */}
+            <Input
+              {...register("name")}
+              ref={register("name").ref}
+              type="text"
+              label="이름"
+              placeholder="이름을 입력해주세요."
+              error={errors.name?.message}
+            />
+
             {/* 비밀번호 input wrapper*/}
             <Input
               {...passwordReg}
-              inputRef={passwordReg.ref}
+              ref={passwordReg.ref}
               type="password"
               label="비밀번호"
               placeholder="비밀번호를 입력해주세요."
@@ -160,7 +179,7 @@ export default function SuperAdminSignUpPage() {
             {/* 비밀번호 확인 input wrapper*/}
             <Input
               {...passwordConfirmReg}
-              inputRef={passwordConfirmReg.ref}
+              ref={passwordConfirmReg.ref}
               type="password"
               label="비밀번호 확인"
               placeholder="비밀번호를 한 번 더 입력해주세요."
@@ -171,7 +190,7 @@ export default function SuperAdminSignUpPage() {
             {/* 회사명 입력 필드 */}
             <Input
               {...companyNameReg}
-              inputRef={companyNameReg.ref}
+              ref={companyNameReg.ref}
               type="text"
               label="회사명"
               placeholder="회사명을 입력해주세요."
@@ -182,7 +201,7 @@ export default function SuperAdminSignUpPage() {
             {/* 사업자 번호 입력 필드 */}
             <Input
               {...bizNumberReg}
-              inputRef={bizNumberReg.ref}
+              ref={bizNumberReg.ref}
               type="text"
               label="사업자 번호"
               placeholder="사업자 번호를 입력해주세요."
@@ -214,7 +233,7 @@ export default function SuperAdminSignUpPage() {
           )}
 
           {/* login link */}
-          <nav aria-label="계정 관련 링크">
+          <nav aria-label="계정 관련 링크" className="w-full flex justify-center">
             <p className="text-primary-500 text-base/[20px] tracking-tight text-center w-full">
               이미 계정이 있으신가요?
               <Link href="/login" aria-label="로그인 페이지로 이동">
