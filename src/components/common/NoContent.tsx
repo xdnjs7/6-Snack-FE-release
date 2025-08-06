@@ -1,0 +1,46 @@
+import React from "react";
+import Image from "next/image";
+import ic_no_order from "@/assets/icons/ic_no_order.svg";
+
+type TNoContentProps = {
+  title: string;
+  subText1?: string;
+  subText2?: string;
+  buttonText: string;
+  onClick: () => void;
+};
+
+export default function NoContent({
+  title,
+  subText1 = "설명1",
+  subText2 = "설명2",
+  buttonText,
+  onClick,
+}: TNoContentProps) {
+  return (
+    <section className="flex flex-1 justify-center" role="status" aria-label="빈 상태">
+      <div className="sm:w-80 inline-flex flex-col justify-start items-center gap-7 pt-12 mt-[58px] sm:mt-[222px] md:mt-[191px]">
+        <div className="w-24 h-24 relative" role="img" aria-label="주문 내역 없음 아이콘">
+          <Image src={ic_no_order} alt="주문 내역 없음" fill className="object-contain" />
+        </div>
+        <div className="self-stretch flex flex-col justify-start items-center gap-12">
+          <div className="w-72 flex flex-col justify-start items-center gap-2.5">
+            <h2 className="self-stretch text-center text-neutral-800 text-2xl font-extrabold">{title}</h2>
+            <p className="self-stretch text-center text-neutral-700 text-base leading-relaxed">
+              {subText1}
+              <br />
+              {subText2}
+            </p>
+          </div>
+          <button
+            className="self-stretch h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center cursor-pointer"
+            onClick={onClick}
+            aria-label={buttonText}
+          >
+            <span className="text-white text-base font-bold">{buttonText}</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}

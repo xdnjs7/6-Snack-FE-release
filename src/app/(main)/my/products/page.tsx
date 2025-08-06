@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import Desktop from "@/components/common/Desktop";
 import Dropdown from "@/components/common/DropDown";
 import Pagination from "@/components/common/Pagination";
@@ -8,7 +9,9 @@ import { useDeviceType } from "@/hooks/useDeviceType";
 import { getMyProducts } from "@/lib/api/product.api";
 import { TMyProductsParams, TMyProductsResponse } from "@/types/product.types";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import NoContent from "@/components/common/NoContent";
+import { useRouter } from "next/navigation";
+import DogSpinner from "@/components/common/DogSpinner";
 
 export default function MyProductsPage() {
   const [params, setParams] = useState<TMyProductsParams>({
@@ -17,6 +20,7 @@ export default function MyProductsPage() {
     orderBy: "latest",
   });
   const { isMobile, isTablet, isDesktop } = useDeviceType();
+  const router = useRouter();
 
   const {
     data: products,
@@ -59,9 +63,17 @@ export default function MyProductsPage() {
       </div>
       <div className="mx-[-24px] outline-1 outline-[#e6e6e6] md:hidden"></div>
       {isPending ? (
-        <p role="status">로딩 중...</p>
+        <div className="flex justify-center items-center h-[80vh] md:h-[60vh]">
+          <DogSpinner />
+        </div>
       ) : !products?.items?.length ? (
-        <p role="status">등록된 상품이 없습니다.</p>
+        <NoContent
+          title="등록한 상품이 없어요"
+          subText1="구매 요청하고 싶은"
+          subText2="상품을 등록하세요"
+          buttonText="상품 리스트로 이동"
+          onClick={() => router.push("/products")}
+        />
       ) : (
         <>
           <Desktop>

@@ -51,7 +51,7 @@ export default function OrderManageModal({
       <main className="flex flex-col items-center p-[24px] pt-[20px] sm:p-0 sm:pt-[32px]">
         <div className="flex flex-col w-full max-w-[480px] gap-[32px] mb-[20px]">
           <section aria-label="요청자 정보">
-            <div className="flex justify-start items-center gap-[12px]">
+            <div className="flex justify-start items-center gap-[12px] mb-8">
               <div
                 className="flex justify-center items-center w-[32px] h-[32px] rounded-full py-[10px] px-[9.5px] bg-primary-50 font-medium text-[10px]/[12px] tracking-tight text-black"
                 role="img"
@@ -154,10 +154,10 @@ export default function OrderManageModal({
           </section>
 
           {type === "approve" && (
-            <section aria-label="예산 정보">
+            <section aria-label="예산 정보" className="w-full">
               <div className="w-full outline-1 outline-primary-100"></div>
 
-              <div className="flex justify-between items-center w-full">
+              <div className="flex justify-between items-center w-full pt-8">
                 <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-950 sm:text-[18px]/[22px]">
                   구매 후 예산 금액
                 </p>

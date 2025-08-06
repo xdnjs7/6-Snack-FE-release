@@ -18,6 +18,12 @@ import clsx from "clsx";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 import { useOrderStore } from "@/stores/orderStore";
 
+/**
+ * @De-cal
+ * TODO:
+ * 1. 결제 끝까지 완료 되고나서 invalid 해야 할거 같아서 일단 임시로 적어두기, 완성되면 success하고 invalid 시키기
+ */
+
 export default function CartPage() {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isToastVisible, setIsToastVisible] = useState<boolean>(false);
@@ -26,6 +32,9 @@ export default function CartPage() {
 
   const { user } = useAuth();
   const router = useRouter();
+  // 1. TODO
+  // const queryClient = useQueryClient();
+
   // Zustand로 Order 정보 저장
   const setOrder = useOrderStore((state) => state.setOrder);
 
@@ -43,6 +52,9 @@ export default function CartPage() {
     onSuccess: (order) => {
       setOrder(order);
 
+      // 1. TODO
+      // queryClient.invalidateQueries({ queryKey: ["adminOrders", "approved"] });
+      // queryClient.invalidateQueries({ queryKey: ["budgets"] });
       router.push("/checkout");
     },
     onError: () => setIsDisabled(false),
