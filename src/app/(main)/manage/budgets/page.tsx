@@ -67,6 +67,7 @@ function ManageBudgetsPage() {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budgets"] });
+      queryClient.invalidateQueries({ queryKey: ["orderDetail"] });
     },
   });
 
