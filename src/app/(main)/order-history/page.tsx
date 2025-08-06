@@ -25,10 +25,54 @@ const OrderHistoryPage = () => {
   // 공통 로직 훅 사용
   const { budgetData, currentItems, totalPages, currentPage, handlePageChange, setSortBy, formatNumber } =
     useOrderHistory();
-  const [isHovered, setIsHovered] = useState(false);
+
+  // 각 레이아웃별 호버 상태
+  const [isHoveredMobile, setIsHoveredMobile] = useState(false);
+  const [isHoveredTablet, setIsHoveredTablet] = useState(false);
+  const [isHoveredDesktop, setIsHoveredDesktop] = useState(false);
 
   // budgetData 타입 안전성을 위한 타입 가드
   const safeBudgetData = budgetData as TBudgetData | undefined;
+
+  // 호버 박스 컴포넌트
+  const BudgetHoverBox = ({
+    className = "",
+    budgetData
+  }: {
+    className?: string;
+    budgetData: TBudgetData | undefined;
+  }) => (
+    <div className={`p-6 bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 shadow-lg border-2 border-blue-400 ${className}`}>
+      <div className="inline-flex justify-start items-center gap-2">
+        <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
+          이번 달 남은 예산:
+        </div>
+        <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
+          {budgetData
+            ? formatNumber(budgetData.currentMonthBudget - budgetData.currentMonthExpense)
+            : "데이터 로딩 중..."}
+        </div>
+      </div>
+      <div className="inline-flex justify-start items-center gap-1">
+        <div className="justify-center text-white text-sm font-normal font-['SUIT']">지난 달 남은 예산:</div>
+        <div className="justify-center text-white text-sm font-normal font-['SUIT']">
+          {budgetData
+            ? formatNumber(budgetData.previousMonthBudget - budgetData.previousMonthExpense)
+            : "데이터 로딩 중..."}
+        </div>
+      </div>
+      <div className="justify-center text-white text-sm font-normal font-['SUIT']">
+        지난 달보다{" "}
+        {budgetData
+          ? formatPrice(Math.abs(budgetData.currentMonthExpense - budgetData.previousMonthExpense))
+          : "0"}
+        원{" "}
+        {budgetData && budgetData.currentMonthExpense - budgetData.previousMonthExpense > 0
+          ? "더 사용했어요"
+          : "덜 사용했어요"}
+      </div>
+    </div>
+  );
 
   // 상품명 클릭 시 상세 페이지로 이동하는 함수
   const handleProductClick = (orderId: string) => {
@@ -75,9 +119,11 @@ const OrderHistoryPage = () => {
                 </div>
               </div>
               <div
-                className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-3 overflow-hidden"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+                className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-3 relative"
+                onMouseEnter={() => setIsHoveredMobile(true)}
+                onMouseLeave={() => setIsHoveredMobile(false)}
+                onTouchStart={() => setIsHoveredMobile(true)}
+                onTouchEnd={() => setIsHoveredMobile(false)}
               >
                 <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
                   <div className="self-stretch justify-center text-neutral-800 text-base font-bold font-['SUIT']">
@@ -113,6 +159,13 @@ const OrderHistoryPage = () => {
                       : "0%"}
                   </div>
                 </div>
+                {/* Mobile Hover Box */}
+                {isHoveredMobile && (
+                  <BudgetHoverBox
+                    className="absolute w-72 left-1/2 transform -translate-x-1/2 top-36 z-50"
+                    budgetData={safeBudgetData}
+                  />
+                )}
               </div>
             </div>
             <div className="self-stretch h-40 p-5 bg-neutral-100 rounded flex flex-col justify-between items-start overflow-hidden">
@@ -143,38 +196,6 @@ const OrderHistoryPage = () => {
             </div>
 
             {/* Mobile Budget Details Box */}
-            {isHovered && (
-              <div className="w-70 p-6 left-[42%] transform -translate-x-1/2 top-36.5 absolute bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
-                <div className="inline-flex justify-start items-center gap-2">
-                  <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
-                    이번 달 남은 예산:
-                  </div>
-                  <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
-                    {safeBudgetData
-                      ? formatNumber(safeBudgetData.currentMonthBudget - safeBudgetData.currentMonthExpense)
-                      : "0원"}
-                  </div>
-                </div>
-                <div className="inline-flex justify-start items-center gap-1">
-                  <div className="justify-center text-white text-sm font-normal font-['SUIT']">지난 달 남은 예산:</div>
-                  <div className="justify-center text-white text-sm font-normal font-['SUIT']">
-                    {safeBudgetData
-                      ? formatNumber(safeBudgetData.previousMonthBudget - safeBudgetData.previousMonthExpense)
-                      : "0원"}
-                  </div>
-                </div>
-                <div className="justify-center text-white text-sm font-normal font-['SUIT']">
-                  지난 달보다{" "}
-                  {safeBudgetData
-                    ? formatPrice(Math.abs(safeBudgetData.currentMonthExpense - safeBudgetData.previousMonthExpense))
-                    : "0"}
-                  원{" "}
-                  {safeBudgetData && safeBudgetData.currentMonthExpense - safeBudgetData.previousMonthExpense > 0
-                    ? "더 사용했어요"
-                    : "덜 사용했어요"}
-                </div>
-              </div>
-            )}
           </div>
         </section>
         <section className="w-full flex flex-col gap-2 px-4" aria-labelledby="purchase-list-mobile" role="list">
@@ -340,9 +361,11 @@ const OrderHistoryPage = () => {
               </div>
             </div>
             <div
-              className="flex-1 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-4 overflow-hidden"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+              className="flex-1 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-4 relative"
+              onMouseEnter={() => setIsHoveredTablet(true)}
+              onMouseLeave={() => setIsHoveredTablet(false)}
+              onTouchStart={() => setIsHoveredTablet(true)}
+              onTouchEnd={() => setIsHoveredTablet(false)}
             >
               <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
                 <div className="self-stretch justify-center text-neutral-800 text-lg font-bold font-['SUIT']">
@@ -378,6 +401,13 @@ const OrderHistoryPage = () => {
                     : "0%"}
                 </div>
               </div>
+              {/* Tablet Hover Box */}
+              {isHoveredTablet && (
+                <BudgetHoverBox
+                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 z-50"
+                  budgetData={safeBudgetData}
+                />
+              )}
             </div>
             <div className="flex-1 self-stretch p-5 bg-neutral-100 rounded inline-flex flex-col justify-between items-start overflow-hidden">
               <div className="flex flex-col justify-start items-start gap-2.5">
@@ -576,9 +606,11 @@ const OrderHistoryPage = () => {
               </div>
             </div>
             <div
-              className="flex-1 pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 overflow-hidden"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+              className="flex-1 pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 relative"
+              onMouseEnter={() => setIsHoveredDesktop(true)}
+              onMouseLeave={() => setIsHoveredDesktop(false)}
+              onTouchStart={() => setIsHoveredDesktop(true)}
+              onTouchEnd={() => setIsHoveredDesktop(false)}
             >
               <div className="self-stretch inline-flex justify-between items-start">
                 <div className="flex justify-start items-center gap-3.5">
@@ -618,6 +650,13 @@ const OrderHistoryPage = () => {
                     : "0%"}
                 </div>
               </div>
+              {/* Desktop Hover Box */}
+              {isHoveredDesktop && (
+                <BudgetHoverBox
+                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-96 z-50"
+                  budgetData={safeBudgetData}
+                />
+              )}
             </div>
             <div className="flex-1 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-2 overflow-hidden">
               <div className="self-stretch inline-flex justify-between items-center">
