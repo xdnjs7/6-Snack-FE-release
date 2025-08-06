@@ -579,7 +579,7 @@ const OrderHistoryPage = () => {
           <h2 id="budget-section-desktop" className="sr-only">예산 현황</h2>
           {/* Desktop Budget Cards */}
           <div className="self-stretch inline-flex justify-start items-center gap-7 pb-10">
-            <div className="flex-1 min-w-0 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-2 relative">
+            <div className="flex-1 min-w-0 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-5 relative">
               <div className="self-stretch inline-flex justify-between items-start">
                 <div className="justify-center text-neutral-800 text-lg font-bold font-['SUIT']">이번 달 예산</div>
                 <div className="justify-center text-neutral-800 text-2xl font-extrabold font-['SUIT']">
@@ -607,8 +607,10 @@ const OrderHistoryPage = () => {
                     <div className="self-stretch justify-center text-neutral-800 text-lg font-bold font-['SUIT']">
                       이번 달 지출액
                     </div>
-                    <div className="justify-center text-neutral-800 text-2xl font-extrabold font-['SUIT']">
-                      {safeBudgetData ? formatNumber(safeBudgetData.currentMonthExpense) : "0원"}
+                    <div
+                      className="justify-center text-[16px] font-normal font-['SUIT'] leading-normal tracking-[-0.4px] text-[color:var(--gray-primary-600,#696969)]"
+                    >
+                      지난 달 지출액: {safeBudgetData ? formatNumber(safeBudgetData.previousMonthExpense) : "0원"}
                     </div>
                   </div>
                 </div>
@@ -632,12 +634,12 @@ const OrderHistoryPage = () => {
               {/* Desktop Hover Box */}
               {isHoveredDesktop && (
                 <BudgetHoverBox
-                  className="absolute top-32 left-1/2 transform -translate-x-1/2 mt-2 w-76 z-50 ml-[-30px]"
+                  className="absolute top-32 left-1/2 transform -translate-x-1/2 mt-2 w-72 z-50 ml-[-40px]"
                   budgetData={safeBudgetData}
                 />
               )}
             </div>
-            <div className="flex-1 min-w-0 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-2 relative">
+            <div className="flex-1 min-w-0 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-5 relative">
               <div className="self-stretch inline-flex justify-between items-center">
                 <div className="flex justify-start items-center gap-3.5">
                   <div className="inline-flex flex-col justify-start items-start gap-2">
