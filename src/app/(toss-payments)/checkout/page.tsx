@@ -24,8 +24,6 @@ export default function CheckoutPage() {
   // Zustand로 관리하고 있는 order 정보
   const order = useOrderStore((state) => state.order);
 
-  console.log("order", order);
-
   const handleClick = () => {
     if (window.history.length > 1) {
       router.back();
@@ -34,35 +32,8 @@ export default function CheckoutPage() {
     }
   };
 
-  if (!order) {
-    return (
-      <div className="flex flex-col h-screen justify-center items-center gap-[20px] -mb-[24px]">
-        <div className="flex flex-col gap-[16px] justify-center items-center">
-          <div className="relative w-[40vw] h-[30vh] max-w-[300px] aspect-[7/8]">
-            <Image src={img_dog_error} alt="로고" fill className="object-contain" />
-          </div>
-          <div className="text-center font-medium text-[16px]/[24px] sm:text-[20px]/[30px]">
-            유효하지 않은 주문 정보입니다.
-          </div>
-        </div>
-        <Button
-          type="black"
-          label="돌아가기"
-          onClick={handleClick}
-          className="font-semibold text-[16px]/[20px] tracking-tight w-full max-w-[230px] min-h-[56px] sm:max-w-[310px] sm:h-[64px]"
-        />
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="flex h-screen justify-center items-center -mb-[24px]">로그인한 유저만 이용할 수 있습니다.</div>
-    );
-  }
-
-  const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
-  const customerKey = user!.id;
+  const clientKey = process.env.CLIENT_KEY!;
+  const customerKey = user ? user!.id : "";
 
   useEffect(() => {
     if (order) {
@@ -110,7 +81,7 @@ export default function CheckoutPage() {
     }
 
     renderPaymentWidgets();
-  }, [widgets]);
+  }, [widgets, amount]);
 
   useEffect(() => {
     if (widgets == null) {
@@ -120,13 +91,42 @@ export default function CheckoutPage() {
     widgets.setAmount(amount);
   }, [widgets, amount]);
 
+  if (!order) {
+    return (
+      <div className="flex flex-col h-screen justify-center items-center gap-[20px] -mb-[24px]">
+        <section className="flex flex-col gap-[16px] justify-center items-center">
+          <div className="relative w-[40vw] h-[30vh] max-w-[300px] aspect-[7/8]">
+            <Image src={img_dog_error} alt="에러를 나타내는 강아지 이미지" fill className="object-contain" />
+          </div>
+          <p role="alert" className="text-center font-medium text-[16px]/[24px] sm:text-[20px]/[30px]">
+            유효하지 않은 주문 정보입니다.
+          </p>
+        </section>
+        <Button
+          type="black"
+          label="돌아가기"
+          onClick={handleClick}
+          className="font-semibold text-[16px]/[20px] tracking-tight w-full max-w-[230px] min-h-[56px] sm:max-w-[310px] sm:h-[64px]"
+        />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <p role="status" className="flex h-screen justify-center items-center -mb-[24px]">
+        로그인한 유저만 이용할 수 있습니다.
+      </p>
+    );
+  }
+
   return (
     <div className="wrapper">
       <div className="box_section">
         {/* 결제 UI */}
-        <div id="payment-method" />
+        <section aria-label="결제 수단 선택" id="payment-method" />
         {/* 이용약관 UI */}
-        <div id="agreement" />
+        <aside aria-label="이용 약관" id="agreement" />
         {/* 쿠폰 체크박스 */}
         {ready ? (
           <>
@@ -155,6 +155,7 @@ export default function CheckoutPage() {
             {/* 결제하기 버튼 */}
             <div className="px-[30px]">
               <button
+                aria-label="결제하기"
                 className="button bg-blue-500 text-white w-full rounded-[12px] h-[56px] font-semibold cursor-pointer"
                 disabled={!ready}
                 onClick={async () => {
@@ -185,7 +186,7 @@ export default function CheckoutPage() {
             </div>
           </>
         ) : (
-          <div className="flex justify-center items-center -mb-[24px]">
+          <div role="status" aria-label="로딩 중" className="flex justify-center items-center -mb-[24px]">
             <div className="size-[20px] border-[3px] border-t-[3px] border-blue-500 border-t-primary-100 rounded-full animate-spin"></div>
           </div>
         )}

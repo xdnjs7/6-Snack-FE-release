@@ -147,11 +147,15 @@ export default function InviteSignUpPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full mb-[30px] gap-[20px]">
           {/* 이메일 */}
           <div className="flex flex-col justify-between w-full h-[56px] py-2 px-1 border-b border-primary-200">
-            <label className="text-primary-500 text-xs/[15px] font-normal tracking-tight">이메일</label>
+            <label htmlFor="email" className="text-primary-500 text-xs/[15px] font-normal tracking-tight">
+              이메일
+            </label>
             <input
+              id="email"
               type="email"
               value={inviteInfo?.email || ""}
               readOnly
+              aria-readonly="true"
               className="outline-none text-base/[20px] tracking-tight text-primary-300"
             />
           </div>
@@ -165,6 +169,7 @@ export default function InviteSignUpPage() {
             >
               <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
                 <label
+                  htmlFor="password"
                   className={clsx(
                     "text-primary-500 text-xs/[15px] font-normal tracking-tight",
                     !passwordInput && "hidden",
@@ -173,9 +178,12 @@ export default function InviteSignUpPage() {
                   비밀번호
                 </label>
                 <input
+                  id="password"
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
                   placeholder="비밀번호를 입력하세요"
+                  aria-describedby={errors.password ? "password-error" : undefined}
+                  aria-invalid={!!errors.password}
                   className={clsx(
                     // 수정해야함!
                     showPassword ? "tracking-tight" : "tracking-[0.25em]",
@@ -187,6 +195,8 @@ export default function InviteSignUpPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
+                aria-pressed={showPassword}
                 className="absolute right-1 bottom-2"
               >
                 {showPassword ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
@@ -194,7 +204,9 @@ export default function InviteSignUpPage() {
             </div>
             {/* 에러 메세지 */}
             {errors.password && (
-              <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.password.message}</span>
+              <span id="password-error" className="text-error-500 text-sm/[17px] tracking-tight" role="alert">
+                {errors.password.message}
+              </span>
             )}
           </div>
 
@@ -203,6 +215,7 @@ export default function InviteSignUpPage() {
             <div className="relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b border-primary-600">
               <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
                 <label
+                  htmlFor="passwordConfirm"
                   className={clsx(
                     "text-primary-500 text-xs/[15px] font-normal tracking-tight",
                     !passwordConfirmInput && "hidden",
@@ -211,9 +224,12 @@ export default function InviteSignUpPage() {
                   비밀번호 확인
                 </label>
                 <input
+                  id="passwordConfirm"
                   type={showPasswordConfirm ? "text" : "password"}
                   {...register("passwordConfirm")}
                   placeholder="비밀번호를 다시 입력하세요"
+                  aria-describedby={errors.passwordConfirm ? "passwordConfirm-error" : undefined}
+                  aria-invalid={!!errors.passwordConfirm}
                   className={clsx(
                     // 수정해야함!
                     showPassword ? "text-[16px]/[20px]" : "text-[20px]/[20px]",
@@ -225,6 +241,8 @@ export default function InviteSignUpPage() {
               <button
                 type="button"
                 onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                aria-label={showPasswordConfirm ? "비밀번호 확인 숨기기" : "비밀번호 확인 보기"}
+                aria-pressed={showPasswordConfirm}
                 className="cursor-pointer absolute right-1 bottom-2"
               >
                 {showPasswordConfirm ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
@@ -232,14 +250,20 @@ export default function InviteSignUpPage() {
             </div>
             {/* 에러 메세지 */}
             {errors.passwordConfirm && (
-              <span className="text-error-500 text-sm/[17px] tracking-tight">{errors.passwordConfirm.message}</span>
+              <span id="passwordConfirm-error" className="text-error-500 text-sm/[17px] tracking-tight" role="alert">
+                {errors.passwordConfirm.message}
+              </span>
             )}
           </div>
         </form>
 
         {/* 전체 폼 에러 메시지 */}
         {errors.root && (
-          <div className="mb-4 p-3 bg-error-50 border border-error-200 rounded text-error-600 text-sm">
+          <div
+            className="mb-4 p-3 bg-error-50 border border-error-200 rounded text-error-600 text-sm"
+            role="alert"
+            aria-live="polite"
+          >
             {errors.root.message}
           </div>
         )}
@@ -252,7 +276,14 @@ export default function InviteSignUpPage() {
             isValid && !isSubmitting ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
           )}
           onClick={isValid && !isSubmitting ? handleSubmit(onSubmit) : undefined}
+          disabled={!isValid || isSubmitting}
+          aria-describedby={!isValid ? "form-validation-info" : undefined}
         />
+        {!isValid && (
+          <div id="form-validation-info" className="sr-only">
+            모든 필수 항목을 올바르게 입력해주세요.
+          </div>
+        )}
         <p className="text-primary-500 text-base/[20px] tracking-tight">
           이미 계정이 있으신가요?
           <Link href="/login">
