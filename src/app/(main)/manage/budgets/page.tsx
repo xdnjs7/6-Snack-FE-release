@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getBudgets, patchBudgets } from "@/lib/api/budgets.api";
 import BudgetFormUI from "./_components/BudgetFormUI";
+import DogSpinner from "@/components/common/DogSpinner";
 
 const budgetSchema = z.object({
   currentMonthBudget: z.string().optional(),
@@ -22,6 +23,7 @@ interface BudgetResponse {
 
 function ManageBudgetsPage() {
   const queryClient = useQueryClient();
+  const [showSubmitSpinner, setShowSubmitSpinner] = useState(false);
 
   // 예산 데이터 패칭
   const { data, isLoading: isQueryLoading } = useQuery<BudgetResponse>({
@@ -65,8 +67,15 @@ function ManageBudgetsPage() {
         currentMonthBudget: Number(formData.currentMonthBudget) || 0,
         monthlyBudget: Number(formData.nextMonthBudget) || 0,
       }),
+    onMutate: () => {
+      setShowSubmitSpinner(true);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budgets"] });
+      setShowSubmitSpinner(false);
+    },
+    onError: () => {
+      setShowSubmitSpinner(false);
     },
   });
 
@@ -75,8 +84,26 @@ function ManageBudgetsPage() {
     setValue(field, value);
   };
 
+  // 초기 데이터 로딩 중일 때 스피너 표시
+  if (isQueryLoading) {
+    return (
+      <div className="flex flex-1 flex-col justify-center items-center" role="main">
+        <DogSpinner />
+        <p className="mt-4 text-neutral-600 text-sm font-['SUIT']">예산 정보를 불러오는 중...</p>
+      </div>
+    );
+  }
+
   return (
-    <main className="flex flex-1 flex-col justify-center" role="main" aria-labelledby="budget-management-heading">
+    <main className="flex flex-1 flex-col justify-center relative" role="main" aria-labelledby="budget-management-heading">
+      {/* 제출 중 오버레이 스피너 */}
+      {showSubmitSpinner && (
+        <div className="absolute inset-0 bg-white bg-opacity-75 flex flex-col justify-center items-center z-10">
+          <DogSpinner />
+          <p className="mt-4 text-neutral-600 text-sm font-['SUIT']">예산을 저장하는 중...</p>
+        </div>
+      )}
+
       <header className="sr-only">
         <h1 id="budget-management-heading">예산 관리</h1>
       </header>
