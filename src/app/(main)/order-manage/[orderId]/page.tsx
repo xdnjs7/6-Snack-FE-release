@@ -19,11 +19,16 @@ export default function OrderManageDetailPage() {
   const router = useRouter();
   const orderId: string = params.orderId as string;
 
+  const { data: orderRequest, isLoading, error } = useOrderDetail(orderId);
+  const updateOrderMutation = useOrderStatusUpdate();
+  const { openModal } = useModal();
+
   const [isItemsExpanded, setIsItemsExpanded] = useState<boolean>(true);
   const [toastConfig, setToastConfig] = useState<{
     isVisible: boolean;
     text: string;
     variant: "success" | "error";
+    budget?: number;
   }>({
     isVisible: false,
     text: "",
@@ -31,6 +36,16 @@ export default function OrderManageDetailPage() {
   });
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const calculatedTotal: number =
+    orderRequest?.products?.reduce((sum: number, item) => sum + item.price * item.quantity, 0) || 0;
+  const shippingFee: number = 3000;
+  const finalTotal: number = calculatedTotal + shippingFee;
+
+  const currentMonthBudget = orderRequest?.budget?.currentMonthBudget || 0;
+  const currentMonthExpense = orderRequest?.budget?.currentMonthExpense || 0;
+  const remainingBudget = currentMonthBudget - currentMonthExpense;
+  const budgetAfterPurchase = remainingBudget - finalTotal;
 
   // 타이머 언마운트 시 클린업
   useEffect(() => {
@@ -41,19 +56,19 @@ export default function OrderManageDetailPage() {
     };
   }, []);
 
-  // React Query 훅 불러오기
-  // 주문 상세 조회
-  const { data: orderRequest, isLoading, error } = useOrderDetail(orderId);
-  // 주문 상태 승인/거절
-  const updateOrderMutation = useOrderStatusUpdate();
-  const { openModal } = useModal();
+  useEffect(() => {
+    // 데이터가 로딩되었고, 예산이 부족할 때만 토스트 표시
+    if (!isLoading && budgetAfterPurchase < 0 && remainingBudget !== undefined) {
+      showToast("예산이 부족합니다.", "error", remainingBudget);
+    }
+  }, [budgetAfterPurchase, remainingBudget, isLoading]);
 
-  // 토스트 함수
-  const showToast = (text: string, variant: "success" | "error" = "success") => {
+  const showToast = (text: string, variant: "success" | "error" = "success", budget?: number) => {
     setToastConfig({
       isVisible: true,
       text,
       variant,
+      budget,
     });
 
     // 기존 타이머가 있다면 클리어
@@ -143,23 +158,18 @@ export default function OrderManageDetailPage() {
     );
   }
 
-  const calculatedTotal: number =
-    orderRequest.products?.reduce((sum: number, item) => sum + item.price * item.quantity, 0) || 0;
-  const shippingFee: number = 3000;
-  const finalTotal: number = calculatedTotal + shippingFee;
-
-  // 예산 관련 변수들
-  const currentMonthBudget = orderRequest.budget.currentMonthBudget || 0;
-  const currentMonthExpense = orderRequest.budget.currentMonthExpense || 0;
-  const remainingBudget = currentMonthBudget - currentMonthExpense;
-  const budgetAfterPurchase = remainingBudget - finalTotal;
-
   return (
     <div className="min-h-screen bg-white">
-      <Toast text={toastConfig.text} variant={toastConfig.variant} isVisible={toastConfig.isVisible} />
+      <Toast
+        text={toastConfig.text}
+        variant={toastConfig.variant}
+        isVisible={toastConfig.isVisible}
+        budget={toastConfig.budget}
+        onClose={() => setToastConfig((prev) => ({ ...prev, isVisible: false }))}
+      />
       {/* Main Content */}
       <main
-        className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-4 sm:pt-6 md:pt-8 flex flex-col justify-start items-start gap-5 sm:gap-6 md:gap-7"
+        className="w-full max-w-7xl mx-auto pt-[30px] flex flex-col justify-start items-start gap-[23px]"
         role="main"
       >
         <header>
