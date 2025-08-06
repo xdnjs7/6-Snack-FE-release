@@ -209,7 +209,7 @@ const OrderHistoryPage = () => {
                     {item.item}
                   </button>
                     <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
-                      총수량 4개
+                      총 수량 4개
                     </div>
                   </div>
                   <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
@@ -438,7 +438,7 @@ const OrderHistoryPage = () => {
                       {item.item}
                     </button>
                     <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
-                      총수량 4개
+                      총 수량 4개
                     </div>
                   </div>
                   <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
