@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import Mobile from "./Mobile";
 import Button from "../ui/Button";
@@ -47,7 +47,7 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
             </tr>
           </thead>
           <tbody>
-            {orderRequests.map((request, index) => (
+            {orderRequests.map((request) => (
               <tr key={request.id} className="h-24 border-b border-neutral-200 md:px-[40px]">
                 <td className="font-normal text-[16px]/[20px] tracking-tight text-primary-950 w-[100px] md:w-[142px] md:px-[40px]">
                   {formatDate(request.createdAt)}
@@ -100,7 +100,7 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
 
       {/* 모바일 뷰 */}
       <div className="sm:hidden" role="list" aria-label="주문 요청 목록 (모바일)">
-        {orderRequests.map((request, index) => (
+        {orderRequests.map((request) => (
           <article key={request.id} className="border-b-[1px] border-primary-100" role="listitem">
             <Mobile>
               <div className="flex flex-col min-w-[327px] h-[144px] gap-[20px] my-[24px]">
