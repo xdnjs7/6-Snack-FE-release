@@ -195,63 +195,66 @@ export default function OrderManageDetailPage() {
               총 {orderRequest.products?.length || 0}개
             </div>
             <ArrowIconSvg
-              direction={isItemsExpanded ? "down" : "right"}
+              direction={isItemsExpanded ? "up" : "down"}
               className="w-5 h-5 text-primary-950"
               aria-hidden="true"
             />
           </button>
           {/* 아이템 리스트  */}
-          {/* mb 20px gap */}
-          {/* sm:shadow-[0px_0px_10px_0px_rgba(0,0,0,0.12)] */}
-          <div id="items-content" aria-hidden={!isItemsExpanded}>
+          <div
+            id="items-content"
+            aria-hidden={!isItemsExpanded}
+            className="w-full rounded-sm sm:shadow-[0px_0px_10px_0px_rgba(0,0,0,0.12)]"
+          >
             {isItemsExpanded && (
-              <div className="px-3 sm:px-4 md:px-5 pt-3 sm:pt-4 md:pt-5 pb-5 sm:pb-6 md:pb-7 rounded-sm ">
-                {/* Items List */}
-                <div
-                  className="self-stretch flex flex-col justify-start items-start"
-                  role="list"
-                  aria-label="주문 상품 목록"
-                >
-                  {orderRequest.products?.map((item) => (
-                    <div
-                      key={item.id}
-                      className="self-stretch py-3 sm:py-4 md:py-5 md:pr-5 border-b border-neutral-200 inline-flex justify-between items-center"
-                      role="listitem"
-                    >
-                      <div className="flex justify-start items-center gap-3 sm:gap-4 md:gap-5">
-                        <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-36 lg:h-36 bg-[--color-white] shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
-                          {typeof item.imageUrl === "string" && (
-                            <div className="w-7 h-12 sm:w-10 sm:h-16 md:w-14 md:h-24 relative">
-                              <Image
-                                src={item.imageUrl}
-                                alt={`${item.productName} 상품 이미지`}
-                                fill
-                                className="object-contain"
-                                sizes="(max-width: 640px) 28px, (max-width: 768px) 40px, (max-width: 1024px) 56px, 144px"
-                              />
-                            </div>
-                          )}
+              <div className="flex flex-col gap-[20px]" role="list" aria-label="주문 상품 목록">
+                {orderRequest.products?.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex w-full items-center gap-3 border-b pb-[20px] border-primary-100"
+                    role="listitem"
+                  >
+                    {/* 상품이미지 */}
+                    <div className="w-[72px] h-[72px] bg-primary-50 rounded-xs sm:bg-white flex justify-center items-center flex-shrink-0">
+                      {typeof item.imageUrl === "string" && (
+                        <div className="relative w-[75%] h-[75%]">
+                          <Image
+                            src={item.imageUrl}
+                            alt={`${item.productName} 상품 이미지`}
+                            fill
+                            className="object-contain"
+                          />
                         </div>
-                        <div className="inline-flex flex-col justify-center items-start gap-3 sm:gap-5 md:gap-7">
-                          <div className="flex flex-col justify-center items-start gap-1.5 sm:gap-2 md:gap-2.5">
-                            <h3 className="text-center justify-center text-[--color-primary-800] text-xs sm:text-sm md:text-base font-medium">
-                              {item.productName}
-                            </h3>
-                            <div className="justify-start text-[--color-primary-800] text-xs sm:text-sm md:text-base font-bold">
-                              {formatPrice(item.price)}원
-                            </div>
-                          </div>
-                          <div className="justify-center text-gray-500 text-xs sm:text-sm md:text-base font-bold">
-                            수량 {item.quantity}개
-                          </div>
+                      )}
+                    </div>
+                    {/* 아이템이름, 가격, 수량 */}
+                    <div className="flex flex-col w-full justify-center items-start gap-[12px]">
+                      {/* 이름+가격 */}
+                      <div className="flex flex-col justify-center items-start gap-1">
+                        <h3 className="text-primary-950 text-sm/[17px] tracking-tight sm:text-base/[20px] sm:font-medium">
+                          {item.productName}
+                        </h3>
+                        <div className="text-primary-950 text-sm/[17px] tracking-tight sm:text-base/[20px] font-bold">
+                          {formatPrice(item.price)}원
                         </div>
                       </div>
-                      <div className="text-center justify-center text-gray-700 text-sm sm:text-base md:text-lg lg:text-xl font-extrabold leading-loose">
-                        {formatPrice(item.price * item.quantity)}원
+
+                      {/* 모바일:수량+가격 */}
+                      <div className="flex w-full items-center justify-between">
+                        <div className=" text-primary-500 text-[13px]/[16px] sm:text-base/[20px] tracking-tight font-bold">
+                          수량 {item.quantity}개
+                        </div>
+                        <div className="sm:hidden text-center  text-primary-700 text-base/[20px] tracking-tight font-extrabold">
+                          {formatPrice(item.price * item.quantity)}원
+                        </div>
                       </div>
                     </div>
-                  ))}
-                </div>
+                    {/* 가격 */}
+                    <div className="hidden sm:block text-center  text-primary-700 text-xl/[32px] tracking-tight font-extrabold">
+                      {formatPrice(item.price * item.quantity)}원
+                    </div>
+                  </div>
+                ))}
 
                 {/* Order Amount Info */}
                 <div className="self-stretch flex flex-col gap-2 sm:gap-3" role="region" aria-label="주문 금액 정보">
