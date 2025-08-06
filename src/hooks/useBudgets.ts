@@ -9,6 +9,5 @@ export const useBudgets = () => {
   return useQuery({
     queryKey: ['budgets', companyId],
     queryFn: () => getBudgets(),
-    staleTime: 1000 * 60,
   });
 };
