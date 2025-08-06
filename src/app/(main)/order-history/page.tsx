@@ -8,7 +8,6 @@ import { formatPrice } from "@/lib/utils/formatPrice.util";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import DogSpinner from "@/components/common/DogSpinner";
 
 // Budget 데이터 타입 정의
 type TBudgetData = {
@@ -20,28 +19,67 @@ type TBudgetData = {
   previousYearTotalExpense: number;
 };
 
+// 상품명에서 "외 N건" 패턴을 추출해 총 상품 종류 개수 반환
+const getProductTypeCount = (productName?: string) => {
+  if (!productName) return 1;
+  const match = productName.match(/외 (\d+)건/);
+  return match ? Number(match[1]) + 1 : 1;
+};
+
 const OrderHistoryPage = () => {
   const router = useRouter();
 
   // 공통 로직 훅 사용
-  const {
-    budgetData,
-    budgetLoading,
-    purchaseListLoading,
-    currentItems,
-    totalPages,
-    currentPage,
-    handlePageChange,
-    setSortBy,
-    formatNumber
-  } = useOrderHistory();
-  const [isHovered, setIsHovered] = useState(false);
+  const { budgetData, currentItems, totalPages, currentPage, handlePageChange, setSortBy, formatNumber } =
+    useOrderHistory();
+
+  // 각 레이아웃별 호버 상태
+  const [isHoveredMobile, setIsHoveredMobile] = useState(false);
+  const [isHoveredTablet, setIsHoveredTablet] = useState(false);
+  const [isHoveredDesktop, setIsHoveredDesktop] = useState(false);
 
   // budgetData 타입 안전성을 위한 타입 가드
   const safeBudgetData = budgetData as TBudgetData | undefined;
 
-  // 로딩 상태 체크
-  const isLoading = budgetLoading || purchaseListLoading;
+  // 호버 박스 컴포넌트
+  const BudgetHoverBox = ({
+    className = "",
+    budgetData
+  }: {
+    className?: string;
+    budgetData: TBudgetData | undefined;
+  }) => (
+    <div className={`p-6 bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 shadow-lg border-2 border-blue-400 ${className}`}>
+      <div className="inline-flex justify-start items-center gap-2">
+        <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
+          이번 달 남은 예산:
+        </div>
+        <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
+          {budgetData
+            ? formatNumber(budgetData.currentMonthBudget - budgetData.currentMonthExpense)
+            : "데이터 로딩 중..."}
+        </div>
+      </div>
+      <div className="inline-flex justify-start items-center gap-1">
+        <div className="justify-center text-white text-sm font-normal font-['SUIT']">지난 달 남은 예산:</div>
+        <div className="justify-center text-white text-sm font-normal font-['SUIT']">
+          {budgetData
+            ? formatNumber(budgetData.previousMonthBudget - budgetData.previousMonthExpense)
+            : "데이터 로딩 중..."}
+        </div>
+      </div>
+      <div className="justify-center text-white text-sm font-normal font-['SUIT']">
+        지난 달보다{" "}
+        {budgetData
+          ? formatPrice(Math.abs(budgetData.currentMonthExpense - budgetData.previousMonthExpense))
+          : "0"}
+        원{" "}
+        {budgetData && budgetData.currentMonthExpense - budgetData.previousMonthExpense > 0
+          ? "더 사용했어요"
+          : "덜 사용했어요"}
+      </div>
+    </div>
+  );
 
   // 상품명 클릭 시 상세 페이지로 이동하는 함수
   const handleProductClick = (orderId: string) => {
@@ -50,21 +88,16 @@ const OrderHistoryPage = () => {
     }
   };
 
-  // 로딩 중일 때 스피너 표시
-  if (isLoading) {
-    return (
-      <div className="min-h-screen w-full flex flex-col justify-center items-center bg-white">
-        <DogSpinner />
-        <p className="mt-4 text-neutral-600 text-sm font-['SUIT']">데이터를 불러오는 중...</p>
-      </div>
-    );
-  }
+  // 게이지 퍼센트 계산 공통 변수
+  const percent = safeBudgetData && safeBudgetData.currentMonthBudget > 0
+    ? Math.round((safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100)
+    : 0;
 
   return (
     <>
       {/* Mobile Layout */}
       <main className="min-h-screen w-full max-w-sm mx-auto relative bg-white overflow-hidden sm:hidden" aria-label="구매 내역 모바일 화면">
-        <header className="self-stretch flex justify-between items-center px-4 pt-4" role="banner">
+        <header className="self-stretch flex justify-between items-center px-4 pt-6 pb-6" role="banner">
           <h1 className="text-neutral-800 text-lg font-bold font-['SUIT'] flex-shrink-0">구매 내역 확인</h1>
           <nav aria-label="정렬 옵션" className="flex-shrink-0">
             <div className="relative custom-sort-dropdown w-auto" role="region">
@@ -79,7 +112,7 @@ const OrderHistoryPage = () => {
             </div>
           </nav>
         </header>
-        <section className="w-full flex flex-col gap-4 px-4" aria-labelledby="budget-section-mobile">
+        <section className="w-full flex flex-col gap-4 px-4 pb-2" aria-labelledby="budget-section-mobile">
           <h2 id="budget-section-mobile" className="sr-only">예산 현황</h2>
           {/* 예산 카드 */}
           <div className="self-stretch relative flex flex-col justify-center items-start gap-4">
@@ -98,9 +131,11 @@ const OrderHistoryPage = () => {
                 </div>
               </div>
               <div
-                className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-3 overflow-hidden"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+                className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-3 relative"
+                onMouseEnter={() => setIsHoveredMobile(true)}
+                onMouseLeave={() => setIsHoveredMobile(false)}
+                onTouchStart={() => setIsHoveredMobile(true)}
+                onTouchEnd={() => setIsHoveredMobile(false)}
               >
                 <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
                   <div className="self-stretch justify-center text-neutral-800 text-base font-bold font-['SUIT']">
@@ -116,18 +151,8 @@ const OrderHistoryPage = () => {
                 <div className="self-stretch inline-flex justify-left items-center gap-1">
                   <div className="w-20 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
                     <div
-                      className="h-1.5 bg-blue-500 rounded-md"
-                      style={{
-                        width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                          ? Math.max(
-                            1,
-                            Math.round(
-                              (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
-                            ),
-                          )
-                          : 0
-                          }%`,
-                      }}
+                      className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-blue-500'}`}
+                      style={{ width: `${Math.max(1, percent)}%` }}
                     />
                   </div>
                   <div className="justify-center text-neutral-800 text-xs font-normal font-['SUIT']">
@@ -136,6 +161,13 @@ const OrderHistoryPage = () => {
                       : "0%"}
                   </div>
                 </div>
+                {/* Mobile Hover Box */}
+                {isHoveredMobile && (
+                  <BudgetHoverBox
+                    className="absolute w-69 left-1/2 transform -translate-x-1/2 ml-[-120px] top-37 z-50"
+                    budgetData={safeBudgetData}
+                  />
+                )}
               </div>
             </div>
             <div className="self-stretch h-40 p-5 bg-neutral-100 rounded flex flex-col justify-between items-start overflow-hidden">
@@ -166,38 +198,6 @@ const OrderHistoryPage = () => {
             </div>
 
             {/* Mobile Budget Details Box */}
-            {isHovered && (
-              <div className="w-70 p-6 left-[42%] transform -translate-x-1/2 top-36.5 absolute bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 overflow-hidden">
-                <div className="inline-flex justify-start items-center gap-2">
-                  <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
-                    이번 달 남은 예산:
-                  </div>
-                  <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
-                    {safeBudgetData
-                      ? formatNumber(safeBudgetData.currentMonthBudget - safeBudgetData.currentMonthExpense)
-                      : "0원"}
-                  </div>
-                </div>
-                <div className="inline-flex justify-start items-center gap-1">
-                  <div className="justify-center text-white text-sm font-normal font-['SUIT']">지난 달 남은 예산:</div>
-                  <div className="justify-center text-white text-sm font-normal font-['SUIT']">
-                    {safeBudgetData
-                      ? formatNumber(safeBudgetData.previousMonthBudget - safeBudgetData.previousMonthExpense)
-                      : "0원"}
-                  </div>
-                </div>
-                <div className="justify-center text-white text-sm font-normal font-['SUIT']">
-                  지난 달보다{" "}
-                  {safeBudgetData
-                    ? formatPrice(Math.abs(safeBudgetData.currentMonthExpense - safeBudgetData.previousMonthExpense))
-                    : "0"}
-                  원{" "}
-                  {safeBudgetData && safeBudgetData.currentMonthExpense - safeBudgetData.previousMonthExpense > 0
-                    ? "더 사용했어요"
-                    : "덜 사용했어요"}
-                </div>
-              </div>
-            )}
           </div>
         </section>
         <section className="w-full flex flex-col gap-2 px-4" aria-labelledby="purchase-list-mobile" role="list">
@@ -215,9 +215,9 @@ const OrderHistoryPage = () => {
                   >
                     {item.item}
                   </button>
-                    <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
-                      총수량 4개
-                    </div>
+                  </div>
+                  <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
+                    총 수량 {getProductTypeCount(item.productName)}개
                   </div>
                   <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
                     {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
@@ -328,7 +328,7 @@ const OrderHistoryPage = () => {
 
       {/* Tablet Layout */}
       <main className="min-h-screen w-full max-w-3xl mx-auto relative bg-white overflow-hidden hidden sm:block md:hidden" aria-label="구매 내역 태블릿 화면">
-        <header className="self-stretch flex justify-between items-center pt-8 px-8" role="banner">
+        <header className="self-stretch flex justify-between items-center pt-8 px-8 pb-6" role="banner">
           <h1 className="text-neutral-800 text-lg font-bold font-['SUIT'] flex-shrink-0">구매 내역 확인</h1>
           <nav aria-label="정렬 옵션" className="flex-shrink-0">
             <div className="relative custom-sort-dropdown w-auto" role="region">
@@ -347,7 +347,7 @@ const OrderHistoryPage = () => {
           <h2 id="budget-section-tablet" className="sr-only">예산 현황</h2>
           {/* Tablet Budget Cards */}
           <div className="self-stretch pb-5 inline-flex justify-start items-center gap-5">
-            <div className="flex-1 self-stretch p-5 bg-neutral-100 rounded inline-flex flex-col justify-between items-start overflow-hidden">
+            <div className="flex-1 min-w-0 self-stretch p-5 bg-neutral-100 rounded inline-flex flex-col justify-between items-start overflow-hidden">
               <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
                 <div className="self-stretch justify-center text-neutral-800 text-lg font-bold font-['SUIT']">
                   이번 달 예산
@@ -363,9 +363,11 @@ const OrderHistoryPage = () => {
               </div>
             </div>
             <div
-              className="flex-1 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-4 overflow-hidden"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+              className="flex-1 min-w-0 self-stretch p-5 bg-neutral-100 rounded inline-flex flex-col justify-between items-start relative"
+              onMouseEnter={() => setIsHoveredTablet(true)}
+              onMouseLeave={() => setIsHoveredTablet(false)}
+              onTouchStart={() => setIsHoveredTablet(true)}
+              onTouchEnd={() => setIsHoveredTablet(false)}
             >
               <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
                 <div className="self-stretch justify-center text-neutral-800 text-lg font-bold font-['SUIT']">
@@ -381,18 +383,8 @@ const OrderHistoryPage = () => {
               <div className="self-stretch inline-flex justify-left items-center gap-2.5">
                 <div className="w-36 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
                   <div
-                    className="h-1.5 bg-blue-500 rounded-md"
-                    style={{
-                      width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                        ? Math.max(
-                          1,
-                          Math.round(
-                            (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
-                          ),
-                        )
-                        : 0
-                        }%`,
-                    }}
+                    className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-blue-500'}`}
+                    style={{ width: `${Math.max(1, percent)}%` }}
                   />
                 </div>
                 <div className="justify-center text-neutral-800 text-sm font-normal font-['SUIT']">
@@ -401,8 +393,15 @@ const OrderHistoryPage = () => {
                     : "0%"}
                 </div>
               </div>
+              {/* Tablet Hover Box */}
+              {isHoveredTablet && (
+                <BudgetHoverBox
+                  className="absolute top-35 left-1/2 transform -translate-x-1/2 ml-[52px] mt-2 w-72 z-50"
+                  budgetData={safeBudgetData}
+                />
+              )}
             </div>
-            <div className="flex-1 self-stretch p-5 bg-neutral-100 rounded inline-flex flex-col justify-between items-start overflow-hidden">
+            <div className="flex-1 min-w-0 self-stretch p-5 bg-neutral-100 rounded inline-flex flex-col justify-between items-start overflow-hidden">
               <div className="flex flex-col justify-start items-start gap-2.5">
                 <div className="inline-flex justify-start items-center gap-3.5">
                   <div className="inline-flex flex-col justify-start items-start gap-2">
@@ -445,9 +444,6 @@ const OrderHistoryPage = () => {
                     >
                       {item.item}
                     </button>
-                    <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
-                      총수량 4개
-                    </div>
                   </div>
                   <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
                     {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
@@ -564,7 +560,7 @@ const OrderHistoryPage = () => {
 
       {/* Desktop Layout */}
       <main className="min-h-screen w-full relative bg-white overflow-hidden hidden md:block" aria-label="구매 내역 데스크탑 화면">
-        <header className="self-stretch flex justify-between items-center pt-10 px-10" role="banner">
+        <header className="self-stretch flex justify-between items-center pt-10 px-10 pb-8" role="banner">
           <h1 className="text-neutral-800 text-lg font-bold font-['SUIT'] flex-shrink-0">구매 내역 확인</h1>
           <nav aria-label="정렬 옵션" className="flex-shrink-0">
             <div className="relative custom-sort-dropdown w-auto" role="region">
@@ -582,8 +578,8 @@ const OrderHistoryPage = () => {
         <section className="w-full flex flex-col gap-7 px-10" aria-labelledby="budget-section-desktop">
           <h2 id="budget-section-desktop" className="sr-only">예산 현황</h2>
           {/* Desktop Budget Cards */}
-          <div className="self-stretch inline-flex justify-start items-center gap-7">
-            <div className="flex-1 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-2 overflow-hidden">
+          <div className="self-stretch inline-flex justify-start items-center gap-7 pb-10">
+            <div className="flex-1 min-w-0 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-5 relative">
               <div className="self-stretch inline-flex justify-between items-start">
                 <div className="justify-center text-neutral-800 text-lg font-bold font-['SUIT']">이번 달 예산</div>
                 <div className="justify-center text-neutral-800 text-2xl font-extrabold font-['SUIT']">
@@ -599,9 +595,11 @@ const OrderHistoryPage = () => {
               </div>
             </div>
             <div
-              className="flex-1 pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 overflow-hidden"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+              className="flex-1 min-w-0 pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 relative"
+              onMouseEnter={() => setIsHoveredDesktop(true)}
+              onMouseLeave={() => setIsHoveredDesktop(false)}
+              onTouchStart={() => setIsHoveredDesktop(true)}
+              onTouchEnd={() => setIsHoveredDesktop(false)}
             >
               <div className="self-stretch inline-flex justify-between items-start">
                 <div className="flex justify-start items-center gap-3.5">
@@ -609,8 +607,10 @@ const OrderHistoryPage = () => {
                     <div className="self-stretch justify-center text-neutral-800 text-lg font-bold font-['SUIT']">
                       이번 달 지출액
                     </div>
-                    <div className="justify-center text-neutral-800 text-2xl font-extrabold font-['SUIT']">
-                      {safeBudgetData ? formatNumber(safeBudgetData.currentMonthExpense) : "0원"}
+                    <div
+                      className="justify-center text-[16px] font-normal font-['SUIT'] leading-normal tracking-[-0.4px] text-[color:var(--gray-primary-600,#696969)]"
+                    >
+                      지난 달 지출액: {safeBudgetData ? formatNumber(safeBudgetData.previousMonthExpense) : "0원"}
                     </div>
                   </div>
                 </div>
@@ -621,18 +621,8 @@ const OrderHistoryPage = () => {
               <div className="self-stretch inline-flex justify-left items-center gap-2.5">
                 <div className="w-90 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
                   <div
-                    className="h-1.5 bg-blue-500 rounded-md"
-                    style={{
-                      width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                        ? Math.max(
-                          1,
-                          Math.round(
-                            (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
-                          ),
-                        )
-                        : 0
-                        }%`,
-                    }}
+                    className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-blue-500'}`}
+                    style={{ width: `${Math.max(1, percent)}%` }}
                   />
                 </div>
                 <div className="justify-center text-neutral-800 text-sm font-normal font-['SUIT']">
@@ -641,8 +631,15 @@ const OrderHistoryPage = () => {
                     : "0%"}
                 </div>
               </div>
+              {/* Desktop Hover Box */}
+              {isHoveredDesktop && (
+                <BudgetHoverBox
+                  className="absolute top-32 left-1/2 transform -translate-x-1/2 mt-2 w-72 z-50 ml-[-40px]"
+                  budgetData={safeBudgetData}
+                />
+              )}
             </div>
-            <div className="flex-1 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-2 overflow-hidden">
+            <div className="flex-1 min-w-0 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-5 relative">
               <div className="self-stretch inline-flex justify-between items-center">
                 <div className="flex justify-start items-center gap-3.5">
                   <div className="inline-flex flex-col justify-start items-start gap-2">
@@ -716,7 +713,7 @@ const OrderHistoryPage = () => {
                       >
                         {item.item}
                       </button>
-                      <div className="justify-start text-zinc-500 text-sm font-normal font-['SUIT']">총 수량 4개</div>
+                      <div className="justify-start text-zinc-500 text-sm font-normal font-['SUIT']">총 수량 {getProductTypeCount(item.productName)}개</div>
                     </div>
                     <div className="w-32 justify-start text-neutral-800 text-base font-normal font-['SUIT']">
                       {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
