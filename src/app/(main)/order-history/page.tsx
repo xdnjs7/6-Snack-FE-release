@@ -41,7 +41,7 @@ const OrderHistoryPage = () => {
     <>
       {/* Mobile Layout */}
       <main className="min-h-screen w-full max-w-sm mx-auto relative bg-white overflow-hidden sm:hidden" aria-label="구매 내역 모바일 화면">
-        <header className="self-stretch flex justify-between items-center px-4 pt-4" role="banner">
+        <header className="self-stretch flex justify-between items-center px-4 pt-6 pb-6" role="banner">
           <h1 className="text-neutral-800 text-lg font-bold font-['SUIT'] flex-shrink-0">구매 내역 확인</h1>
           <nav aria-label="정렬 옵션" className="flex-shrink-0">
             <div className="relative custom-sort-dropdown w-auto" role="region">
@@ -56,7 +56,7 @@ const OrderHistoryPage = () => {
             </div>
           </nav>
         </header>
-        <section className="w-full flex flex-col gap-4 px-4" aria-labelledby="budget-section-mobile">
+        <section className="w-full flex flex-col gap-4 px-4 pb-2" aria-labelledby="budget-section-mobile">
           <h2 id="budget-section-mobile" className="sr-only">예산 현황</h2>
           {/* 예산 카드 */}
           <div className="self-stretch relative flex flex-col justify-center items-start gap-4">
@@ -305,7 +305,7 @@ const OrderHistoryPage = () => {
 
       {/* Tablet Layout */}
       <main className="min-h-screen w-full max-w-3xl mx-auto relative bg-white overflow-hidden hidden sm:block md:hidden" aria-label="구매 내역 태블릿 화면">
-        <header className="self-stretch flex justify-between items-center pt-8 px-8" role="banner">
+        <header className="self-stretch flex justify-between items-center pt-8 px-8 pb-6" role="banner">
           <h1 className="text-neutral-800 text-lg font-bold font-['SUIT'] flex-shrink-0">구매 내역 확인</h1>
           <nav aria-label="정렬 옵션" className="flex-shrink-0">
             <div className="relative custom-sort-dropdown w-auto" role="region">
@@ -541,7 +541,7 @@ const OrderHistoryPage = () => {
 
       {/* Desktop Layout */}
       <main className="min-h-screen w-full relative bg-white overflow-hidden hidden md:block" aria-label="구매 내역 데스크탑 화면">
-        <header className="self-stretch flex justify-between items-center pt-10 px-10" role="banner">
+        <header className="self-stretch flex justify-between items-center pt-10 px-10 pb-8" role="banner">
           <h1 className="text-neutral-800 text-lg font-bold font-['SUIT'] flex-shrink-0">구매 내역 확인</h1>
           <nav aria-label="정렬 옵션" className="flex-shrink-0">
             <div className="relative custom-sort-dropdown w-auto" role="region">
@@ -559,7 +559,7 @@ const OrderHistoryPage = () => {
         <section className="w-full flex flex-col gap-7 px-10" aria-labelledby="budget-section-desktop">
           <h2 id="budget-section-desktop" className="sr-only">예산 현황</h2>
           {/* Desktop Budget Cards */}
-          <div className="self-stretch inline-flex justify-start items-center gap-7">
+          <div className="self-stretch inline-flex justify-start items-center gap-7 pb-10">
             <div className="flex-1 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-2 overflow-hidden">
               <div className="self-stretch inline-flex justify-between items-start">
                 <div className="justify-center text-neutral-800 text-lg font-bold font-['SUIT']">이번 달 예산</div>
