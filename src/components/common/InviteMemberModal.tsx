@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
 import { TInviteMemberModalProps, TUserRole } from "@/types/inviteMemberModal.types";
 import { useModal } from "@/providers/ModalProvider";
@@ -6,6 +6,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUserRole } from "@/lib/api/superAdmin.api";
 import Button from "@/components/ui/Button";
 import Input from "@/components/common/Input";
+import Toast from "@/components/common/Toast";
+import { TToastVariant } from "@/types/toast.types";
 
 const roleLabels: Record<TUserRole, string> = {
   USER: "유저",
@@ -25,6 +27,34 @@ export default function InviteMemberModal({
   const [selectedRole, setSelectedRole] = useState<TUserRole>(defaultValues?.role ?? "USER");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
+  // Toast 상태
+  const [toastVisible, setToastVisible] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>("");
+  const [toastVariant, setToastVariant] = useState<TToastVariant>("success");
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Toast 표시 함수
+  const showToast = (message: string, variant: TToastVariant) => {
+    // 기존 타이머가 있다면 클리어
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    setToastMessage(message);
+    setToastVariant(variant);
+    setToastVisible(true);
+    timerRef.current = setTimeout(() => setToastVisible(false), 3000);
+  };
+
+  // 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
   // 권한 수정 mutation
   const updateRoleMutation = useMutation({
     mutationFn: ({ userId, role }: { userId: string; role: TUserRole }) => updateUserRole(userId, role),
@@ -35,14 +65,14 @@ export default function InviteMemberModal({
     },
     onError: (error) => {
       const errorMessage = error instanceof Error ? error.message : "권한 수정 중 오류 발생";
-      alert(errorMessage);
+      showToast(errorMessage, "error");
     },
   });
 
   const handleSubmit = async () => {
     if (mode === "edit") {
       if (!defaultValues) {
-        alert("defaultValues가 없습니다.");
+        showToast("defaultValues가 없습니다.", "error");
         return;
       }
 
@@ -52,7 +82,7 @@ export default function InviteMemberModal({
       });
     } else {
       if (!name || !email) {
-        alert("이름과 이메일을 모두 입력해주세요.");
+        showToast("이름과 이메일을 모두 입력해주세요.", "error");
         return;
       }
 
@@ -151,6 +181,13 @@ export default function InviteMemberModal({
           </div>
         </div>
       </div>
+
+      <Toast
+        text={toastMessage}
+        variant={toastVariant}
+        isVisible={toastVisible}
+        onClose={() => setToastVisible(false)}
+      />
     </>
   );
 }

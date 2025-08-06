@@ -110,28 +110,41 @@ export default function Order() {
     }
   }, [visibleCount, currentPaginationPage]);
 
+  // 키보드 접근성을 위한 핸들러
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+    }
+  };
+
   if (error) {
     return (
-      <div className="pt-[30px] w-full relative">
-        <div className="text-center py-12 text-red-600">주문 데이터를 불러오는데 실패했습니다.</div>
-      </div>
+      <section className="pt-[30px] w-full relative" role="region" aria-label="주문 관리">
+        <div className="text-center py-12 text-red-600" role="alert" aria-live="polite">
+          주문 데이터를 불러오는데 실패했습니다.
+        </div>
+      </section>
     );
   }
 
   return (
-    <div className="pt-[30px] w-full relative">
-      <div className="w-full flex justify-between items-center gap-3 pb-3">
-        <div className="text-black text-base font-bold">구매 요청 관리</div>
-        <Dropdown
-          onChange={(selected) => setOrderBy(orderByMap[selected] || orderByMap["최신순"])}
-          options={["최신순", "낮은 가격순", "높은 가격순"]}
-        />
-      </div>
+    <section className="pt-[30px] w-full relative" role="region" aria-label="주문 관리">
+      <header className="w-full flex justify-between items-center gap-3 pb-3">
+        <h1 className="text-black text-base font-bold">구매 요청 관리</h1>
+        <div role="group" aria-label="정렬 옵션">
+          <Dropdown
+            onChange={(selected) => setOrderBy(orderByMap[selected] || orderByMap["최신순"])}
+            options={["최신순", "낮은 가격순", "높은 가격순"]}
+            aria-label="주문 목록 정렬"
+          />
+        </div>
+      </header>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col" role="main" aria-live="polite" aria-busy={isLoading}>
         {isLoading ? (
-          <div className="flex justify-center items-center py-12">
+          <div className="flex justify-center items-center py-12" role="status" aria-label="로딩 중">
             <DogSpinner />
+            <span className="sr-only">주문 목록을 불러오는 중입니다.</span>
           </div>
         ) : orderRequests.length > 0 ? (
           <>
@@ -162,39 +175,43 @@ export default function Order() {
                 );
               }}
             />
-            <Pagination
-              className="mt-[20px] sm:mt-10"
-              currentPage={currentPaginationPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPaginationPage}
-            />
+            <nav className="mt-[20px] sm:mt-10" role="navigation" aria-label="페이지 네비게이션">
+              <Pagination
+                className="mt-[20px] sm:mt-10"
+                currentPage={currentPaginationPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPaginationPage}
+              />
+            </nav>
           </>
         ) : (
-          <div className="flex flex-1 justify-center min-h-screen">
+          <section className="flex flex-1 justify-center min-h-screen" role="status" aria-label="빈 상태">
             <div className="sm:w-80 inline-flex flex-col justify-start items-center gap-7 py-12 mt-[142px] sm:mt-[222px] md:mt-[191px]">
-              <div className="w-24 h-24 relative">
+              <div className="w-24 h-24 relative" role="img" aria-label="주문 내역 없음 아이콘">
                 <Image src={icNoOrder} alt="주문 내역 없음" fill className="object-contain" />
               </div>
               <div className="self-stretch flex flex-col justify-start items-center gap-12">
                 <div className="w-72 flex flex-col justify-start items-center gap-2.5">
-                  <div className="self-stretch text-center text-neutral-800 text-2xl font-extrabold">
+                  <h2 className="self-stretch text-center text-neutral-800 text-2xl font-extrabold">
                     요청 내역이 없어요
-                  </div>
-                  <div className="self-stretch text-center text-neutral-700 text-base leading-relaxed">
+                  </h2>
+                  <p className="self-stretch text-center text-neutral-700 text-base leading-relaxed">
                     상품 리스트를 둘러보고
                     <br />
                     상품을 담아보세요
-                  </div>
+                  </p>
                 </div>
                 <button
                   className="self-stretch h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center"
                   onClick={() => {}}
+                  onKeyDown={handleKeyDown}
+                  aria-label="상품 리스트 페이지로 이동"
                 >
-                  <div className="text-white text-base font-bold">상품 리스트로 이동</div>
+                  <span className="text-white text-base font-bold">상품 리스트로 이동</span>
                 </button>
               </div>
             </div>
-          </div>
+          </section>
         )}
       </div>
 
@@ -204,7 +221,9 @@ export default function Order() {
         variant={toastVariant}
         isVisible={toastVisible}
         onClose={() => setToastVisible(false)}
+        aria-live="polite"
+        aria-atomic="true"
       />
-    </div>
+    </section>
   );
 }

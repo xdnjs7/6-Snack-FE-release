@@ -17,7 +17,9 @@ export default function ProfilePasswordSection({
   confirmPasswordError,
 }: TProfilePasswordSectionProps) {
   return (
-    <>
+    <fieldset aria-label="비밀번호 변경" className="space-y-4">
+      <legend className="sr-only">비밀번호 변경</legend>
+
       {/* 비밀번호 */}
       <Input
         label="비밀번호(선택)"
@@ -27,6 +29,8 @@ export default function ProfilePasswordSection({
         id="password"
         autoComplete="new-password"
         placeholder="새로운 비밀번호를 입력하세요(선택)"
+        aria-describedby={passwordError ? "password-error" : undefined}
+        aria-invalid={passwordError ? "true" : "false"}
         {...passwordRegister}
       />
 
@@ -39,8 +43,10 @@ export default function ProfilePasswordSection({
         id="confirmPassword"
         autoComplete="new-password"
         placeholder="비밀번호를 한번 더 입력해주세요"
+        aria-describedby={confirmPasswordError ? "confirm-password-error" : undefined}
+        aria-invalid={confirmPasswordError ? "true" : "false"}
         {...confirmPasswordRegister}
       />
-    </>
+    </fieldset>
   );
 }

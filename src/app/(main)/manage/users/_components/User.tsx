@@ -128,9 +128,9 @@ export default function User() {
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center sm:mt-15 md:mt-[21px]">
-        <div className="mt-[20px] pb-3 self-stretch text-lg font-bold sm:mt-0 sm:text-2xl">회원 관리</div>
+    <main aria-label="회원 관리 페이지">
+      <header className="flex justify-between items-center sm:mt-15 md:mt-[21px]">
+        <h1 className="mt-[20px] pb-3 self-stretch text-lg font-bold sm:mt-0 sm:text-2xl">회원 관리</h1>
         <Button
           type="black"
           label="회원 초대하기"
@@ -138,51 +138,86 @@ export default function User() {
           onClick={() => {
             openModal(<InviteMemberModal onSubmit={handleInviteUser} />);
           }}
+          aria-label="새 회원 초대하기"
         />
-      </div>
+      </header>
 
       <Suspense>
         <SearchBar />
       </Suspense>
 
-      <div className="w-full mt-10 self-stretch p-5 border-t border-b border-neutral-200 hidden sm:flex justify-start items-center gap-8">
-        <div className="px-14 flex justify-start items-center mr-2">
-          <div className="justify-center text-primary-500 text-base font-bold">이름</div>
+      <section aria-label="회원 목록" className="mt-10">
+        {/* PC 테이블 헤더 */}
+        <div
+          className="w-full mt-10 self-stretch p-5 border-t border-b border-neutral-200 hidden sm:flex justify-start items-center gap-8"
+          role="table"
+          aria-label="회원 목록 테이블 헤더"
+        >
+          <div className="px-14 flex justify-start items-center mr-2" role="columnheader" aria-label="이름 컬럼">
+            <div className="justify-center text-primary-500 text-base font-bold">이름</div>
+          </div>
+          <div
+            className="flex-1 justify-center text-primary-500 text-base font-bold"
+            role="columnheader"
+            aria-label="메일 컬럼"
+          >
+            메일
+          </div>
+          <div
+            className="w-20 text-center justify-center text-primary-500 text-base font-bold"
+            role="columnheader"
+            aria-label="권한 컬럼"
+          >
+            권한
+          </div>
+          <div
+            className="w-48 text-center justify-center text-primary-500 text-base font-bold"
+            role="columnheader"
+            aria-label="비고 컬럼"
+          >
+            비고
+          </div>
         </div>
-        <div className="flex-1 justify-center text-primary-500 text-base font-bold">메일</div>
-        <div className="w-20 text-center justify-center text-primary-500 text-base font-bold">권한</div>
-        <div className="w-48 text-center justify-center text-primary-500 text-base font-bold">비고</div>
-      </div>
 
-      {isLoadingMembers || deleteUserMutation.isPending || inviteUserMutation.isPending ? (
-        <div className="text-center py-10">로딩 중...</div>
-      ) : (
-        paginateMembers.map((member) => (
-          <MemberList
-            key={member.id}
-            {...member}
-            onClickDeleteUser={handleDeleteUser}
-            onRoleUpdate={() => showToast("권한이 성공적으로 변경되었습니다.", "success")}
-          />
-        ))
-      )}
+        {/* 회원 목록 */}
+        <div role="list" aria-label="회원 목록">
+          {isLoadingMembers || deleteUserMutation.isPending || inviteUserMutation.isPending ? (
+            <div className="text-center py-10" role="status" aria-live="polite" aria-label="회원 목록 로딩 중">
+              로딩 중...
+            </div>
+          ) : (
+            paginateMembers.map((member) => (
+              <div key={member.id} role="listitem">
+                <MemberList
+                  {...member}
+                  onClickDeleteUser={handleDeleteUser}
+                  onRoleUpdate={() => showToast("권한이 성공적으로 변경되었습니다.", "success")}
+                />
+              </div>
+            ))
+          )}
+        </div>
+      </section>
 
-      <div className="mt-6">
+      {/* 페이지네이션 */}
+      <nav aria-label="회원 목록 페이지네이션" className="mt-6">
         <Pagination
           currentPage={currentPaginationPage}
           totalPages={totalPages}
           onPageChange={setCurrentPaginationPage}
         />
-      </div>
+      </nav>
 
+      {/* 모바일 초대 버튼 */}
       <div className="w-full flex justify-center">
         <Button
           type="black"
           label="회원 초대하기"
-          className="w-50 h-16  sm:hidden rounded-[2px]"
+          className="w-50 h-16 sm:hidden rounded-[2px]"
           onClick={() => {
             openModal(<InviteMemberModal mode="invite" onSubmit={handleInviteUser} />);
           }}
+          aria-label="새 회원 초대하기 (모바일)"
         />
       </div>
 
@@ -192,6 +227,6 @@ export default function User() {
         isVisible={toastVisible}
         onClose={() => setToastVisible(false)}
       />
-    </div>
+    </main>
   );
 }
