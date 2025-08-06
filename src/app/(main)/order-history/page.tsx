@@ -19,6 +19,13 @@ type TBudgetData = {
   previousYearTotalExpense: number;
 };
 
+// 상품명에서 "외 N건" 패턴을 추출해 총 상품 종류 개수 반환
+const getProductTypeCount = (productName?: string) => {
+  if (!productName) return 1;
+  const match = productName.match(/외 (\d+)건/);
+  return match ? Number(match[1]) + 1 : 1;
+};
+
 const OrderHistoryPage = () => {
   const router = useRouter();
 
@@ -208,13 +215,13 @@ const OrderHistoryPage = () => {
                   >
                     {item.item}
                   </button>
-                    <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
-                      총 수량 {item.totalQuantity || 0}개
-                    </div>
-                  </div>
-                  <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
-                    {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
-                  </div>
+                </div>
+                <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
+                  총 수량 {getProductTypeCount(item.productName)}개
+                </div>
+                <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
+                  {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
+                </div>
                 </div>
                 <div className="self-stretch flex flex-col justify-center items-start">
                   <div className="self-stretch inline-flex justify-start items-center">
@@ -437,9 +444,6 @@ const OrderHistoryPage = () => {
                     >
                       {item.item}
                     </button>
-                    <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
-                      총 수량 {item.totalQuantity || 0}개
-                    </div>
                   </div>
                   <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
                     {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
@@ -707,7 +711,7 @@ const OrderHistoryPage = () => {
                       >
                         {item.item}
                       </button>
-                      <div className="justify-start text-zinc-500 text-sm font-normal font-['SUIT']">총 수량 {item.totalQuantity || 0}개</div>
+                      <div className="justify-start text-zinc-500 text-sm font-normal font-['SUIT']">총 수량 {getProductTypeCount(item.productName)}개</div>
                     </div>
                     <div className="w-32 justify-start text-neutral-800 text-base font-normal font-['SUIT']">
                       {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원

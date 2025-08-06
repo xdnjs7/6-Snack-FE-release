@@ -15,6 +15,7 @@ export type TPurchaseItem = {
   manager: string;
   adminMessage?: string;
   totalQuantity?: number;
+  productName?: string;
 };
 
 export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: number = 4) => {
@@ -76,6 +77,7 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
     manager: item.approver || item.managerName || item.manager || "-",
     adminMessage: item.adminMessage,
     totalQuantity: item.products?.reduce((sum, product) => sum + product.quantity, 0) || 0,
+    productName: item.productName,
   });
 
   // 모든 아이템을 파싱
