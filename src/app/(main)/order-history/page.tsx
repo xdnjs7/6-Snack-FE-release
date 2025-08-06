@@ -345,7 +345,7 @@ const OrderHistoryPage = () => {
           <h2 id="budget-section-tablet" className="sr-only">예산 현황</h2>
           {/* Tablet Budget Cards */}
           <div className="self-stretch pb-5 inline-flex justify-start items-center gap-5">
-            <div className="flex-1 self-stretch p-5 bg-neutral-100 rounded inline-flex flex-col justify-between items-start overflow-hidden">
+            <div className="flex-1 min-w-0 self-stretch p-5 bg-neutral-100 rounded inline-flex flex-col justify-between items-start overflow-hidden">
               <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
                 <div className="self-stretch justify-center text-neutral-800 text-lg font-bold font-['SUIT']">
                   이번 달 예산
@@ -361,7 +361,7 @@ const OrderHistoryPage = () => {
               </div>
             </div>
             <div
-              className="flex-1 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-4 relative"
+              className="flex-1 min-w-0 pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-4 relative"
               onMouseEnter={() => setIsHoveredTablet(true)}
               onMouseLeave={() => setIsHoveredTablet(false)}
               onTouchStart={() => setIsHoveredTablet(true)}
@@ -409,7 +409,7 @@ const OrderHistoryPage = () => {
                 />
               )}
             </div>
-            <div className="flex-1 self-stretch p-5 bg-neutral-100 rounded inline-flex flex-col justify-between items-start overflow-hidden">
+            <div className="flex-1 min-w-0 self-stretch p-5 bg-neutral-100 rounded inline-flex flex-col justify-between items-start overflow-hidden">
               <div className="flex flex-col justify-start items-start gap-2.5">
                 <div className="inline-flex justify-start items-center gap-3.5">
                   <div className="inline-flex flex-col justify-start items-start gap-2">
@@ -590,7 +590,7 @@ const OrderHistoryPage = () => {
           <h2 id="budget-section-desktop" className="sr-only">예산 현황</h2>
           {/* Desktop Budget Cards */}
           <div className="self-stretch inline-flex justify-start items-center gap-7 pb-10">
-            <div className="flex-1 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-2 overflow-hidden">
+            <div className="flex-1 min-w-0 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-2 relative">
               <div className="self-stretch inline-flex justify-between items-start">
                 <div className="justify-center text-neutral-800 text-lg font-bold font-['SUIT']">이번 달 예산</div>
                 <div className="justify-center text-neutral-800 text-2xl font-extrabold font-['SUIT']">
@@ -606,7 +606,7 @@ const OrderHistoryPage = () => {
               </div>
             </div>
             <div
-              className="flex-1 pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 relative"
+              className="flex-1 min-w-0 pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 relative"
               onMouseEnter={() => setIsHoveredDesktop(true)}
               onMouseLeave={() => setIsHoveredDesktop(false)}
               onTouchStart={() => setIsHoveredDesktop(true)}
@@ -658,7 +658,7 @@ const OrderHistoryPage = () => {
                 />
               )}
             </div>
-            <div className="flex-1 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-2 overflow-hidden">
+            <div className="flex-1 min-w-0 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-2 relative">
               <div className="self-stretch inline-flex justify-between items-center">
                 <div className="flex justify-start items-center gap-3.5">
                   <div className="inline-flex flex-col justify-start items-start gap-2">
