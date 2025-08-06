@@ -8,6 +8,7 @@ import { formatPrice } from "@/lib/utils/formatPrice.util";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import DogSpinner from "@/components/common/DogSpinner";
 
 // Budget 데이터 타입 정의
 type TBudgetData = {
@@ -23,12 +24,24 @@ const OrderHistoryPage = () => {
   const router = useRouter();
 
   // 공통 로직 훅 사용
-  const { budgetData, currentItems, totalPages, currentPage, handlePageChange, setSortBy, formatNumber } =
-    useOrderHistory();
+  const {
+    budgetData,
+    budgetLoading,
+    purchaseListLoading,
+    currentItems,
+    totalPages,
+    currentPage,
+    handlePageChange,
+    setSortBy,
+    formatNumber
+  } = useOrderHistory();
   const [isHovered, setIsHovered] = useState(false);
 
   // budgetData 타입 안전성을 위한 타입 가드
   const safeBudgetData = budgetData as TBudgetData | undefined;
+
+  // 로딩 상태 체크
+  const isLoading = budgetLoading || purchaseListLoading;
 
   // 상품명 클릭 시 상세 페이지로 이동하는 함수
   const handleProductClick = (orderId: string) => {
@@ -36,6 +49,16 @@ const OrderHistoryPage = () => {
       router.push(`/order-history/${orderId}?status=approved`);
     }
   };
+
+  // 로딩 중일 때 스피너 표시
+  if (isLoading) {
+    return (
+      <div className="min-h-screen w-full flex flex-col justify-center items-center bg-white">
+        <DogSpinner />
+        <p className="mt-4 text-neutral-600 text-sm font-['SUIT']">데이터를 불러오는 중...</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -590,8 +613,8 @@ const OrderHistoryPage = () => {
                     <div className="self-stretch justify-center text-neutral-800 text-lg font-bold font-['SUIT']">
                       이번 달 지출액
                     </div>
-                    <div className="justify-center text-stone-500 text-base font-normal font-['SUIT']">
-                      지난 달: {safeBudgetData ? formatNumber(safeBudgetData.previousMonthExpense) : "0원"}
+                    <div className="justify-center text-neutral-800 text-2xl font-extrabold font-['SUIT']">
+                      {safeBudgetData ? formatNumber(safeBudgetData.currentMonthExpense) : "0원"}
                     </div>
                   </div>
                 </div>
