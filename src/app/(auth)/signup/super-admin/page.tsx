@@ -12,6 +12,7 @@ import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
 import { TToastVariant } from "@/types/toast.types";
 import DogSpinner from "@/components/common/DogSpinner";
+import BackdropSpinnerWrapper from "@/app/(auth)/signup/_components/BackdropSpinnerWrapper";
 
 // 리액트 훅폼에 연결할 zod 스키마 정의
 const signUpSchema = z
@@ -101,9 +102,9 @@ export default function SuperAdminSignUpPage() {
       </div>
       {/* DogSpinner - 회원가입 처리 중일 때만 노출 */}
       {showSpinner && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+        <BackdropSpinnerWrapper>
           <DogSpinner />
-        </div>
+        </BackdropSpinnerWrapper>
       )}
 
       {/* main content */}
