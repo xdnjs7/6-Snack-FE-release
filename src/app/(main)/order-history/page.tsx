@@ -225,7 +225,7 @@ const OrderHistoryPage = () => {
                       </div>
                       {item.adminMessage?.includes("즉시 구매") && (
                         <div className="px-1 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1">
-                          <div className="justify-center text-blue-500 text-xs font-bold font-['SUIT']">즉시 요청</div>
+                          <div className="justify-center text-blue-500 text-xs font-bold font-['SUIT']">즉시 구매</div>
                         </div>
                       )}
                     </div>
@@ -460,7 +460,7 @@ const OrderHistoryPage = () => {
                           {item.adminMessage?.includes("즉시 구매") && (
                             <div className="px-1 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1">
                               <div className="justify-center text-blue-500 text-xs font-bold font-['SUIT']">
-                                즉시 요청
+                                즉시 구매
                               </div>
                             </div>
                           )}
@@ -684,7 +684,7 @@ const OrderHistoryPage = () => {
                       {item.adminMessage?.includes("즉시 구매") && (
                         <div className="px-2 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1 whitespace-nowrap">
                           <div className="justify-center items-center text-center text-blue-500 text-xs font-bold font-['SUIT'] w-12 whitespace-nowrap overflow-hidden text-ellipsis">
-                            즉시 요청
+                            즉시 구매
                           </div>
                         </div>
                       )}
