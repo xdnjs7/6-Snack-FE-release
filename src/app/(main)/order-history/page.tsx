@@ -215,13 +215,13 @@ const OrderHistoryPage = () => {
                   >
                     {item.item}
                   </button>
-                </div>
-                <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
-                  총 수량 {getProductTypeCount(item.productName)}개
-                </div>
-                <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
-                  {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
-                </div>
+                  </div>
+                  <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
+                    총 수량 {getProductTypeCount(item.productName)}개
+                  </div>
+                  <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
+                    {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
+                  </div>
                 </div>
                 <div className="self-stretch flex flex-col justify-center items-start">
                   <div className="self-stretch inline-flex justify-start items-center">
