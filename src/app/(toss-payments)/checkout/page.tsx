@@ -32,7 +32,7 @@ export default function CheckoutPage() {
     }
   };
 
-  const clientKey = process.env.CLIENT_KEY!;
+  const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY!;
   const customerKey = user ? user!.id : "";
 
   useEffect(() => {
