@@ -271,36 +271,34 @@ const OrderHistoryPage = () => {
             </div>
           )}
         </section>
-        <nav className="self-stretch h-10 inline-flex justify-between items-center px-4" aria-label="페이지 이동">
+        <nav className="self-stretch h-10 flex justify-between items-center px-4" aria-label="페이지 이동">
           {/* Mobile Pagination */}
-          <div className="self-stretch h-10 inline-flex justify-between items-center">
-            <div className="text-center justify-start text-neutral-800 text-base font-normal font-['SUIT']">
-              {currentPage} of {totalPages}
-            </div>
-            <div className="flex justify-start items-center gap-7">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="flex justify-start items-center gap-1.5 cursor-pointer disabled:cursor-not-allowed"
-              >
-                <div className="w-6 h-6 relative overflow-hidden">
-                  <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
-                </div>
-                <div className="text-center justify-start text-zinc-500 text-base font-normal font-['SUIT']">Prev</div>
-              </button>
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="flex justify-start items-center gap-[5px] cursor-pointer disabled:cursor-not-allowed"
-              >
-                <div className="text-center justify-start text-neutral-800 text-base font-normal font-['SUIT']">
-                  Next
-                </div>
-                <div className="w-6 h-6 relative overflow-hidden">
-                  <Image src={ChevronRightIcon} alt="Chevron Right" width={24} height={24} />
-                </div>
-              </button>
-            </div>
+          <div className="text-neutral-800 text-base font-normal font-['SUIT']">
+            {currentPage} of {totalPages}
+          </div>
+          <div className="flex items-center gap-7">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="flex items-center gap-1.5 cursor-pointer disabled:cursor-not-allowed"
+            >
+              <div className="w-6 h-6 relative overflow-hidden">
+                <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
+              </div>
+              <div className="text-zinc-500 text-base font-normal font-['SUIT']">Prev</div>
+            </button>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="flex items-center gap-[5px] cursor-pointer disabled:cursor-not-allowed"
+            >
+              <div className="text-neutral-800 text-base font-normal font-['SUIT']">
+                Next
+              </div>
+              <div className="w-6 h-6 relative overflow-hidden">
+                <Image src={ChevronRightIcon} alt="Chevron Right" width={24} height={24} />
+              </div>
+            </button>
           </div>
         </nav>
       </main>
@@ -509,36 +507,34 @@ const OrderHistoryPage = () => {
             </div>
           )}
         </section>
-        <nav className="self-stretch h-10 inline-flex justify-between items-center px-8" aria-label="페이지 이동">
+        <nav className="self-stretch h-10 flex justify-between items-center px-8" aria-label="페이지 이동">
           {/* Tablet Pagination */}
-          <div className="self-stretch h-10 inline-flex justify-between items-center">
-            <div className="text-center justify-start text-neutral-800 text-base font-normal font-['SUIT']">
-              {currentPage} of {totalPages}
-            </div>
-            <div className="flex justify-start items-center gap-7">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="flex justify-start items-center gap-1.5 cursor-pointer disabled:cursor-not-allowed"
-              >
-                <div className="w-6 h-6 relative overflow-hidden">
-                  <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
-                </div>
-                <div className="text-center justify-start text-zinc-500 text-base font-normal font-['SUIT']">Prev</div>
-              </button>
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="flex justify-start items-center gap-[5px] cursor-pointer disabled:cursor-not-allowed"
-              >
-                <div className="text-center justify-start text-neutral-800 text-base font-normal font-['SUIT']">
-                  Next
-                </div>
-                <div className="w-6 h-6 relative overflow-hidden">
-                  <Image src={ChevronRightIcon} alt="Chevron Right" width={24} height={24} />
-                </div>
-              </button>
-            </div>
+          <div className="text-neutral-800 text-base font-normal font-['SUIT']">
+            {currentPage} of {totalPages}
+          </div>
+          <div className="flex items-center gap-7">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="flex items-center gap-1.5 cursor-pointer disabled:cursor-not-allowed"
+            >
+              <div className="w-6 h-6 relative overflow-hidden">
+                <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
+              </div>
+              <div className="text-zinc-500 text-base font-normal font-['SUIT']">Prev</div>
+            </button>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="flex items-center gap-[5px] cursor-pointer disabled:cursor-not-allowed"
+            >
+              <div className="text-neutral-800 text-base font-normal font-['SUIT']">
+                Next
+              </div>
+              <div className="w-6 h-6 relative overflow-hidden">
+                <Image src={ChevronRightIcon} alt="Chevron Right" width={24} height={24} />
+              </div>
+            </button>
           </div>
         </nav>
       </main>
@@ -652,7 +648,7 @@ const OrderHistoryPage = () => {
             </div>
           </div>
         </section>
-        <section className="w-full flex flex-col gap-2 px-10" aria-labelledby="purchase-list-desktop" role="list">
+        <section className="w-full flex flex-col gap-2 px-10 pb-5" aria-labelledby="purchase-list-desktop" role="list">
           <h2 id="purchase-list-desktop" className="sr-only">구매 내역 목록</h2>
           {/* Desktop Purchase List - Table Format */}
           <div className="self-stretch flex flex-col justify-start items-start">
@@ -722,36 +718,36 @@ const OrderHistoryPage = () => {
             </div>
           </div>
         </section>
-        <nav className="self-stretch h-10 inline-flex justify-between items-center px-10" aria-label="페이지 이동">
+        <nav className="self-stretch h-10 flex justify-between items-center px-10" aria-label="페이지 이동">
           {/* Desktop Pagination */}
-          <div className="self-stretch h-10 inline-flex justify-between items-center">
+          <div className="flex items-center">
             <div className="text-center justify-start text-neutral-800 text-base font-normal font-['SUIT']">
               {currentPage} of {totalPages}
             </div>
-            <div className="flex justify-start items-center gap-7">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="flex justify-start items-center gap-1.5 cursor-pointer disabled:cursor-not-allowed"
-              >
-                <div className="w-6 h-6 relative overflow-hidden">
-                  <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
-                </div>
-                <div className="text-center justify-start text-zinc-500 text-base font-normal font-['SUIT']">Prev</div>
-              </button>
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="flex justify-start items-center gap-[5px] cursor-pointer disabled:cursor-not-allowed"
-              >
-                <div className="text-center justify-start text-neutral-800 text-base font-normal font-['SUIT']">
-                  Next
-                </div>
-                <div className="w-6 h-6 relative overflow-hidden">
-                  <Image src={ChevronRightIcon} alt="Chevron Right" width={24} height={24} />
-                </div>
-              </button>
-            </div>
+          </div>
+          <div className="flex items-center gap-7">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="flex justify-start items-center gap-1.5 cursor-pointer disabled:cursor-not-allowed"
+            >
+              <div className="w-6 h-6 relative overflow-hidden">
+                <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
+              </div>
+              <div className="text-center justify-start text-zinc-500 text-base font-normal font-['SUIT']">Prev</div>
+            </button>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="flex justify-start items-center gap-[5px] cursor-pointer disabled:cursor-not-allowed"
+            >
+              <div className="text-center justify-start text-neutral-800 text-base font-normal font-['SUIT']">
+                Next
+              </div>
+              <div className="w-6 h-6 relative overflow-hidden">
+                <Image src={ChevronRightIcon} alt="Chevron Right" width={24} height={24} />
+              </div>
+            </button>
           </div>
         </nav>
       </main>
