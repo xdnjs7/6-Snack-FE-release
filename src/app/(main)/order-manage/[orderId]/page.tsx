@@ -257,28 +257,26 @@ export default function OrderManageDetailPage() {
                 ))}
 
                 {/* Order Amount Info */}
-                <div className="self-stretch flex flex-col gap-2 sm:gap-3" role="region" aria-label="주문 금액 정보">
+                <div className="w-full flex flex-col gap-4 sm:gap-2.5 " role="region" aria-label="주문 금액 정보">
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold">
+                    <div className="text-primary-700 tracking-tight text-sm/[17px] sm:text-base/[20px] font-bold">
                       주문금액
                     </div>
-                    <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold">
+                    <div className="text-primary-700 tracking-tight text-sm/[17px] sm:text-base/[20px] font-bold">
                       {formatPrice(calculatedTotal)}원
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold">
+                    <div className="text-primary-700 tracking-tight text-sm/[17px] sm:text-base/[20px] font-bold">
                       배송비
                     </div>
-                    <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold">
+                    <div className="text-primary-700 tracking-tight text-sm/[17px] sm:text-base/[20px] font-bold">
                       {formatPrice(shippingFee)}원
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-[--color-primary-800] text-sm sm:text-base md:text-lg lg:text-xl font-bold">
-                      총 주문금액
-                    </div>
-                    <div className="text-center justify-center text-[--color-primary-800] text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-extrabold">
+                    <div className="text-primary-950 text-lg/[22px] tracking-tight font-bold">총 주문금액</div>
+                    <div className="text-primary-950 text-lg/[22px] sm:text-[24px]/[30px] tracking-tight font-extrabold">
                       {formatPrice(finalTotal)}원
                     </div>
                   </div>
@@ -293,7 +291,7 @@ export default function OrderManageDetailPage() {
           <div className="self-stretch px-2 py-3 sm:py-3.5 border-b border-neutral-800 inline-flex justify-start items-center gap-2">
             <h2
               id="request-info-title"
-              className="text-center justify-center text-neutral-800 text-xs sm:text-sm md:text-base font-extrabold"
+              className="text-center justify-center tracking-tight text-primary-950 text-sm/[17px] sm:text-base/[20px] font-extrabold"
             >
               요청 정보
             </h2>
@@ -304,37 +302,35 @@ export default function OrderManageDetailPage() {
             aria-label="요청 상세 정보"
           >
             <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 h-10 sm:h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal">요청인</div>
+              <div className="flex w-[140px] h-[50px] p-2 border-r border-b border-neutral-200 justify-start items-center text-sm/[17px] tracking-tight sm:text-base/[20px]">
+                요청인
               </div>
-              <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
+              <div className="flex-1 h-[50px] px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center">
                 <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold">
                   {orderRequest.requester || "-"}
                 </div>
               </div>
             </div>
             <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 h-10 sm:h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal">
-                  요청 날짜
-                </div>
+              <div className="flex w-[140px] h-[50px] p-2 border-r border-b border-neutral-200 justify-start items-center text-sm/[17px] tracking-tight sm:text-base/[20px]">
+                요청 날짜
               </div>
-              <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
+              <div className="flex-1 h-[50px] px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center">
                 <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold">
                   {orderRequest.createdAt ? formatDate(orderRequest.createdAt) : "-"}
                 </div>
               </div>
             </div>
           </div>
-          <div className="self-stretch inline-flex justify-start items-start">
-            <div className="w-24 sm:w-32 md:w-36 self-stretch px-2 py-3 sm:py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
-              <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal">
+          <div className="self-stretch flex flex-col justify-center items-start">
+            <div className="self-stretch inline-flex justify-start items-center">
+              <div className="flex w-[140px] h-[50px] p-2 border-r border-b border-neutral-200 justify-start items-center text-sm/[17px] tracking-tight sm:text-base/[20px]">
                 요청 메시지
               </div>
-            </div>
-            <div className="flex-1 p-3 sm:p-4 border-b border-neutral-200 flex justify-start items-center gap-2">
-              <div className="flex-1 justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold leading-snug">
-                {orderRequest.requestMessage || "요청 메시지가 없습니다."}
+              <div className="flex-1 h-[50px] px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center">
+                <div className="text-start justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold">
+                  {orderRequest.requestMessage || "요청 메시지가 없습니다."}
+                </div>
               </div>
             </div>
           </div>
@@ -345,7 +341,7 @@ export default function OrderManageDetailPage() {
           <div className="self-stretch px-2 py-3 sm:py-3.5 border-b border-neutral-800 inline-flex justify-start items-center gap-2">
             <h2
               id="budget-info-title"
-              className="text-center justify-center text-neutral-800 text-xs sm:text-sm md:text-base font-extrabold"
+              className="text-center justify-center tracking-tight text-primary-950 text-sm/[17px] sm:text-base/[20px] font-extrabold"
             >
               예산 정보
             </h2>
@@ -356,24 +352,20 @@ export default function OrderManageDetailPage() {
             aria-label="예산 상세 정보"
           >
             <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 h-10 sm:h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal">
-                  이번 달 지출액
-                </div>
+              <div className="flex w-[140px] h-[50px] p-2 border-r border-b border-neutral-200 justify-start items-center text-sm/[17px] tracking-tight sm:text-base/[20px]">
+                이번 달 지출액
               </div>
-              <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
+              <div className="flex-1 h-[50px] px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center">
                 <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold">
                   {formatPrice(currentMonthExpense)}원
                 </div>
               </div>
             </div>
             <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 h-10 sm:h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal">
-                  이번 달 남은 예산
-                </div>
+              <div className="flex w-[140px] h-[50px] p-2 border-r border-b border-neutral-200 justify-start items-center text-sm/[17px] tracking-tight sm:text-base/[20px]">
+                이번 달 남은 예산
               </div>
-              <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
+              <div className="flex-1 h-[50px] px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center">
                 <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold">
                   {formatPrice(remainingBudget)}원
                 </div>
@@ -382,13 +374,11 @@ export default function OrderManageDetailPage() {
           </div>
           <div className="self-stretch flex flex-col justify-center items-start">
             <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 self-stretch px-2 py-3 sm:py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal">
-                  구매 후 예산
-                </div>
+              <div className="flex w-[140px] h-[50px] p-2 border-r border-b border-neutral-200 justify-start items-center text-sm/[17px] tracking-tight sm:text-base/[20px]">
+                구매 후 예산
               </div>
-              <div className="flex-1 self-stretch p-3 sm:p-4 border-b border-neutral-200 flex justify-start items-start gap-2">
-                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold">
+              <div className="flex-1 h-[50px] px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center">
+                <div className="text-start justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold">
                   {formatPrice(budgetAfterPurchase)}원
                 </div>
               </div>
