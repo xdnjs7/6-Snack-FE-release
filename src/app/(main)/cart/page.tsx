@@ -5,7 +5,7 @@ import CartItem from "./_components/CartItem";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getCartItems } from "@/lib/api/cart.api";
 import { useAuth } from "@/providers/AuthProvider";
 import { TGetCartItemsResponse } from "@/types/cart.types";
