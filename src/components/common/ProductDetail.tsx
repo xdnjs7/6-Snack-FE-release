@@ -14,6 +14,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useCurrentSubCategory } from "@/hooks/useCurrentSubCategory";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Toast from "@/components/common/Toast";
+import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 
 type TProductDetailProps = {
   productId: number;
@@ -26,9 +27,18 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
   const router = useRouter();
   const { findCategoryPath } = useCurrentSubCategory();
   const queryClient = useQueryClient();
+
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastVariant, setToastVariant] = useState<"success" | "error">("success");
+  const [isFavorite, setIsFavorite] = useState(false); // ⭐️ UI용 좋아요 상태
+
+  // 좋아요 toggle mutation
+  const { mutate: toggleFavorite } = useToggleFavorite(productId, {
+    onMutate: () => setIsFavorite((prev) => !prev),
+    onError: () => setIsFavorite((prev) => !prev), // 에러 시 롤백
+  });
+
   const showToast = (message: string, variant: "success" | "error" = "success") => {
     setToastMessage(message);
     setToastVariant(variant);
@@ -56,6 +66,12 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
     }
   }, [product?.category?.id, findCategoryPath]);
 
+  useEffect(() => {
+    if (product) {
+      setIsFavorite(product.isFavorite); // 최초 렌더링 시 좋아요 상태 설정
+    }
+  }, [product]);
+
   if (isLoading) return <p>로딩 중...</p>;
   if (isError || !product) return <p>상품 정보를 불러올 수 없습니다.</p>;
 
@@ -69,6 +85,10 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
   };
 
   const canEdit = user?.id === product.creatorId || user?.role === "ADMIN" || user?.role === "SUPER_ADMIN";
+
+  const handleToggleFavorite = () => {
+    toggleFavorite(isFavorite); // 현재 상태를 전달
+  };
 
   return (
     <div className="w-full flex flex-col justify-center items-center sm:max-w-[1180px]">
@@ -92,7 +112,12 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
               />
             </div>
             <div className="flex flex-col justify-center items-center w-full">
-              <CartAndLikeButtons onAddToCart={handleAddToCart} />
+              <CartAndLikeButtons
+                onAddToCart={handleAddToCart}
+                isFavorite={isFavorite}
+                onToggleFavorite={handleToggleFavorite}
+                productId={product.id}
+              />
               <ProductInfoSections />
             </div>
           </div>

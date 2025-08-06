@@ -13,4 +13,6 @@ export type TProduct = {
     };
   };
   creatorId: string;
+
+  isFavorite: boolean;
 };
