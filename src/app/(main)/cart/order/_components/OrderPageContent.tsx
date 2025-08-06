@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import TextArea from "@/components/common/TextArea";
 import OrderItem from "./OrderItem";
 import Button from "@/components/ui/Button";
@@ -12,18 +12,19 @@ import { useRouter } from "next/navigation";
 import { createOrder } from "@/lib/api/order.api";
 import clsx from "clsx";
 import { TOrderResponse } from "@/types/order.types";
-import { useAuth } from "@/providers/AuthProvider";
 
 type TOrderPageContentProps = {
   cartItemId?: string;
 };
 
 export default function OrderPageContent({ cartItemId }: TOrderPageContentProps) {
-  const { user } = useAuth();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [requestMessage, setRequestMessage] = useState<string>("");
   const router = useRouter();
-  sessionStorage.setItem("previousPath", "/cart/order");
+
+  useEffect(() => {
+    sessionStorage.setItem("previousPath", "/cart/order");
+  }, []);
 
   const params: TGetCartItemsParams = {
     ...(cartItemId ? { cartItemId } : { isChecked: "true" }),
@@ -55,33 +56,29 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
     setRequestMessage(e.target.value);
   };
 
-  if (user?.role !== "USER") {
-    return (
-      <div className="flex h-screen justify-center items-center -mb-[24px]">일반 유저만 이용가능한 페이지입니다.</div>
-    );
-  }
-
   if (error) {
-    return <div>에러 발생 : {error.message}</div>;
+    return <div role="alert">에러 발생 : {error.message}</div>;
   }
 
   return (
     <div className="flex flex-col justify-center items-center w-full">
       <div className="w-full max-w-[1200px] md:px-[24px] sm:pb-[36px]">
-        <div className="flex flex-col gap-[40px] mt-[20px] sm:gap-[70px] sm:mt-[60px] md:mt-[80px]">
+        <section className="flex flex-col gap-[40px] mt-[20px] sm:gap-[70px] sm:mt-[60px] md:mt-[80px]">
           <div className="flex flex-col justify-center items-center gap-[10px] font-bold text-[16px]/[20px] tracking-tight sm:flex-row sm:gap-[20px] sm:text-[18px]/[22px]">
             <p className="text-primary-300">1. Shopping Cart</p>
             <ArrowIconSvg direction="right" className="hidden sm:block relative w-[24px] h-[24px] text-primary-300" />
-            <p className="text-primary-950">2. Order</p>
+            <h2 className="text-primary-950">2. Order</h2>
             <ArrowIconSvg direction="right" className="hidden sm:block relative w-[24px] h-[24px] text-primary-300" />
             <p className="text-primary-300">3. Order Confirmed</p>
           </div>
-        </div>
+        </section>
 
         <OrderItem isPending={isPending} cartItems={cartItems} />
 
         <div className="flex flex-col justify-center items-start mt-[40px] gap-[14px] sm:gap-[20px]">
-          <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-950">요청 메시지</p>
+          <label htmlFor="textarea" className="font-bold text-[16px]/[20px] tracking-tight text-primary-950">
+            요청 메시지
+          </label>
           <TextArea
             value={requestMessage}
             onChange={handleValueChange}
@@ -101,6 +98,7 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
               setIsDisabled(true);
               orderRequest({ requestMessage, cartItemIds });
             }}
+            aria-live="polite"
             disabled={isDisabled}
             type="black"
             label={isDisabled ? "잠시만 기다려주세요..." : "구매 요청"}

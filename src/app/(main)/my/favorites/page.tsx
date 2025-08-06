@@ -48,40 +48,40 @@ export default function MyFavoritesPage() {
   const products = favorites?.pages.flatMap((data) => data.favorites.map((favorite) => favorite.product)) ?? [];
 
   if (isLoading) {
-    return <div>로딩 중...</div>;
+    return <p role="alert">로딩 중...</p>;
   }
 
   if (!favorites || favorites.pages.length === 0) {
     return (
       <div>
-        <div>아직 상품을 찜하지 않았습니다.</div>
-        <div>원하는 상품을 찜해보세요!</div>
+        <p>아직 상품을 찜하지 않았습니다.</p>
+        <p>원하는 상품을 찜해보세요!</p>
       </div>
     );
   }
 
   if (error) {
-    return <div>에러 발생 : {error.message}</div>;
+    return <p role="alert">에러 발생 : {error.message}</p>;
   }
 
   return (
-    <div className="flex justify-center">
+    <section className="flex justify-center">
       <div className="flex flex-col w-full max-w-[1200px]">
-        <p className="pt-[10px] pb-[20px] md:mt-[80px] font-bold text-[18px]/[22px] tracking-tight text-primary-950">
+        <h2 className="pt-[10px] pb-[20px] md:mt-[80px] font-bold text-[18px]/[22px] tracking-tight text-primary-950">
           나의 찜목록
-        </p>
+        </h2>
         <div className="mx-[-24px] outline-1 outline-[#e6e6e6] md:mx-0"></div>
-        <div className="pt-[20px] sm:pt-[30px]">
+        <figure className="pt-[20px] sm:pt-[30px]">
           <ProductGrid products={products} />
-        </div>
+        </figure>
         {hasNextPage && (
-          <div ref={ref} className="flex justify-center items-center">
+          <div aria-live="polite" aria-label="추가 상품 로딩 중" ref={ref} className="flex justify-center items-center">
             {isFetchingNextPage && (
               <div className="size-[20px] border-[3px] border-t-[3px] border-secondary-gray-200 border-t-primary-100 rounded-full animate-spin"></div>
             )}
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 }
