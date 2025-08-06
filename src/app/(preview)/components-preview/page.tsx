@@ -35,9 +35,6 @@ import Header from "@/components/layout/Header";
 // import OrderItem from "@/app/(main)/cart/order/_components/OrderItem";
 import { categories, products } from "./MockData";
 import DogSpinner from "@/components/common/DogSpinner";
-import Image from "next/image";
-import img_dog from "@/assets/images/img_dog.png";
-import ic_dot from "@/assets/icons/ic_dot.svg";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
