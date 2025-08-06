@@ -46,6 +46,9 @@ export default function ProfileForm() {
   const company = watch("company");
   const password = watch("password");
 
+  // register 함수 반환값 분리
+  const companyRegister = register("company");
+
   // 변경사항 확인
   const hasCompanyChanged = Boolean(
     typedUser?.role === Role.SUPER_ADMIN && company?.trim() !== (typedUser?.company?.name || ""),
@@ -195,12 +198,12 @@ export default function ProfileForm() {
                 {/* 기업명 */}
                 <ProfileField
                   label="기업명"
-                  value={typedUser?.company?.name || ""}
-                  {...register("company")}
+                  value={company !== undefined ? company : typedUser?.company?.name || ""}
                   isEditable={typedUser?.role === Role.SUPER_ADMIN}
                   role={typedUser?.role}
                   type={typedUser?.role === Role.SUPER_ADMIN ? "input" : "display"}
                   error={errors.company?.message}
+                  {...companyRegister}
                 />
 
                 {/* 권한 */}
