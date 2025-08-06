@@ -653,7 +653,7 @@ const OrderHistoryPage = () => {
               {/* Desktop Hover Box */}
               {isHoveredDesktop && (
                 <BudgetHoverBox
-                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-96 z-50"
+                  className="absolute top-32 left-1/2 transform -translate-x-1/2 mt-2 w-76 z-50 ml-[-12px]"
                   budgetData={safeBudgetData}
                 />
               )}
