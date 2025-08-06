@@ -23,6 +23,11 @@ export default function User() {
   const queryClient = useQueryClient();
   const MEMVERS_PAGE = 5;
 
+  // 검색어가 변경될 때 페이지네이션을 1페이지로 리셋
+  useEffect(() => {
+    setCurrentPaginationPage(1);
+  }, [name]);
+
   // Toast 상태
   const [toastVisible, setToastVisible] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
@@ -64,6 +69,12 @@ export default function User() {
 
   const members = useMemo(() => membersData?.users ?? [], [membersData?.users]);
   const totalPages = Math.ceil(members.length / MEMVERS_PAGE);
+
+  useEffect(() => {
+    if (totalPages === 0 || currentPaginationPage > totalPages) {
+      setCurrentPaginationPage(1);
+    }
+  }, [totalPages, currentPaginationPage]);
 
   // 회원 삭제 mutation
   const deleteUserMutation = useMutation({

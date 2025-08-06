@@ -108,8 +108,8 @@ export default function Order() {
       setCurrentPaginationPage(adjustedPage);
       prevVisibleCountRef.current = visibleCount;
     }
-  }, [visibleCount]);
-  
+  }, [visibleCount, currentPaginationPage]);
+
   // 키보드 접근성을 위한 핸들러
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter" || event.key === " ") {

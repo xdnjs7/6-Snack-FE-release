@@ -105,7 +105,7 @@ export default function RequestList({ orderRequests, onClickReject, onClickAppro
                     </div>
                     <div className="flex flex-col gap-[8px]">
                       <button
-                        className="font-normal text-[14px]/[17px] tracking-tight text-blue-600 cursor-pointer hover:text-blue-800 truncate text-left"
+                        className="font-normal text-[14px]/[17px] tracking-tight text-blue-600 cursor-pointer hover:text-blue-800 truncate text-left inline-block w-fit"
                         onClick={() => handleProductNameClick(request.id, request.status.toLowerCase())}
                         aria-label={`${request.productName} 상품 상세보기`}
                       >
