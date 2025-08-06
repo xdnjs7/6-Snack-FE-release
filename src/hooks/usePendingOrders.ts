@@ -19,7 +19,7 @@ type TPendingOrdersResponse = {
 
 export const usePendingOrders = ({ offset, limit, orderBy }: TUsePendingOrdersParams) => {
   return useQuery<TPendingOrdersResponse>({
-    queryKey: ["pendingOrders", offset, limit, orderBy],
+    queryKey: ["pendingOrders", { offset, limit, orderBy }],
     queryFn: () => fetchPendingOrders({ offset, limit, orderBy }),
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
