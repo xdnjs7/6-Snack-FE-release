@@ -5,7 +5,7 @@ import CartItem from "./_components/CartItem";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import ArrowIconSvg from "@/components/svg/ArrowIconSvg";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCartItems } from "@/lib/api/cart.api";
 import { useAuth } from "@/providers/AuthProvider";
 import { TGetCartItemsResponse } from "@/types/cart.types";
@@ -18,6 +18,12 @@ import clsx from "clsx";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 import { useOrderStore } from "@/stores/orderStore";
 
+/**
+ * @De-cal
+ * TODO:
+ * 1. 결제 끝까지 완료 되고나서 invalid 해야 할거 같아서 일단 임시로 적어두기, 완성되면 success하고 invalid 시키기
+ */
+
 export default function CartPage() {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isToastVisible, setIsToastVisible] = useState<boolean>(false);
@@ -26,6 +32,7 @@ export default function CartPage() {
 
   const { user } = useAuth();
   const router = useRouter();
+  const queryClient = useQueryClient();
   // Zustand로 Order 정보 저장
   const setOrder = useOrderStore((state) => state.setOrder);
 
@@ -42,7 +49,8 @@ export default function CartPage() {
     mutationFn: (cartItemIds) => createOrder({ cartItemIds }),
     onSuccess: (order) => {
       setOrder(order);
-
+      // queryClient.invalidateQueries({ queryKey: ["adminOrders", "approved"] });
+      // queryClient.invalidateQueries({ queryKey: ["budgets"] });
       router.push("/checkout");
     },
     onError: () => setIsDisabled(false),
