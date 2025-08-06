@@ -32,7 +32,9 @@ export default function CartPage() {
 
   const { user } = useAuth();
   const router = useRouter();
-  const queryClient = useQueryClient();
+  // 1. TODO
+  // const queryClient = useQueryClient();
+
   // Zustand로 Order 정보 저장
   const setOrder = useOrderStore((state) => state.setOrder);
 
@@ -49,6 +51,8 @@ export default function CartPage() {
     mutationFn: (cartItemIds) => createOrder({ cartItemIds }),
     onSuccess: (order) => {
       setOrder(order);
+
+      // 1. TODO
       // queryClient.invalidateQueries({ queryKey: ["adminOrders", "approved"] });
       // queryClient.invalidateQueries({ queryKey: ["budgets"] });
       router.push("/checkout");
