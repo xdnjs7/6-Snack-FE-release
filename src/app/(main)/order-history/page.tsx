@@ -81,6 +81,11 @@ const OrderHistoryPage = () => {
     }
   };
 
+  // 게이지 퍼센트 계산 공통 변수
+  const percent = safeBudgetData && safeBudgetData.currentMonthBudget > 0
+    ? Math.round((safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100)
+    : 0;
+
   return (
     <>
       {/* Mobile Layout */}
@@ -139,18 +144,8 @@ const OrderHistoryPage = () => {
                 <div className="self-stretch inline-flex justify-left items-center gap-1">
                   <div className="w-20 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
                     <div
-                      className="h-1.5 bg-blue-500 rounded-md"
-                      style={{
-                        width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                          ? Math.max(
-                            1,
-                            Math.round(
-                              (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
-                            ),
-                          )
-                          : 0
-                          }%`,
-                      }}
+                      className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-blue-500'}`}
+                      style={{ width: `${Math.max(1, percent)}%` }}
                     />
                   </div>
                   <div className="justify-center text-neutral-800 text-xs font-normal font-['SUIT']">
@@ -162,7 +157,7 @@ const OrderHistoryPage = () => {
                 {/* Mobile Hover Box */}
                 {isHoveredMobile && (
                   <BudgetHoverBox
-                    className="absolute w-66 left-1/2 transform -translate-x-1/2 ml-[-116px] top-38 z-50"
+                    className="absolute w-69 left-1/2 transform -translate-x-1/2 ml-[-120px] top-37 z-50"
                     budgetData={safeBudgetData}
                   />
                 )}
@@ -381,18 +376,8 @@ const OrderHistoryPage = () => {
               <div className="self-stretch inline-flex justify-left items-center gap-2.5">
                 <div className="w-36 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
                   <div
-                    className="h-1.5 bg-blue-500 rounded-md"
-                    style={{
-                      width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                        ? Math.max(
-                          1,
-                          Math.round(
-                            (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
-                          ),
-                        )
-                        : 0
-                        }%`,
-                    }}
+                    className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-blue-500'}`}
+                    style={{ width: `${Math.max(1, percent)}%` }}
                   />
                 </div>
                 <div className="justify-center text-neutral-800 text-sm font-normal font-['SUIT']">
@@ -404,7 +389,7 @@ const OrderHistoryPage = () => {
               {/* Tablet Hover Box */}
               {isHoveredTablet && (
                 <BudgetHoverBox
-                  className="absolute top-35 left-1/2 transform -translate-x-1/2 ml-[-90px] mt-2 w-72 z-50"
+                  className="absolute top-35 left-1/2 transform -translate-x-1/2 ml-[52px] mt-2 w-72 z-50"
                   budgetData={safeBudgetData}
                 />
               )}
@@ -630,18 +615,8 @@ const OrderHistoryPage = () => {
               <div className="self-stretch inline-flex justify-left items-center gap-2.5">
                 <div className="w-90 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
                   <div
-                    className="h-1.5 bg-blue-500 rounded-md"
-                    style={{
-                      width: `${safeBudgetData && safeBudgetData.currentMonthBudget > 0
-                        ? Math.max(
-                          1,
-                          Math.round(
-                            (safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100,
-                          ),
-                        )
-                        : 0
-                        }%`,
-                    }}
+                    className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-blue-500'}`}
+                    style={{ width: `${Math.max(1, percent)}%` }}
                   />
                 </div>
                 <div className="justify-center text-neutral-800 text-sm font-normal font-['SUIT']">
@@ -653,7 +628,7 @@ const OrderHistoryPage = () => {
               {/* Desktop Hover Box */}
               {isHoveredDesktop && (
                 <BudgetHoverBox
-                  className="absolute top-32 left-1/2 transform -translate-x-1/2 mt-2 w-76 z-50 ml-[-12px]"
+                  className="absolute top-32 left-1/2 transform -translate-x-1/2 mt-2 w-76 z-50 ml-[-30px]"
                   budgetData={safeBudgetData}
                 />
               )}
