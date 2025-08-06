@@ -38,7 +38,7 @@ export const useProductRegistrationForm = ({
     },
   });
 
-  const { watch, setValue, reset } = form;
+  const { watch, setValue, reset, trigger } = form;
   const watchedValues = watch();
 
   // 초기 데이터 설정
@@ -55,20 +55,26 @@ export const useProductRegistrationForm = ({
     }
   }, [initialData, setValue]);
 
+
+
   // 이미지 처리
   const handleImageChange = (file: File | null) => {
     if (file) {
       setValue("imageFile", file);
       setImagePreviewUrl(URL.createObjectURL(file));
     } else {
-      setValue("imageFile", new File([], "empty") as File);
+      setValue("imageFile", null);
       setImagePreviewUrl(null);
     }
+    // 이미지 필드 유효성 검사 트리거
+    trigger("imageFile");
   };
 
   const handleImageRemove = () => {
-    setValue("imageFile", new File([], "empty") as File);
+    setValue("imageFile", null);
     setImagePreviewUrl(null);
+    // 이미지 필드 유효성 검사 트리거
+    trigger("imageFile");
   };
 
   // 카테고리 처리
@@ -93,8 +99,8 @@ export const useProductRegistrationForm = ({
       formData.append("price", data.price);
       formData.append("linkUrl", data.productLink);
       formData.append("categoryId", categoryId.toString());
-      // 빈 파일이 아닌 경우에만 추가
-      if (data.imageFile.size > 0) {
+      // 이미지 파일이 있는 경우에만 추가
+      if (data.imageFile && data.imageFile.size > 0) {
         formData.append("image", data.imageFile);
       }
 

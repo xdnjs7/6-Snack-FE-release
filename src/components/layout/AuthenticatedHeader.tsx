@@ -123,7 +123,7 @@ export default function AuthenticatedHeader() {
   return (
     <header className="sticky top-0 w-full h-14 sm:h-25 md:h-[90px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] sm:px-[24px] sm:py-[28px] md:px-[100px] md:py-[32px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg z-50">
       <div className="flex items-center justify-center md:gap-10">
-        <Link href="/">
+        <Link href="/products">
           <div className="relative w-[102.75px] h-[44px]">
             <Image src={img_logo} fill alt="스낵 로고" className="object-contain" />
           </div>
@@ -177,7 +177,7 @@ export default function AuthenticatedHeader() {
           <Link href="/cart">
             <div className="relative w-[24px] h-[24px]">
               <Image src={ic_cart} alt="장바구니" fill className="object-contain" />
-              {user?.cartItemCount && user.cartItemCount > 0 && (
+              {user?.cartItemCount !== undefined && user.cartItemCount > 0 && (
                 <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                   {user.cartItemCount}
                 </div>

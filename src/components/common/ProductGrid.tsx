@@ -69,15 +69,15 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
             </div>
             <div className="flex flex-col justify-start items-start gap-2 w-full">
               <div className="flex justify-center items-center md:gap-2 ">
-                <div className=" text-stone-900 text-lg/[22px] font-normal">{product.name}</div>
-                <div className=" text-blue-500 text-sm/[17px] font-bold hidden md:block">
+                <div className="text-base/[20px] md:text-lg/[22px] font-normal tracking-tight">{product.name}</div>
+                <div className=" text-secondary-500 text-[13px]/[16px] md:text-sm/[17px] font-bold hidden md:block">
                   {product.cumulativeSales}회 구매
                 </div>
               </div>
-              <div className="justify-start text-stone-900 text-lg/[22px]  font-extrabold">
+              <div className="justify-start text-base/[20px] md:text-lg/[22px] font-extrabold tracking-tight">
                 {formatPrice(product.price)}원
               </div>
-              <div className="justify-center text-blue-500 text-sm/[17px] font-bold md:hidden">
+              <div className="justify-center text-secondary-500 text-[13px]/[16px] md:text-sm/[17px] font-bold md:hidden">
                 {product.cumulativeSales}회 구매
               </div>
             </div>

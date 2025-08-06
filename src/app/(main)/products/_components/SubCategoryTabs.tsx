@@ -14,13 +14,15 @@ export default function SubCategoryTabs() {
       {childrenCategories.map((child) => (
         <button
           key={child.id}
-          className="h-12 px-2 py-3.5 flex justify-center items-center gap-2.5 category-tab-btn"
+          className="h-12 px-2 py-3.5 flex justify-center items-center gap-2.5 category-tab-btn group transition-colors duration-200"
           onClick={() => router.push(`/products?category=${child.id}`)}
         >
           <div
             className={clsx(
-              selectedChild?.id === child.id ? "text-primary-950 font-bold" : "font-normal text-primary-400",
-              "justify-center text-sm/[17px] tracking-tight",
+              selectedChild?.id === child.id
+                ? "text-primary-950 font-bold"
+                : "font-normal text-primary-400  hover:text-secondary-500",
+              "justify-center text-sm/[17px] tracking-tight cursor-pointer",
             )}
           >
             {child.name}
