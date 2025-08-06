@@ -8,7 +8,6 @@ import { formatPrice } from "@/lib/utils/formatPrice.util";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import DogSpinner from "@/components/common/DogSpinner";
 
 // Budget 데이터 타입 정의
 type TBudgetData = {
