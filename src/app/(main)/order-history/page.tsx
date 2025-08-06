@@ -404,7 +404,7 @@ const OrderHistoryPage = () => {
               {/* Tablet Hover Box */}
               {isHoveredTablet && (
                 <BudgetHoverBox
-                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 z-50"
+                  className="absolute top-35 left-1/2 transform -translate-x-1/2 ml-[-90px] mt-2 w-72 z-50"
                   budgetData={safeBudgetData}
                 />
               )}
