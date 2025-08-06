@@ -224,7 +224,7 @@ export default function SuperAdminSignUpPage() {
           )}
 
           {/* login link */}
-          <nav aria-label="계정 관련 링크">
+          <nav aria-label="계정 관련 링크" className="w-full flex justify-center">
             <p className="text-primary-500 text-base/[20px] tracking-tight text-center w-full">
               이미 계정이 있으신가요?
               <Link href="/login" aria-label="로그인 페이지로 이동">
