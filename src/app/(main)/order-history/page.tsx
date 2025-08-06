@@ -41,9 +41,9 @@ const OrderHistoryPage = () => {
     <>
       {/* Mobile Layout */}
       <main className="min-h-screen w-full max-w-sm mx-auto relative bg-white overflow-hidden sm:hidden" aria-label="구매 내역 모바일 화면">
-        <header className="self-stretch inline-flex justify-between items-center px-4 pt-4" role="banner">
-          <h1 className="text-neutral-800 text-lg font-bold font-['SUIT']">구매 내역 확인</h1>
-          <nav aria-label="정렬 옵션">
+        <header className="self-stretch flex justify-between items-center px-4 pt-4" role="banner">
+          <h1 className="text-neutral-800 text-lg font-bold font-['SUIT'] flex-shrink-0">구매 내역 확인</h1>
+          <nav aria-label="정렬 옵션" className="flex-shrink-0">
             <div className="relative custom-sort-dropdown w-auto" role="region">
               <Dropdown
                 options={["최신순", "낮은 가격순", "높은 가격순"]}
@@ -225,7 +225,7 @@ const OrderHistoryPage = () => {
                       </div>
                       {item.adminMessage?.includes("즉시 구매") && (
                         <div className="px-1 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1">
-                          <div className="justify-center text-blue-500 text-xs font-bold font-['SUIT']">즉시 구매</div>
+                          <div className="justify-center text-blue-500 text-xs font-bold font-['SUIT']">즉시 요청</div>
                         </div>
                       )}
                     </div>
@@ -307,9 +307,9 @@ const OrderHistoryPage = () => {
 
       {/* Tablet Layout */}
       <main className="min-h-screen w-full max-w-3xl mx-auto relative bg-white overflow-hidden hidden sm:block md:hidden" aria-label="구매 내역 태블릿 화면">
-        <header className="self-stretch inline-flex justify-between items-center pt-8 px-8" role="banner">
-          <h1 className="text-neutral-800 text-lg font-bold font-['SUIT']">구매 내역 확인</h1>
-          <nav aria-label="정렬 옵션">
+        <header className="self-stretch flex justify-between items-center pt-8 px-8" role="banner">
+          <h1 className="text-neutral-800 text-lg font-bold font-['SUIT'] flex-shrink-0">구매 내역 확인</h1>
+          <nav aria-label="정렬 옵션" className="flex-shrink-0">
             <div className="relative custom-sort-dropdown w-auto" role="region">
               <Dropdown
                 options={["최신순", "낮은 가격순", "높은 가격순"]}
@@ -460,7 +460,7 @@ const OrderHistoryPage = () => {
                           {item.adminMessage?.includes("즉시 구매") && (
                             <div className="px-1 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1">
                               <div className="justify-center text-blue-500 text-xs font-bold font-['SUIT']">
-                                즉시 구매
+                                즉시 요청
                               </div>
                             </div>
                           )}
@@ -545,9 +545,9 @@ const OrderHistoryPage = () => {
 
       {/* Desktop Layout */}
       <main className="min-h-screen w-full relative bg-white overflow-hidden hidden md:block" aria-label="구매 내역 데스크탑 화면">
-        <header className="self-stretch inline-flex justify-between items-center pt-10 px-10" role="banner">
-          <h1 className="text-neutral-800 text-lg font-bold font-['SUIT']">구매 내역 확인</h1>
-          <nav aria-label="정렬 옵션">
+        <header className="self-stretch flex justify-between items-center pt-10 px-10" role="banner">
+          <h1 className="text-neutral-800 text-lg font-bold font-['SUIT'] flex-shrink-0">구매 내역 확인</h1>
+          <nav aria-label="정렬 옵션" className="flex-shrink-0">
             <div className="relative custom-sort-dropdown w-auto" role="region">
               <Dropdown
                 options={["최신순", "낮은 가격순", "높은 가격순"]}
@@ -684,7 +684,7 @@ const OrderHistoryPage = () => {
                       {item.adminMessage?.includes("즉시 구매") && (
                         <div className="px-2 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1 whitespace-nowrap">
                           <div className="justify-center items-center text-center text-blue-500 text-xs font-bold font-['SUIT'] w-12 whitespace-nowrap overflow-hidden text-ellipsis">
-                            즉시 구매
+                            즉시 요청
                           </div>
                         </div>
                       )}
