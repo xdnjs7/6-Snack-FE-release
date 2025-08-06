@@ -14,7 +14,7 @@ export default function CartAndLikeButtons({ onAddToCart, isFavorite, onToggleFa
     <div className="flex gap-4 w-full">
       <Button type="primary" label="장바구니 담기" className="w-full h-16 font-bold" onClick={onAddToCart} />
 
-      <div className="w-16 h-16 border rounded flex items-center justify-center">
+      <div className="w-16 h-16 border border-primary-300 rounded flex items-center justify-center">
         <LikeIconSvg isLiked={isFavorite} onToggle={onToggleFavorite} />
       </div>
     </div>

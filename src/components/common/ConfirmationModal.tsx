@@ -34,7 +34,7 @@ export default function ConfirmationModal({
 
   return (
     <div ref={overlayRef} onClick={handleOverlayClick} className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="bg-white rounded-md p-6 w-full max-w-md mx-4 sm:mx-0">
+      <div className="bg-white rounded-md p-6 w-full max-w-md mx-4 sm:mx-0 shadow-sm">
         <h2 className="text-lg font-bold text-black text-center mb-2">{modalTitle}</h2>
         <p className="text-primary-900 text-center text-md mb-6">{modalDescription}</p>
         <div className="flex items-center justify-center gap-2 mb-8">
