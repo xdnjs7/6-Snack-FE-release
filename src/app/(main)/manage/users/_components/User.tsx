@@ -64,7 +64,6 @@ export default function User() {
   } = useQuery({
     queryKey: ["companyUsers", name],
     queryFn: () => fetchAllCompanyUsers({ name, limit: 50 }),
-    staleTime: 5 * 60 * 1000,
   });
 
   const members = useMemo(() => membersData?.users ?? [], [membersData?.users]);

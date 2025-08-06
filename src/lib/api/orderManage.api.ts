@@ -12,17 +12,10 @@ export const fetchPendingOrders = async ({
 }): Promise<{ orders: TOrderSummary[]; meta: { totalCount: number; currentPage: number; totalPages: number } }> => {
   const page = Math.floor(offset / limit) + 1;
   const query = `?status=pending&page=${page}&limit=${limit}&orderBy=${orderBy}`;
-  console.log("API Request URL:", `/admin/orders${query}`);
   const res = (await cookieFetch(`/admin/orders${query}`)) as {
     orders: TOrderSummary[];
     meta: { totalCount: number; currentPage: number; totalPages: number };
   };
-  console.log("API Response:", res);
-  console.log("API Response Details:", {
-    ordersLength: res.orders?.length,
-    ordersIds: res.orders?.map((order) => order.id),
-    meta: res.meta,
-  });
   return res;
 };
 
