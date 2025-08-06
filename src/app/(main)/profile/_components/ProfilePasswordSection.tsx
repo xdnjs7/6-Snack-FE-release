@@ -17,7 +17,7 @@ export default function ProfilePasswordSection({
   confirmPasswordError,
 }: TProfilePasswordSectionProps) {
   return (
-    <fieldset aria-label="비밀번호 변경" className="space-y-4">
+    <fieldset aria-label="비밀번호 변경" className="space-y-4 w-full">
       <legend className="sr-only">비밀번호 변경</legend>
 
       {/* 비밀번호 */}

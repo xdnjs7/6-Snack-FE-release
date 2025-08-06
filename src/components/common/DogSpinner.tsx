@@ -1,30 +1,25 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Image from "next/image";
+import img_dog from "@/assets/images/img_dog.png";
+import ic_dot from "@/assets/icons/ic_dot.svg";
 
 export default function DogSpinner() {
-  const [frame, setFrame] = useState(1);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFrame((prev) => (prev === 1 ? 2 : 1));
-    }, 400); // 0.4초마다 이미지 교체
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const imageSrc = frame === 1 ? "/images/spinner_img.png" : "/images/spinner_img2.png";
-
   return (
-    <div className="w-20 h-20 relative">
-      <Image
-        src={imageSrc}
-        alt="로딩 강아지"
-        fill // 부모가 relative일 경우, 전체 채움
-        className="object-contain"
-        priority // 스피너는 빠르게 보여야 하므로 optional하게 적용
-      />
+    <div className="flex flex-col justify-center items-center">
+      <div className="flex gap-2">
+        <div className="relative w-2 h-2">
+          <Image src={ic_dot} alt="검정색 점" fill className="object-contain bounce-y animation-delay-0" />
+        </div>
+        <div className="relative w-2 h-2">
+          <Image src={ic_dot} alt="검정색 점" fill className="object-contain bounce-y animation-delay-200" />
+        </div>
+        <div className="relative w-2 h-2">
+          <Image src={ic_dot} alt="검정색 점" fill className="object-contain bounce-y animation-delay-400" />
+        </div>
+      </div>
+
+      <div className="relative w-20 h-16 animate-moveUpDown">
+        <Image src={img_dog} alt="강아지 아이콘" fill className="object-contain" />
+      </div>
     </div>
   );
 }

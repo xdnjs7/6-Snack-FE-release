@@ -8,6 +8,7 @@ import { formatPrice } from "@/lib/utils/formatPrice.util";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import DogSpinner from "@/components/common/DogSpinner";
 
 // Budget 데이터 타입 정의
 type TBudgetData = {
@@ -603,8 +604,8 @@ const OrderHistoryPage = () => {
                     <div className="self-stretch justify-center text-neutral-800 text-lg font-bold font-['SUIT']">
                       이번 달 지출액
                     </div>
-                    <div className="justify-center text-stone-500 text-base font-normal font-['SUIT']">
-                      지난 달: {safeBudgetData ? formatNumber(safeBudgetData.previousMonthExpense) : "0원"}
+                    <div className="justify-center text-neutral-800 text-2xl font-extrabold font-['SUIT']">
+                      {safeBudgetData ? formatNumber(safeBudgetData.currentMonthExpense) : "0원"}
                     </div>
                   </div>
                 </div>

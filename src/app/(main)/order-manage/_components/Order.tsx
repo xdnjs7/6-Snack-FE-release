@@ -16,12 +16,14 @@ import { updateOrderStatus } from "@/lib/api/orderManage.api";
 import icNoOrder from "@/assets/icons/ic_no_order.svg";
 import { useAuth } from "@/providers/AuthProvider";
 import { TToastVariant } from "@/types/toast.types";
+import { useRouter } from "next/navigation";
 
 export default function Order() {
   const [currentPaginationPage, setCurrentPaginationPage] = useState<number>(1);
   const { openModal } = useModal();
   const queryClient = useQueryClient();
   const { user } = useAuth();
+  const router = useRouter();
 
   // Toast 상태
   const [toastVisible, setToastVisible] = useState<boolean>(false);
@@ -202,8 +204,8 @@ export default function Order() {
                   </p>
                 </div>
                 <button
-                  className="self-stretch h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center"
-                  onClick={() => {}}
+                  className="self-stretch h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center cursor-pointer"
+                  onClick={() => router.push("/products")}
                   onKeyDown={handleKeyDown}
                   aria-label="상품 리스트 페이지로 이동"
                 >

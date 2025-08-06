@@ -6,7 +6,6 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import IcSearch from "@/assets/icons/ic_search.svg";
 import { TSearchBarProps } from "@/types/serchBar.types";
 
-
 export default function SearchBar({ placeholder = "이름으로 검색하세요", initialValue = "" }: TSearchBarProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -56,8 +55,8 @@ export default function SearchBar({ placeholder = "이름으로 검색하세요"
       </button>
       <input
         type="text"
-        placeholder={placeholder}
-        className="flex bg-transparent outline-none text-base md:text-lg text-primary-900 font-normal font-suit placeholder-primary-400"
+        placeholder={placeholder.trim()}
+        className="flex bg-transparent outline-none text-base md:text-lg text-primary-900 font-normal font-suit placeholder-primary-400 placeholder:truncate"
         value={searchText}
         onChange={handleChange}
         onKeyDown={handleKeyDown}

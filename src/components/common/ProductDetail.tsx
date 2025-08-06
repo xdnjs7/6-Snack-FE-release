@@ -14,6 +14,10 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useCurrentSubCategory } from "@/hooks/useCurrentSubCategory";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Toast from "@/components/common/Toast";
+import { useToggleFavorite } from "@/hooks/useToggleFavorite";
+import DogSpinner from "@/components/common/DogSpinner";
+import icNoOrder from "@/assets/icons/ic_no_order.svg";
+import Image from "next/image";
 
 type TProductDetailProps = {
   productId: number;
@@ -26,9 +30,17 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
   const router = useRouter();
   const { findCategoryPath } = useCurrentSubCategory();
   const queryClient = useQueryClient();
+
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastVariant, setToastVariant] = useState<"success" | "error">("success");
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const { mutate: toggleFavorite } = useToggleFavorite(productId, {
+    onMutate: () => setIsFavorite((prev) => !prev),
+    onError: () => setIsFavorite((prev) => !prev),
+  });
+
   const showToast = (message: string, variant: "success" | "error" = "success") => {
     setToastMessage(message);
     setToastVariant(variant);
@@ -56,8 +68,48 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
     }
   }, [product?.category?.id, findCategoryPath]);
 
-  if (isLoading) return <p>로딩 중...</p>;
-  if (isError || !product) return <p>상품 정보를 불러올 수 없습니다.</p>;
+  useEffect(() => {
+    if (product) {
+      setIsFavorite(product.isFavorite);
+    }
+  }, [product]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center h-screen">
+        <DogSpinner />
+        <p className="text-black text-sm font-medium animate-pulse -mt-7">Loading...</p>
+      </div>
+      // 나중에 교체
+    );
+  }
+  if (isError || !product)
+    return (
+      <section className="flex flex-1 justify-center min-h-screen" role="status" aria-label="빈 상태">
+        <div className="sm:w-80 inline-flex flex-col justify-start items-center gap-7 py-12 mt-[142px] sm:mt-[222px] md:mt-[191px]">
+          <div className="w-24 h-24 relative" role="img" aria-label="주문 내역 없음 아이콘">
+            <Image src={icNoOrder} alt="주문 내역 없음" fill className="object-contain" />
+          </div>
+          <div className="self-stretch flex flex-col justify-start items-center gap-12">
+            <div className="w-72 flex flex-col justify-start items-center gap-2.5">
+              <h2 className="self-stretch text-center text-neutral-800 text-2xl font-extrabold">상품 내역이 없어요</h2>
+              <p className="self-stretch text-center text-neutral-700 text-base leading-relaxed">
+                원하는 상품을
+                <br />
+                상품리스트에 추가해보세요.
+              </p>
+            </div>
+            <button
+              className="self-stretch h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center cursor-pointer"
+              onClick={() => router.push("/products")}
+              aria-label="상품 리스트 페이지로 이동"
+            >
+              <span className="text-white text-base font-bold">상품 리스트로 이동</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    );
 
   const handleAddToCart = () => {
     if (selectedQuantity < 1) {
@@ -69,6 +121,10 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
   };
 
   const canEdit = user?.id === product.creatorId || user?.role === "ADMIN" || user?.role === "SUPER_ADMIN";
+
+  const handleToggleFavorite = () => {
+    toggleFavorite(isFavorite);
+  };
 
   return (
     <div className="w-full flex flex-col justify-center items-center sm:max-w-[1180px]">
@@ -92,7 +148,12 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
               />
             </div>
             <div className="flex flex-col justify-center items-center w-full">
-              <CartAndLikeButtons onAddToCart={handleAddToCart} />
+              <CartAndLikeButtons
+                onAddToCart={handleAddToCart}
+                isFavorite={isFavorite}
+                onToggleFavorite={handleToggleFavorite}
+                productId={product.id}
+              />
               <ProductInfoSections />
             </div>
           </div>
