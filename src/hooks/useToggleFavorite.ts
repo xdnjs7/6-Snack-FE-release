@@ -27,7 +27,7 @@ export const useToggleFavorite = (
       await queryClient.cancelQueries({ queryKey: ["productDetail", productId] });
 
       const prev = queryClient.getQueryData(["productDetail", productId]);
-      queryClient.setQueryData(["productDetail", productId], (old: any) => {
+      queryClient.setQueryData<{ isFavorite: boolean }>(["productDetail", productId], (old) => {
         if (!old) return old;
         return { ...old, isFavorite: !isFavoriteNow };
       });
