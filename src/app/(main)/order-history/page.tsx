@@ -1,4 +1,3 @@
-
 "use client";
 
 import ChevronLeftIcon from "@/assets/icons/ic_chevron_left.svg";
@@ -117,8 +116,8 @@ const OrderHistoryPage = () => {
           <h2 id="budget-section-mobile" className="sr-only">예산 현황</h2>
           {/* 예산 카드 */}
           <div className="self-stretch relative flex flex-col justify-center items-start gap-4">
-            <div className="self-stretch inline-flex justify-start items-start gap-4">
-              <div className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 overflow-hidden">
+            <div className="self-stretch inline-flex justify-start items-start gap-4 min-w-0">
+              <div className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 overflow-hidden min-w-0">
                 <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
                   <div className="self-stretch justify-center text-neutral-800 text-base font-bold font-['SUIT']">
                     이번 달 예산
@@ -127,18 +126,18 @@ const OrderHistoryPage = () => {
                     {safeBudgetData ? formatNumber(safeBudgetData.currentMonthBudget) : "0원"}
                   </div>
                 </div>
-                <div className="relative w-34 justify-center text-stone-500 text-sm font-normal font-['SUIT'] leading-snug">
+                <div className="relative justify-center text-stone-500 text-sm font-normal font-['SUIT'] leading-snug">
                   지난 달 예산은 {safeBudgetData ? formatNumber(safeBudgetData.previousMonthBudget) : "0원"}이었어요
                 </div>
               </div>
               <div
-                className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-3 relative"
+                className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-3 relative min-w-0"
                 onMouseEnter={() => setIsHoveredMobile(true)}
                 onMouseLeave={() => setIsHoveredMobile(false)}
                 onTouchStart={() => setIsHoveredMobile(true)}
                 onTouchEnd={() => setIsHoveredMobile(false)}
               >
-                <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
+                <div className="self-stretch flex flex-col justify-start items-start gap-2.5 overflow-hidden">
                   <div className="self-stretch justify-center text-neutral-800 text-base font-bold font-['SUIT']">
                     이번 달 지출액
                   </div>
@@ -208,16 +207,17 @@ const OrderHistoryPage = () => {
             currentItems.map((item) => (
               <article key={item.id} className="self-stretch pb-2.5 flex flex-col justify-start items-start" role="listitem">
                 <div className="self-stretch py-3.5 border-b border-zinc-400 inline-flex justify-between items-center">
-                  <div className="flex justify-start items-center gap-2">                      <button
-                    onClick={() => handleProductClick(item.id)}
-                    className="text-blue-600 cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis max-w-32"
-                    type="button"
-                    aria-label={`${item.item} 상세보기로 이동`}
-                  >
-                    {item.item}
-                  </button>
+                  <div className="flex justify-start items-center gap-2">
+                    <button
+                      onClick={() => handleProductClick(item.id)}
+                      className="text-blue-600 cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis max-w-32"
+                      type="button"
+                      aria-label={`${item.item} 상세보기로 이동`}
+                    >
+                      {item.item}
+                    </button>
                   </div>
-                  <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
+                  <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT'] ml-[-100px]">
                     총 수량 {getProductTypeCount(item.productName)}개
                   </div>
                   <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
@@ -249,7 +249,7 @@ const OrderHistoryPage = () => {
                       </div>
                       {item.adminMessage?.includes("즉시 구매") && (
                         <div className="px-1 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1">
-                          <div className="justify-center text-blue-500 text-xs font-bold font-['SUIT']">즉시 요청</div>
+                          <div className="justify-center text-blue-500 text-xs font-bold font-['SUIT']">즉시 구매</div>
                         </div>
                       )}
                     </div>
@@ -445,6 +445,9 @@ const OrderHistoryPage = () => {
                     >
                       {item.item}
                     </button>
+                    <div className="text-zinc-500 text-xs font-normal font-['SUIT'] ml-2">
+                      총 수량 {getProductTypeCount(item.productName)}개
+                    </div>
                   </div>
                   <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
                     {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
@@ -478,7 +481,7 @@ const OrderHistoryPage = () => {
                           {item.adminMessage?.includes("즉시 구매") && (
                             <div className="px-1 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1">
                               <div className="justify-center text-blue-500 text-xs font-bold font-['SUIT']">
-                                즉시 요청
+                                즉시 구매
                               </div>
                             </div>
                           )}
@@ -701,7 +704,7 @@ const OrderHistoryPage = () => {
                       {item.adminMessage?.includes("즉시 구매") && (
                         <div className="px-2 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1 whitespace-nowrap">
                           <div className="justify-center items-center text-center text-blue-500 text-xs font-bold font-['SUIT'] w-12 whitespace-nowrap overflow-hidden text-ellipsis">
-                            즉시 요청
+                            즉시 구매
                           </div>
                         </div>
                       )}
