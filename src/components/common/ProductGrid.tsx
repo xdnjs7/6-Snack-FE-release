@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 import NoContent from "./NoContent";
 import LikeIconSvg from "../svg/LikeIconSvg";
-import { TProduct, TProductGrid } from "@/types/product.types";
+import { TProductGrid } from "@/types/product.types";
 
 type TProductWithFavorite = TProductGrid & {
   isFavorite?: boolean;
