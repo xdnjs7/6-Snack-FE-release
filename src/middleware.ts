@@ -62,7 +62,7 @@ export function middleware(request: NextRequest) {
 
     // 2. 일반유저가 아닌 경우(ADMIN, SUPER_ADMIN) 접근할 수 없는 경로
     const nonUserRestrictedPaths = [
-      "/cart",              // 장바구니-주문
+      "/cart/order",              // 장바구니-주문
     ];
 
     // 일반유저 제한 체크 (6개 경로: 회원관리, 예산관리, 구매요청관리, 구매요청관리상세, 구매내역확인, 구매내역확인상세)
