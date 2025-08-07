@@ -43,7 +43,7 @@ export default function CartPage() {
     isPending,
     error,
   } = useQuery<TGetCartItemsResponse, Error, TGetCartItemsResponse, [string]>({
-    queryKey: ["cart"],
+    queryKey: ["cartItems"],
     queryFn: () => getCartItems(),
   });
 

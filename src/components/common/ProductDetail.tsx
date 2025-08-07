@@ -54,7 +54,7 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
       return addToCart(product.id, selectedQuantity);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
       router.push("/cart");
     },
     onError: () => {
@@ -159,14 +159,7 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
           </div>
         </div>
       </div>
-      {toastVisible && (
-        <Toast
-          text={toastMessage}
-          variant={toastVariant}
-          isVisible={toastVisible}
-          onClose={() => setToastVisible(false)}
-        />
-      )}
+      {toastVisible && <Toast text={toastMessage} variant={toastVariant} isVisible={toastVisible} />}
     </div>
   );
 }

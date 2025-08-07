@@ -104,14 +104,7 @@ export default function MyOrderListPage() {
         />
       </div>
 
-      {toastVisible && (
-        <Toast
-          text="요청이 성공적으로 취소되었습니다."
-          variant="success"
-          isVisible={toastVisible}
-          onClose={() => setToastVisible(false)}
-        />
-      )}
+      {toastVisible && <Toast text="요청이 성공적으로 취소되었습니다." variant="success" isVisible={toastVisible} />}
     </main>
   );
 }

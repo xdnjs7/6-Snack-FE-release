@@ -106,12 +106,7 @@ const BudgetFormUI: React.FC<BudgetFormUIProps> = ({
   return (
     <>
       {/* Toast 컴포넌트 */}
-      <Toast
-        text={toastMessage}
-        variant={toastVariant}
-        isVisible={toastVisible}
-        onClose={() => setToastVisible(false)}
-      />
+      <Toast text={toastMessage} variant={toastVariant} isVisible={toastVisible} />
 
       <div className="flex flex-1 flex-col justify-center sm:flex-row">
         <div className="w-full sm:w-1/2">

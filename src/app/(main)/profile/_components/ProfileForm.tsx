@@ -172,12 +172,7 @@ export default function ProfileForm() {
 
   return (
     <main aria-label="프로필 변경 페이지">
-      <Toast
-        text={toastMessage}
-        variant={toastVariant}
-        isVisible={toastVisible}
-        onClose={() => setToastVisible(false)}
-      />
+      <Toast text={toastMessage} variant={toastVariant} isVisible={toastVisible} />
 
       <form
         onSubmit={handleSubmit(onSubmit)}
