@@ -5,6 +5,7 @@ import Pagination from "@/components/common/Pagination";
 import Button from "@/components/ui/Button";
 import SearchBar from "@/components/ui/SearchBar";
 import Toast from "@/components/common/Toast";
+import NoContent from "@/components/common/NoContent";
 import { fetchAllCompanyUsers } from "@/lib/api/companyUser.api";
 import { sendInvite } from "@/lib/api/invite.api";
 import { deleteUserById } from "@/lib/api/superAdmin.api";
@@ -195,7 +196,7 @@ export default function User() {
             <div className="text-center py-10" role="status" aria-live="polite" aria-label="회원 목록 로딩 중">
               로딩 중...
             </div>
-          ) : (
+          ) : paginateMembers.length > 0 ? (
             paginateMembers.map((member) => (
               <div key={member.id} role="listitem">
                 <MemberList
@@ -205,32 +206,45 @@ export default function User() {
                 />
               </div>
             ))
+          ) : (
+            <NoContent
+              title="아직 회원이 없어요"
+              subText1="함께 이용할 회원을 초대하고"
+              subText2="간식 구매를 통합 관리하세요"
+              buttonText="회원 초대하기"
+              onClick={() => {
+                openModal(<InviteMemberModal mode="invite" onSubmit={handleInviteUser} />);
+              }}
+            />
           )}
         </div>
       </section>
 
       {/* 페이지네이션 */}
-      <nav aria-label="회원 목록 페이지네이션" className="mt-6">
-        <Pagination
-          currentPage={currentPaginationPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPaginationPage}
-        />
-      </nav>
+      {paginateMembers.length > 0 && (
+        <nav aria-label="회원 목록 페이지네이션" className="mt-6">
+          <Pagination
+            currentPage={currentPaginationPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPaginationPage}
+          />
+        </nav>
+      )}
 
       {/* 모바일 초대 버튼 */}
-      <div className="w-full flex justify-center">
-        <Button
-          type="black"
-          label="회원 초대하기"
-          className="w-50 h-16 sm:hidden rounded-[2px]"
-          onClick={() => {
-            openModal(<InviteMemberModal mode="invite" onSubmit={handleInviteUser} />);
-          }}
-          aria-label="새 회원 초대하기 (모바일)"
-        />
-      </div>
-
+      {paginateMembers.length > 0 && (
+        <div className="w-full pt-6 flex justify-center">
+          <Button
+            type="black"
+            label="회원 초대하기"
+            className="w-50 h-16 sm:hidden rounded-[2px]"
+            onClick={() => {
+              openModal(<InviteMemberModal mode="invite" onSubmit={handleInviteUser} />);
+            }}
+            aria-label="새 회원 초대하기 (모바일)"
+          />
+        </div>
+      )}
       <Toast text={toastMessage} variant={toastVariant} isVisible={toastVisible} />
     </main>
   );
