@@ -11,8 +11,6 @@ import { superAdminSignUpApi } from "@/lib/api/superAdmin.api";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
 import { TToastVariant } from "@/types/toast.types";
-import DogSpinner from "@/components/common/DogSpinner";
-import BackdropSpinnerWrapper from "@/app/(auth)/signup/_components/BackdropSpinnerWrapper";
 
 // 리액트 훅폼에 연결할 zod 스키마 정의
 const signUpSchema = z
@@ -32,7 +30,6 @@ const signUpSchema = z
       .regex(/[^a-zA-Z0-9]/, "비밀번호는 특수문자를 포함해야 합니다."),
     passwordConfirm: z.string("비밀번호를 입력해주세요."),
   })
-
   .refine((data) => data.password === data.passwordConfirm, {
     message: "비밀번호가 일치하지 않습니다.",
     path: ["passwordConfirm"],
@@ -45,8 +42,8 @@ export default function SuperAdminSignUpPage() {
 
   const [toastVisible, setToastVisible] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
-  const [toastVariant, setToastVariant] = useState<TToastVariant>("success");
-  const [showSpinner, setShowSpinner] = useState(false);
+  const [toastVariant, setToastVariant] = useState<TToastVariant>("error");
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -65,7 +62,7 @@ export default function SuperAdminSignUpPage() {
   const bizNumberReg = register("bizNumber");
 
   // Toast를 보여주는 함수
-  const showToast = (message: string, variant: TToastVariant = "success") => {
+  const showToast = (message: string, variant: TToastVariant = "error") => {
     setToastMessage(message);
     setToastVariant(variant);
     setToastVisible(true);
@@ -78,17 +75,13 @@ export default function SuperAdminSignUpPage() {
 
   // 회원가입 처리
   const onSubmit = async (data: TSignUpFormData) => {
-    setShowSpinner(true);
+    setIsLoading(true);
     try {
       await superAdminSignUpApi(data);
-      showToast("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.", "success");
-      // 2초 후 이동 (사용자가 성공 메시지를 볼 수 있도록)
-      setTimeout(() => {
-        router.push("/login");
-      }, 2000);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      setShowSpinner(false);
+      // 성공 시 바로 로그인 페이지로 이동
+      router.push("/login");
+    } catch {
+      setIsLoading(false);
       showToast("회원가입에 실패했습니다. 다시 시도해주세요.", "error");
     }
   };
@@ -99,15 +92,6 @@ export default function SuperAdminSignUpPage() {
       <div role="alert" aria-live="polite">
         <Toast text={toastMessage} variant={toastVariant} isVisible={toastVisible} />
       </div>
-      {/* DogSpinner - 회원가입 처리 중일 때만 노출 */}
-      {showSpinner && (
-        <BackdropSpinnerWrapper>
-          <div className="flex flex-col items-center gap-4">
-            <DogSpinner />
-            <p className="text-white text-sm font-['SUIT'] font-medium">회원가입을 처리하고 있습니다...</p>
-          </div>
-        </BackdropSpinnerWrapper>
-      )}
 
       {/* main content */}
       <main
@@ -238,21 +222,18 @@ export default function SuperAdminSignUpPage() {
             <button
               type="submit"
               className={clsx(
-                "w-full h-[64px] mb-[24px] rounded-[2px] inline-flex justify-center items-center text-base cursor-pointer transition-all duration-200",
-                isValid && !isSubmitting && !showSpinner
-                  ? "bg-primary-950 text-primary-50 hover:bg-primary-900"
-                  : "bg-primary-100 text-primary-300 cursor-not-allowed",
+                "w-full h-[64px] mb-[24px] rounded-[2px] inline-flex justify-center items-center text-base transition-all duration-200",
+                isValid && !isSubmitting && !isLoading
+                  ? "bg-primary-950 text-primary-50 hover:bg-primary-900 cursor-pointer"
+                  : "bg-primary-100 text-primary-300 cursor-default",
                 "font-bold",
               )}
-              disabled={isSubmitting || !isValid || showSpinner}
+              disabled={isSubmitting || !isValid || isLoading}
               aria-describedby={!isValid ? "form-validation-message" : undefined}
-              aria-label={isSubmitting || showSpinner ? "회원가입 처리 중" : "회원가입 하기"}
+              aria-label={isSubmitting || isLoading ? "회원가입 처리 중" : "회원가입 하기"}
             >
-              {isSubmitting || showSpinner ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-primary-300 border-t-primary-600 rounded-full animate-spin"></div>
-                  처리 중...
-                </div>
+              {isSubmitting || isLoading ? (
+                "처리 중"
               ) : (
                 "가입하기"
               )}

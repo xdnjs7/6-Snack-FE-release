@@ -69,7 +69,7 @@ export default function ApprovalInfoSection({
               결과 메시지
             </div>
           </div>
-          <div className="flex-1 p-4 border-b border-neutral-200 flex justify-start items-center gap-2">
+          <div className="flex-1 self-stretch p-4 border-b border-neutral-200 flex justify-start items-start gap-2">
             <div className="flex-1 justify-center text-gray-900 text-sm sm:text-base font-bold font-['SUIT'] leading-snug">
               {adminMessage || "-"}
             </div>
