@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
 import { TToastVariant } from "@/types/toast.types";
+import { emailSchema } from "@/lib/schemas/email.schema";
 
 const roleLabels: Record<TUserRole, string> = {
   USER: "유저",
@@ -26,6 +27,8 @@ export default function InviteMemberModal({
   const [email, setEmail] = useState<string>(defaultValues?.email ?? "");
   const [selectedRole, setSelectedRole] = useState<TUserRole>(defaultValues?.role ?? "USER");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState<string>("");
+  const [nameError, setNameError] = useState<string>("");
 
   // Toast 상태
   const [toastVisible, setToastVisible] = useState<boolean>(false);
@@ -86,6 +89,15 @@ export default function InviteMemberModal({
         return;
       }
 
+      // 이메일 유효성 검사
+      const emailValidation = emailSchema.safeParse(email);
+      if (!emailValidation.success) {
+        setEmailError("유효하지 않은 이메일입니다.");
+        showToast("유효하지 않은 이메일입니다.", "error");
+        return;
+      }
+      setEmailError("");
+
       onSubmit?.({ name, email, role: selectedRole });
       closeModal();
     }
@@ -101,7 +113,7 @@ export default function InviteMemberModal({
 
   return (
     <>
-      <div className="fixed inset-0 bg-white overflow-auto shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] sm:w-[600px] sm:h-[470px] sm:top-1/2 sm:left-1/2 sm:translate-[-50%] sm:py-[40px] sm:px-[60px]">
+      <div className="fixed inset-0 bg-white overflow-auto shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] sm:w-[600px] sm:h-[490px] sm:top-1/2 sm:left-1/2 sm:translate-[-50%] sm:py-[40px] sm:px-[60px]">
         <div className="flex justify-center items-center h-[54px] py-[16px] px-[8px] sm:p-0 sm:h-auto">
           <p className="flex justify-center items-center w-[375px] font-bold text-[18px]/[22px] tracking-tight text-[#1f1f1f]">
             {mode === "edit" ? "권한 수정" : "회원 초대"}
@@ -118,15 +130,30 @@ export default function InviteMemberModal({
                 onChange={(e) => setName(e.target.value)}
                 placeholder="이름을 입력해주세요"
                 readOnly={mode === "edit"}
+                error={nameError}
               />
 
               <Input
                 label="이메일"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  // 실시간 이메일 유효성 검사
+                  if (e.target.value) {
+                    const emailValidation = emailSchema.safeParse(e.target.value);
+                    if (!emailValidation.success) {
+                      setEmailError("유효하지 않은 이메일입니다.");
+                    } else {
+                      setEmailError("");
+                    }
+                  } else {
+                    setEmailError("");
+                  }
+                }}
                 placeholder="이메일을 입력해주세요"
                 readOnly={mode === "edit"}
+                error={emailError}
               />
             </div>
 
@@ -145,7 +172,7 @@ export default function InviteMemberModal({
                 </div>
 
                 {isDropdownOpen && (
-                  <div className="absolute top-full left-0 w-full bg-white border border-primary-100 z-50">
+                  <div className="absolute top-full left-0 w-full bg-white border border-primary-100 z-10">
                     {Object.entries(roleLabels).map(([role, label]) => (
                       <div
                         key={role}
@@ -182,7 +209,7 @@ export default function InviteMemberModal({
         </div>
       </div>
 
-      <Toast text={toastMessage} variant={toastVariant} isVisible={toastVisible} />
+      {toastVisible && <Toast text={toastMessage} variant={toastVariant} isVisible={toastVisible} />}
     </>
   );
 }
