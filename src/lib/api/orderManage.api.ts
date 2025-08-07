@@ -1,4 +1,4 @@
-import { TOrder, TOrderSummary } from "@/types/order.types";
+import { TOrderResponse, TOrderSummary } from "@/types/order.types";
 import { cookieFetch } from "./fetchClient.api";
 
 export const fetchPendingOrders = async ({
@@ -19,9 +19,9 @@ export const fetchPendingOrders = async ({
   return res;
 };
 
-export const fetchOrderDetail = async (orderId: string): Promise<TOrder> => {
+export const fetchOrderDetail = async (orderId: string): Promise<TOrderResponse> => {
   const res = await cookieFetch(`/admin/orders/${orderId}?status=pending`);
-  return res as TOrder;
+  return res as TOrderResponse;
 };
 
 export const updateOrderStatus = async ({

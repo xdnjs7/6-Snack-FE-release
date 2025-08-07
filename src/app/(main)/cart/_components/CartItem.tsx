@@ -13,6 +13,7 @@ import { orderNow } from "@/lib/api/order.api";
 import { useRouter } from "next/navigation";
 import { TOrderNowResponse } from "@/types/order.types";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
+import Link from "next/link";
 
 /**
  * @De-cal
@@ -171,18 +172,24 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
               </button>
 
               <div className="w-full flex justify-center items-center gap-[12px] sm:gap-[20px]">
-                <div className="flex justify-center items-center w-[81px] h-[81px] p-[24px] rounded-[2px] bg-primary-50 sm:w-[140px] sm:h-[140px] sm:bg-white">
+                <Link
+                  href={`/products/${item.product.id}?category=${item.product.categoryId}`}
+                  className="flex justify-center items-center w-[81px] h-[81px] p-[24px] rounded-[2px] bg-primary-50 sm:w-[140px] sm:h-[140px] sm:bg-white"
+                >
                   <div className="relative w-[29px] h-[50px] sm:w-[59px] sm:h-[102px]">
                     <Image src={item.product.imageUrl} alt="상품" fill className="object-contain" />
                   </div>
-                </div>
+                </Link>
 
                 <div className="w-full flex flex-col sm:gap-[20px]">
                   <div className="flex justify-between items-center gap-[16px] sm:items-end">
                     <div className="flex flex-col justify-center items-start gap-[4px] sm:gap-[8px]">
-                      <p className="min-w-[115px] font-normal text-[14px]/[17px] tracking-tight text-primary-950 line-clamp-1 sm:font-medium sm:text-[16px]/[20px] sm:text-[#1f1f1f]">
+                      <Link
+                        href={`/products/${item.product.id}?category=${item.product.categoryId}`}
+                        className="min-w-[115px] font-normal text-[14px]/[17px] tracking-tight text-primary-950 line-clamp-1 sm:font-medium sm:text-[16px]/[20px] sm:text-[#1f1f1f] hover:underline"
+                      >
                         {item.product.name}
-                      </p>
+                      </Link>
                       <p className="font-extrabold text-[14px]/[17px] tracking-tight text-primary-950 sm:font-bold sm:text-[16px]/[20px] sm:text-[#1f1f1f]">
                         {formatPrice(item.product.price)}원
                       </p>

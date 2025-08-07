@@ -216,15 +216,7 @@ export default function OrderManageModal({
                 return;
               }
 
-              // 승인하기 (예산이 충분한 경우)
-              onUpdateOrderStatus({
-                orderId: String(order.id),
-                status: "APPROVED",
-                adminMessage,
-              });
-              onClick();
               closeModal();
-              showToast("구매 요청이 승인되었습니다", "success");
             }}
             type="black"
             label={type === "approve" ? "승인하기" : "반려하기"}
