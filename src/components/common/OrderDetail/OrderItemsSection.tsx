@@ -71,17 +71,16 @@ export default function OrderItemsSection({
                   className="self-stretch border-b border-neutral-200 inline-flex justify-between items-center sm:py-5 sm:pr-5"
                 >
                   <div className="flex gap-5 flex-1 sm:flex sm:justify-start sm:items-center sm:gap-5">
-                    <div className="w-24 h-24 sm:w-[140px] sm:h-[140px] bg-[--color-white] shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
+                    <div className="w-[72px] sm:w-[140px] h-[72px] sm:h-[140px] bg-primary-50 rounded-xs sm:bg-white flex justify-center items-center flex-shrink-0">
                       {item.imageUrl && (
-                        <Image
-                          src={item.imageUrl}
-                          alt={item.productName}
-                          width={140}
-                          height={140}
-                          className="w-10 h-16 sm:w-14 sm:h-24 relative object-contain"
-                          sizes="(max-width: 640px) 40px, 56px"
-                          priority={false}
-                        />
+                        <div className="relative w-[75%] h-[75%]">
+                          <Image
+                            src={item.imageUrl}
+                            alt={`${item.productName} 상품 이미지`}
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
                       )}
                     </div>
                     <div className="flex-1 inline-flex flex-col items-start gap-3 sm:justify-start sm:inline-flex sm:flex-col sm:justify-start sm:items-start sm:gap-7">
