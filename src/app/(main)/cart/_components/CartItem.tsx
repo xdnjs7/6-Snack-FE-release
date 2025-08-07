@@ -9,9 +9,7 @@ import { deleteSelectedItems, toggleCheckAllItems, toggleCheckItem, updateItemQu
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
 import clsx from "clsx";
-import { orderNow } from "@/lib/api/order.api";
 import { useRouter } from "next/navigation";
-import { TOrderNowResponse } from "@/types/order.types";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 import Link from "next/link";
 
@@ -26,9 +24,20 @@ type TCartItemProps = {
   isPending: boolean;
   canPurchase: boolean;
   checkedCartItemIds: number[];
+  isDisabled: boolean;
+  setIsDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+  orderRequest: (cartItemsId: number[]) => void;
 };
 
-export default function CartItem({ cartItems, isPending, canPurchase, checkedCartItemIds }: TCartItemProps) {
+export default function CartItem({
+  cartItems,
+  isPending,
+  canPurchase,
+  checkedCartItemIds,
+  isDisabled,
+  setIsDisabled,
+  orderRequest,
+}: TCartItemProps) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -101,18 +110,6 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["cartItems"] }),
   });
 
-  // 장바구니 즉시 구매(단건)
-  const { mutate: adminOrderNow } = useMutation<TOrderNowResponse, Error, number[]>({
-    mutationFn: (cartItemId) => orderNow(cartItemId),
-    onSuccess: (order) => {
-      // 1. TODO
-      queryClient.invalidateQueries({ queryKey: ["adminOrders", "approved"] });
-      queryClient.invalidateQueries({ queryKey: ["budgets"] });
-
-      router.push(`/cart/order-confirmed/${order.data.id}`);
-    },
-  });
-
   return (
     <div className="flex flex-col sm:gap-[20px] sm:py-[20px] sm:px-[40px] sm:shadow-[0px_0px_10px_0px_rgba(0,0,0,0.12)] md:py-[40px] md:px-[50px]">
       <div className="flex justify-between items-center h-[40px]">
@@ -160,6 +157,7 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
           >
             <div className="flex justify-center items-center gap-[10px] sm:gap-[20px]">
               <button
+                disabled={isDisabled}
                 onClick={() => toggleCheckCartItem({ cartItemId: item.id, isChecked: !item.isChecked })}
                 className="relative min-w-[20px] h-[20px] cursor-pointer sm:min-w-[24px] sm:h-[24px]"
               >
@@ -221,12 +219,14 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
                         }
 
                         if (user?.role !== "USER") {
-                          adminOrderNow([item.id]);
+                          // Order 생성 API
+                          setIsDisabled(true);
+                          orderRequest([item.id]);
                         }
                       }}
                       type="white"
                       label={user?.role === "USER" ? "바로 요청" : "즉시 구매"}
-                      disabled={user?.role === "USER" ? false : !canPurchase}
+                      disabled={isDisabled ? isDisabled : user?.role === "USER" ? false : !canPurchase}
                       className={clsx(
                         user?.role === "USER"
                           ? false
