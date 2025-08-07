@@ -1,5 +1,3 @@
-import { TProduct } from "./product.types";
-
 export type TGetCartItemsParams = {
   cartItemId?: string;
   isChecked?: string;
