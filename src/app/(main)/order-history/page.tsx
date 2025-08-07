@@ -217,7 +217,7 @@ const OrderHistoryPage = () => {
                       {item.item}
                     </button>
                   </div>
-                  <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
+                  <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT'] ml-[-100px]">
                     총 수량 {getProductTypeCount(item.productName)}개
                   </div>
                   <div className="text-center justify-center text-neutral-800 text-base font-extrabold font-['SUIT']">
