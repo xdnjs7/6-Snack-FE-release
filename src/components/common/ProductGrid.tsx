@@ -24,8 +24,8 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
     return (
       <NoContent
         title="상품이 존재하지 않습니다"
-        subText1=""
-        subText2=""
+        subText1="원하는 상품을"
+        subText2="상품 리스트에 추가 해보세요."
         buttonText="전체 상품 보기"
         onClick={() => router.push("/products")}
       />
@@ -51,13 +51,9 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
                 <Image src={product.imageUrl} alt={product.name} fill className="object-contain" />
               </div>
 
-              {product.isFavorite ? (
+              {product.isFavorite && (
                 <div className="absolute right-[11.5px] bottom-[11.5px] w-[20px] h-[20px]  sm:w-[25px] sm:h-[25px] md:right-[20.3px] md:bottom-[20.3px] md:w-[30px] md:h-[30px]">
                   <LikeIconSvg isLiked={true} className="absolute inset-0 w-full h-full" />
-                </div>
-              ) : (
-                <div className="absolute right-[11.5px] bottom-[11.5px] w-[20px] h-[20px]  sm:w-[25px] sm:h-[25px] md:right-[20.3px] md:bottom-[20.3px] md:w-[30px] md:h-[30px]">
-                  <LikeIconSvg isLiked={false} className="absolute inset-0 w-full h-full" />
                 </div>
               )}
             </div>
