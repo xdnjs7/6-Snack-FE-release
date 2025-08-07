@@ -16,6 +16,7 @@ import Dropdown from "@/components/common/DropDown";
 import { useCategoryStore } from "@/stores/categoryStore";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import SubCategoryTabs from "./SubCategoryTabs";
+import DogSpinner from "@/components/common/DogSpinner";
 
 type TCategoryData = {
   parentCategory: Array<{ id: number; name: string }>;
@@ -148,8 +149,9 @@ export default function ProductsPageContent() {
           </h2>
 
           {isLoading ? (
-            <div className="flex justify-center items-center py-16" role="status" aria-live="polite">
-              <div className="text-primary-500">로딩 중...</div>
+            // 위치 개선필요
+            <div className="flex justify-center items-center">
+              <DogSpinner />
             </div>
           ) : (
             <>
