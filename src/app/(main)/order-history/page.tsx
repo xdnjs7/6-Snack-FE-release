@@ -31,7 +31,7 @@ const OrderHistoryPage = () => {
 
   // 공통 로직 훅 사용
   const { budgetData, currentItems, totalPages, currentPage, handlePageChange, setSortBy, formatNumber } =
-    useOrderHistory();
+    useOrderHistory("latest");
 
   // 각 레이아웃별 호버 상태
   const [isHoveredMobile, setIsHoveredMobile] = useState(false);
