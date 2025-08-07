@@ -172,11 +172,11 @@ export default function ProfileForm() {
 
   return (
     <main aria-label="프로필 변경 페이지" className="w-full sm:w-auto">
-      <Toast text={toastMessage} variant={toastVariant} isVisible={toastVisible} />
+      {toastVisible && <Toast text={toastMessage} variant={toastVariant} isVisible={toastVisible} />}
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full sm:w-[600px] sm:px-14 sm:rounded-sm sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] sm:outline-offset-[-1px] py-10 inline-flex flex-col justify-center items-start gap-5"
+        className="w-full sm:w-[600px] sm:px-14 sm:rounded-sm sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] sm:outline-offset-[-1px] inline-flex flex-col justify-center items-start gap-5"
         aria-label="프로필 정보 변경 폼"
         noValidate
       >
