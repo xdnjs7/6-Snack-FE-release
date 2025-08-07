@@ -25,13 +25,6 @@ export default function CheckoutPage() {
   const order = useOrderStore((state) => state.order);
 
   console.log("order", order);
-  const handleClick = () => {
-    if (window.history.length > 1) {
-      router.back();
-    } else {
-      router.push("/products");
-    }
-  };
 
   const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY!;
   const customerKey = user ? user!.id : "";
@@ -107,8 +100,8 @@ export default function CheckoutPage() {
         </section>
         <Button
           type="black"
-          label="돌아가기"
-          onClick={handleClick}
+          label="홈으로 돌아가기"
+          onClick={() => router.push("/products")}
           className="font-semibold text-[16px]/[20px] tracking-tight w-full max-w-[230px] min-h-[56px] sm:max-w-[310px] sm:h-[64px]"
         />
       </div>

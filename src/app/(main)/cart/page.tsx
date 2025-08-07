@@ -50,7 +50,7 @@ export default function CartPage() {
   const { mutate: orderRequest } = useMutation<TOrderResponse, Error, number[]>({
     mutationFn: (cartItemIds) => createOrder({ cartItemIds }),
     onSuccess: (order) => {
-      setOrder([order, "cart"]);
+      setOrder(order);
 
       // 1. TODO
       // queryClient.invalidateQueries({ queryKey: ["adminOrders", "approved"] });
