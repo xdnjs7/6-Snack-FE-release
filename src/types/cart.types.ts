@@ -15,7 +15,19 @@ export type TGetCartItemsResponse = {
     createdAt: string;
     updatedAt: string;
     deletedAt: string | null;
-    product: Omit<TProduct, "category" | "creator">;
+    product: {
+      id: number;
+      categoryId: number;
+      creatorId: string;
+      name: string;
+      price: number;
+      imageUrl: string;
+      linkUrl: string;
+      cumulativeSales: number;
+      createdAt: string;
+      updatedAt: string;
+      deletedAt: string | null;
+    };
   }[];
   budget?: {
     currentMonthBudget: number;

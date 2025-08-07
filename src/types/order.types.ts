@@ -59,25 +59,25 @@ export type TOrderNowResponse = {
   };
 };
 
-export type TOrderResponse = {
-  message: string;
-  data: {
+export type TOrderResponse = TOrderBase & {
+  companyId: number;
+  requester: string;
+  user: {
     id: string;
+    email: string;
+    name: string;
+    password: string;
     companyId: number;
-    userId: string;
-    approver: string | null;
-    adminMessage: string | null;
-    requestMessage: string | null;
-    totalPrice: number;
     createdAt: string;
     updatedAt: string;
-    status: string;
-    receipts: {
-      id: number;
-      productName: string;
-      price: number;
-      imageUrl: string;
-      quantity: number;
-    }[];
+    deletedAt: string | null;
+    hashedRefreshToken: string;
+    role: string;
   };
+  products: (TProducts[number] & {
+    productId: number;
+    orderId: string;
+    createdAt: string;
+  })[];
+  budget: TBudget;
 };

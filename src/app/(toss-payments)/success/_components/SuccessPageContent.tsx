@@ -29,10 +29,10 @@ export default function SuccessPageContent({ orderId, amount, paymentKey }: TSuc
     // 이미 요청을 보냈는지 판단하는 로직
     if (hasConfirmed.current) return;
 
-    // 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
-    // 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.
     if (!order) return;
 
+    // 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
+    // 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.
     if (String(order.totalPrice + 3000) !== amount) {
       router.push("/fail?message=가격 정보가 일치하지 않습니다.&code=400");
       return;
