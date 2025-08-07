@@ -238,10 +238,10 @@ export default function SuperAdminSignUpPage() {
             <button
               type="submit"
               className={clsx(
-                "w-full h-[64px] mb-[24px] rounded-[2px] inline-flex justify-center items-center text-base cursor-pointer transition-all duration-200",
+                "w-full h-[64px] mb-[24px] rounded-[2px] inline-flex justify-center items-center text-base transition-all duration-200",
                 isValid && !isSubmitting && !showSpinner
-                  ? "bg-primary-950 text-primary-50 hover:bg-primary-900"
-                  : "bg-primary-100 text-primary-300 cursor-not-allowed",
+                  ? "bg-primary-950 text-primary-50 hover:bg-primary-900 cursor-pointer"
+                  : "bg-primary-100 text-primary-300 cursor-default",
                 "font-bold",
               )}
               disabled={isSubmitting || !isValid || showSpinner}
