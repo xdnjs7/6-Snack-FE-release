@@ -179,7 +179,7 @@ export default function Order() {
                       router.push("/checkout");
                     }}
                     onUpdateOrderStatus={() => {}}
-                    showToast={() => {}}
+                    showToast={showToast}
                   />,
                 );
               }}
