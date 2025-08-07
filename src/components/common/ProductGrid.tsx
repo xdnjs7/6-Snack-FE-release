@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
-import ic_like_active from "@/assets/icons/ic_like_active.svg";
 import NoContent from "./NoContent";
 import LikeIconSvg from "../svg/LikeIconSvg";
 import { TProduct } from "@/types/product.types";

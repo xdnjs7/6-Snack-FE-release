@@ -12,13 +12,12 @@ import { formatPrice } from "@/lib/utils/formatPrice.util";
 type TToastProps = {
   text: string | React.ReactNode;
   budget?: number;
-  onClose?: () => void;
   variant?: TToastVariant;
   isVisible?: boolean;
   className?: string;
 };
 
-const Toast = ({ text, budget, onClose, variant = "error", isVisible, className = "" }: TToastProps) => {
+const Toast = ({ text, budget, variant = "error", isVisible, className = "" }: TToastProps) => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
   useEffect(() => {
