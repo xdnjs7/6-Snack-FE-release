@@ -109,7 +109,7 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
         setOrderData(data);
         setIsLoading(false);
       });
-    } catch (err) {
+    } catch {
       requestAnimationFrame(() => {
         setError("주문 내역을 불러오는데 실패했습니다.");
         setIsLoading(false);
@@ -126,7 +126,7 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
       
       return () => clearTimeout(timer);
     }
-  }, [fetchOrderDetail]);
+  }, [orderId, fetchOrderDetail]);
 
   // 타이머 언마운트 시 클린업
   useEffect(() => {
@@ -193,7 +193,7 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
       });
       showToast("장바구니에 상품이 추가되었습니다.", "success");
     },
-    onError: (error) => {
+    onError: () => {
       showToast("장바구니에 상품을 추가하는데 실패했습니다.", "error");
     },
   });

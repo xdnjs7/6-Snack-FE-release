@@ -91,7 +91,7 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
         setOrderData(data);
         setIsLoading(false);
       });
-    } catch (err) {
+    } catch {
       requestAnimationFrame(() => {
         setError("주문 내역을 불러오는데 실패했습니다.");
         setIsLoading(false);
@@ -108,7 +108,7 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
       
       return () => clearTimeout(timer);
     }
-  }, [fetchOrderDetail]);
+  }, [orderId, fetchOrderDetail]);
 
   // 페이지 제목 메모이제이션
   const pageTitle = useMemo(() => {

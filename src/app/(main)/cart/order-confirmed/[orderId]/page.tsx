@@ -12,7 +12,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 
 // 메모이제이션된 상품 아이템 컴포넌트
-const ProductItem = React.memo(({ receipt }: { receipt: any }) => {
+const ProductItem = React.memo(({ receipt }: { receipt: { price: number; quantity: number; imageUrl: string; productName: string } }) => {
   const totalPrice = useMemo(() => receipt.price * receipt.quantity, [receipt.price, receipt.quantity]);
   
   return (
@@ -117,7 +117,7 @@ const LoadingSkeleton = () => (
 );
 
 // 최적화된 에러 컴포넌트
-const ErrorComponent = ({ error }: { error: any }) => (
+const ErrorComponent = ({ error }: { error: Error | null }) => (
   <div className="min-h-screen bg-white flex items-center justify-center">
     <div className="text-base sm:text-lg md:text-xl text-red-600">
       {error?.message || "주문 내역을 찾을 수 없습니다."}
