@@ -229,7 +229,6 @@ export default function Order() {
         text={toastMessage}
         variant={toastVariant}
         isVisible={toastVisible}
-        onClose={() => setToastVisible(false)}
         aria-live="polite"
         aria-atomic="true"
       />

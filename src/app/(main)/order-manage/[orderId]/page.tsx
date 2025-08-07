@@ -165,7 +165,6 @@ export default function OrderManageDetailPage() {
         variant={toastConfig.variant}
         isVisible={toastConfig.isVisible}
         budget={toastConfig.budget}
-        onClose={() => setToastConfig((prev) => ({ ...prev, isVisible: false }))}
       />
       {/* Main Content */}
       <main
@@ -261,7 +260,11 @@ export default function OrderManageDetailPage() {
                 ))}
 
                 {/* Order Amount Info */}
-                <div className="w-full flex flex-col gap-4 sm:gap-2.5 sm:pt-[20px] sm:px-[20px]" role="region" aria-label="주문 금액 정보">
+                <div
+                  className="w-full flex flex-col gap-4 sm:gap-2.5 sm:pt-[20px] sm:px-[20px]"
+                  role="region"
+                  aria-label="주문 금액 정보"
+                >
                   <div className="flex justify-between items-center">
                     <div className="text-primary-700 tracking-tight text-sm/[17px] sm:text-base/[20px] font-bold">
                       주문금액

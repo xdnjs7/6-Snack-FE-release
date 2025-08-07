@@ -231,12 +231,7 @@ export default function User() {
         />
       </div>
 
-      <Toast
-        text={toastMessage}
-        variant={toastVariant}
-        isVisible={toastVisible}
-        onClose={() => setToastVisible(false)}
-      />
+      <Toast text={toastMessage} variant={toastVariant} isVisible={toastVisible} />
     </main>
   );
 }

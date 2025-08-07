@@ -44,7 +44,7 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
   >({
     mutationFn: ({ cartItemId, isChecked }) => toggleCheckItem(cartItemId, isChecked),
     onMutate: async ({ cartItemId, isChecked }) => {
-      await queryClient.cancelQueries({ queryKey: ["cart"] });
+      await queryClient.cancelQueries({ queryKey: ["cartItems"] });
 
       const previousCartItems = queryClient.getQueryData<TGetCartItemsResponse>(["cart"]);
 
@@ -59,19 +59,19 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
         queryClient.setQueryData(["cart"], context.previousCartItems);
       }
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["cartItems"] }),
   });
 
   // 장바구니 선택 삭제
   const { mutate: deleteCheckedCartItems } = useMutation<void, Error, number[]>({
     mutationFn: (cartItemIds) => deleteSelectedItems(cartItemIds),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartItems"] }),
   });
 
   // 장바구니 수량 선택
   const { mutate: updateCartItemQuantity } = useMutation<void, Error, { cartItemId: number; quantity: number }>({
     mutationFn: ({ cartItemId, quantity }) => updateItemQuantity(cartItemId, quantity),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartItems"] }),
   });
 
   // 장바구니 전체 선택 / 전체 해제 - Optimistic update
@@ -83,7 +83,7 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
   >({
     mutationFn: (isAllChecked) => toggleCheckAllItems(!isAllChecked),
     onMutate: async (isAllChecked) => {
-      await queryClient.cancelQueries({ queryKey: ["cart"] });
+      await queryClient.cancelQueries({ queryKey: ["cartItems"] });
 
       const previousCartItems = queryClient.getQueryData<TGetCartItemsResponse>(["cart"]);
 
@@ -98,7 +98,7 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
         queryClient.setQueryData(["cart"], context.previousCartItems);
       }
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["cartItems"] }),
   });
 
   // 장바구니 즉시 구매(단건)
