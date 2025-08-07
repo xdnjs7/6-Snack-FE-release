@@ -208,14 +208,15 @@ const OrderHistoryPage = () => {
             currentItems.map((item) => (
               <article key={item.id} className="self-stretch pb-2.5 flex flex-col justify-start items-start" role="listitem">
                 <div className="self-stretch py-3.5 border-b border-zinc-400 inline-flex justify-between items-center">
-                  <div className="flex justify-start items-center gap-2">                      <button
-                    onClick={() => handleProductClick(item.id)}
-                    className="text-blue-600 cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis max-w-32"
-                    type="button"
-                    aria-label={`${item.item} 상세보기로 이동`}
-                  >
-                    {item.item}
-                  </button>
+                  <div className="flex justify-start items-center gap-2">
+                    <button
+                      onClick={() => handleProductClick(item.id)}
+                      className="text-blue-600 cursor-pointer text-base font-bold font-['SUIT'] bg-transparent border-none p-0 focus:outline-none whitespace-nowrap overflow-hidden text-ellipsis max-w-32"
+                      type="button"
+                      aria-label={`${item.item} 상세보기로 이동`}
+                    >
+                      {item.item}
+                    </button>
                   </div>
                   <div className="text-center justify-center text-zinc-500 text-xs font-normal font-['SUIT']">
                     총 수량 {getProductTypeCount(item.productName)}개
