@@ -24,6 +24,7 @@ export default function CheckoutPage() {
   // Zustand로 관리하고 있는 order 정보
   const order = useOrderStore((state) => state.order);
 
+  console.log("order", order);
   const handleClick = () => {
     if (window.history.length > 1) {
       router.back();
@@ -61,6 +62,8 @@ export default function CheckoutPage() {
       if (widgets == null) {
         return;
       }
+
+      console.log("amount", amount);
       // ------ 주문의 결제 금액 설정 ------
       await widgets.setAmount(amount);
 
