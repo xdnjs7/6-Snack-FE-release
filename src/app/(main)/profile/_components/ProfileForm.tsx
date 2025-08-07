@@ -171,7 +171,7 @@ export default function ProfileForm() {
   };
 
   return (
-    <main aria-label="프로필 변경 페이지">
+    <main aria-label="프로필 변경 페이지" className="w-full sm:w-auto">
       <Toast text={toastMessage} variant={toastVariant} isVisible={toastVisible} />
 
       <form
