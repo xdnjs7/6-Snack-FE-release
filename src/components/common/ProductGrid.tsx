@@ -6,34 +6,15 @@ import { useRouter } from "next/navigation";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 import ic_like_active from "@/assets/icons/ic_like_active.svg";
 import NoContent from "./NoContent";
-type TProduct = {
-  id: number;
-  categoryId: number;
-  creatorId: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  linkUrl: string;
-  cumulativeSales: number;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-  // isFavorite: boolean 찜목록 기능 추가되면 넣기
-  category: {
-    id: number;
-    name: string;
-    parentId: number;
-  };
-  creator: {
-    id: string;
-    email: string;
-    name: string;
-    role: string;
-  };
+import LikeIconSvg from "../svg/LikeIconSvg";
+import { TProduct } from "@/types/product.types";
+
+type TProductWithFavorite = TProduct & {
+  isFavorite?: boolean;
 };
 
 type ProductGridProps = {
-  products: TProduct[];
+  products: TProductWithFavorite[];
   currentCategoryId?: number; // 현재 선택된 카테고리 ID 추가
 };
 
@@ -54,7 +35,7 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
 
   return (
     <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-3.5 sm:gap-y-7.5 md:grid-cols-3 md:gap-x-10 md:gap-y-15 justify-items-center pb-[30px] sm:pb-[40px]">
-      {products.map((product) => {
+      {products.map((product: TProductWithFavorite) => {
         // 상품 상세 페이지 URL 생성 (카테고리 파라미터 포함)
         // 현재 선택된 카테고리가 있으면 그것을 사용, 없으면 상품의 카테고리 ID 사용
         const categoryId = currentCategoryId || product.categoryId;
@@ -70,14 +51,16 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
               <div className="relative w-[70%] h-[70%] md:w-[75%] md:h-[75%] min-w-[53.8px] min-h-[93.39px] ">
                 <Image src={product.imageUrl} alt={product.name} fill className="object-contain" />
               </div>
-              {/* 우주님이 상품조회 api 업데이트 하면 여기에 조건문으로 하트 보이게 추가 */}
-              {/*  */}
-              {/* { product.isFavorite && <div className="absolute right-[11.5px] bottom-[11.5px] w-[20px] h-[20px]  sm:w-[25px] sm:h-[25px] md:right-[20.3px] md:bottom-[20.3px] md:w-[30px] md:h-[30px]">
-                  <Image src={ic_like_active} alt="하트" fill className="object-cover" />
-                </div>} */}
-              <div className="absolute right-[11.5px] bottom-[11.5px] w-[20px] h-[20px]  sm:w-[25px] sm:h-[25px] md:right-[20.3px] md:bottom-[20.3px] md:w-[30px] md:h-[30px]">
-                <Image src={ic_like_active} alt="하트" fill className="object-cover" />
-              </div>
+
+              {product.isFavorite ? (
+                <div className="absolute right-[11.5px] bottom-[11.5px] w-[20px] h-[20px]  sm:w-[25px] sm:h-[25px] md:right-[20.3px] md:bottom-[20.3px] md:w-[30px] md:h-[30px]">
+                  <LikeIconSvg isLiked={true} className="absolute inset-0 w-full h-full" />
+                </div>
+              ) : (
+                <div className="absolute right-[11.5px] bottom-[11.5px] w-[20px] h-[20px]  sm:w-[25px] sm:h-[25px] md:right-[20.3px] md:bottom-[20.3px] md:w-[30px] md:h-[30px]">
+                  <LikeIconSvg isLiked={false} className="absolute inset-0 w-full h-full" />
+                </div>
+              )}
             </div>
             <div className="flex flex-col justify-start items-start gap-2 w-full">
               <div className="flex justify-center items-center md:gap-2 ">
