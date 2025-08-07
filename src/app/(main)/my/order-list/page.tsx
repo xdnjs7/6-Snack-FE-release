@@ -87,9 +87,9 @@ export default function MyOrderListPage() {
               key={item.id}
               requestDate={formatDate(item.createdAt)}
               productName={getProductName(item.receipts)}
-              price={item.totalPrice}
+              price={item.totalPrice + 3000}
               status={convertStatus(item.status)}
-              orderId={item.id} // ✅ 추가
+              orderId={item.id}
               onRequestCancel={() => {
                 handleCancel(item.id);
               }}
