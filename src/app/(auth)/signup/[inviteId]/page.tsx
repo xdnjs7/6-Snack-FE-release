@@ -118,10 +118,10 @@ export default function InviteSignUpPage() {
         </div>
         <div className="sm:hidden">
           <div className="flex flex-col items-center justify-center gap-[10px]">
-            <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle ">
+            <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle sm:self-stretch sm:text-start">
               {inviteInfo?.name} 님, 만나서 반갑습니다.
             </h1>
-            <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
+            <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle sm:self-stretch sm:text-start ">
               비밀번호를 입력해 회원가입을 완료해주세요.
             </p>
           </div>
@@ -280,7 +280,7 @@ export default function InviteSignUpPage() {
             모든 필수 항목을 올바르게 입력해주세요.
           </div>
         )}
-        <p className="text-primary-500 text-base/[20px] tracking-tight">
+        <p className="self-stretch text-center text-primary-500 text-base/[20px] tracking-tight">
           이미 계정이 있으신가요?
           <Link href="/login">
             <span className="text-primary-950 text-base/[20px] tracking-tight font-bold underline decoration-primary-950 underline-offset-2">
