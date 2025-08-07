@@ -20,7 +20,7 @@ export default function CategoryNavigation({ parentCategory, childCategory, clas
       )}
     >
       <p
-        className={`font-normal text-sm/[17px] sm:text-base/[20px] tracking-tight ${
+        className={`font-normal text-sm/[17px] sm:text-base/[20px] tracking-tight whitespace-nowrap ${
           parentCategory ? "text-primary-200" : "text-primary-950"
         }`}
       >
@@ -29,7 +29,7 @@ export default function CategoryNavigation({ parentCategory, childCategory, clas
       <div>
         <ArrowIconSvg direction="right" className="w-3 h-3 sm:w-4 sm:h-4 text-primary-100 cursor-default" />
       </div>
-      <p className="font-normal text-sm/[17px] sm:text-base/[20px] text-primary-950 tracking-tight">
+      <p className="font-normal text-sm/[17px] sm:text-base/[20px] text-primary-950 tracking-tight whitespace-nowrap">
         {childCategory || ""}
       </p>
     </div>
