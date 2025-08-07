@@ -17,6 +17,7 @@ import { useCategoryStore } from "@/stores/categoryStore";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import SubCategoryTabs from "./SubCategoryTabs";
 import DogSpinner from "@/components/common/DogSpinner";
+import ProductGridSkeleton from "@/components/common/ProductGridSkeleton";
 
 type TCategoryData = {
   parentCategory: Array<{ id: number; name: string }>;
@@ -149,10 +150,7 @@ export default function ProductsPageContent() {
           </h2>
 
           {isLoading ? (
-            // 위치 개선필요
-            <div className="flex justify-center items-center">
-              <DogSpinner />
-            </div>
+            <ProductGridSkeleton count={getLimit()} />
           ) : (
             <>
               {/* 상품 그리드 */}
