@@ -16,6 +16,7 @@ import img_dog_error from "@/assets/images/img_dog_error.png";
 import Image from "next/image";
 import DogSpinner from "@/components/common/DogSpinner";
 import { inviteSignupSchema, TInviteSignUpFormData } from "@/lib/schemas/inviteSignupSchema";
+import FormErrorMessage from "../../login/_components/FormErrorMessage";
 
 export default function InviteSignUpPage() {
   const params = useParams();
@@ -181,7 +182,6 @@ export default function InviteSignUpPage() {
                   aria-describedby={errors.password ? "password-error" : undefined}
                   aria-invalid={!!errors.password}
                   className={clsx(
-                    // 수정해야함!
                     showPassword ? "tracking-tight" : "tracking-[0.25em]",
                     "w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
                   )}
@@ -198,12 +198,7 @@ export default function InviteSignUpPage() {
                 {showPassword ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
               </button>
             </div>
-            {/* 에러 메세지 */}
-            {errors.password && (
-              <span id="password-error" className="text-error-500 text-sm/[17px] tracking-tight" role="alert">
-                {errors.password?.message}
-              </span>
-            )}
+            <FormErrorMessage message={errors.password?.message} />
           </div>
 
           {/* 비밀번호 확인 input wrapper*/}
@@ -227,9 +222,8 @@ export default function InviteSignUpPage() {
                   aria-describedby={errors.passwordConfirm ? "passwordConfirm-error" : undefined}
                   aria-invalid={!!errors.passwordConfirm}
                   className={clsx(
-                    // 수정해야함!
-                    showPassword ? "text-[16px]/[20px]" : "text-[20px]/[20px]",
-                    "w-full tracking-tight text-primary-950 placeholder:text-primary-500 placeholder:text-base/[20px] placeholder:tracking-tight outline-none",
+                    showPassword ? "tracking-tight" : "tracking-[0.25em]",
+                     "w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
                   )}
                 />
               </div>
@@ -244,25 +238,11 @@ export default function InviteSignUpPage() {
                 {showPasswordConfirm ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
               </button>
             </div>
-            {/* 에러 메세지 */}
-            {errors.passwordConfirm && (
-              <span id="passwordConfirm-error" className="text-error-500 text-sm/[17px] tracking-tight" role="alert">
-                {errors.passwordConfirm?.message}
-              </span>
-            )}
+            <FormErrorMessage message={errors.passwordConfirm?.message} />
           </div>
         </form>
 
-        {/* 전체 폼 에러 메시지 */}
-        {errors.root && (
-          <div
-            className="mb-4 p-3 bg-error-50 border border-error-200 rounded text-error-600 text-sm"
-            role="alert"
-            aria-live="polite"
-          >
-            {errors.root?.message}
-          </div>
-        )}
+        <FormErrorMessage message={errors.root?.message} />
 
         <Button
           type="primary"
