@@ -2,8 +2,10 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 import ic_like_active from "@/assets/icons/ic_like_active.svg";
+import NoContent from "./NoContent";
 type TProduct = {
   id: number;
   categoryId: number;
@@ -36,8 +38,18 @@ type ProductGridProps = {
 };
 
 export default function ProductGrid({ products, currentCategoryId }: ProductGridProps) {
+  const router = useRouter();
+
   if (!products || products.length === 0) {
-    return <div className="flex justify-center items-center py-16 text-primary-500">상품이 없습니다.</div>;
+    return (
+      <NoContent
+        title="상품이 존재하지 않습니다"
+        subText1=""
+        subText2=""
+        buttonText="전체 상품 보기"
+        onClick={() => router.push("/products")}
+      />
+    );
   }
 
   return (

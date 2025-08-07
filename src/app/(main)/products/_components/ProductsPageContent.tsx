@@ -16,7 +16,6 @@ import Dropdown from "@/components/common/DropDown";
 import { useCategoryStore } from "@/stores/categoryStore";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import SubCategoryTabs from "./SubCategoryTabs";
-import DogSpinner from "@/components/common/DogSpinner";
 import ProductGridSkeleton from "@/components/common/ProductGridSkeleton";
 
 type TCategoryData = {
