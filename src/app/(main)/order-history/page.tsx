@@ -1,3 +1,4 @@
+
 "use client";
 
 import ChevronLeftIcon from "@/assets/icons/ic_chevron_left.svg";
@@ -49,7 +50,7 @@ const OrderHistoryPage = () => {
     className?: string;
     budgetData: TBudgetData | undefined;
   }) => (
-    <div className={`p-6 bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 shadow-lg border-2 border-blue-400 ${className}`}>
+    <div className={`p-6 bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 shadow-lg ${className}`}>
       <div className="inline-flex justify-start items-center gap-2">
         <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
           이번 달 남은 예산:
