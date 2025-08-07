@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import SnackIconSvg from "@/components/svg/SnackIconSvg";
 import Link from "next/link";
 import z from "zod";
@@ -9,6 +9,9 @@ import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { superAdminSignUpApi } from "@/lib/api/superAdmin.api";
 import Input from "@/components/common/Input";
+import Toast from "@/components/common/Toast";
+import DogSpinner from "@/components/common/DogSpinner";
+import { TToastVariant } from "@/types/toast.types";
 
 // 리액트 훅폼에 연결할 zod 스키마 정의
 const signUpSchema = z
@@ -38,6 +41,11 @@ type TSignUpFormData = z.infer<typeof signUpSchema>;
 export default function SuperAdminSignUpPage() {
   const router = useRouter();
 
+  const [toastVisible, setToastVisible] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>("");
+  const [toastVariant, setToastVariant] = useState<TToastVariant>("error");
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -54,19 +62,38 @@ export default function SuperAdminSignUpPage() {
   const companyNameReg = register("companyName");
   const bizNumberReg = register("bizNumber");
 
+  // Toast를 보여주는 함수
+  const showToast = (message: string, variant: TToastVariant = "error") => {
+    setToastMessage(message);
+    setToastVariant(variant);
+    setToastVisible(true);
+
+    // 3초 후 자동으로 숨김
+    setTimeout(() => {
+      setToastVisible(false);
+    }, 3000);
+  };
+
   // 회원가입 처리
   const onSubmit = async (data: TSignUpFormData) => {
+    setIsLoading(true);
     try {
       await superAdminSignUpApi(data);
       // 성공 시 바로 로그인 페이지로 이동
       router.push("/login");
     } catch {
-      // 실패 시 아무 처리 없음 (원한다면 alert 등 추가 가능)
+      setIsLoading(false);
+      showToast("회원가입에 실패했습니다. 다시 시도해주세요.", "error");
     }
   };
 
   return (
     <>
+      {/* Toast 컴포넌트 */}
+      <div role="alert" aria-live="polite">
+        <Toast text={toastMessage} variant={toastVariant} isVisible={toastVisible} />
+      </div>
+
       {/* main content */}
       <main
         className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[48px] sm:pt-[160px]"
@@ -197,17 +224,17 @@ export default function SuperAdminSignUpPage() {
               type="submit"
               className={clsx(
                 "w-full h-[64px] mb-[24px] rounded-[2px] inline-flex justify-center items-center text-base transition-all duration-200",
-                isValid && !isSubmitting
+                isValid && !isSubmitting && !isLoading
                   ? "bg-primary-950 text-primary-50 hover:bg-primary-900 cursor-pointer"
                   : "bg-primary-100 text-primary-300 cursor-default",
                 "font-bold",
               )}
-              disabled={isSubmitting || !isValid}
+              disabled={isSubmitting || !isValid || isLoading}
               aria-describedby={!isValid ? "form-validation-message" : undefined}
-              aria-label={isSubmitting ? "회원가입 처리 중" : "회원가입 하기"}
+              aria-label={isSubmitting || isLoading ? "회원가입 처리 중" : "회원가입 하기"}
             >
-              {isSubmitting ? (
-                <div className="flex items-center gap-2">처리 중...</div>
+              {isSubmitting || isLoading ? (
+                <DogSpinner />
               ) : (
                 "가입하기"
               )}
