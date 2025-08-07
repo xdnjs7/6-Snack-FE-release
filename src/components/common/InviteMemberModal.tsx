@@ -84,10 +84,13 @@ export default function InviteMemberModal({
         role: selectedRole,
       });
     } else {
-      if (!name || !email) {
-        showToast("이름과 이메일을 모두 입력해주세요.", "error");
+      // 이름 유효성 검사
+      if (!name.trim()) {
+        setNameError("이름을 입력해주세요.");
+        showToast("이름을 입력해주세요.", "error");
         return;
       }
+      setNameError("");
 
       // 이메일 유효성 검사
       const emailValidation = emailSchema.safeParse(email);
@@ -127,7 +130,15 @@ export default function InviteMemberModal({
                 label="이름"
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  // 실시간 이름 유효성 검사
+                  if (e.target.value.trim() === "") {
+                    setNameError("이름을 입력해주세요.");
+                  } else {
+                    setNameError("");
+                  }
+                }}
                 placeholder="이름을 입력해주세요"
                 readOnly={mode === "edit"}
                 error={nameError}
