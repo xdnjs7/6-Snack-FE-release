@@ -1,4 +1,3 @@
-
 "use client";
 
 import ChevronLeftIcon from "@/assets/icons/ic_chevron_left.svg";
@@ -117,8 +116,8 @@ const OrderHistoryPage = () => {
           <h2 id="budget-section-mobile" className="sr-only">예산 현황</h2>
           {/* 예산 카드 */}
           <div className="self-stretch relative flex flex-col justify-center items-start gap-4">
-            <div className="self-stretch inline-flex justify-start items-start gap-4">
-              <div className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 overflow-hidden">
+            <div className="self-stretch inline-flex justify-start items-start gap-4 min-w-0">
+              <div className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 overflow-hidden min-w-0">
                 <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
                   <div className="self-stretch justify-center text-neutral-800 text-base font-bold font-['SUIT']">
                     이번 달 예산
@@ -127,18 +126,18 @@ const OrderHistoryPage = () => {
                     {safeBudgetData ? formatNumber(safeBudgetData.currentMonthBudget) : "0원"}
                   </div>
                 </div>
-                <div className="relative w-34 justify-center text-stone-500 text-sm font-normal font-['SUIT'] leading-snug">
+                <div className="relative justify-center text-stone-500 text-sm font-normal font-['SUIT'] leading-snug">
                   지난 달 예산은 {safeBudgetData ? formatNumber(safeBudgetData.previousMonthBudget) : "0원"}이었어요
                 </div>
               </div>
               <div
-                className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-3 relative"
+                className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-3 relative min-w-0"
                 onMouseEnter={() => setIsHoveredMobile(true)}
                 onMouseLeave={() => setIsHoveredMobile(false)}
                 onTouchStart={() => setIsHoveredMobile(true)}
                 onTouchEnd={() => setIsHoveredMobile(false)}
               >
-                <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
+                <div className="self-stretch flex flex-col justify-start items-start gap-2.5 overflow-hidden">
                   <div className="self-stretch justify-center text-neutral-800 text-base font-bold font-['SUIT']">
                     이번 달 지출액
                   </div>
