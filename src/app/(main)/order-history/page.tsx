@@ -118,7 +118,7 @@ const OrderHistoryPage = () => {
           {/* 예산 카드 */}
           <div className="self-stretch relative flex flex-col justify-center items-start gap-4">
             <div className="self-stretch inline-flex justify-start items-start gap-4">
-              <div className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 overflow-hidden">
+              <div className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 w-42">
                 <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
                   <div className="self-stretch justify-center text-neutral-800 text-base font-bold font-['SUIT']">
                     이번 달 예산
@@ -132,7 +132,7 @@ const OrderHistoryPage = () => {
                 </div>
               </div>
               <div
-                className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-3 relative"
+                className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-3 relative w-42"
                 onMouseEnter={() => setIsHoveredMobile(true)}
                 onMouseLeave={() => setIsHoveredMobile(false)}
                 onTouchStart={() => setIsHoveredMobile(true)}
@@ -171,7 +171,7 @@ const OrderHistoryPage = () => {
                 )}
               </div>
             </div>
-            <div className="self-stretch h-40 p-5 bg-neutral-100 rounded flex flex-col justify-between items-start overflow-hidden">
+            <div className="self-stretch h-40 p-5 w-88 bg-neutral-100 rounded flex flex-col justify-between items-start overflow-hidden">
               <div className="flex flex-col justify-start items-start gap-2.5">
                 <div className="inline-flex justify-start items-center gap-3.5">
                   <div className="inline-flex flex-col justify-start items-start gap-2">
