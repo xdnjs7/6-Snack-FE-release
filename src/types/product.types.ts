@@ -30,6 +30,22 @@ export type TProduct = {
   updatedAt: string;
   deletedAt: string | null;
   category: TCategory;
+  creator: TCreator;
+};
+
+export type TProductGrid = {
+  id: number;
+  categoryId: number;
+  creatorId: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+  linkUrl: string;
+  cumulativeSales: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  category: TCategory;
   creator: Pick<TCreator, "id" | "email" | "name" | "role">;
 };
 
