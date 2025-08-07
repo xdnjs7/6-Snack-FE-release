@@ -9,9 +9,7 @@ import { deleteSelectedItems, toggleCheckAllItems, toggleCheckItem, updateItemQu
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
 import clsx from "clsx";
-import { orderNow } from "@/lib/api/order.api";
 import { useRouter } from "next/navigation";
-import { TOrderNowResponse } from "@/types/order.types";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 import Link from "next/link";
 
@@ -111,18 +109,6 @@ export default function CartItem({
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["cartItems"] }),
   });
-
-  // // 장바구니 즉시 구매(단건)
-  // const { mutate: adminOrderNow } = useMutation<TOrderNowResponse, Error, number[]>({
-  //   mutationFn: (cartItemId) => orderNow(cartItemId),
-  //   onSuccess: (order) => {
-  //     // 1. TODO
-  //     queryClient.invalidateQueries({ queryKey: ["adminOrders", "approved"] });
-  //     queryClient.invalidateQueries({ queryKey: ["budgets"] });
-
-  //     router.push(`/cart/order-confirmed/${order.data.id}`);
-  //   },
-  // });
 
   return (
     <div className="flex flex-col sm:gap-[20px] sm:py-[20px] sm:px-[40px] sm:shadow-[0px_0px_10px_0px_rgba(0,0,0,0.12)] md:py-[40px] md:px-[50px]">
