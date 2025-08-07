@@ -46,7 +46,7 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
     { requestMessage?: string; cartItemIds: number[] }
   >({
     mutationFn: ({ requestMessage, cartItemIds }) => createOrder({ requestMessage, cartItemIds }),
-    onSuccess: (order) => router.push(`/cart/order-confirmed/${order.data.id}`),
+    onSuccess: (order) => router.push(`/cart/order-confirmed/${order.id}`),
     onError: () => setIsDisabled(true),
   });
 
