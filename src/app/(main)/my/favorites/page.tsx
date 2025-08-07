@@ -45,7 +45,9 @@ export default function MyFavoritesPage() {
     },
   });
 
-  const products = favorites?.pages.flatMap((data) => data.favorites.map((favorite) => favorite.product)) ?? [];
+  const products =
+    favorites?.pages.flatMap((data) => data.favorites.map((favorite) => ({ ...favorite.product, isFavorite: true }))) ??
+    [];
 
   if (isLoading) {
     return <p role="alert">로딩 중...</p>;

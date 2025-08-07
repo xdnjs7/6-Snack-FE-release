@@ -19,6 +19,7 @@ export default function LoginPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isToastVisible, setIsToastVisible] = useState<boolean>(false);
+  const [toastText, setToastText] = useState<string>("");
 
   const router = useRouter();
   const { login } = useAuth();
@@ -34,7 +35,7 @@ export default function LoginPage() {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<TLoginFormData>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
@@ -66,6 +67,12 @@ export default function LoginPage() {
       if (e instanceof Error) {
         setIsToastVisible(true);
 
+        if (e.message === "이메일 또는 비밀번호가 일치하지 않습니다.") {
+          setToastText("이메일 또는 비밀번호가 일치하지 않습니다.");
+        } else {
+          setToastText("로그인 요청이 실패했습니다.");
+        }
+
         if (timerRef.current) clearTimeout(timerRef.current);
 
         timerRef.current = setTimeout(() => {
@@ -81,7 +88,7 @@ export default function LoginPage() {
   return (
     <div className="flex justify-center">
       <div className="flex flex-col justify-center w-full max-w-[480px] pt-[48px] sm:max-w-[600px] sm:py-[160px]">
-        <Toast text="아이디 또는 비밀번호가 일치하지 않습니다." isVisible={isToastVisible} />
+        <Toast text={toastText} isVisible={isToastVisible} />
         <nav className="flex justify-center w-full h-[140px] py-[38.18px] px-[50.92px] sm:h-auto sm:pb-0">
           <Link href="/">
             <SnackIconSvg className="w-[225.16px] h-[63.64px] sm:w-[344px] sm:h-[97.3px]" />
@@ -178,9 +185,9 @@ export default function LoginPage() {
             <Button
               type="black"
               label={isDisabled ? "로그인 중..." : "로그인"}
-              disabled={!isValid || isDisabled}
+              disabled={isDisabled}
               className={clsx(
-                (!isValid || isDisabled) && "text-primary-300 bg-primary-100 cursor-default",
+                isDisabled && "text-primary-300 bg-primary-100 cursor-default",
                 "w-full mb-[24px] font-bold text-[16px]/[20px] h-[64px]",
               )}
             />
