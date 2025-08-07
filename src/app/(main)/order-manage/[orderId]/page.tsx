@@ -12,17 +12,23 @@ import { formatPrice } from "@/lib/utils/formatPrice.util";
 import { useOrderStatusUpdate } from "@/hooks/useOrderStatusUpdate";
 import { useModal } from "@/providers/ModalProvider";
 import OrderActionModal from "../_components/OrderActionModal";
+import DogSpinner from "@/components/common/DogSpinner";
 
 export default function OrderManageDetailPage() {
   const params = useParams();
   const router = useRouter();
   const orderId: string = params.orderId as string;
 
+  const { data: orderRequest, isLoading, error } = useOrderDetail(orderId);
+  const updateOrderMutation = useOrderStatusUpdate();
+  const { openModal } = useModal();
+
   const [isItemsExpanded, setIsItemsExpanded] = useState<boolean>(true);
   const [toastConfig, setToastConfig] = useState<{
     isVisible: boolean;
     text: string;
     variant: "success" | "error";
+    budget?: number;
   }>({
     isVisible: false,
     text: "",
@@ -30,6 +36,16 @@ export default function OrderManageDetailPage() {
   });
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const calculatedTotal: number =
+    orderRequest?.products?.reduce((sum: number, item) => sum + item.price * item.quantity, 0) || 0;
+  const shippingFee: number = 3000;
+  const finalTotal: number = calculatedTotal + shippingFee;
+
+  const currentMonthBudget = orderRequest?.budget?.currentMonthBudget || 0;
+  const currentMonthExpense = orderRequest?.budget?.currentMonthExpense || 0;
+  const remainingBudget = currentMonthBudget - currentMonthExpense;
+  const budgetAfterPurchase = remainingBudget - finalTotal;
 
   // 타이머 언마운트 시 클린업
   useEffect(() => {
@@ -40,19 +56,19 @@ export default function OrderManageDetailPage() {
     };
   }, []);
 
-  // React Query 훅 불러오기
-  // 주문 상세 조회
-  const { data: orderRequest, isLoading, error } = useOrderDetail(orderId);
-  // 주문 상태 승인/거절
-  const updateOrderMutation = useOrderStatusUpdate();
-  const { openModal } = useModal();
+  useEffect(() => {
+    // 데이터가 로딩되었고, 예산이 부족할 때만 토스트 표시
+    if (!isLoading && budgetAfterPurchase < 0 && remainingBudget !== undefined) {
+      showToast("예산이 부족합니다.", "error", remainingBudget);
+    }
+  }, [budgetAfterPurchase, remainingBudget, isLoading]);
 
-  // 토스트 함수
-  const showToast = (text: string, variant: "success" | "error" = "success") => {
+  const showToast = (text: string, variant: "success" | "error" = "success", budget?: number) => {
     setToastConfig({
       isVisible: true,
       text,
       variant,
+      budget,
     });
 
     // 기존 타이머가 있다면 클리어
@@ -127,7 +143,7 @@ export default function OrderManageDetailPage() {
         aria-live="polite"
         aria-label="페이지 로딩 중"
       >
-        <div className="text-base sm:text-lg md:text-xl">로딩 중...</div>
+        <DogSpinner />
       </main>
     );
   }
@@ -142,146 +158,147 @@ export default function OrderManageDetailPage() {
     );
   }
 
-  const calculatedTotal: number =
-    orderRequest.products?.reduce((sum: number, item) => sum + item.price * item.quantity, 0) || 0;
-  const shippingFee: number = 3000;
-  const finalTotal: number = calculatedTotal + shippingFee;
-
-  // 예산 관련 변수들
-  const currentMonthBudget = orderRequest.budget.currentMonthBudget || 0;
-  const currentMonthExpense = orderRequest.budget.currentMonthExpense || 0;
-  const remainingBudget = currentMonthBudget - currentMonthExpense;
-  const budgetAfterPurchase = remainingBudget - finalTotal;
-
   return (
     <div className="min-h-screen bg-white">
-      <Toast text={toastConfig.text} variant={toastConfig.variant} isVisible={toastConfig.isVisible} />
+      <Toast
+        text={toastConfig.text}
+        variant={toastConfig.variant}
+        isVisible={toastConfig.isVisible}
+        budget={toastConfig.budget}
+      />
       {/* Main Content */}
       <main
-        className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-4 sm:pt-6 md:pt-8 flex flex-col justify-start items-start gap-5 sm:gap-6 md:gap-7"
+        className="w-full max-w-[1200px] mx-auto pt-[30px] md:pt-[60px] flex flex-col justify-start items-start gap-[30px]"
         role="main"
       >
+        {/* 구매요청상세 헤더 */}
         <header>
-          <h1 className="self-stretch justify-center text-[--color-primary-800] text-base sm:text-lg md:text-xl lg:text-2xl font-bold font-['SUIT']">
-            구매 요청 상세
-          </h1>
+          <h1 className="self-stretch justify-center text-primary-950 text-lg/[22px] font-bold">구매 요청 상세</h1>
         </header>
 
-        {/* Items Section */}
+        {/* 요청품목 + 아이템 폴드 */}
         <section
-          className="self-stretch flex flex-col justify-start items-start gap-4 sm:gap-5 md:gap-6 lg:gap-10"
+          className="self-stretch flex flex-col justify-start items-start gap-5"
           aria-labelledby="items-section-title"
         >
-          <div className="self-stretch flex flex-col justify-start items-start gap-4 sm:gap-5">
-            <button
-              className="inline-flex justify-start items-start gap-1.5 cursor-pointer"
-              onClick={() => setIsItemsExpanded(!isItemsExpanded)}
-              aria-expanded={isItemsExpanded}
-              aria-controls="items-content"
-              aria-label={`요청 품목 ${orderRequest.products?.length || 0}개 ${isItemsExpanded ? "접기" : "펼치기"}`}
-            >
-              <div className="justify-center text-[--color-primary-800] text-sm sm:text-base md:text-lg font-bold font-['SUIT']">
-                요청 품목
-              </div>
-              <div className="justify-center text-[--color-primary-800] text-sm sm:text-base md:text-lg font-normal font-['SUIT']">
-                총 {orderRequest.products?.length || 0}개
-              </div>
-              <ArrowIconSvg
-                direction={isItemsExpanded ? "down" : "right"}
-                className="w-4 h-4 sm:w-5 sm:h-5 text-[--color-primary-800]"
-                aria-hidden="true"
-              />
-            </button>
-
-            <div id="items-content" aria-hidden={!isItemsExpanded}>
-              {isItemsExpanded && (
-                <div className="self-stretch px-3 sm:px-4 md:px-5 pt-3 sm:pt-4 md:pt-5 pb-5 sm:pb-6 md:pb-7 bg-white rounded-sm shadow-[0px_0px_6px_0px_rgba(0,0,0,0.0)] sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline sm:outline-1 sm:outline-neutral-200 flex flex-col justify-start items-start gap-4 sm:gap-5">
-                  {/* Items List */}
+          {/* 요청 품목 n개 */}
+          <button
+            className="inline-flex justify-start items-center gap-1.5 cursor-pointer"
+            onClick={() => setIsItemsExpanded(!isItemsExpanded)}
+            aria-expanded={isItemsExpanded}
+            aria-controls="items-content"
+            aria-label={`요청 품목 ${orderRequest.products?.length || 0}개 ${isItemsExpanded ? "접기" : "펼치기"}`}
+          >
+            <div className="justify-center text-primary-950 text-base/[20px] tracking-tight font-bold">요청 품목</div>
+            <div className="justify-center  text-primary-950 text-base/[20px] tracking-tight  font-normal">
+              총 {orderRequest.products?.length || 0}개
+            </div>
+            <ArrowIconSvg
+              direction={isItemsExpanded ? "up" : "down"}
+              className="w-5 h-5 text-primary-950"
+              aria-hidden="true"
+            />
+          </button>
+          {/* 아이템 리스트  */}
+          <div
+            id="items-content"
+            aria-hidden={!isItemsExpanded}
+            className="w-full rounded-sm sm:shadow-[0px_0px_10px_0px_rgba(0,0,0,0.12)]"
+          >
+            {isItemsExpanded && (
+              <div
+                className="flex flex-col w-full sm:pt-[20px] sm:px-[20px] sm:pb-[30px] gap-[20px] sm:gap-0"
+                role="list"
+                aria-label="주문 상품 목록"
+              >
+                {orderRequest.products?.map((item) => (
                   <div
-                    className="self-stretch flex flex-col justify-start items-start"
-                    role="list"
-                    aria-label="주문 상품 목록"
+                    key={item.id}
+                    className="flex w-full items-center gap-3 sm:gap-5 border-b pb-[20px] sm:pt-[20px] sm:pr-[20px] border-primary-100"
+                    role="listitem"
                   >
-                    {orderRequest.products?.map((item) => (
-                      <div
-                        key={item.id}
-                        className="self-stretch py-3 sm:py-4 md:py-5 md:pr-5 border-b border-neutral-200 inline-flex justify-between items-center"
-                        role="listitem"
-                      >
-                        <div className="flex justify-start items-center gap-3 sm:gap-4 md:gap-5">
-                          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-36 lg:h-36 bg-[--color-white] shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
-                            {typeof item.imageUrl === "string" && (
-                              <div className="w-7 h-12 sm:w-10 sm:h-16 md:w-14 md:h-24 relative">
-                                <Image
-                                  src={item.imageUrl}
-                                  alt={`${item.productName} 상품 이미지`}
-                                  fill
-                                  className="object-contain"
-                                  sizes="(max-width: 640px) 28px, (max-width: 768px) 40px, (max-width: 1024px) 56px, 144px"
-                                />
-                              </div>
-                            )}
-                          </div>
-                          <div className="inline-flex flex-col justify-center items-start gap-3 sm:gap-5 md:gap-7">
-                            <div className="flex flex-col justify-center items-start gap-1.5 sm:gap-2 md:gap-2.5">
-                              <h3 className="text-center justify-center text-[--color-primary-800] text-xs sm:text-sm md:text-base font-medium font-['SUIT']">
-                                {item.productName}
-                              </h3>
-                              <div className="justify-start text-[--color-primary-800] text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
-                                {formatPrice(item.price)}원
-                              </div>
-                            </div>
-                            <div className="justify-center text-gray-500 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
-                              수량 {item.quantity}개
-                            </div>
-                          </div>
+                    {/* 상품이미지 */}
+                    <div className="w-[72px] sm:w-[140px] h-[72px] sm:h-[140px] bg-primary-50 rounded-xs sm:bg-white flex justify-center items-center flex-shrink-0">
+                      {typeof item.imageUrl === "string" && (
+                        <div className="relative w-[75%] h-[75%]">
+                          <Image
+                            src={item.imageUrl}
+                            alt={`${item.productName} 상품 이미지`}
+                            fill
+                            className="object-contain"
+                          />
                         </div>
-                        <div className="text-center justify-center text-gray-700 text-sm sm:text-base md:text-lg lg:text-xl font-extrabold font-['SUIT'] leading-loose">
+                      )}
+                    </div>
+                    {/* 아이템이름, 가격, 수량 */}
+                    <div className="flex flex-col w-full justify-center items-start gap-[12px] sm:gap-[30px]">
+                      {/* 이름+가격 */}
+                      <div className="flex flex-col justify-center items-start gap-1 sm:gap-[10px]">
+                        <h3 className="text-primary-950 text-sm/[17px] tracking-tight sm:text-base/[20px] sm:font-medium">
+                          {item.productName}
+                        </h3>
+                        <div className="text-primary-950 text-sm/[17px] tracking-tight sm:text-base/[20px] font-bold">
+                          {formatPrice(item.price)}원
+                        </div>
+                      </div>
+
+                      {/* 모바일:수량+가격 */}
+                      <div className="flex w-full items-center justify-between">
+                        <div className=" text-primary-500 text-[13px]/[16px] sm:text-base/[20px] tracking-tight font-bold">
+                          수량 {item.quantity}개
+                        </div>
+                        <div className="sm:hidden text-center  text-primary-700 text-base/[20px] tracking-tight font-extrabold">
                           {formatPrice(item.price * item.quantity)}원
                         </div>
                       </div>
-                    ))}
+                    </div>
+                    {/* 가격 */}
+                    <div className="hidden sm:block text-center  text-primary-700 text-xl/[32px] tracking-tight font-extrabold whitespace-nowrap">
+                      {formatPrice(item.price * item.quantity)}원
+                    </div>
                   </div>
+                ))}
 
-                  {/* Order Amount Info */}
-                  <div className="self-stretch flex flex-col gap-2 sm:gap-3" role="region" aria-label="주문 금액 정보">
-                    <div className="flex justify-between items-center">
-                      <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
-                        주문금액
-                      </div>
-                      <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
-                        {formatPrice(calculatedTotal)}원
-                      </div>
+                {/* Order Amount Info */}
+                <div
+                  className="w-full flex flex-col gap-4 sm:gap-2.5 sm:pt-[20px] sm:px-[20px]"
+                  role="region"
+                  aria-label="주문 금액 정보"
+                >
+                  <div className="flex justify-between items-center">
+                    <div className="text-primary-700 tracking-tight text-sm/[17px] sm:text-base/[20px] font-bold">
+                      주문금액
                     </div>
-                    <div className="flex justify-between items-center">
-                      <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
-                        배송비
-                      </div>
-                      <div className="text-center justify-center text-gray-700 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
-                        {formatPrice(shippingFee)}원
-                      </div>
+                    <div className="text-primary-700 tracking-tight text-sm/[17px] sm:text-base/[20px] font-bold">
+                      {formatPrice(calculatedTotal)}원
                     </div>
-                    <div className="flex justify-between items-center">
-                      <div className="text-center justify-center text-[--color-primary-800] text-sm sm:text-base md:text-lg lg:text-xl font-bold font-['SUIT']">
-                        총 주문금액
-                      </div>
-                      <div className="text-center justify-center text-[--color-primary-800] text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-extrabold font-['SUIT']">
-                        {formatPrice(finalTotal)}원
-                      </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="text-primary-700 tracking-tight text-sm/[17px] sm:text-base/[20px] font-bold">
+                      배송비
+                    </div>
+                    <div className="text-primary-700 tracking-tight text-sm/[17px] sm:text-base/[20px] font-bold">
+                      {formatPrice(shippingFee)}원
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="text-primary-950 text-lg/[22px] tracking-tight font-bold">총 주문금액</div>
+                    <div className="text-primary-950 text-lg/[22px] sm:text-[24px]/[30px] tracking-tight font-extrabold">
+                      {formatPrice(finalTotal)}원
                     </div>
                   </div>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </section>
 
-        {/* Request Info Section */}
+        {/* 요청 정보 섹션 */}
         <section className="self-stretch flex flex-col justify-start items-start" aria-labelledby="request-info-title">
           <div className="self-stretch px-2 py-3 sm:py-3.5 border-b border-neutral-800 inline-flex justify-start items-center gap-2">
             <h2
               id="request-info-title"
-              className="text-center justify-center text-neutral-800 text-xs sm:text-sm md:text-base font-extrabold font-['SUIT']"
+              className="text-center justify-center tracking-tight text-primary-950 text-sm/[17px] sm:text-base/[20px] font-extrabold"
             >
               요청 정보
             </h2>
@@ -292,50 +309,46 @@ export default function OrderManageDetailPage() {
             aria-label="요청 상세 정보"
           >
             <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 h-10 sm:h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">
-                  요청인
-                </div>
+              <div className="flex w-[140px] h-[50px] p-2 border-r border-b border-neutral-200 justify-start items-center text-sm/[17px] tracking-tight sm:text-base/[20px]">
+                요청인
               </div>
-              <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+              <div className="flex-1 h-[50px] px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center">
+                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold">
                   {orderRequest.requester || "-"}
                 </div>
               </div>
             </div>
             <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 h-10 sm:h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">
-                  요청 날짜
-                </div>
+              <div className="flex w-[140px] h-[50px] p-2 border-r border-b border-neutral-200 justify-start items-center text-sm/[17px] tracking-tight sm:text-base/[20px]">
+                요청 날짜
               </div>
-              <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+              <div className="flex-1 h-[50px] px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center">
+                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold">
                   {orderRequest.createdAt ? formatDate(orderRequest.createdAt) : "-"}
                 </div>
               </div>
             </div>
           </div>
-          <div className="self-stretch inline-flex justify-start items-start">
-            <div className="w-24 sm:w-32 md:w-36 self-stretch px-2 py-3 sm:py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
-              <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">
+          <div className="self-stretch flex flex-col justify-center items-start">
+            <div className="self-stretch inline-flex justify-start items-center">
+              <div className="flex w-[140px] h-[50px] p-2 border-r border-b border-neutral-200 justify-start items-center text-sm/[17px] tracking-tight sm:text-base/[20px]">
                 요청 메시지
               </div>
-            </div>
-            <div className="flex-1 p-3 sm:p-4 border-b border-neutral-200 flex justify-start items-center gap-2">
-              <div className="flex-1 justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT'] leading-snug">
-                {orderRequest.requestMessage || "요청 메시지가 없습니다."}
+              <div className="flex-1 h-[50px] px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center">
+                <div className="text-start justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold">
+                  {orderRequest.requestMessage || "요청 메시지가 없습니다."}
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Budget Info Section */}
+        {/* 예산 정보 */}
         <section className="self-stretch flex flex-col justify-start items-start" aria-labelledby="budget-info-title">
           <div className="self-stretch px-2 py-3 sm:py-3.5 border-b border-neutral-800 inline-flex justify-start items-center gap-2">
             <h2
               id="budget-info-title"
-              className="text-center justify-center text-neutral-800 text-xs sm:text-sm md:text-base font-extrabold font-['SUIT']"
+              className="text-center justify-center tracking-tight text-primary-950 text-sm/[17px] sm:text-base/[20px] font-extrabold"
             >
               예산 정보
             </h2>
@@ -346,25 +359,21 @@ export default function OrderManageDetailPage() {
             aria-label="예산 상세 정보"
           >
             <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 h-10 sm:h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">
-                  이번 달 지출액
-                </div>
+              <div className="flex w-[140px] h-[50px] p-2 border-r border-b border-neutral-200 justify-start items-center text-sm/[17px] tracking-tight sm:text-base/[20px]">
+                이번 달 지출액
               </div>
-              <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+              <div className="flex-1 h-[50px] px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center">
+                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold">
                   {formatPrice(currentMonthExpense)}원
                 </div>
               </div>
             </div>
             <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 h-10 sm:h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">
-                  이번 달 남은 예산
-                </div>
+              <div className="flex w-[140px] h-[50px] p-2 border-r border-b border-neutral-200 justify-start items-center text-sm/[17px] tracking-tight sm:text-base/[20px]">
+                이번 달 남은 예산
               </div>
-              <div className="flex-1 h-10 sm:h-12 px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
-                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+              <div className="flex-1 h-[50px] px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center">
+                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold">
                   {formatPrice(remainingBudget)}원
                 </div>
               </div>
@@ -372,40 +381,41 @@ export default function OrderManageDetailPage() {
           </div>
           <div className="self-stretch flex flex-col justify-center items-start">
             <div className="self-stretch inline-flex justify-start items-center">
-              <div className="w-24 sm:w-32 md:w-36 self-stretch px-2 py-3 sm:py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
-                <div className="text-center justify-center text-neutral-800 text-xs sm:text-sm font-normal font-['SUIT']">
-                  구매 후 예산
-                </div>
+              <div className="flex w-[140px] h-[50px] p-2 border-r border-b border-neutral-200 justify-start items-center text-sm/[17px] tracking-tight sm:text-base/[20px]">
+                구매 후 예산
               </div>
-              <div className="flex-1 self-stretch p-3 sm:p-4 border-b border-neutral-200 flex justify-start items-start gap-2">
-                <div className="text-center justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold font-['SUIT']">
+              <div className="flex-1 h-[50px] px-2 sm:px-4 py-2 border-b border-neutral-200 flex justify-start items-center">
+                <div className="text-start justify-center text-zinc-800 text-xs sm:text-sm md:text-base font-bold">
                   {formatPrice(budgetAfterPurchase)}원
                 </div>
               </div>
             </div>
           </div>
         </section>
-
-        {/* Action Buttons Section */}
-        <section className="flex w-full justify-center gap-4 sm:gap-5" role="region" aria-label="주문 요청 처리 버튼">
-          <Button
-            type="white"
-            label={updateOrderMutation.isPending ? "처리중..." : "요청 반려"}
-            className="w-full h-16 md:max-w-[300px]"
-            onClick={handleReject}
-            disabled={updateOrderMutation.isPending}
-            aria-label={updateOrderMutation.isPending ? "처리 중입니다" : "구매 요청을 반려합니다"}
-          />
-          <Button
-            type="primary"
-            label={updateOrderMutation.isPending ? "처리중..." : "요청 승인"}
-            className="w-full h-16 md:max-w-[300px]"
-            onClick={handleApprove}
-            disabled={updateOrderMutation.isPending}
-            aria-label={updateOrderMutation.isPending ? "처리 중입니다" : "구매 요청을 승인합니다"}
-          />
-        </section>
       </main>
+      {/* Action Buttons Section */}
+      <section
+        className="flex w-full justify-center gap-4 sm:gap-5 py-6 md:py-0 mt-[20px] md:mt-[70px] md:items-center"
+        role="region"
+        aria-label="주문 요청 처리 버튼"
+      >
+        <Button
+          type="white"
+          label={updateOrderMutation.isPending ? "처리중..." : "요청 반려"}
+          className="w-full h-16 md:max-w-[300px]"
+          onClick={handleReject}
+          disabled={updateOrderMutation.isPending}
+          aria-label={updateOrderMutation.isPending ? "처리 중입니다" : "구매 요청을 반려합니다"}
+        />
+        <Button
+          type="primary"
+          label={updateOrderMutation.isPending ? "처리중..." : "요청 승인"}
+          className="w-full h-16 md:max-w-[300px]"
+          onClick={handleApprove}
+          disabled={updateOrderMutation.isPending}
+          aria-label={updateOrderMutation.isPending ? "처리 중입니다" : "구매 요청을 승인합니다"}
+        />
+      </section>
     </div>
   );
 }

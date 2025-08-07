@@ -9,8 +9,7 @@ export const useOrderStatusUpdate = () => {
     onSuccess: () => {
       // 주문 목록 캐시 무효화 함 (주문목록 페이지로 이동시 바로 업데이트 된것 보여줌))
       queryClient.invalidateQueries({ queryKey: ["adminOrders"] });
-      // 주문 상세 캐시도 무효화
-      queryClient.invalidateQueries({ queryKey: ["orderDetail"] });
+  
     },
   });
 };

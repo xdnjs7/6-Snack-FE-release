@@ -216,15 +216,13 @@ export default function OrderManageModal({
                 return;
               }
 
-              // 승인하기 (예산이 충분한 경우)
-              onUpdateOrderStatus({
-                orderId: String(order.id),
-                status: "APPROVED",
-                adminMessage,
-              });
-              onClick();
+              // 승인인 경우 onClick 함수 실행 (토스페이먼츠 결제 페이지로 이동)
+              if (type === "approve") {
+                onClick();
+                closeModal();
+                return;
+              }
               closeModal();
-              showToast("구매 요청이 승인되었습니다", "success");
             }}
             type="black"
             label={type === "approve" ? "승인하기" : "반려하기"}

@@ -17,7 +17,7 @@ export default function DogSpinner() {
         </div>
       </div>
 
-      <div className="relative w-20 h-16 animate-moveUpDown">
+      <div className="relative w-20 h-16">
         <Image src={img_dog} alt="강아지 아이콘" fill className="object-contain" />
       </div>
     </div>

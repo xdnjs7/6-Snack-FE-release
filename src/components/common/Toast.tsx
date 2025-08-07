@@ -5,7 +5,6 @@ import { TToastVariant } from "@/types/toast.types";
 
 import exclamationIc from "@/assets/icons/ic_exclamation_mark_red.svg";
 import checkIc from "@/assets/icons/ic_check_white.svg";
-import xIc from "@/assets/icons/ic_x_gray.svg";
 import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
@@ -13,13 +12,12 @@ import { formatPrice } from "@/lib/utils/formatPrice.util";
 type TToastProps = {
   text: string | React.ReactNode;
   budget?: number;
-  onClose?: () => void;
   variant?: TToastVariant;
   isVisible?: boolean;
   className?: string;
 };
 
-const Toast = ({ text, budget, onClose, variant = "error", isVisible, className = "" }: TToastProps) => {
+const Toast = ({ text, budget, variant = "error", isVisible, className = "" }: TToastProps) => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -51,18 +49,12 @@ const Toast = ({ text, budget, onClose, variant = "error", isVisible, className 
       </div>
 
       {/* 예산 + 닫기 */}
-      {budget && (
+      {typeof budget === "number" && (
         <div className="flex items-center gap-3 sm:gap-6">
           <div className="flex items-center gap-1.5 sm:gap-3">
             <span>남은 예산</span>
             <span>{formatPrice(budget)}원</span>
           </div>
-
-          {onClose && (
-            <button onClick={onClose}>
-              <Image src={xIc} alt="닫기 버튼" width={24} height={24} />
-            </button>
-          )}
         </div>
       )}
     </div>

@@ -43,7 +43,7 @@ export default function CartPage() {
     isPending,
     error,
   } = useQuery<TGetCartItemsResponse, Error, TGetCartItemsResponse, [string]>({
-    queryKey: ["cart"],
+    queryKey: ["cartItems"],
     queryFn: () => getCartItems(),
   });
 
@@ -88,8 +88,10 @@ export default function CartPage() {
   }, []);
 
   const handleRequestOrder = () => {
-    // 아무 상품도 선택하지 않았거나, 예산이 부족할 때
-    if (checkedCartItemIds.length === 0 || !canPurchase) {
+    const isBudgetExceeded = user?.role !== "USER" && !canPurchase;
+
+    // 아무 상품도 선택하지 않았거나, 예산 초과할 때
+    if (checkedCartItemIds.length === 0 || isBudgetExceeded) {
       setIsToastVisible(true);
 
       if (timerRef.current) clearTimeout(timerRef.current);

@@ -17,6 +17,7 @@ import icNoOrder from "@/assets/icons/ic_no_order.svg";
 import { useAuth } from "@/providers/AuthProvider";
 import { TToastVariant } from "@/types/toast.types";
 import { useRouter } from "next/navigation";
+import { useOrderStore } from "@/stores/orderStore";
 
 export default function Order() {
   const [currentPaginationPage, setCurrentPaginationPage] = useState<number>(1);
@@ -24,6 +25,9 @@ export default function Order() {
   const queryClient = useQueryClient();
   const { user } = useAuth();
   const router = useRouter();
+
+  // Zod 상태 관리(order)
+  const setOrder = useOrderStore((state) => state.setOrder);
 
   // Toast 상태
   const [toastVisible, setToastVisible] = useState<boolean>(false);
@@ -170,9 +174,12 @@ export default function Order() {
                   <OrderManageModal
                     order={fullOrder}
                     type="approve"
-                    onClick={() => {}}
-                    onUpdateOrderStatus={updateOrderStatusMutation}
-                    showToast={showToast}
+                    onClick={() => {
+                      setOrder(fullOrder);
+                      router.push("/checkout");
+                    }}
+                    onUpdateOrderStatus={() => {}}
+                    showToast={() => {}}
                   />,
                 );
               }}
@@ -222,7 +229,6 @@ export default function Order() {
         text={toastMessage}
         variant={toastVariant}
         isVisible={toastVisible}
-        onClose={() => setToastVisible(false)}
         aria-live="polite"
         aria-atomic="true"
       />

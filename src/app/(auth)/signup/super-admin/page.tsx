@@ -97,12 +97,7 @@ export default function SuperAdminSignUpPage() {
     <>
       {/* Toast 컴포넌트 */}
       <div role="alert" aria-live="polite">
-        <Toast
-          text={toastMessage}
-          variant={toastVariant}
-          isVisible={toastVisible}
-          onClose={() => setToastVisible(false)}
-        />
+        <Toast text={toastMessage} variant={toastVariant} isVisible={toastVisible} />
       </div>
       {/* DogSpinner - 회원가입 처리 중일 때만 노출 */}
       {showSpinner && (
@@ -115,9 +110,16 @@ export default function SuperAdminSignUpPage() {
       )}
 
       {/* main content */}
-      <main className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[48px] sm:pt-[160px]" role="main" aria-labelledby="signup-heading">
+      <main
+        className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[48px] sm:pt-[160px]"
+        role="main"
+        aria-labelledby="signup-heading"
+      >
         {/* header section */}
-        <header className="sm:absolute sm:top-0 flex flex-col items-center justify-center w-full max-w-[480px] sm:max-w-[600px]" role="banner">
+        <header
+          className="sm:absolute sm:top-0 flex flex-col items-center justify-center w-full max-w-[480px] sm:max-w-[600px]"
+          role="banner"
+        >
           <div className="flex justify-center items-center w-full sm:max-w-[500px] h-[140px] sm:h-[214px] py-[38.18px] sm:py-[58.4px] px-[50.92px] sm:px-[77.86px]">
             <Link href="/" aria-label="홈으로 이동">
               <SnackIconSvg className="w-[225.16px] h-[63.64px] sm:w-[344px] sm:h-[97.3px]" aria-label="스낙 로고" />
@@ -125,10 +127,16 @@ export default function SuperAdminSignUpPage() {
           </div>
           <div className="sm:hidden">
             <div className="flex flex-col items-start justify-center gap-[10px]">
-              <h1 id="signup-heading" className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle">
+              <h1
+                id="signup-heading"
+                className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle"
+              >
                 기업 담당자 회원가입
               </h1>
-              <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle" role="note">
+              <p
+                className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle"
+                role="note"
+              >
                 * 그룹 내 유저는 기업 담당자의 초대 메일을 통해 가입이 가능합니다.
               </p>
             </div>
@@ -136,13 +144,22 @@ export default function SuperAdminSignUpPage() {
         </header>
 
         {/* signup form section */}
-        <section className="sm:absolute sm:w-[600px] sm:top-[152.12px] flex flex-col w-full items-center justify-center sm:items-start sm:px-[60px] sm:py-[40px] sm:bg-white sm:rounded-xs sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)]" aria-labelledby="signup-form-heading">
+        <section
+          className="sm:absolute sm:w-[600px] sm:top-[152.12px] flex flex-col w-full items-center justify-center sm:items-start sm:px-[60px] sm:py-[40px] sm:bg-white sm:rounded-xs sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)]"
+          aria-labelledby="signup-form-heading"
+        >
           <div className="hidden sm:block sm:mb-[20px]">
             <div className="flex flex-col items-start justify-center gap-[10px]">
-              <h1 id="signup-form-heading" className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle">
+              <h1
+                id="signup-form-heading"
+                className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle"
+              >
                 기업 담당자 회원가입
               </h1>
-              <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-left align-middle" role="note">
+              <p
+                className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-left align-middle"
+                role="note"
+              >
                 * 그룹 내 유저는 기업 담당자의 초대 메일을 통해 가입이 가능합니다.
               </p>
             </div>

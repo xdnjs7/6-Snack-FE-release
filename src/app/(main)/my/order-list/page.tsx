@@ -87,9 +87,9 @@ export default function MyOrderListPage() {
               key={item.id}
               requestDate={formatDate(item.createdAt)}
               productName={getProductName(item.receipts)}
-              price={item.totalPrice}
+              price={item.totalPrice + 3000}
               status={convertStatus(item.status)}
-              orderId={item.id} // ✅ 추가
+              orderId={item.id}
               onRequestCancel={() => {
                 handleCancel(item.id);
               }}
@@ -104,14 +104,7 @@ export default function MyOrderListPage() {
         />
       </div>
 
-      {toastVisible && (
-        <Toast
-          text="요청이 성공적으로 취소되었습니다."
-          variant="success"
-          isVisible={toastVisible}
-          onClose={() => setToastVisible(false)}
-        />
-      )}
+      {toastVisible && <Toast text="요청이 성공적으로 취소되었습니다." variant="success" isVisible={toastVisible} />}
     </main>
   );
 }

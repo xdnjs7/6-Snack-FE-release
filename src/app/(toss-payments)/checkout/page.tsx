@@ -32,12 +32,12 @@ export default function CheckoutPage() {
     }
   };
 
-  const clientKey = process.env.CLIENT_KEY!;
+  const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY!;
   const customerKey = user ? user!.id : "";
 
   useEffect(() => {
     if (order) {
-      setAmount({ currency: "KRW", value: order.data.totalPrice + 3000 });
+      setAmount({ currency: "KRW", value: order.totalPrice + 3000 });
     }
   }, [order]);
 
@@ -165,11 +165,11 @@ export default function CheckoutPage() {
                     // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
                     // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
                     await widgets.requestPayment({
-                      orderId: order.data.id,
+                      orderId: order.id,
                       orderName:
-                        order.data.receipts.length > 1
-                          ? `${order.data.receipts[0].productName} 외 ${order.data.receipts.length - 1}건`
-                          : order.data.receipts[0].productName,
+                        order.products.length > 1
+                          ? `${order.products[0].productName} 외 ${order.products.length - 1}건`
+                          : order.products[0].productName,
                       successUrl: window.location.origin + "/success",
                       failUrl: window.location.origin + "/fail",
                       customerEmail: user.email,

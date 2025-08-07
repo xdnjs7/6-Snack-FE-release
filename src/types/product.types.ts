@@ -14,7 +14,7 @@ export type TCreator = {
   updatedAt: string;
   deletedAt: string | null;
   hashedRefreshToken: string;
-  role: "SUPER_ADMIN" | "ADMIN" | "USER";
+  role: string;
 };
 
 export type TProduct = {
@@ -31,6 +31,22 @@ export type TProduct = {
   deletedAt: string | null;
   category: TCategory;
   creator: TCreator;
+};
+
+export type TProductGrid = {
+  id: number;
+  categoryId: number;
+  creatorId: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+  linkUrl: string;
+  cumulativeSales: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  category: TCategory;
+  creator: Pick<TCreator, "id" | "email" | "name" | "role">;
 };
 
 export type TProductMeta = {
