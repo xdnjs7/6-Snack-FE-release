@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import SnackIconSvg from "@/components/svg/SnackIconSvg";
 import Link from "next/link";
-import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "next/navigation";
@@ -13,24 +12,10 @@ import VisibilityOnIconSvg from "@/components/svg/VisibilityOnIconSvg";
 import clsx from "clsx";
 import Button from "@/components/ui/Button";
 import { signUpWithInviteApi } from "@/lib/api/auth.api";
-
-// 리액트 훅폼에 연결할 zod 스키마 정의
-const signUpSchema = z
-  .object({
-    password: z
-      .string()
-      .min(8, "8자 이상 입력해주세요.")
-      .regex(/[a-zA-Z]/, "비밀번호는 영문자를 포함해야 합니다.")
-      .regex(/[0-9]/, "비밀번호는 숫자를 포함해야 합니다.")
-      .regex(/[^a-zA-Z0-9]/, "비밀번호는 특수문자를 포함해야 합니다."),
-    passwordConfirm: z.string(),
-  })
-  .refine((data) => data.password === data.passwordConfirm, {
-    message: "비밀번호가 일치하지 않습니다.",
-    path: ["passwordConfirm"],
-  });
-
-type TSignUpFormData = z.infer<typeof signUpSchema>;
+import img_dog_error from "@/assets/images/img_dog_error.png";
+import Image from "next/image";
+import DogSpinner from "@/components/common/DogSpinner";
+import { inviteSignupSchema, TInviteSignUpFormData } from "@/lib/schemas/inviteSignupSchema";
 
 export default function InviteSignUpPage() {
   const params = useParams();
@@ -49,8 +34,8 @@ export default function InviteSignUpPage() {
     watch,
     formState: { errors, isSubmitting, isValid },
     setError: setFormError,
-  } = useForm<TSignUpFormData>({
-    resolver: zodResolver(signUpSchema),
+  } = useForm<TInviteSignUpFormData>({
+    resolver: zodResolver(inviteSignupSchema),
     mode: "onChange",
   });
 
@@ -76,7 +61,7 @@ export default function InviteSignUpPage() {
   }, [inviteId]);
 
   // react hook form 회원가입 처리
-  const onSubmit = async (data: TSignUpFormData) => {
+  const onSubmit = async (data: TInviteSignUpFormData) => {
     // ??
     if (!inviteInfo) return;
 
@@ -88,21 +73,32 @@ export default function InviteSignUpPage() {
     }
   };
 
-  // 로딩 중이거나 에러가 있을 때 표시
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="text-lg font-medium text-primary-600">초대 정보를 불러오는 중...</div>
+      <div className="flex flex-col items-center justify-center ">
+        <DogSpinner />
       </div>
     );
   }
 
   if (inviteError) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen gap-4">
-        <div className="text-lg font-medium text-error-600">초대 링크 오류</div>
-        <div className="text-base text-primary-600">{inviteError}</div>
-        <Link href="/login" className="text-primary-950 underline">
+      <div className="flex flex-col h-screen justify-center items-center gap-[20px] -mb-[24px]">
+        <section className="flex flex-col gap-[16px] justify-center items-center">
+          <div className="relative w-[40vw] h-[30vh] max-w-[300px] aspect-[7/8]">
+            <Image src={img_dog_error} alt="에러를 나타내는 강아지 이미지" fill className="object-contain" />
+          </div>
+
+          <div role="status" className="text-center font-medium text-[16px]/[24px] sm:text-[20px]/[30px]">
+            <h2>접근이 제한된 페이지입니다.</h2>
+            <p>이 페이지는 유효한 초대 링크를 가진 사람만 접근 할 수 있습니다.</p>
+          </div>
+        </section>
+
+        <Link
+          href="/login"
+          className="rounded-[2px] inline-flex justify-center items-center bg-primary-100 font-semibold text-[16px]/[20px] tracking-tight w-full max-w-[230px] min-h-[56px] sm:max-w-[310px] sm:h-[64px]"
+        >
           로그인 페이지로 돌아가기
         </Link>
       </div>
@@ -136,7 +132,7 @@ export default function InviteSignUpPage() {
       <div className="sm:absolute sm:w-[600px] sm:top-[152.12px] flex flex-col w-full items-center justify-center sm:items-start sm:px-[60px] sm:py-[40px] sm:bg-white sm:rounded-xs sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)]">
         <div className="hidden sm:block sm:mb-[20px]">
           <div className="flex flex-col items-center justify-center gap-[10px]">
-            <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle ">
+            <h1 className="text-primary-950 text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle ">
               {inviteInfo?.name} 님, 만나서 반갑습니다.
             </h1>
             <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
@@ -205,7 +201,7 @@ export default function InviteSignUpPage() {
             {/* 에러 메세지 */}
             {errors.password && (
               <span id="password-error" className="text-error-500 text-sm/[17px] tracking-tight" role="alert">
-                {errors.password.message}
+                {errors.password?.message}
               </span>
             )}
           </div>
@@ -251,7 +247,7 @@ export default function InviteSignUpPage() {
             {/* 에러 메세지 */}
             {errors.passwordConfirm && (
               <span id="passwordConfirm-error" className="text-error-500 text-sm/[17px] tracking-tight" role="alert">
-                {errors.passwordConfirm.message}
+                {errors.passwordConfirm?.message}
               </span>
             )}
           </div>
@@ -264,7 +260,7 @@ export default function InviteSignUpPage() {
             role="alert"
             aria-live="polite"
           >
-            {errors.root.message}
+            {errors.root?.message}
           </div>
         )}
 
