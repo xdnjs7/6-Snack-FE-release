@@ -86,7 +86,7 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
 
   // 메모이제이션된 네비게이션 핸들러
   const handleGoHome = useCallback(() => {
-    router.push("/");
+    router.push("/products");
   }, [router]);
 
   const handleGoToOrderHistory = useCallback(() => {
