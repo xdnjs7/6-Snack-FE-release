@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import TextArea from "@/components/common/TextArea";
 import OrderItem from "./OrderItem";
 import Button from "@/components/ui/Button";
@@ -21,10 +21,6 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [requestMessage, setRequestMessage] = useState<string>("");
   const router = useRouter();
-
-  useEffect(() => {
-    sessionStorage.setItem("previousPath", "/cart/order");
-  }, []);
 
   const params: TGetCartItemsParams = {
     ...(cartItemId ? { cartItemId } : { isChecked: "true" }),
