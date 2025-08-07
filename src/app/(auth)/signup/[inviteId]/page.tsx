@@ -131,11 +131,11 @@ export default function InviteSignUpPage() {
 
       <div className="sm:absolute sm:w-[600px] sm:top-[152.12px] flex flex-col w-full items-center justify-center sm:items-start sm:px-[60px] sm:py-[40px] sm:bg-white sm:rounded-xs sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)]">
         <div className="hidden sm:block sm:mb-[20px]">
-          <div className="flex flex-col items-center justify-center gap-[10px]">
-            <h1 className="text-primary-950 text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-center align-middle ">
+          <div className="flex flex-col items-start justify-center gap-[10px]">
+            <h1 className="text-primary-950 text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight align-middle ">
               {inviteInfo?.name} 님, 만나서 반갑습니다.
             </h1>
-            <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
+            <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight align-middle">
               비밀번호를 입력해 회원가입을 완료해주세요.
             </p>
           </div>
