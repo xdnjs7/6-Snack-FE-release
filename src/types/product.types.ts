@@ -14,7 +14,7 @@ export type TCreator = {
   updatedAt: string;
   deletedAt: string | null;
   hashedRefreshToken: string;
-  role: "SUPER_ADMIN" | "ADMIN" | "USER";
+  role: string;
 };
 
 export type TProduct = {
@@ -30,7 +30,7 @@ export type TProduct = {
   updatedAt: string;
   deletedAt: string | null;
   category: TCategory;
-  creator: TCreator;
+  creator: Pick<TCreator, "id" | "email" | "name" | "role">;
 };
 
 export type TProductMeta = {
