@@ -225,13 +225,15 @@ export default function Order() {
       </div>
 
       {/* Toast 컴포넌트 */}
-      <Toast
-        text={toastMessage}
-        variant={toastVariant}
-        isVisible={toastVisible}
-        aria-live="polite"
-        aria-atomic="true"
-      />
+      {toastVisible && (
+        <Toast
+          text={toastMessage}
+          variant={toastVariant}
+          isVisible={toastVisible}
+          aria-live="polite"
+          aria-atomic="true"
+        />
+      )}
     </section>
   );
 }
