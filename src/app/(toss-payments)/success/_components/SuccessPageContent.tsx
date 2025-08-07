@@ -93,7 +93,7 @@ export default function SuccessPageContent({ orderId, amount, paymentKey }: TSuc
         <h2 className="font-bold text-[22px]/[30px] sm:text-[30px]/[36px]">결제를 완료했어요</h2>
         <button
           role="구매 완료 페이지로 이동"
-          onClick={() => router.push(`/order-confirmed/${order?.id}`)}
+          onClick={() => router.push(`/cart/order-confirmed/${order?.id}`)}
           className="outline-none bg-blue-500 text-white text-[18px]/[30px] w-full max-w-[285px] rounded-[12px] h-[56px] font-bold cursor-pointer sm:max-w-[360px] sm:h-[64px]"
         >
           닫기
