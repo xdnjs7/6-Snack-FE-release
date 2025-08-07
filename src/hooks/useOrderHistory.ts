@@ -14,6 +14,8 @@ export type TPurchaseItem = {
   approvalDate: string;
   manager: string;
   adminMessage?: string;
+  totalQuantity?: number;
+  productName?: string;
 };
 
 export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: number = 4) => {
@@ -56,6 +58,7 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
     managerName?: string;
     manager?: string;
     adminMessage?: string;
+    products?: Array<{ quantity: number }>;
   };
 
   const parse = (item: TOrderItem): TPurchaseItem => ({
@@ -73,6 +76,8 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
     approvalDate: item.approvalDate ? formatDate(item.approvalDate) : item.updatedAt ? formatDate(item.updatedAt) : "-",
     manager: item.approver || item.managerName || item.manager || "-",
     adminMessage: item.adminMessage,
+    totalQuantity: item.products?.reduce((sum, product) => sum + product.quantity, 0) || 0,
+    productName: item.productName,
   });
 
   // 모든 아이템을 파싱

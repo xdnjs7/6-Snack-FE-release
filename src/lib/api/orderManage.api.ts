@@ -10,9 +10,13 @@ export const fetchPendingOrders = async ({
   limit?: number;
   orderBy?: string;
 }): Promise<{ orders: TOrderSummary[]; meta: { totalCount: number; currentPage: number; totalPages: number } }> => {
-  const query = `?status=pending&offset=${offset}&limit=${limit}&orderBy=${orderBy}`;
-  const res = await cookieFetch(`/admin/orders${query}`);
-  return res as { orders: TOrderSummary[]; meta: { totalCount: number; currentPage: number; totalPages: number } };
+  const page = Math.floor(offset / limit) + 1;
+  const query = `?status=pending&page=${page}&limit=${limit}&orderBy=${orderBy}`;
+  const res = (await cookieFetch(`/admin/orders${query}`)) as {
+    orders: TOrderSummary[];
+    meta: { totalCount: number; currentPage: number; totalPages: number };
+  };
+  return res;
 };
 
 export const fetchOrderDetail = async (orderId: string): Promise<TOrder> => {

@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getUserApi } from "@/lib/api/user.api";
 import { loginApi, logoutApi, registerApi } from "@/lib/api/auth.api";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { TUser, TAuthContextType } from "@/types/auth.types";
 
 const AuthContext = createContext<TAuthContextType | undefined>(undefined);
@@ -19,7 +19,6 @@ export const useAuth = () => {
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<TUser | null>(null);
   const pathname = usePathname();
-  const router = useRouter();
 
   const getUser = async () => {
     try {
@@ -43,12 +42,17 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   const logout = async () => {
     await logoutApi();
     setUser(null);
-    router.push("/login");
   };
 
   useEffect(() => {
     // 예외 경로: 홈(랜딩)페이지와 /auth 하위 경로들
-    if (pathname === "/" || pathname.startsWith("/auth") || pathname.startsWith("/login") || pathname.startsWith("/signup")) return;
+    if (
+      pathname === "/" ||
+      pathname.startsWith("/auth") ||
+      pathname.startsWith("/login") ||
+      pathname.startsWith("/signup")
+    )
+      return;
 
     console.log("🔍 인증 상태 확인:", pathname);
     getUser();
@@ -58,7 +62,12 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   useEffect(() => {
     // 예외 경로가 아닌 경우에만 초기 인증 상태 확인
     const currentPath = pathname;
-    if (currentPath !== "/" && !currentPath.startsWith("/auth") && !currentPath.startsWith("/login") && !currentPath.startsWith("/signup")) {
+    if (
+      currentPath !== "/" &&
+      !currentPath.startsWith("/auth") &&
+      !currentPath.startsWith("/login") &&
+      !currentPath.startsWith("/signup")
+    ) {
       console.log("🚀 앱 초기 로드: 인증 상태 확인 시작");
       getUser();
     }

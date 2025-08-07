@@ -81,11 +81,15 @@ export default function SuperAdminSignUpPage() {
     setShowSpinner(true);
     try {
       await superAdminSignUpApi(data);
-      router.push("/login");
+      showToast("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.", "success");
+      // 2초 후 이동 (사용자가 성공 메시지를 볼 수 있도록)
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setShowSpinner(false);
-      showToast("회원가입에 실패했습니다.", "error");
+      showToast("회원가입에 실패했습니다. 다시 시도해주세요.", "error");
     }
   };
 
@@ -103,7 +107,10 @@ export default function SuperAdminSignUpPage() {
       {/* DogSpinner - 회원가입 처리 중일 때만 노출 */}
       {showSpinner && (
         <BackdropSpinnerWrapper>
-          <DogSpinner />
+          <div className="flex flex-col items-center gap-4">
+            <DogSpinner />
+            <p className="text-white text-sm font-['SUIT'] font-medium">회원가입을 처리하고 있습니다...</p>
+          </div>
         </BackdropSpinnerWrapper>
       )}
 
@@ -214,15 +221,24 @@ export default function SuperAdminSignUpPage() {
             <button
               type="submit"
               className={clsx(
-                "w-full h-[64px] mb-[24px] rounded-[2px] inline-flex justify-center items-center text-base cursor-pointer",
-                isValid && !isSubmitting ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
+                "w-full h-[64px] mb-[24px] rounded-[2px] inline-flex justify-center items-center text-base cursor-pointer transition-all duration-200",
+                isValid && !isSubmitting && !showSpinner
+                  ? "bg-primary-950 text-primary-50 hover:bg-primary-900"
+                  : "bg-primary-100 text-primary-300 cursor-not-allowed",
                 "font-bold",
               )}
-              disabled={isSubmitting || !isValid}
+              disabled={isSubmitting || !isValid || showSpinner}
               aria-describedby={!isValid ? "form-validation-message" : undefined}
-              aria-label={isSubmitting ? "회원가입 처리 중" : "회원가입 하기"}
+              aria-label={isSubmitting || showSpinner ? "회원가입 처리 중" : "회원가입 하기"}
             >
-              {isSubmitting ? "처리 중..." : "가입하기"}
+              {isSubmitting || showSpinner ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-primary-300 border-t-primary-600 rounded-full animate-spin"></div>
+                  처리 중...
+                </div>
+              ) : (
+                "가입하기"
+              )}
             </button>
           </form>
 
