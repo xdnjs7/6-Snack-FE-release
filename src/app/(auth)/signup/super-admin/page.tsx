@@ -10,7 +10,6 @@ import clsx from "clsx";
 import { superAdminSignUpApi } from "@/lib/api/superAdmin.api";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
-import DogSpinner from "@/components/common/DogSpinner";
 import { TToastVariant } from "@/types/toast.types";
 
 // 리액트 훅폼에 연결할 zod 스키마 정의
@@ -234,7 +233,7 @@ export default function SuperAdminSignUpPage() {
               aria-label={isSubmitting || isLoading ? "회원가입 처리 중" : "회원가입 하기"}
             >
               {isSubmitting || isLoading ? (
-                <DogSpinner />
+                "처리 중"
               ) : (
                 "가입하기"
               )}
