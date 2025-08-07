@@ -53,7 +53,7 @@ export default function GlobalErrorPage({ error, reset }: { error: Error & { dig
             ) : (
               <>
                 <p>접근이 제한된 페이지입니다.</p>
-                <p>이 페이지는 {requiredRole[user.role] ?? "권한이 없습니다."}할 수 있습니다.</p>
+                <p>{requiredRole[user.role] ?? "권한이 없습니다."}</p>
               </>
             )
           ) : (
@@ -66,13 +66,13 @@ export default function GlobalErrorPage({ error, reset }: { error: Error & { dig
           type="black"
           label="돌아가기"
           onClick={handleClick}
-          className="font-semibold text-[16px]/[20px] tracking-tight w-full max-w-[230px] min-h-[56px] sm:max-w-[310px] sm:h-[64px]"
+          className="font-semibold text-[16px]/[20px] tracking-tight w-44 max-w-[230px] min-h-[56px] sm:max-w-[310px] sm:h-[64px]"
         />
         <Button
           type="white"
           label="다시 시도"
           onClick={reset}
-          className="font-semibold text-[16px]/[20px] tracking-tight w-full max-w-[230px] min-h-[56px] sm:max-w-[310px] sm:h-[64px]"
+          className="font-semibold text-[16px]/[20px] tracking-tight w-44 max-w-[230px] min-h-[56px] sm:max-w-[310px] sm:h-[64px]"
         />
       </div>
     </div>
