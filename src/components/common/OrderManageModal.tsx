@@ -216,6 +216,12 @@ export default function OrderManageModal({
                 return;
               }
 
+              // 승인인 경우 onClick 함수 실행 (토스페이먼츠 결제 페이지로 이동)
+              if (type === "approve") {
+                onClick();
+                closeModal();
+                return;
+              }
               closeModal();
             }}
             type="black"
