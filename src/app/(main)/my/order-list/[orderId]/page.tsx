@@ -38,7 +38,7 @@ const LoadingSkeleton = () => (
               {[1, 2].map((i) => (
                 <div key={i} className="self-stretch border-b border-neutral-200 inline-flex justify-between items-center sm:py-5 sm:pr-5">
                   <div className="flex gap-5 flex-1 sm:flex sm:justify-start sm:items-center sm:gap-5">
-                    <div className="w-24 h-24 sm:w-[140px] sm:h-[140px] bg-gray-200 animate-pulse rounded" style={{ aspectRatio: '1' }}></div>
+                    <div className="w-[72px] sm:w-[140px] h-[72px] sm:h-[140px] bg-primary-50 sm:bg-white rounded-xs animate-pulse" style={{ aspectRatio: '1' }}></div>
                     <div className="flex-1 inline-flex flex-col items-start gap-3 sm:justify-start sm:inline-flex sm:flex-col sm:justify-start sm:items-start sm:gap-7">
                       <div className="flex flex-col justify-center items-start gap-1 sm:justify-start sm:gap-2.5">
                         <div className="w-32 h-4 bg-gray-200 animate-pulse rounded"></div>
@@ -258,7 +258,7 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
           {/* Bottom Action Buttons */}
           <div className="self-stretch flex justify-center items-center gap-4 pt-6 sm:pt-8">
             <button
-              className="w-[155.5px] sm:w-[338px] md:w-[296px] h-16 px-4 py-3 bg-white rounded-sm outline outline-1 outline-offset-[-1px] outline-zinc-400 inline-flex justify-center items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+              className="w-[155.5px] sm:w-[338px] md:w-[296px] h-16 px-4 py-3 bg-white rounded-[2px] outline outline-1 outline-offset-[-1px] outline-zinc-400 inline-flex justify-center items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200"
               onClick={handleBackToList}
               type="button"
             >
@@ -267,7 +267,7 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
               </div>
             </button>
             <button
-              className="w-[155.5px] sm:w-[338px] md:w-[300px] h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center cursor-pointer hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+              className="w-[155.5px] sm:w-[338px] md:w-[300px] h-16 px-4 py-3 bg-neutral-800 rounded-[2px] inline-flex justify-center items-center cursor-pointer hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
               onClick={handleAddToCart}
               disabled={isAddingToCart}
               type="button"

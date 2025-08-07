@@ -20,16 +20,15 @@ const ProductItem = React.memo(({ receipt }: { receipt: { price: number; quantit
       className="self-stretch border-b border-neutral-200 inline-flex justify-between items-center sm:py-5 sm:pr-5"
     >
       <div className="flex gap-5 flex-1 sm:flex sm:justify-start sm:items-center sm:gap-5">
-        <div className="relative w-24 h-24 sm:w-[140px] sm:h-[140px] bg-[--color-white] shadow-[4px_4px_20px_0px_rgba(250,247,243,0.25)] flex justify-center items-center gap-2.5">
-          <Image
-            className="object-contain"
-            src={receipt.imageUrl}
-            alt={receipt.productName}
-            fill
-            sizes="(max-width: 640px) 96px, 140px"
-            priority={false}
-            loading="lazy"
-          />
+        <div className="relative w-[72px] sm:w-[140px] h-[72px] sm:h-[140px] bg-primary-50 rounded-xs sm:bg-white flex justify-center items-center flex-shrink-0">
+          <div className="relative w-[75%] h-[75%]">
+            <Image
+              src={receipt.imageUrl}
+              alt={`${receipt.productName} 상품 이미지`}
+              fill
+              className="object-contain"
+            />
+          </div>
         </div>
         <div className="flex-1 inline-flex flex-col items-start gap-3 sm:justify-start sm:inline-flex sm:flex-col sm:justify-start sm:items-start sm:gap-7">
           <div className="flex flex-col justify-center items-start gap-1 sm:justify-start sm:gap-2.5">
@@ -87,7 +86,7 @@ const LoadingSkeleton = () => (
               {[1, 2].map((i) => (
                 <div key={i} className="self-stretch border-b border-neutral-200 inline-flex justify-between items-center sm:py-5 sm:pr-5">
                   <div className="flex gap-5 flex-1 sm:flex sm:justify-start sm:items-center sm:gap-5">
-                    <div className="w-24 h-24 sm:w-[140px] sm:h-[140px] bg-gray-200 animate-pulse rounded"></div>
+                    <div className="w-[72px] sm:w-[140px] h-[72px] sm:h-[140px] bg-primary-50 sm:bg-white rounded-xs animate-pulse"></div>
                     <div className="flex-1 inline-flex flex-col items-start gap-3 sm:justify-start sm:inline-flex sm:flex-col sm:justify-start sm:items-start sm:gap-7">
                       <div className="flex flex-col justify-center items-start gap-1 sm:justify-start sm:gap-2.5">
                         <div className="w-32 h-4 bg-gray-200 animate-pulse rounded"></div>
@@ -327,13 +326,13 @@ export default function OrderConfirmedPage() {
             <Button
               type="white"
               label="장바구니로 돌아가기"
-              className="flex-1 md:flex-none md:w-[260px] h-16 px-4 py-3 bg-white rounded-sm outline-1 outline-offset-[-1px] outline-zinc-400 flex justify-center items-center text-lg font-semibold"
+              className="flex-1 md:flex-none md:w-[260px] h-16 px-4 py-3 bg-white rounded-[2px] outline-1 outline-offset-[-1px] outline-zinc-400 flex justify-center items-center text-base font-semibold"
               onClick={handleBackToCart}
             />
             <Button
               type="black"
               label={buttonText}
-              className="flex-1 md:flex-none md:w-[264px] h-16 px-4 py-3 bg-neutral-800 rounded-sm flex justify-center items-center text-base font-bold"
+              className="flex-1 md:flex-none md:w-[264px] h-16 px-4 py-3 bg-neutral-800 rounded-[2px] flex justify-center items-center text-base font-bold"
               onClick={handleViewOrderHistory}
             />
           </div>
