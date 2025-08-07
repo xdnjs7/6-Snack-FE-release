@@ -33,24 +33,24 @@ const ProductItem = React.memo(({ receipt }: { receipt: { price: number; quantit
         </div>
         <div className="flex-1 inline-flex flex-col items-start gap-3 sm:justify-start sm:inline-flex sm:flex-col sm:justify-start sm:items-start sm:gap-7">
           <div className="flex flex-col justify-center items-start gap-1 sm:justify-start sm:gap-2.5">
-            <div className="text-center justify-center text-gray-950 text-sm sm:text-base font-medium font-['SUIT']">
+            <div className="text-center justify-center text-primary-950 text-sm sm:text-base font-medium">
               {receipt.productName}
             </div>
-            <div className="justify-start text-gray-950 text-sm sm:text-base font-bold font-['SUIT']">
+            <div className="justify-start text-primary-950 text-sm sm:text-base font-bold">
               {formatPrice(receipt.price)}원
             </div>
           </div>
           <div className="flex justify-between items-center w-full sm:justify-start sm:flex sm:justify-start">
-            <div className="justify-center text-gray-500 text-[13px] sm:text-base font-bold font-['SUIT']">
+            <div className="justify-center text-gray-500 text-[13px] sm:text-base font-bold">
               수량 {receipt.quantity}개
             </div>
-            <div className="text-center justify-center text-gray-700 text-base font-bold font-['SUIT'] sm:hidden">
+            <div className="text-center justify-center text-gray-700 text-base font-bold sm:hidden">
               {formatPrice(totalPrice)}원
             </div>
           </div>
         </div>
       </div>
-      <div className="hidden sm:block text-center justify-center text-gray-700 text-[20px] font-extrabold font-['SUIT']">
+      <div className="hidden sm:block text-center justify-center text-gray-700 text-[20px] font-extrabold">
         {formatPrice(totalPrice)}원
       </div>
     </div>
@@ -82,7 +82,7 @@ const LoadingSkeleton = () => (
             <div className="w-20 h-6 bg-gray-200 animate-pulse rounded"></div>
             <div className="w-16 h-6 bg-gray-200 animate-pulse rounded"></div>
           </div>
-          <div className="self-stretch bg-white rounded-sm sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline-1 sm:outline-neutral-200 flex flex-col justify-start items-start gap-5 sm:px-5 sm:pt-5 sm:pb-[30px] md:px-[60px] md:py-[40px]">
+          <div className="self-stretch bg-white rounded-sm sm:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.1)] md:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.1)] flex flex-col justify-start items-start gap-5 sm:px-5 sm:pt-5 sm:pb-[30px] md:px-[60px] md:py-[40px]">
             <div className="self-stretch flex flex-col justify-start items-start gap-[16px] sm:gap-0">
               {[1, 2].map((i) => (
                 <div key={i} className="self-stretch border-b border-neutral-200 inline-flex justify-between items-center sm:py-5 sm:pr-5">
@@ -138,8 +138,12 @@ export default function OrderConfirmedPage() {
 
   // 메모이제이션된 이벤트 핸들러
   const handleViewOrderHistory = useCallback(() => {
-    router.push("/my/order-list");
-  }, [router]);
+    if (user?.role === "USER") {
+      router.push("/my/order-list");
+    } else {
+      router.push("/order-history");
+    }
+  }, [router, user?.role]);
 
   const handleBackToCart = useCallback(() => {
     router.push("/cart");
@@ -160,24 +164,29 @@ export default function OrderConfirmedPage() {
     return "주문 완료";
   }, [orderData]);
 
+  // 버튼 텍스트 메모이제이션
+  const buttonText = useMemo(() => {
+    return user?.role === "USER" ? "요청 내역 확인" : "구매 내역 확인";
+  }, [user?.role]);
+
   // 진행 단계 컴포넌트 메모이제이션
   const progressSteps = useMemo(() => {
     if (user?.role === "USER") {
       return (
         <>
-          <div className="justify-center text-zinc-400 text-base sm:text-lg md:text-lg font-bold font-['SUIT']">
+          <div className="justify-center text-zinc-400 text-base sm:text-lg md:text-lg font-bold">
             1. Shopping Cart
           </div>
           <div className="hidden sm:block">
             <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400" />
           </div>
-          <div className="justify-center text-zinc-400 text-base sm:text-lg md:text-lg font-bold font-['SUIT']">
+          <div className="justify-center text-zinc-400 text-base sm:text-lg md:text-lg font-bold">
             2. Order
           </div>
           <div className="hidden sm:block">
             <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400" />
           </div>
-          <div className="justify-center text-neutral-800 text-base sm:text-lg md:text-lg font-bold font-['SUIT']">
+          <div className="justify-center text-neutral-800 text-base sm:text-lg md:text-lg font-bold">
             3. Order Confirmed
           </div>
         </>
@@ -185,13 +194,13 @@ export default function OrderConfirmedPage() {
     } else {
       return (
         <>
-          <div className="justify-center text-zinc-400 text-base sm:text-lg md:text-lg font-bold font-['SUIT']">
+          <div className="justify-center text-zinc-400 text-base sm:text-lg md:text-lg font-bold">
             1. Shopping Cart
           </div>
           <div className="hidden sm:block">
             <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400" />
           </div>
-          <div className="justify-center text-neutral-800 text-base sm:text-lg md:text-lg font-bold font-['SUIT']">
+          <div className="justify-center text-neutral-800 text-base sm:text-lg md:text-lg font-bold">
             2. Order Confirmed
           </div>
         </>
@@ -248,7 +257,7 @@ export default function OrderConfirmedPage() {
           </div>
 
           {/* 주문 완료 메시지 */}
-          <div className="self-stretch text-center justify-center text-neutral-800 text-2xl sm:text-3xl md:text-3xl font-bold font-['SUIT']">
+          <div className="self-stretch text-center justify-center text-neutral-800 text-2xl sm:text-3xl md:text-3xl font-bold">
             {completionMessage}
           </div>
 
@@ -256,13 +265,13 @@ export default function OrderConfirmedPage() {
           <div className="self-stretch flex flex-col justify-start items-start gap-10">
             <div className="self-stretch flex flex-col justify-start items-start gap-[15px]">
               <div className="inline-flex justify-start items-start gap-1.5">
-                <div className="justify-center text-gray-950 text-base font-bold font-['SUIT']">요청 품목</div>
-                <div className="justify-center text-gray-950 text-base font-normal font-['SUIT']">
+                <div className="justify-center text-primary-950 text-base font-bold">요청 품목</div>
+                <div className="justify-center text-primary-950 text-base font-normal">
                   총 {orderData.receipts.length}개
                 </div>
               </div>
 
-              <div className="self-stretch bg-white rounded-sm sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline-1 sm:outline-neutral-200 flex flex-col justify-start items-start gap-5 sm:px-5 sm:pt-5 sm:pb-[30px] md:px-[60px] md:py-[40px]">
+              <div className="self-stretch bg-white rounded-sm sm:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.1)] md:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.1)] flex flex-col justify-start items-start gap-5 sm:px-5 sm:pt-5 sm:pb-[30px] md:px-[60px] md:py-[40px]">
                 {/* 상품 목록 */}
                 <div className="self-stretch flex flex-col justify-start items-start gap-[16px] sm:gap-0">
                   {orderData.receipts.map((receipt) => (
@@ -273,26 +282,26 @@ export default function OrderConfirmedPage() {
                 {/* 주문 금액 정보 */}
                 <div className="self-stretch flex flex-col gap-3 sm:gap-[7px] sm:px-5">
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
+                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold">
                       주문금액
                     </div>
-                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
+                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold">
                       {formatPrice(orderData.totalPrice)}원
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
+                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold">
                       배송비
                     </div>
-                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold font-['SUIT']">
+                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold">
                       {formatPrice(shippingFee)}원
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-gray-950 text-lg sm:text-lg font-bold font-['SUIT']">
+                    <div className="text-center justify-center text-primary-950 text-lg sm:text-lg font-bold">
                       총 주문금액
                     </div>
-                    <div className="text-center justify-center text-gray-950 text-lg sm:text-2xl font-bold sm:font-extrabold font-['SUIT']">
+                    <div className="text-center justify-center text-primary-950 text-lg sm:text-2xl font-bold sm:font-extrabold">
                       {formatPrice(totalAmount)}원
                     </div>
                   </div>
@@ -303,11 +312,11 @@ export default function OrderConfirmedPage() {
 
           {/* 요청 메시지 */}
           <div className="self-stretch flex flex-col justify-start items-start gap-5">
-            <div className="self-stretch justify-center text-neutral-800 text-base font-bold font-['SUIT']">
+            <div className="self-stretch justify-center text-neutral-800 text-base font-bold">
               요청 메시지
             </div>
             <div className="self-stretch h-40 p-6 bg-white rounded-sm outline-1 outline-offset-[-1px] outline-neutral-300 inline-flex justify-start items-start gap-2 overflow-hidden">
-              <div className="justify-center text-neutral-400 text-base font-normal font-['SUIT'] leading-relaxed">
+              <div className="justify-center text-neutral-400 text-base font-normal leading-relaxed">
                 {orderData.requestMessage || "요청 메시지가 없습니다."}
               </div>
             </div>
@@ -323,7 +332,7 @@ export default function OrderConfirmedPage() {
             />
             <Button
               type="black"
-              label="요청내역 확인"
+              label={buttonText}
               className="flex-1 md:flex-none md:w-[264px] h-16 px-4 py-3 bg-neutral-800 rounded-sm flex justify-center items-center text-base font-bold"
               onClick={handleViewOrderHistory}
             />
@@ -331,7 +340,7 @@ export default function OrderConfirmedPage() {
         </main>
       </div>
     );
-  }, [orderData, progressSteps, completionMessage, shippingFee, totalAmount, handleBackToCart, handleViewOrderHistory]);
+  }, [orderData, progressSteps, completionMessage, shippingFee, totalAmount, handleBackToCart, handleViewOrderHistory, buttonText]);
 
   if (isLoading) {
     return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo, Suspense, lazy } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 import Head from "next/head";
 import { getOrderDetail, TOrderHistory } from "@/lib/api/orderHistory.api";
 import { 
@@ -56,6 +56,12 @@ const LoadingSkeleton = () => (
           </div>
         </div>
       </div>
+
+      {/* 하단 버튼 스켈레톤 */}
+      <div className="self-stretch h-16 inline-flex justify-start md:justify-center items-center gap-5">
+        <div className="flex-1 md:flex-none md:w-[260px] h-16 bg-gray-200 animate-pulse rounded"></div>
+        <div className="flex-1 md:flex-none md:w-[264px] h-16 bg-gray-200 animate-pulse rounded"></div>
+      </div>
     </div>
   </div>
 );
@@ -70,12 +76,22 @@ const ErrorComponent = ({ error }: { error: string | null }) => (
 export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps) {
   const params = useParams();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const orderId: string = params.orderId as string;
   const status: TOrderStatus = searchParams.get("status") as TOrderStatus;
 
   const [orderData, setOrderData] = useState<TOrderHistory | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // 메모이제이션된 네비게이션 핸들러
+  const handleGoHome = useCallback(() => {
+    router.push("/");
+  }, [router]);
+
+  const handleGoToOrderHistory = useCallback(() => {
+    router.push("/order-history");
+  }, [router]);
 
   // 메모이제이션된 fetchOrderDetail 함수 - 메인 스레드 최적화
   const fetchOrderDetail = useCallback(async (): Promise<void> => {
@@ -159,10 +175,28 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
               getStatusText={getStatusText}
             />
           </Suspense>
+
+          {/* 하단 버튼 */}
+          <div className="self-stretch h-16 inline-flex justify-start md:justify-center items-center gap-5">
+            <button
+              className="flex-1 md:flex-none md:w-[260px] h-16 px-4 py-3 bg-white rounded-sm outline-1 outline-offset-[-1px] outline-zinc-400 flex justify-center items-center text-lg font-semibold cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+              onClick={handleGoHome}
+              type="button"
+            >
+              홈으로
+            </button>
+            <button
+              className="flex-1 md:flex-none md:w-[264px] h-16 px-4 py-3 bg-neutral-800 rounded-sm flex justify-center items-center text-base font-bold cursor-pointer hover:bg-neutral-700 transition-colors duration-200 text-white"
+              onClick={handleGoToOrderHistory}
+              type="button"
+            >
+              구매 내역 확인
+            </button>
+          </div>
         </div>
       </div>
     );
-  }, [orderData]);
+  }, [orderData, handleGoHome, handleGoToOrderHistory]);
 
   if (isLoading) {
     return (
