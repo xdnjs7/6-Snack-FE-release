@@ -11,6 +11,8 @@ import { superAdminSignUpApi } from "@/lib/api/superAdmin.api";
 import Input from "@/components/common/Input";
 import Toast from "@/components/common/Toast";
 import { TToastVariant } from "@/types/toast.types";
+import DogSpinner from "@/components/common/DogSpinner";
+import BackdropSpinnerWrapper from "@/app/(auth)/signup/_components/BackdropSpinnerWrapper";
 
 // 리액트 훅폼에 연결할 zod 스키마 정의
 const signUpSchema = z
@@ -20,15 +22,15 @@ const signUpSchema = z
     companyName: z
       .string()
       .min(1, "회사명을 입력해주세요.")
-      .regex(/^[가-힣a-zA-Z\d().,_\- ]+$/, "회사명에는 한글, 영문, 숫자, 괄호(), 온점(.), 반점(,), 대쉬(-), 언더바(_)만 사용할 수 있습니다."),
+      .regex(/^[가-힣a-zA-Z\d().,_\- ]+$/, "회사명에는 한글, 영문, 숫자, (, ), ., -, _만 사용할 수 있습니다."),
     bizNumber: z.string().regex(/^[0-9]{10}$/, "사업자 번호 10자리를 입력해주세요."),
     password: z
-      .string()
+      .string("비밀번호를 입력해주세요.")
       .min(8, "8자 이상 입력해주세요.")
       .regex(/[a-zA-Z]/, "비밀번호는 영문자를 포함해야 합니다.")
       .regex(/[0-9]/, "비밀번호는 숫자를 포함해야 합니다.")
       .regex(/[^a-zA-Z0-9]/, "비밀번호는 특수문자를 포함해야 합니다."),
-    passwordConfirm: z.string(),
+    passwordConfirm: z.string("비밀번호를 입력해주세요."),
   })
 
   .refine((data) => data.password === data.passwordConfirm, {
@@ -44,6 +46,7 @@ export default function SuperAdminSignUpPage() {
   const [toastVisible, setToastVisible] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
   const [toastVariant, setToastVariant] = useState<TToastVariant>("success");
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const {
     register,
@@ -56,7 +59,6 @@ export default function SuperAdminSignUpPage() {
 
   // register 결과 저장
   const emailReg = register("email");
-  const nameReg = register("name");
   const passwordReg = register("password");
   const passwordConfirmReg = register("passwordConfirm");
   const companyNameReg = register("companyName");
@@ -76,80 +78,95 @@ export default function SuperAdminSignUpPage() {
 
   // 회원가입 처리
   const onSubmit = async (data: TSignUpFormData) => {
+    setShowSpinner(true);
     try {
       await superAdminSignUpApi(data);
-      showToast("회원가입이 성공했습니다!", "success");
-      // 토스트가 보여진 후 1초 뒤에 페이지 이동
+      showToast("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.", "success");
+      // 2초 후 이동 (사용자가 성공 메시지를 볼 수 있도록)
       setTimeout(() => {
         router.push("/login");
-      }, 1000);
+      }, 2000);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      const message = error instanceof Error ? error.message : "회원가입에 실패했습니다.";
-      showToast(message, "error");
+      setShowSpinner(false);
+      showToast("회원가입에 실패했습니다. 다시 시도해주세요.", "error");
     }
   };
 
   return (
     <>
       {/* Toast 컴포넌트 */}
-      <Toast
-        text={toastMessage}
-        variant={toastVariant}
-        isVisible={toastVisible}
-        onClose={() => setToastVisible(false)}
-      />
+      <div role="alert" aria-live="polite">
+        <Toast
+          text={toastMessage}
+          variant={toastVariant}
+          isVisible={toastVisible}
+          onClose={() => setToastVisible(false)}
+        />
+      </div>
+      {/* DogSpinner - 회원가입 처리 중일 때만 노출 */}
+      {showSpinner && (
+        <BackdropSpinnerWrapper>
+          <div className="flex flex-col items-center gap-4">
+            <DogSpinner />
+            <p className="text-white text-sm font-['SUIT'] font-medium">회원가입을 처리하고 있습니다...</p>
+          </div>
+        </BackdropSpinnerWrapper>
+      )}
 
-      {/* top parent */}
-      <div className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[48px] sm:pt-[160px]">
-        {/* mobile */}
-        {/* logo + intro */}
-        <div className="sm:absolute sm:top-0 flex flex-col items-center justify-center w-full max-w-[480px] sm:max-w-[600px]">
+      {/* main content */}
+      <main className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[48px] sm:pt-[160px]" role="main" aria-labelledby="signup-heading">
+        {/* header section */}
+        <header className="sm:absolute sm:top-0 flex flex-col items-center justify-center w-full max-w-[480px] sm:max-w-[600px]" role="banner">
           <div className="flex justify-center items-center w-full sm:max-w-[500px] h-[140px] sm:h-[214px] py-[38.18px] sm:py-[58.4px] px-[50.92px] sm:px-[77.86px]">
-            <Link href="/">
-              <SnackIconSvg className="w-[225.16px] h-[63.64px] sm:w-[344px] sm:h-[97.3px]" />
+            <Link href="/" aria-label="홈으로 이동">
+              <SnackIconSvg className="w-[225.16px] h-[63.64px] sm:w-[344px] sm:h-[97.3px]" aria-label="스낙 로고" />
             </Link>
           </div>
           <div className="sm:hidden">
             <div className="flex flex-col items-start justify-center gap-[10px]">
-              <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle ">
-                {/* 기업 담당자 회원가입 */}
+              <h1 id="signup-heading" className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle">
                 기업 담당자 회원가입
               </h1>
-              <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle">
+              <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-center align-middle" role="note">
                 * 그룹 내 유저는 기업 담당자의 초대 메일을 통해 가입이 가능합니다.
               </p>
             </div>
           </div>
-        </div>
-        {/* signup content - form, register button, link to login */}
+        </header>
 
-        <div className="sm:absolute sm:w-[600px] sm:top-[152.12px] flex flex-col w-full items-center justify-center sm:items-start sm:px-[60px] sm:py-[40px] sm:bg-white sm:rounded-xs sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)]">
+        {/* signup form section */}
+        <section className="sm:absolute sm:w-[600px] sm:top-[152.12px] flex flex-col w-full items-center justify-center sm:items-start sm:px-[60px] sm:py-[40px] sm:bg-white sm:rounded-xs sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)]" aria-labelledby="signup-form-heading">
           <div className="hidden sm:block sm:mb-[20px]">
             <div className="flex flex-col items-start justify-center gap-[10px]">
-              <h1 className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle ">
-                {/* 기업 담당자 회원가입 */}
+              <h1 id="signup-form-heading" className="text-lg/[22px] sm:text-2xl/[30px] font-bold tracking-tight text-left align-middle">
                 기업 담당자 회원가입
               </h1>
-              <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-left align-middle">
+              <p className="text-primary-600 text-sm/[17px] sm:text-base/[20px] tracking-tight text-left align-middle" role="note">
                 * 그룹 내 유저는 기업 담당자의 초대 메일을 통해 가입이 가능합니다.
               </p>
             </div>
           </div>
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full mb-[8px] gap-[20px]">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col w-full mb-[8px] gap-[20px]"
+            role="form"
+            aria-label="기업 담당자 회원가입 폼"
+          >
             {/* 이메일 입력 필드 */}
             <Input
               {...emailReg}
-              inputRef={emailReg.ref}
+              ref={emailReg.ref}
               type="email"
               label="이메일"
               placeholder="이메일을 입력해주세요."
               error={errors.email?.message}
             />
 
-            {/* 이름 입력 필드 */}
+            {/* 이름 입력 필드 추가 */}
             <Input
-              {...nameReg}
-              inputRef={nameReg.ref}
+              {...register("name")}
+              ref={register("name").ref}
               type="text"
               label="이름"
               placeholder="이름을 입력해주세요."
@@ -159,7 +176,7 @@ export default function SuperAdminSignUpPage() {
             {/* 비밀번호 input wrapper*/}
             <Input
               {...passwordReg}
-              inputRef={passwordReg.ref}
+              ref={passwordReg.ref}
               type="password"
               label="비밀번호"
               placeholder="비밀번호를 입력해주세요."
@@ -170,7 +187,7 @@ export default function SuperAdminSignUpPage() {
             {/* 비밀번호 확인 input wrapper*/}
             <Input
               {...passwordConfirmReg}
-              inputRef={passwordConfirmReg.ref}
+              ref={passwordConfirmReg.ref}
               type="password"
               label="비밀번호 확인"
               placeholder="비밀번호를 한 번 더 입력해주세요."
@@ -181,7 +198,7 @@ export default function SuperAdminSignUpPage() {
             {/* 회사명 입력 필드 */}
             <Input
               {...companyNameReg}
-              inputRef={companyNameReg.ref}
+              ref={companyNameReg.ref}
               type="text"
               label="회사명"
               placeholder="회사명을 입력해주세요."
@@ -192,7 +209,7 @@ export default function SuperAdminSignUpPage() {
             {/* 사업자 번호 입력 필드 */}
             <Input
               {...bizNumberReg}
-              inputRef={bizNumberReg.ref}
+              ref={bizNumberReg.ref}
               type="text"
               label="사업자 번호"
               placeholder="사업자 번호를 입력해주세요."
@@ -204,27 +221,47 @@ export default function SuperAdminSignUpPage() {
             <button
               type="submit"
               className={clsx(
-                "w-full h-[64px] mb-[24px] rounded-[2px] inline-flex justify-center items-center text-base cursor-pointer",
-                isValid && !isSubmitting ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
+                "w-full h-[64px] mb-[24px] rounded-[2px] inline-flex justify-center items-center text-base cursor-pointer transition-all duration-200",
+                isValid && !isSubmitting && !showSpinner
+                  ? "bg-primary-950 text-primary-50 hover:bg-primary-900"
+                  : "bg-primary-100 text-primary-300 cursor-not-allowed",
                 "font-bold",
               )}
-              disabled={isSubmitting || !isValid}
+              disabled={isSubmitting || !isValid || showSpinner}
+              aria-describedby={!isValid ? "form-validation-message" : undefined}
+              aria-label={isSubmitting || showSpinner ? "회원가입 처리 중" : "회원가입 하기"}
             >
-              {isSubmitting ? "처리 중..." : "가입하기"}
+              {isSubmitting || showSpinner ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-primary-300 border-t-primary-600 rounded-full animate-spin"></div>
+                  처리 중...
+                </div>
+              ) : (
+                "가입하기"
+              )}
             </button>
           </form>
 
-          {/* 계정이 있으신가요 */}
-          <p className="text-primary-500 text-base/[20px] tracking-tight text-center w-full">
-            이미 계정이 있으신가요?
-            <Link href="/login">
-              <span className="text-primary-950 text-base/[20px] tracking-tight font-bold underline decoration-primary-950 underline-offset-2">
-                로그인
-              </span>
-            </Link>
-          </p>
-        </div>
-      </div>
+          {/* validation message for screen readers */}
+          {!isValid && (
+            <div id="form-validation-message" className="sr-only" aria-live="polite">
+              필수 입력 항목을 모두 채워주세요
+            </div>
+          )}
+
+          {/* login link */}
+          <nav aria-label="계정 관련 링크" className="w-full flex justify-center">
+            <p className="text-primary-500 text-base/[20px] tracking-tight text-center w-full">
+              이미 계정이 있으신가요?
+              <Link href="/login" aria-label="로그인 페이지로 이동">
+                <span className="text-primary-950 text-base/[20px] tracking-tight font-bold underline decoration-primary-950 underline-offset-2">
+                  로그인
+                </span>
+              </Link>
+            </p>
+          </nav>
+        </section>
+      </main>
     </>
   );
 }

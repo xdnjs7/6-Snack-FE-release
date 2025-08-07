@@ -90,16 +90,46 @@ body {
     border-radius: 4px;
   }
 
- .category-tabs-scroll {
-  overflow-x: auto;
-  max-width: 100vw;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary-100) transparent;
-}
-.category-tab-btn {
-  min-width: var(--category-tab-min-width, 64px);
-  flex-shrink: 0;
-}
+  .category-tabs-scroll {
+    overflow-x: auto;
+    max-width: 100vw;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scrollbar-color: transparent transparent;
+  }
+
+  /* Webkit 브라우저용 스크롤바 숨기기 */
+  .category-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .category-tab-btn {
+    min-width: var(--category-tab-min-width, 64px);
+    flex-shrink: 0;
+  }
+
+  @keyframes bounceY {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .bounce-y {
+    animation: bounceY 0.8s ease-in-out infinite;
+  }
+
+  .animation-delay-0 {
+    animation-delay: 0s;
+  }
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+  }
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+  }
 }

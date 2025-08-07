@@ -19,6 +19,8 @@ export default function ProfileSubmitButton({ isFormValid, isSubmitting, onSubmi
       className={`self-stretch h-16 p-4 ${!isFormValid ? "bg-primary-100 text-primary-300" : ""}`}
       disabled={!isFormValid || isSubmitting}
       onClick={onSubmit}
+      aria-label={isSubmitting ? "프로필 정보 변경 중입니다" : "프로필 정보 변경하기"}
+      aria-describedby={!isFormValid ? "submit-button-description" : undefined}
     />
   );
 }

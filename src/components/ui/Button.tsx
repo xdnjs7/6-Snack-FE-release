@@ -38,10 +38,9 @@ const buttonStyleMap: Record<TButtonType, TButtonStyle> = {
     border: "border-1 border-primary-300",
   },
   whiteDisabled: {
-    bg: "bg-white",
-    textColor: "text-primary-400",
+    bg: "bg-primary-100",
+    textColor: "text-primary-300",
     padding: "px-4 py-3",
-    border: "border-1 border-primary-300",
   },
 };
 
@@ -67,7 +66,12 @@ export default function Button({ type, label = "label", onClick, className = "",
   );
 
   return (
-    <button className={twMerge(baseStyle, className)} disabled={isDisabled || disabled} onClick={onClick}>
+    <button
+      aria-live="polite"
+      className={twMerge(baseStyle, className)}
+      disabled={isDisabled || disabled}
+      onClick={onClick}
+    >
       {label}
     </button>
   );

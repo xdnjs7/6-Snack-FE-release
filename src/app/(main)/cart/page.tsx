@@ -11,11 +11,18 @@ import { useAuth } from "@/providers/AuthProvider";
 import { TGetCartItemsResponse } from "@/types/cart.types";
 import { useRouter } from "next/navigation";
 import Toast from "@/components/common/Toast";
-import { orderNow } from "@/lib/api/order.api";
-import { TOrderNowResponse } from "@/types/order.types";
+import { createOrder } from "@/lib/api/order.api";
+import { TOrderResponse } from "@/types/order.types";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import clsx from "clsx";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
+import { useOrderStore } from "@/stores/orderStore";
+
+/**
+ * @De-cal
+ * TODO:
+ * 1. 결제 끝까지 완료 되고나서 invalid 해야 할거 같아서 일단 임시로 적어두기, 완성되면 success하고 invalid 시키기
+ */
 
 export default function CartPage() {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
@@ -25,6 +32,11 @@ export default function CartPage() {
 
   const { user } = useAuth();
   const router = useRouter();
+  // 1. TODO
+  // const queryClient = useQueryClient();
+
+  // Zustand로 Order 정보 저장
+  const setOrder = useOrderStore((state) => state.setOrder);
 
   const {
     data: cartItems,
@@ -35,19 +47,35 @@ export default function CartPage() {
     queryFn: () => getCartItems(),
   });
 
-  const { mutate: adminOrderNow } = useMutation<TOrderNowResponse, Error, number[]>({
-    mutationFn: (cartItemIds) => orderNow(cartItemIds),
-    onSuccess: (order) => router.push(`/cart/order-confirmed/${order.data.id}`),
+  const { mutate: orderRequest } = useMutation<TOrderResponse, Error, number[]>({
+    mutationFn: (cartItemIds) => createOrder({ cartItemIds }),
+    onSuccess: (order) => {
+      setOrder(order);
+
+      // 1. TODO
+      // queryClient.invalidateQueries({ queryKey: ["adminOrders", "approved"] });
+      // queryClient.invalidateQueries({ queryKey: ["budgets"] });
+      router.push("/checkout");
+    },
     onError: () => setIsDisabled(false),
   });
 
+  // budget 예외 처리
   const { currentMonthBudget = 0, currentMonthExpense = 0 } = cartItems?.budget ?? {};
+
+  // 장바구니 선택한 상품의 총 가격: number
   const selectedTotalPrice = cartItems?.cart
     .filter((item) => item.isChecked === true)
     .reduce((totalPrice, item) => totalPrice + item.product.price * item.quantity, 0);
+
+  // 구매 가능 여부: boolean
   const canPurchase =
     currentMonthBudget - currentMonthExpense - (selectedTotalPrice ? selectedTotalPrice + 3000 : 0) >= 0;
+
+  // 남은 예산: number
   const remainingBudget = cartItems?.budget ? currentMonthBudget - currentMonthExpense : 0;
+
+  // 장바구니 선택한 상품 IDs: number[]
   const checkedCartItemIds = cartItems?.cart.filter((item) => item.isChecked).map((item) => item.id) ?? [];
 
   // 타이머 언마운트 시 클린업
@@ -60,8 +88,8 @@ export default function CartPage() {
   }, []);
 
   const handleRequestOrder = () => {
-    // 아무 상품도 선택하지 않았을 때
-    if (checkedCartItemIds.length === 0) {
+    // 아무 상품도 선택하지 않았거나, 예산이 부족할 때
+    if (checkedCartItemIds.length === 0 || !canPurchase) {
       setIsToastVisible(true);
 
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -77,23 +105,9 @@ export default function CartPage() {
     // USER일 때
     if (user?.role === "USER") return router.push("/cart/order");
 
-    // 예산 부족할 때
-    if (!canPurchase) {
-      setIsToastVisible(true);
-
-      if (timerRef.current) clearTimeout(timerRef.current);
-
-      timerRef.current = setTimeout(() => {
-        setIsToastVisible(false);
-        timerRef.current = null;
-      }, 3000);
-
-      return;
-    }
-
-    // 즉시 구매 API
+    // Order 생성 API
     setIsDisabled(true);
-    adminOrderNow(checkedCartItemIds);
+    orderRequest(checkedCartItemIds);
   };
 
   if (error) {
@@ -104,8 +118,8 @@ export default function CartPage() {
     <div className="flex flex-col justify-center items-center w-full">
       <div className="w-full max-w-[1200px] md:px-[24px]">
         <div className="flex flex-col gap-[40px] mt-[20px] sm:gap-[70px] sm:mt-[60px] sm:pb-[36px] md:mt-[80px]">
-          <div className="flex flex-col justify-center items-center gap-[10px] font-bold text-[16px]/[20px] tracking-tight sm:flex-row sm:gap-[20px] sm:text-[18px]/[22px]">
-            <p className="text-primary-950">1. Shopping Cart</p>
+          <section className="flex flex-col justify-center items-center gap-[10px] font-bold text-[16px]/[20px] tracking-tight sm:flex-row sm:gap-[20px] sm:text-[18px]/[22px]">
+            <h2 className="text-primary-950">1. Shopping Cart</h2>
             {user?.role === "USER" && (
               <>
                 <ArrowIconSvg
@@ -117,7 +131,7 @@ export default function CartPage() {
             )}
             <ArrowIconSvg direction="right" className="hidden sm:block relative w-[24px] h-[24px] text-primary-300" />
             <p className="text-primary-300">{user?.role === "USER" ? "3. Order Confirmed" : "2. Order Confirmed"}</p>
-          </div>
+          </section>
 
           {checkedCartItemIds.length === 0 ? (
             <Toast text="1개 이상의 상품을 선택하세요." isVisible={isToastVisible} />
@@ -145,8 +159,8 @@ export default function CartPage() {
             checkedCartItemIds={checkedCartItemIds}
           />
 
-          <div className="flex flex-col justify-center items-start gap-[30px] sm:flex-row sm:justify-between sm:items-center sm:gap-[40px] md:gap-[60px]">
-            <div className="flex flex-col w-full gap-[14px]">
+          <section className="flex flex-col justify-center items-start gap-[30px] sm:flex-row sm:justify-between sm:items-center sm:gap-[40px] md:gap-[60px]">
+            <section className="flex flex-col w-full gap-[14px]">
               <div className="flex justify-start items-center gap-[4px]">
                 <p className="font-bold text-[24px]/[30px] tracking-tight text-primary-950 sm:text-[30px]/[37px]">
                   총 주문금액
@@ -174,10 +188,10 @@ export default function CartPage() {
                   </div>
                 </>
               )}
-            </div>
+            </section>
 
-            <div className="flex flex-col justify-center items-center w-full gap-[20px] sm:max-w-[300px]">
-              <Link href="/products" className="w-full">
+            <section className="flex flex-col justify-center items-center w-full gap-[20px] sm:max-w-[300px]">
+              <Link aria-label="상품 리스트 페이지로 이동" href="/products" className="w-full">
                 <Button
                   type="white"
                   disabled={isDisabled}
@@ -195,8 +209,8 @@ export default function CartPage() {
                   "w-full h-[64px] font-bold tracking-tight",
                 )}
               />
-            </div>
-          </div>
+            </section>
+          </section>
         </div>
       </div>
     </div>

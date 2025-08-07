@@ -46,6 +46,9 @@ export default function ProfileForm() {
   const company = watch("company");
   const password = watch("password");
 
+  // register 함수 반환값 분리
+  const companyRegister = register("company");
+
   // 변경사항 확인
   const hasCompanyChanged = Boolean(
     typedUser?.role === Role.SUPER_ADMIN && company?.trim() !== (typedUser?.company?.name || ""),
@@ -168,7 +171,7 @@ export default function ProfileForm() {
   };
 
   return (
-    <>
+    <main aria-label="프로필 변경 페이지">
       <Toast
         text={toastMessage}
         variant={toastVariant}
@@ -179,23 +182,28 @@ export default function ProfileForm() {
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full sm:w-[600px] sm:px-14 sm:rounded-sm sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)] sm:outline-offset-[-1px] py-10 inline-flex flex-col justify-center items-start gap-5"
+        aria-label="프로필 정보 변경 폼"
+        noValidate
       >
-        <div>
-          <div className="text-center justify-center text-xl font-bold font-suit">내 프로필 변경</div>
-        </div>
+        <header>
+          <h1 className="text-center justify-center text-xl font-bold font-suit">내 프로필 변경</h1>
+        </header>
 
-        <div className="self-stretch flex flex-col justify-start items-center gap-6">
+        <section className="self-stretch flex flex-col justify-start items-center gap-6" aria-label="프로필 정보">
           <div className="self-stretch flex flex-col justify-start items-start gap-7">
             <div className="self-stretch flex flex-col justify-start items-start gap-8">
-              <div className="self-stretch flex flex-col justify-start items-start gap-5">
+              <fieldset className="self-stretch flex flex-col justify-start items-start gap-5" aria-label="기본 정보">
+                <legend className="sr-only">기본 정보</legend>
+
                 {/* 기업명 */}
                 <ProfileField
                   label="기업명"
-                  {...register("company")}
+                  value={company !== undefined ? company : typedUser?.company?.name || ""}
                   isEditable={typedUser?.role === Role.SUPER_ADMIN}
                   role={typedUser?.role}
-                  type="input"
+                  type={typedUser?.role === Role.SUPER_ADMIN ? "input" : "display"}
                   error={errors.company?.message}
+                  {...companyRegister}
                 />
 
                 {/* 권한 */}
@@ -214,7 +222,7 @@ export default function ProfileForm() {
                   passwordError={errors.password?.message}
                   confirmPasswordError={errors.confirmPassword?.message}
                 />
-              </div>
+              </fieldset>
             </div>
 
             {/* 제출 버튼 */}
@@ -224,8 +232,8 @@ export default function ProfileForm() {
               onSubmit={handleSubmit(onSubmit)}
             />
           </div>
-        </div>
+        </section>
       </form>
-    </>
+    </main>
   );
 }

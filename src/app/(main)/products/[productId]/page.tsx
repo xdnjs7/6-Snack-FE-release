@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import ProductDetail from "@/components/common/ProductDetail";
-import { CATEGORIES } from "@/lib/utils/categories.util";
+import { CATEGORIES } from "@/lib/constants/categories";
 import SubCategoryItem from "@/components/common/SubCategoryItem";
 import SubCategoryTabs from "@/app/(main)/products/_components/SubCategoryTabs";
 import { useCategoryStore } from "@/stores/categoryStore";

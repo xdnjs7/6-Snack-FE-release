@@ -1,11 +1,6 @@
 import { TOrder, TOrderSummary } from "@/types/order.types";
 import { cookieFetch } from "./fetchClient.api";
 
-/**
- * @wooju01
- * 1. orderHistory.api.ts에서 원빈님이 만드신 코드와 동일한 코드로 보여서 합의 후 통합 진행하기
- */
-
 export const fetchPendingOrders = async ({
   offset = 0,
   limit = 10,
@@ -15,12 +10,16 @@ export const fetchPendingOrders = async ({
   limit?: number;
   orderBy?: string;
 }): Promise<{ orders: TOrderSummary[]; meta: { totalCount: number; currentPage: number; totalPages: number } }> => {
-  const query = `?status=pending&offset=${offset}&limit=${limit}&orderBy=${orderBy}`;
-  const res = await cookieFetch(`/admin/orders${query}`);
-  return res as { orders: TOrderSummary[]; meta: { totalCount: number; currentPage: number; totalPages: number } };
+  const page = Math.floor(offset / limit) + 1;
+  const query = `?status=pending&page=${page}&limit=${limit}&orderBy=${orderBy}`;
+  const res = (await cookieFetch(`/admin/orders${query}`)) as {
+    orders: TOrderSummary[];
+    meta: { totalCount: number; currentPage: number; totalPages: number };
+  };
+  return res;
 };
 
-export const fetchOrderDetail = async (orderId: number): Promise<TOrder> => {
+export const fetchOrderDetail = async (orderId: string): Promise<TOrder> => {
   const res = await cookieFetch(`/admin/orders/${orderId}?status=pending`);
   return res as TOrder;
 };

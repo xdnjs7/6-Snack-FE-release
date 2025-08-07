@@ -1,4 +1,4 @@
-import { defaultFetch } from "./fetchClient.api";
+import { cookieFetch } from "./fetchClient.api";
 
 export type TInviteInfo = {
   id: string;
@@ -11,7 +11,7 @@ export type TInviteInfo = {
 
 // 초대 정보 조회
 export const getInviteApi = async (inviteId: string): Promise<TInviteInfo> => {
-  return defaultFetch(`/invite/${inviteId}`);
+  return cookieFetch(`/invite/${inviteId}`);
 };
 
 export type TInviteRequestData = {
@@ -33,21 +33,11 @@ export type TInviteResponse = {
 };
 
 export const sendInvite = async (data: TInviteRequestData): Promise<TInviteResponse> => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080";
-
-  const response = await fetch(`${baseUrl}/invite`, {
+  return cookieFetch(`/invite`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "include",
     body: JSON.stringify(data),
   });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || "초대 발송에 실패했습니다.");
-  }
-
-  return response.json();
 };

@@ -35,9 +35,9 @@ export default function Input({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = e.target.value;
 
-    // 회사명 입력 제한: 특수문자 제거, 20글자 제한
+    // 회사명 입력 제한: 한글(가-힣, ㄱ-ㅎ, ㅏ-ㅣ), 영문, 숫자, (, ), ., ,, -, _만 허용, 20글자 제한
     if (isCompanyName) {
-      newValue = newValue.replace(/[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\s]/g, "").slice(0, 20);
+      newValue = newValue.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9().,_\-]/g, "").slice(0, 20);
       e.target.value = newValue;
     }
 
@@ -109,7 +109,8 @@ export default function Input({
             placeholder={placeholder}
             className={clsx(
               actualType === "password" && !isPasswordVisible ? "tracking-[0.25em]" : "tracking-tight",
-              "z-10 w-full font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
+              "z-10 w-full font-normal text-[16px]/[20px] outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
+              props.readOnly ? "text-primary-400" : "text-primary-950",
               className,
             )}
           />

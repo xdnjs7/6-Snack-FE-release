@@ -11,7 +11,7 @@ import { TMemberItem } from "@/types/meberList.types";
 import ProductList from "@/components/common/ProductList";
 import Toast from "@/components/common/Toast";
 import Button from "@/components/ui/Button";
-import RequestList from "@/components/common/RequestList";
+// import RequestList from "@/components/common/RequestList";
 import SubCategoryItem from "@/components/common/SubCategoryItem";
 import Card from "@/components/ui/Card";
 import img_coke_zero from "@/assets/images/img_coke_zero.webp";
@@ -19,7 +19,7 @@ import SearchBar from "@/components/ui/SearchBar";
 import Badge from "@/components/ui/Badge";
 import SideMenu from "@/components/common/SideMenu";
 import Pagination from "@/components/common/Pagination";
-import OrderManageModal from "@/components/common/OrderManageModal";
+// import OrderManageModal from "@/components/common/OrderManageModal";
 import { useModal } from "@/providers/ModalProvider";
 // import ProductDetail from "@/components/common/ProductDetail";
 import Menu from "@/components/common/Menu";
@@ -33,18 +33,18 @@ import InviteMemberModal from "@/components/common/InviteMemberModal";
 import Header from "@/components/layout/Header";
 // import CartItem from "@/app/(main)/cart/_components/CartItem";
 // import OrderItem from "@/app/(main)/cart/order/_components/OrderItem";
-import { categories, order, orderRequests, products } from "./MockData";
+import { categories, products } from "./MockData";
 import DogSpinner from "@/components/common/DogSpinner";
 
 export default function ComponentsPreviewPage() {
   const [requestMessage, setRequestMessage] = useState("");
-  const [,setCategoryOption] = useState("다른거");
+  const [, setCategoryOption] = useState("다른거");
   const [budget] = useState(60000);
   const categoryOptions = ["음료", "과자", "아이스크림", "도시락", "라면", "사탕", "초콜릿", "떡볶이", "비빔밥"];
   const [isToastVisible, setIsToastVisible] = useState(false);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [currentPaginationPage, setCurrentPaginationPage] = useState(1);
-  const [inputValue,] = useState("");
+  const [inputValue] = useState("");
   const { openModal, closeModal } = useModal();
 
   const [members, setMembers] = useState<TMemberItem[]>([
@@ -94,11 +94,13 @@ export default function ComponentsPreviewPage() {
             placeholder="요청 메시지를 입력해주세요"
           />
         </div>
-        <h2 className="text-lg font-semibold bg-blue-100">🐶 Spinner 컴포넌트</h2>
 
-        <div className="flex flex-col items-center">
-          <DogSpinner />
-          <p className="text-black text-sm font-medium animate-pulse -mt-7">Loading...</p>
+        <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">🐶 Spinner 컴포넌트</h2>
+
+          <div className="flex flex-col items-center">
+            <DogSpinner />
+          </div>
         </div>
 
         <div className="space-y-4 mb-4">
@@ -132,6 +134,11 @@ export default function ComponentsPreviewPage() {
       <p className="mb-4 font-bold text-xl bg-violet-100">이태빈</p>
       <div className="rounded-lg shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] p-6">
         <div className="space-y-4 mb-4">
+          <h2 className="text-lg font-semibold bg-blue-100">Spinner 컴포넌트</h2>
+          <DogSpinner />
+        </div>
+
+        <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">SubCategoryItem 컴포넌트</h2>
           <Suspense fallback={<div>로딩 중...</div>}>
             <SubCategoryItem categories={categories} />
@@ -145,20 +152,20 @@ export default function ComponentsPreviewPage() {
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">RequestList 컴포넌트</h2>
-          <RequestList
+          {/* <RequestList
             orderRequests={orderRequests}
             onClickReject={() => openModal(<OrderManageModal type="reject" order={order} onClick={() => {}} />)}
             onClickApprove={() => openModal(<OrderManageModal type="approve" order={order} onClick={() => {}} />)}
-          />
+          /> */}
         </div>
 
         <div className="space-y-4 mb-4">
           <h2 className="text-lg font-semibold bg-blue-100">OrderManageModal 컴포넌트</h2>
-          <Button
+          {/* <Button
             type="black"
             label="열기"
             onClick={() => openModal(<OrderManageModal type="approve" order={order} onClick={() => {}} />)}
-          />
+          /> */}
         </div>
 
         <div className="space-y-4 mb-4">
@@ -282,6 +289,7 @@ export default function ComponentsPreviewPage() {
           <Button type="black" label="열기" onClick={() => openModal(<ProductRegistrationForm />)} />
           <h2 className="text-lg font-semibold bg-blue-100">[My Request List(요청 취소 가능)]</h2>
           <MyRequestList
+            orderId={1}
             requestDate="2024. 07. 04"
             productName="코카콜라 제로"
             price={1900}

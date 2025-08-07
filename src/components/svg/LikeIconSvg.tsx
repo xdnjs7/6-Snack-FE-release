@@ -1,18 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 
 type TLikeIconSvgProps = {
   className?: string;
-  initialLiked?: boolean;
-  onToggle?: (isLiked: boolean) => void;
+  isLiked: boolean; // ✅ 상태를 직접 props로 받는다
+  onToggle?: (isLikedNow: boolean) => void;
 };
 
-export default function LikeIconSvg({ className = "", initialLiked = false, onToggle }: TLikeIconSvgProps) {
-  const [isLiked, setIsLiked] = useState(initialLiked);
-
+export default function LikeIconSvg({ className = "", isLiked, onToggle }: TLikeIconSvgProps) {
   const handleClick = () => {
-    const newLikedState = !isLiked;
-    setIsLiked(newLikedState);
-    onToggle?.(newLikedState);
+    onToggle?.(isLiked); // 현재 상태 전달
   };
 
   return (
@@ -26,13 +22,11 @@ export default function LikeIconSvg({ className = "", initialLiked = false, onTo
       onClick={handleClick}
     >
       {isLiked ? (
-        // 좋아요 눌린 상태 (빨간 하트)
         <path
           d="M3.70857 5.08224C5.98667 2.83537 9.68022 2.83531 11.9583 5.08224C11.9721 5.09588 11.9849 5.1105 11.9986 5.12424L12.0003 5.12254C12.0139 5.1088 12.0279 5.09531 12.0417 5.08167C14.3198 2.83473 18.0133 2.83478 20.2914 5.08167C22.5695 7.32863 22.5695 10.9717 20.2914 13.2186C20.2776 13.2323 20.2628 13.2449 20.2488 13.2584L20.25 13.2595L12.0003 21.3965L3.75058 13.2595C3.73664 13.246 3.7224 13.2329 3.70857 13.2192C1.43048 10.9722 1.43048 7.3292 3.70857 5.08224Z"
           fill="#E9655E"
         />
       ) : (
-        // 좋아요 안 눌린 상태 (빈 하트)
         <path
           d="M12.0417 5.08214C14.3198 2.83522 18.0126 2.83528 20.2907 5.08214C22.5688 7.32911 22.5688 10.9719 20.2907 13.2189C20.277 13.2324 20.2626 13.2455 20.2487 13.2589L20.2497 13.2599L11.9997 21.3966L3.7507 13.2599L3.7087 13.2189C1.50177 11.0421 1.43256 7.55561 3.50167 5.29699L3.7087 5.08214C5.98675 2.83567 9.67975 2.83555 11.9577 5.08214C11.9716 5.09579 11.9851 5.11039 11.9987 5.12414L11.9997 5.12218L12.0417 5.08214ZM19.238 6.14953C17.5968 4.53087 14.9598 4.48059 13.2566 5.99816L13.0944 6.14953L13.0515 6.1925L11.988 7.24132L10.9343 6.18175C10.9201 6.16744 10.9082 6.15511 10.9001 6.1466C10.8981 6.14443 10.8962 6.14182 10.8942 6.13976C9.25257 4.5314 6.62326 4.48418 4.92355 5.99816L4.76144 6.1505C3.07912 7.81006 3.07901 10.492 4.76144 12.1515L4.76241 12.1525C4.76386 12.1538 4.77023 12.1595 4.77413 12.1632L4.79269 12.1818L4.79855 12.1866L4.80343 12.1915L11.9997 19.2892L18.113 13.2589L18.1013 13.2482L19.2058 12.1798L19.2419 12.1466C20.8677 10.5387 20.917 7.97494 19.3903 6.30871L19.238 6.14953Z"
           fill="currentColor"

@@ -14,6 +14,12 @@ import { useRouter } from "next/navigation";
 import { TOrderNowResponse } from "@/types/order.types";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 
+/**
+ * @De-cal
+ * TODO:
+ * 1. 결제 끝까지 완료 되고나서 invalid 해야 할거 같아서 일단 임시로 적어두기, 완성되면 success하고 invalid 시키기
+ */
+
 type TCartItemProps = {
   cartItems: TGetCartItemsResponse | undefined;
   isPending: boolean;
@@ -97,7 +103,13 @@ export default function CartItem({ cartItems, isPending, canPurchase, checkedCar
   // 장바구니 즉시 구매(단건)
   const { mutate: adminOrderNow } = useMutation<TOrderNowResponse, Error, number[]>({
     mutationFn: (cartItemId) => orderNow(cartItemId),
-    onSuccess: (order) => router.push(`/cart/order-confirmed/${order.data.id}`),
+    onSuccess: (order) => {
+      // 1. TODO
+      queryClient.invalidateQueries({ queryKey: ["adminOrders", "approved"] });
+      queryClient.invalidateQueries({ queryKey: ["budgets"] });
+
+      router.push(`/cart/order-confirmed/${order.data.id}`);
+    },
   });
 
   return (

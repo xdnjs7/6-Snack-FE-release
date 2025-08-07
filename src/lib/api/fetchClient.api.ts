@@ -1,7 +1,7 @@
 import { logout } from "@/app/actions/auth";
 import { refreshAccessToken } from "./auth.api";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const cookieFetch = async <T>(path: string, options: RequestInit = {}): Promise<T> => {
   const method = options.method || "GET";
@@ -28,26 +28,16 @@ export const cookieFetch = async <T>(path: string, options: RequestInit = {}): P
 
   const isRefreshRequest = path === "/auth/refresh-token";
 
-  // 예외 경로: 랜딩페이지(/), /signup, /signup/*, /login, /login/*
-  let isExceptionPath = false;
-  if (typeof window !== "undefined") {
-    const currentPath = window.location.pathname;
-    isExceptionPath =
-      currentPath === "/" ||
-      currentPath === "/login" ||
-      currentPath.startsWith("/login/") ||
-      currentPath === "/signup" ||
-      currentPath.startsWith("/signup/");
-  }
 
-  if (response.status === 401 && !isRefreshRequest && !isExceptionPath) {
+  if (response.status === 401 && !isRefreshRequest) {
     try {
       console.log("🔄 액세스 토큰 갱신 시도");
       await refreshAccessToken();
+      console.log("✅ 액세스 토큰 갱신 성공, 원본 요청 재시도");
       response = await request();
-    } catch {
-      console.error("❌ 액세스 토큰 재발급 실패");
-      logout();
+    } catch (refreshError) {
+      console.error("❌ 액세스 토큰 재발급 실패:", refreshError);
+      await logout();
       throw new Error("세션이 만료되었습니다. 다시 로그인해주세요.");
     }
   }
