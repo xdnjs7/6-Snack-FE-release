@@ -81,7 +81,7 @@ export function middleware(request: NextRequest) {
         pathname === path || pathname.startsWith(path + "/")
       );
       if (isNonUserRestricted) {
-        return NextResponse.redirect(new URL("/error", request.url));
+        return NextResponse.redirect(new URL("/error?from=order", request.url));
       }
     }
   }
