@@ -6,7 +6,6 @@ function getUserRoleFromToken(token: string): string | null {
   try {
     // JWT의 payload 부분 디코딩 (base64url 디코딩)
     const payload = JSON.parse(atob(token.split(".")[1]));
-    console.log('payload', payload)
     return payload.role || null;
   } catch {
     return null;
@@ -19,10 +18,7 @@ export function middleware(request: NextRequest) {
 
   // 쿠키에서 인증 토큰 확인
   const authToken = request.cookies.get("accessToken")?.value;
-  console.log("어쓰토큰+패스네임:",authToken,pathname)
   
-//==========================================
-
   // JWT 토큰에서 사용자 역할 추출
   const userRole = authToken ? getUserRoleFromToken(authToken) : null;
 
