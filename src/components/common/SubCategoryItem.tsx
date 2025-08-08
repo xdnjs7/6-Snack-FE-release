@@ -71,7 +71,7 @@ export default function SubCategoryItem({ categories }: TSubCategoryItemProps) {
           className="group hover:bg-primary-50/50 transition-colors duration-200 p-1 rounded-full"
           aria-label="카테고리 필터 초기화"
         >
-          <ResetIconSvg className="w-5 h-5 text-primary-300 group-hover:text-primary-950 transition-colors duration-200" />
+          <ResetIconSvg className="w-5 h-5 text-primary-300 group-hover:text-secondary-500 transition-colors duration-200" />
         </button>
       </div>
       <div className="flex flex-col justify-start w-[180px] gap-[4px]">
