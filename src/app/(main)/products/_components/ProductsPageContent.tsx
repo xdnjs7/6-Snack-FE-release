@@ -103,7 +103,7 @@ export default function ProductsPageContent() {
     >
       {/* 카테고리 태블릿,데스크탑 */}
       <aside className="hidden sm:block" role="complementary" aria-label="카테고리 네비게이션">
-        <SubCategoryItem categories={categories} />
+        <SubCategoryItem categories={categories} useExternalState={true} />
       </aside>
 
       <div className="flex flex-col sm:h-16 w-full sm:border-b sm:border-primary-100">
