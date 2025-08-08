@@ -11,7 +11,7 @@ import ProductActions from "./ProductDetail/ProductActions";
 import CartAndLikeButtons from "./ProductDetail/CartAndLikeButtons";
 import ProductInfoSections from "./ProductDetail/ProductInfoSections";
 import { useAuth } from "@/providers/AuthProvider";
-import { useCurrentSubCategory } from "@/hooks/useCurrentSubCategory";
+import { useCategoryStore } from "@/stores/categoryStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Toast from "@/components/common/Toast";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
@@ -28,7 +28,7 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
   const { data: product, isLoading, isError } = useProductDetail(productId);
   const { user } = useAuth();
   const router = useRouter();
-  const { findCategoryPath } = useCurrentSubCategory();
+  const { setSelectedCategory } = useCategoryStore();
   const queryClient = useQueryClient();
 
   const [toastVisible, setToastVisible] = useState(false);
@@ -64,9 +64,13 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
 
   useEffect(() => {
     if (product?.category?.id) {
-      findCategoryPath(product.category.id);
+      setSelectedCategory({
+        id: product.category.id,
+        parent: product.category.parent?.name || "",
+        child: product.category.name,
+      });
     }
-  }, [product?.category?.id, findCategoryPath]);
+  }, [product?.category, setSelectedCategory]);
 
   useEffect(() => {
     if (product) {

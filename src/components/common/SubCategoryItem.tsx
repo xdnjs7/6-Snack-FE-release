@@ -4,7 +4,7 @@ import React, { Fragment, MouseEvent, useState, useEffect } from "react";
 import clsx from "clsx";
 import { useRouter, useSearchParams } from "next/navigation";
 import ArrowIconSvg from "../svg/ArrowIconSvg";
-import { useCurrentSubCategory } from "@/hooks/useCurrentSubCategory";
+
 import { useCategoryStore } from "@/stores/categoryStore";
 import ResetIconSvg from "../svg/ResetIconSvg";
 
@@ -23,7 +23,7 @@ export default function SubCategoryItem({ categories, useExternalState }: TSubCa
   const [isActiveChildrenCategory, setIsActiveChildrenCategory] = useState<string>("");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { selectedCategory } = useCurrentSubCategory();
+  const selectedCategory = useCategoryStore((state) => state.selectedCategory);
   const clearSelectedCategory = useCategoryStore((state) => state.clearSelectedCategory);
 
   const { parentCategory, childrenCategory } = categories;
