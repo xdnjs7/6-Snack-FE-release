@@ -11,7 +11,6 @@ type TMobileCategoryMenuProps = {
   onAllCategoriesClick?: () => void;
   onClose: () => void;
   className?: string;
-  useExternalState?: boolean;
 };
 
 export default function MobileCategoryMenu({

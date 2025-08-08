@@ -23,9 +23,6 @@ export default function Header() {
     pathname.startsWith("/profile") ||
     pathname.startsWith("/manage");
 
-  // **개발용 삭제예정**
-  const isPreviewRoute = pathname.startsWith("/components-preview");
-
   if (isAuthRoute) {
     return null;
   }
@@ -36,16 +33,6 @@ export default function Header() {
 
   if (isProtectedRoute) {
     return <AuthenticatedHeader />;
-  }
-
-  // **개발용 삭제예정**
-  if (isPreviewRoute) {
-    return (
-      <div>
-        <GuestHeader />
-        <AuthenticatedHeader />
-      </div>
-    );
   }
 
   return null;

@@ -56,13 +56,6 @@ export default function OrderManageDetailPage() {
     };
   }, []);
 
-  useEffect(() => {
-    // 데이터가 로딩되었고, 예산이 부족할 때만 토스트 표시
-    if (!isLoading && budgetAfterPurchase < 0 && remainingBudget !== undefined) {
-      showToast("예산이 부족합니다.", "error", remainingBudget);
-    }
-  }, [budgetAfterPurchase, remainingBudget, isLoading]);
-
   const showToast = (text: string, variant: "success" | "error" = "success", budget?: number) => {
     setToastConfig({
       isVisible: true,
@@ -85,6 +78,10 @@ export default function OrderManageDetailPage() {
 
   const handleApprove = async () => {
     try {
+      if (budgetAfterPurchase < 0 && remainingBudget !== undefined) {
+        showToast("예산이 부족합니다.", "error", remainingBudget);
+        return;
+      }
       await updateOrderMutation.mutateAsync({
         orderId: orderId,
         status: "APPROVED",

@@ -43,6 +43,7 @@ export const useToggleFavorite = (
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["productDetail", productId] });
       queryClient.invalidateQueries({ queryKey: ["favorites"] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
 };
