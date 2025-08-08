@@ -98,8 +98,8 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // 특정 경로들에만 미들웨어 적용
-    "/login",
-    "/signup",
+    // "/login",
+    // "/signup",
     "/manage/:path",
     "/order-manage/:path",
     "/order-history/:path",
