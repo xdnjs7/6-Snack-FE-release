@@ -30,7 +30,7 @@ export default function AuthenticatedHeader() {
   const router = useRouter();
 
   // 전역 카테고리 상태 사용
-  const { selectedCategory, clearSelectedCategory } = useCategoryStore();
+  const { selectedCategory, setSelectedCategory, clearSelectedCategory } = useCategoryStore();
 
   const { user, logout } = useAuth();
   const { isMobile } = useDeviceType();
@@ -116,7 +116,17 @@ export default function AuthenticatedHeader() {
   // 카테고리 아이템 클릭 핸들러
   const handleCategoryItemClick = (item: TCategoryItem) => {
     setIsCategoryMenuOpen(false);
-    // 여기에 category별 product 검색결과 보여주기
+
+    // 부모 카테고리 찾기
+    const parentCategory = CATEGORIES.parentCategory.find((parent) => parent.id === item.parentId);
+
+    // categoryStore 업데이트
+    setSelectedCategory({
+      parent: parentCategory?.name || "",
+      child: item.name,
+      id: item.id,
+    });
+
     router.push(`/products?category=${item.id}`);
   };
 
