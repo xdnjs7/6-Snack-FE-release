@@ -95,10 +95,26 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// 미들웨어가 적용될 경로 패턴 지정
 export const config = {
   matcher: [
-    // API 경로와 정적 파일은 제외
-    // "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    // 특정 경로들에만 미들웨어 적용
+    "/login",
+    "/signup",
+    "/manage/:path",
+    "/order-manage/:path",
+    "/order-history/:path",
+    "/cart/:path",
+    "/my/:path",
+    "/profile/:path",
+    "/products/:path*",
+    "/",
   ],
 };
+
+// 미들웨어가 적용될 경로 패턴 지정
+// export const config = {
+//   matcher: [
+//     // API 경로와 정적 파일은 제외
+//     // "/((?!api|_next/static|_next/image|favicon.ico).*)",
+//   ],
+// };
