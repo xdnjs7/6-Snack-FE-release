@@ -33,7 +33,7 @@ export default function ProductDetailPage() {
       </div>
 
       <div className="hidden sm:block w-[180px] shrink-0">
-        <SubCategoryItem categories={CATEGORIES} useExternalState />
+        <SubCategoryItem categories={CATEGORIES} />
       </div>
 
       <div className="flex-1 min-w-0">
