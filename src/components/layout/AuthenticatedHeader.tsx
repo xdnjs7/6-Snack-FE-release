@@ -19,6 +19,8 @@ import { useCategoryStore } from "@/stores/categoryStore";
 import { CATEGORIES } from "@/lib/constants/categories";
 import img_logo from "@/assets/images/img_logo.webp";
 import { useAuth } from "@/providers/AuthProvider";
+import { useQuery } from "@tanstack/react-query";
+import { getCartItems } from "@/lib/api/cart.api";
 import { useDeviceType } from "@/hooks/useDeviceType";
 
 export default function AuthenticatedHeader() {
@@ -32,6 +34,13 @@ export default function AuthenticatedHeader() {
 
   const { user, logout } = useAuth();
   const { isMobile } = useDeviceType();
+
+  const { data: cartItems } = useQuery({
+    queryKey: ["cartItems"],
+    queryFn: () => getCartItems(),
+  });
+
+  const cartItemCount = cartItems?.cart.length ?? 0;
 
   // 모든 유저 공통 메뉴
   const commonMenuItems: TSideMenuItem[] = [
@@ -177,9 +186,9 @@ export default function AuthenticatedHeader() {
           <Link href="/cart">
             <div className="relative w-[24px] h-[24px]">
               <Image src={ic_cart} alt="장바구니" fill className="object-contain" />
-              {user?.cartItemCount !== undefined && user.cartItemCount > 0 && (
+              {cartItemCount > 0 && (
                 <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
-                  {user.cartItemCount}
+                  {cartItemCount}
                 </div>
               )}
             </div>
