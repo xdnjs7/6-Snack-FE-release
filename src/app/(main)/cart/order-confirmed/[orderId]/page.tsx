@@ -177,13 +177,13 @@ export default function OrderConfirmedPage() {
             1. Shopping Cart
           </div>
           <div className="hidden sm:block">
-            <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400" />
+            <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400 cursor-default" />
           </div>
           <div className="justify-center text-zinc-400 text-base sm:text-lg md:text-lg font-bold">
             2. Order
           </div>
           <div className="hidden sm:block">
-            <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400" />
+            <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400 cursor-default" />
           </div>
           <div className="justify-center text-neutral-800 text-base sm:text-lg md:text-lg font-bold">
             3. Order Confirmed
@@ -197,7 +197,7 @@ export default function OrderConfirmedPage() {
             1. Shopping Cart
           </div>
           <div className="hidden sm:block">
-            <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400" />
+            <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400 cursor-default" />
           </div>
           <div className="justify-center text-neutral-800 text-base sm:text-lg md:text-lg font-bold">
             2. Order Confirmed

@@ -92,9 +92,9 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
     switch (sortBy) {
       case "latest":
         return items.sort((a, b) => {
-          const dateA = new Date(a.requestDate).getTime();
-          const dateB = new Date(b.requestDate).getTime();
-          return dateB - dateA; // 최신순 (내림차순)
+          const dateA = new Date(a.approvalDate).getTime();
+          const dateB = new Date(b.approvalDate).getTime();
+          return dateB - dateA; // 최신순 (승인일 기준 내림차순)
         });
       case "priceLow":
         return items.sort((a, b) => {

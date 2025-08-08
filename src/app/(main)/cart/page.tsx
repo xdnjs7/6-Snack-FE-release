@@ -159,6 +159,9 @@ export default function CartPage() {
             isPending={isPending}
             canPurchase={canPurchase}
             checkedCartItemIds={checkedCartItemIds}
+            isDisabled={isDisabled}
+            setIsDisabled={setIsDisabled}
+            orderRequest={orderRequest}
           />
 
           <section className="flex flex-col justify-center items-start gap-[30px] sm:flex-row sm:justify-between sm:items-center sm:gap-[40px] md:gap-[60px]">
