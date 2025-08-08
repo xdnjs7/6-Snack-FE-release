@@ -237,7 +237,6 @@ export default function AuthenticatedHeader() {
           onItemClick={handleCategoryItemClick}
           onAllCategoriesClick={handleAllCategoriesClick}
           onClose={() => setIsCategoryMenuOpen(false)}
-          useExternalState
         />
       </div>
     </header>

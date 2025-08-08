@@ -15,10 +15,9 @@ type TSubCategoryItemProps = {
       [key: string]: { id: number; name: string }[];
     };
   };
-  useExternalState?: boolean;
 };
 
-export default function SubCategoryItem({ categories, useExternalState }: TSubCategoryItemProps) {
+export default function SubCategoryItem({ categories }: TSubCategoryItemProps) {
   const [isActiveParentCategory, setIsActiveParentCategory] = useState<string>("");
   const [isActiveChildrenCategory, setIsActiveChildrenCategory] = useState<string>("");
   const router = useRouter();
@@ -29,9 +28,6 @@ export default function SubCategoryItem({ categories, useExternalState }: TSubCa
   const { parentCategory, childrenCategory } = categories;
 
   useEffect(() => {
-    // 외부 상태를 (MobileCategoryMenu 의 변화) 사용하지 않는 경우 early return
-    if (!useExternalState) return;
-
     // 선택된 카테고리가 있으면 상태 업데이트
     if (selectedCategory) {
       console.log("Updating category states:", selectedCategory);
@@ -42,7 +38,7 @@ export default function SubCategoryItem({ categories, useExternalState }: TSubCa
       setIsActiveParentCategory("");
       setIsActiveChildrenCategory("");
     }
-  }, [selectedCategory?.parent, selectedCategory?.child, useExternalState]);
+  }, [selectedCategory?.parent, selectedCategory?.child]);
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>, category: string, categoryId?: number) => {
     const id = e.currentTarget.id;
