@@ -95,10 +95,10 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// // 미들웨어가 적용될 경로 패턴 지정
-// export const config = {
-//   matcher: [
-//     // API 경로와 정적 파일은 제외
-//     "/((?!api|_next/static|_next/image|favicon.ico).*)",
-//   ],
-// };
+// 미들웨어가 적용될 경로 패턴 지정
+export const config = {
+  matcher: [
+    // 정적 파일은 제외
+    "/((?!_next/static|_next/image|favicon.ico).*)",
+  ],
+};
