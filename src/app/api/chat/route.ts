@@ -18,7 +18,7 @@ export async function POST(req: Request) : Promise<NextResponse<ChatResponse | {
     // OpenAI Chat Completion 호출
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
-      messages: messages as any, // SDK 타입 호환 문제 우회
+      messages: messages as OpenAI.Chat.ChatCompletionMessageParam[],
     });
 
     const aiResponse = completion.choices?.[0]?.message?.content;
