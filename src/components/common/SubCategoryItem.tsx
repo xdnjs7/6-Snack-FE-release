@@ -38,7 +38,7 @@ export default function SubCategoryItem({ categories }: TSubCategoryItemProps) {
       setIsActiveParentCategory("");
       setIsActiveChildrenCategory("");
     }
-  }, [selectedCategory?.parent, selectedCategory?.child]);
+  }, [selectedCategory]);
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>, category: string, categoryId?: number) => {
     const id = e.currentTarget.id;
