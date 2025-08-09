@@ -2,6 +2,10 @@
 export interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
   content: string;
+  // 메시지 식별 및 메타데이터 (UI 용도)
+  id?: string;
+  createdAt?: string; // ISO 문자열
+  error?: boolean; // 에러 메시지 여부 (재전송 안내 등)
 }
 
 export interface ChatRequest {

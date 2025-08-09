@@ -6,7 +6,7 @@ import FloatingButton from './FloatingButton';
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
-  const { messages, isLoading, sendMessage } = useChat();
+  const { messages, isLoading, sendMessage, resendLast } = useChat();
 
   return (
     <>
@@ -16,6 +16,7 @@ export default function Chatbot() {
           messages={messages}
           isLoading={isLoading}
           onSendMessage={sendMessage}
+          onResend={resendLast}
           onClose={() => setIsOpen(false)}
         />
       )}
