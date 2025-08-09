@@ -21,7 +21,7 @@ export function useChat() {
     setMessages([
       createMessage({
         role: 'assistant',
-        content: '안녕하세요! 간식 대장 AI 도우미입니다. 무엇을 도와드릴까요? 예: "이번 달 예산 현황은 어떻게 봐?" / "구매 요청 승인 권한은?"',
+        content: '안녕하세요! Snack AI 도우미입니다. 무엇을 도와드릴까요? 예: "이번 달 예산 현황은 어떻게 봐?" / "구매 요청 승인 권한은?"',
       }),
     ]);
   }, []);

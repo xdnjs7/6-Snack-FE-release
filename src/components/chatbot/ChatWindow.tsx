@@ -51,7 +51,7 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
       >
         <div className="flex items-center gap-2 text-sm font-semibold tracking-wide">
           <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-emerald-300 ring-2 ring-white/50" />
-          간식 대장 AI 도우미
+          Snack AI 도우미
         </div>
         <button
           onClick={onClose}
@@ -128,7 +128,7 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
           </button>
         </div>
         <p className="mt-2 line-clamp-2 text-[10px] text-[oklch(0.556_0_0)]">
-          예: &quot;이번 달 예산 현황은 어떻게 봐?&quot;, &quot;구매 요청 승인 권한은 누가 갖고 있어?&quot;
+          예: &quot;이번 달 예산 현황은 어떻게 봐?&quot;, &quot;구매 요청 승인 권한은?&quot;
         </p>
       </form>
     </div>
