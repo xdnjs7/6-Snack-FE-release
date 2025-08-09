@@ -38,7 +38,7 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
 
   return (
     <div
-      className="fixed bottom-28 right-6 z-[55] flex w-[22rem] max-h-[75vh] flex-col overflow-hidden rounded-xl
+      className="fixed bottom-28 left-6 z-[55] flex w-[22rem] max-h-[75vh] flex-col overflow-hidden rounded-xl
                  border border-border/60 bg-gradient-to-b from-white/90 to-white/80 backdrop-blur-xl
                  shadow-[0_8px_28px_-6px_rgba(0,0,0,0.18),0_2px_8px_rgba(0,0,0,0.08)]
                  sm:w-[24rem] sm:max-h-[78vh] md:w-[26rem] md:max-h-[80vh]"
@@ -51,7 +51,7 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
       >
         <div className="flex items-center gap-2 text-sm font-semibold tracking-wide">
           <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-emerald-300 ring-2 ring-white/50" />
-          간식 대장 AI 도우미
+          AI 도우미
         </div>
         <button
           onClick={onClose}
@@ -71,8 +71,8 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
             <div key={m.id || m.createdAt} className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}>
               <div
                 className={`group relative max-w-[85%] whitespace-pre-wrap break-words rounded-lg px-3 py-2 shadow-sm ring-1 ring-black/5 ${isUser
-                  ? 'bg-[var(--color-secondary-500)] text-white'
-                  : 'bg-white/80 text-[oklch(0.205_0_0)] backdrop-blur-sm'
+                    ? 'bg-[var(--color-secondary-500)] text-white'
+                    : 'bg-white/80 text-[oklch(0.205_0_0)] backdrop-blur-sm'
                   } ${m.error ? 'border border-[var(--color-red)]' : ''}`}
               >
                 {m.content}
@@ -116,7 +116,7 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
             rows={1}
             className="max-h-32 min-h-[2.5rem] flex-1 resize-none rounded-md border border-border/70 bg-white/80 px-3 py-2 text-sm shadow-inner
                        placeholder:text-[oklch(0.556_0_0)] focus:border-[var(--color-secondary-500)] focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary-100)]"
-            placeholder="Enter 전송, Shift+Enter 줄바꿈"
+            placeholder="Shift+Enter 줄바꿈, Enter 전송"
           />
           <button
             type="submit"
@@ -128,7 +128,7 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
           </button>
         </div>
         <p className="mt-2 line-clamp-2 text-[10px] text-[oklch(0.556_0_0)]">
-          예: &quot;이번 달 예산 현황은 어떻게 봐?&quot;, &quot;구매 요청 승인 권한은 누가 갖고 있어?&quot;
+          예: &quot;이번 달 예산 현황 알려줘&quot;, &quot;구매 요청 승인 권한은 누가 갖고 있어?&quot; ↺: 재전송
         </p>
       </form>
     </div>

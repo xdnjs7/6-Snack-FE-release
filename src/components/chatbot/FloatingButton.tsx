@@ -10,7 +10,7 @@ export default function FloatingButton({ onClick }: FloatingButtonProps) {
     <button
       onClick={onClick}
       aria-label="챗봇 열기"
-      className="fixed bottom-5 right-5 z-[60] flex h-16 w-16 items-center justify-center rounded-full
+      className="fixed bottom-5 left-5 z-[60] flex h-16 w-16 items-center justify-center rounded-full
                  bg-gradient-to-br from-[var(--color-secondary-500)] via-[var(--color-primary-600)] to-[var(--color-primary-800)]
                  text-white shadow-lg shadow-black/15 ring-1 ring-white/10
                  transition-all duration-300 ease-out hover:shadow-xl hover:brightness-110 hover:scale-105 active:scale-95
