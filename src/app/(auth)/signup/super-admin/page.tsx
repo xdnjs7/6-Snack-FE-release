@@ -23,12 +23,12 @@ const signUpSchema = z
       .regex(/^[가-힣a-zA-Z\d().,_\- ]+$/, "회사명에는 한글, 영문, 숫자, (, ), ., -, _만 사용할 수 있습니다."),
     bizNumber: z.string().regex(/^[0-9]{10}$/, "사업자 번호 10자리를 입력해주세요."),
     password: z
-      .string("비밀번호를 입력해주세요.")
+      .string()
       .min(8, "8자 이상 입력해주세요.")
       .regex(/[a-zA-Z]/, "비밀번호는 영문자를 포함해야 합니다.")
       .regex(/[0-9]/, "비밀번호는 숫자를 포함해야 합니다.")
       .regex(/[^a-zA-Z0-9]/, "비밀번호는 특수문자를 포함해야 합니다."),
-    passwordConfirm: z.string("비밀번호를 입력해주세요."),
+    passwordConfirm: z.string(),
   })
   .refine((data) => data.password === data.passwordConfirm, {
     message: "비밀번호가 일치하지 않습니다.",
