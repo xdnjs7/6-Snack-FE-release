@@ -51,7 +51,7 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
       >
         <div className="flex items-center gap-2 text-sm font-semibold tracking-wide">
           <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-emerald-300 ring-2 ring-white/50" />
-          AI 도우미
+          간식 대장 AI 도우미
         </div>
         <button
           onClick={onClose}
@@ -71,8 +71,8 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
             <div key={m.id || m.createdAt} className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}>
               <div
                 className={`group relative max-w-[85%] whitespace-pre-wrap break-words rounded-lg px-3 py-2 shadow-sm ring-1 ring-black/5 ${isUser
-                    ? 'bg-[var(--color-secondary-500)] text-white'
-                    : 'bg-white/80 text-[oklch(0.205_0_0)] backdrop-blur-sm'
+                  ? 'bg-[var(--color-secondary-500)] text-white'
+                  : 'bg-white/80 text-[oklch(0.205_0_0)] backdrop-blur-sm'
                   } ${m.error ? 'border border-[var(--color-red)]' : ''}`}
               >
                 {m.content}
@@ -128,7 +128,7 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
           </button>
         </div>
         <p className="mt-2 line-clamp-2 text-[10px] text-[oklch(0.556_0_0)]">
-          예: &quot;이번 달 예산 현황 알려줘&quot;, &quot;구매 요청 승인 권한은 누가 갖고 있어?&quot; ↺: 재전송
+          예: &quot;이번 달 예산 현황은 어떻게 봐?&quot;, &quot;구매 요청 승인 권한은 누가 갖고 있어?&quot;
         </p>
       </form>
     </div>
