@@ -44,10 +44,6 @@ export default function SuccessPageContent({ orderId, amount, paymentKey }: TSuc
       paymentKey,
     };
 
-    console.log("orderId", orderId);
-    console.log("amount", amount);
-    console.log("paymentKey", paymentKey);
-
     async function confirm() {
       hasConfirmed.current = true; // ✅ 중복 방지
 
