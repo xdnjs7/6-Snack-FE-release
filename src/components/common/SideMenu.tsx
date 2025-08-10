@@ -49,7 +49,6 @@ export default function SideMenu({ items, isOpen, currentPath, onItemClick, onCl
     </div>
   );
 
-  // Portal을 사용하여 body에 직접 렌더링
   if (typeof window !== "undefined") {
     return createPortal(sideMenuContent, document.body);
   }

@@ -47,7 +47,6 @@ export default function OrderManageDetailPage() {
   const remainingBudget = currentMonthBudget - currentMonthExpense;
   const budgetAfterPurchase = remainingBudget - finalTotal;
 
-  // 타이머 언마운트 시 클린업
   useEffect(() => {
     return () => {
       if (timerRef.current) {
@@ -64,12 +63,10 @@ export default function OrderManageDetailPage() {
       budget,
     });
 
-    // 기존 타이머가 있다면 클리어
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
 
-    // 새 타이머 설정
     timerRef.current = setTimeout(() => {
       setToastConfig((prev) => ({ ...prev, isVisible: false }));
       timerRef.current = null;
@@ -163,22 +160,18 @@ export default function OrderManageDetailPage() {
         isVisible={toastConfig.isVisible}
         budget={toastConfig.budget}
       />
-      {/* Main Content */}
       <main
         className="w-full max-w-[1200px] mx-auto pt-[30px] md:pt-[60px] flex flex-col justify-start items-start gap-[30px]"
         role="main"
       >
-        {/* 구매요청상세 헤더 */}
         <header>
           <h1 className="self-stretch justify-center text-primary-950 text-lg/[22px] font-bold">구매 요청 상세</h1>
         </header>
 
-        {/* 요청품목 + 아이템 폴드 */}
         <section
           className="self-stretch flex flex-col justify-start items-start gap-5"
           aria-labelledby="items-section-title"
         >
-          {/* 요청 품목 n개 */}
           <button
             className="inline-flex justify-start items-center gap-1.5 cursor-pointer"
             onClick={() => setIsItemsExpanded(!isItemsExpanded)}
@@ -196,7 +189,6 @@ export default function OrderManageDetailPage() {
               aria-hidden="true"
             />
           </button>
-          {/* 아이템 리스트  */}
           <div
             id="items-content"
             aria-hidden={!isItemsExpanded}
@@ -290,7 +282,6 @@ export default function OrderManageDetailPage() {
           </div>
         </section>
 
-        {/* 요청 정보 섹션 */}
         <section className="self-stretch flex flex-col justify-start items-start" aria-labelledby="request-info-title">
           <div className="self-stretch px-2 py-3 sm:py-3.5 border-b border-neutral-800 inline-flex justify-start items-center gap-2">
             <h2
@@ -340,7 +331,6 @@ export default function OrderManageDetailPage() {
           </div>
         </section>
 
-        {/* 예산 정보 */}
         <section className="self-stretch flex flex-col justify-start items-start" aria-labelledby="budget-info-title">
           <div className="self-stretch px-2 py-3 sm:py-3.5 border-b border-neutral-800 inline-flex justify-start items-center gap-2">
             <h2
@@ -390,7 +380,6 @@ export default function OrderManageDetailPage() {
           </div>
         </section>
       </main>
-      {/* Action Buttons Section */}
       <section
         className="flex w-full justify-center gap-4 sm:gap-5 py-6 md:py-0 mt-[20px] md:mt-[70px] md:items-center"
         role="region"
