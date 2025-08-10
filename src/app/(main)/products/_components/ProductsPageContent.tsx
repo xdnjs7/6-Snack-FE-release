@@ -160,7 +160,7 @@ export default function ProductsPageContent() {
               />
 
               {hasNextPage && (
-                <div className="flex justify-center mt-8">
+                <div className="flex justify-center mb-8">
                   <Button
                     type="white"
                     label={
