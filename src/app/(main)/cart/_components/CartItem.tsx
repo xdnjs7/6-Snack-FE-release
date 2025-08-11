@@ -14,12 +14,6 @@ import { formatPrice } from "@/lib/utils/formatPrice.util";
 import Link from "next/link";
 import DogSpinner from "@/components/common/DogSpinner";
 
-/**
- * @De-cal
- * TODO:
- * 1. 결제 끝까지 완료 되고나서 invalid 해야 할거 같아서 일단 임시로 적어두기, 완성되면 success하고 invalid 시키기
- */
-
 type TCartItemProps = {
   cartItems: TGetCartItemsResponse | undefined;
   isPending: boolean;
