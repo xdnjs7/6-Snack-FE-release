@@ -141,20 +141,23 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
     return (
       <div className="min-h-screen bg-white">
         <div className="w-full max-w-7xl mx-auto pt-[30px] flex flex-col justify-start items-start gap-[23px]">
-          <div className="self-stretch justify-center text-gray-950 text-lg font-bold font-['SUIT']">구매 내역 상세</div>
-
-          <Suspense fallback={
-            <div className="w-full h-32 bg-gray-100 animate-pulse rounded" style={{ minHeight: '128px' }}></div>
-          }>
-            <OrderItemsSection 
-              products={orderData.products}
-              title="구매 품목"
-            />
+          <div className="self-stretch justify-center text-gray-950 text-lg font-bold font-['SUIT']">
+            구매 내역 상세
+          </div>
+          w-[72px] sm:w-[140px] h-[72px] sm:h-[140px] bg-primary-50 rounded-xs sm:bg-white flex justify-center
+          items-center flex-shrink-0
+          <Suspense
+            fallback={
+              <div className="w-full h-32 bg-gray-100 animate-pulse rounded" style={{ minHeight: "128px" }}></div>
+            }
+          >
+            <OrderItemsSection products={orderData.products} title="구매 품목" />
           </Suspense>
-
-          <Suspense fallback={
-            <div className="w-full h-32 bg-gray-100 animate-pulse rounded" style={{ minHeight: '128px' }}></div>
-          }>
+          <Suspense
+            fallback={
+              <div className="w-full h-32 bg-gray-100 animate-pulse rounded" style={{ minHeight: "128px" }}></div>
+            }
+          >
             <RequestInfoSection
               requester={orderData.requester}
               createdAt={orderData.createdAt}
@@ -162,10 +165,11 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
               formatDate={formatDate}
             />
           </Suspense>
-
-          <Suspense fallback={
-            <div className="w-full h-32 bg-gray-100 animate-pulse rounded" style={{ minHeight: '128px' }}></div>
-          }>
+          <Suspense
+            fallback={
+              <div className="w-full h-32 bg-gray-100 animate-pulse rounded" style={{ minHeight: "128px" }}></div>
+            }
+          >
             <ApprovalInfoSection
               approver={orderData.approver}
               updatedAt={orderData.updatedAt}
@@ -175,7 +179,6 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
               getStatusText={getStatusText}
             />
           </Suspense>
-
           {/* 하단 버튼 */}
           <div className="self-stretch h-16 inline-flex justify-start md:justify-center items-center gap-5 mt-8">
             <button
