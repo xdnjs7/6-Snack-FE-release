@@ -38,15 +38,18 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
 
   return (
     <div
-      className="fixed bottom-28 left-6 z-[55] flex w-[22rem] max-h-[75vh] flex-col overflow-hidden rounded-xl
-                 border border-border/60 bg-gradient-to-b from-white/90 to-white/80 backdrop-blur-xl
-                 shadow-[0_8px_28px_-6px_rgba(0,0,0,0.18),0_2px_8px_rgba(0,0,0,0.08)]
-                 sm:w-[24rem] sm:max-h-[78vh] md:w-[26rem] md:max-h-[80vh]"
+      className="fixed z-[55] flex flex-col overflow-hidden rounded-xl border border-[var(--color-primary-200)]
+                 bg-[var(--color-primary-25)]/95 backdrop-blur-md shadow-[0_4px_18px_-4px_rgba(0,0,0,0.18),0_2px_6px_rgba(0,0,0,0.08)]
+                 left-4 sm:left-5 bottom-[calc(env(safe-area-inset-bottom)+5.5rem)]
+                 w-[min(100%-1.5rem,26rem)] sm:w-[24rem] md:w-[26rem]
+                 max-h-[70vh] sm:max-h-[74vh] md:max-h-[78vh]
+                 animate-[fadeIn_.25s_ease]"
     >
       {/* Header */}
       <header
-        className="relative flex items-center justify-between px-4 py-3 bg-[var(--color-primary-50)] border-b border-[var(--color-primary-200)] text-[var(--color-primary-950)] shadow-inner"
+        className="relative flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 bg-[var(--color-primary-50)] border-b border-[var(--color-primary-200)] text-[var(--color-primary-950)]"
       >
+        <div className="absolute left-1/2 top-1 -translate-x-1/2 h-1.5 w-14 rounded-full bg-[var(--color-primary-200)] sm:hidden" />
         <div className="flex items-center gap-2 text-sm font-semibold tracking-wide">
           <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-[var(--color-primary-700)] ring-2 ring-white/50" />
           Snack AI 도우미
@@ -62,7 +65,7 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
       </header>
 
       {/* Messages */}
-      <div className="scrollbar relative flex-1 space-y-4 overflow-y-auto px-4 py-4 text-sm leading-relaxed">
+      <div className="scrollbar relative flex-1 space-y-4 overflow-y-auto px-3 sm:px-4 py-3 sm:py-4 text-sm leading-relaxed">
         {messages.map((m) => {
           const isUser = m.role === 'user';
           return (
@@ -104,7 +107,7 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
       {/* Input */}
       <form
         onSubmit={handleSubmit}
-        className="border-t border-[var(--color-primary-200)] bg-[var(--color-primary-50)] p-3"
+        className="border-t border-[var(--color-primary-200)] bg-[var(--color-primary-50)]/90 backdrop-blur px-3 sm:px-4 py-3"
       >
         <div className="flex items-end gap-2">
           <textarea
@@ -112,13 +115,13 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             rows={1}
-            className="max-h-32 min-h-[2.5rem] flex-1 resize-none rounded-md border border-[var(--color-primary-200)] bg-[var(--color-primary-50)] px-3 py-2 text-sm shadow-inner placeholder:text-[var(--color-primary-400)] focus:border-[var(--color-primary-700)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-200)]"
+            className="max-h-32 min-h-[2.5rem] flex-1 resize-none rounded-md border border-[var(--color-primary-200)] bg-[var(--color-primary-25)] px-3 py-2 text-sm shadow-inner placeholder:text-[var(--color-primary-400)] focus:border-[var(--color-primary-700)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-200)]"
             placeholder="Shift+Enter 줄바꿈, Enter 전송"
           />
           <button
             type="submit"
             disabled={isLoading || !input.trim()}
-            className="inline-flex items-center gap-1 rounded-md bg-[var(--color-primary-50)] border border-[var(--color-primary-700)] px-4 py-2 text-sm font-medium text-[var(--color-primary-950)] shadow disabled:cursor-not-allowed disabled:opacity-60 transition-colors hover:bg-[var(--color-primary-100)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-200)]"
+            className="inline-flex items-center gap-1 rounded-md bg-[var(--color-primary-50)] border border-[var(--color-primary-700)] px-3 sm:px-4 py-2 text-sm font-medium text-[var(--color-primary-950)] shadow disabled:cursor-not-allowed disabled:opacity-60 transition-colors hover:bg-[var(--color-primary-100)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-200)]"
           >
             전송
           </button>
