@@ -17,7 +17,7 @@ export default function ArrowIconSvg({ direction, className = "", onClick, disab
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={twMerge("cursor-pointer text-gray-300", disabled ? "opacity-50" : "", className)}
+      className={twMerge("cursor-pointer text-primary-300", disabled ? "opacity-50" : "", className)}
       onClick={!disabled ? onClick : undefined}
       style={{
         transform:

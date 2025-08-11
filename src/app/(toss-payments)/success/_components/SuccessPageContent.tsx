@@ -31,9 +31,8 @@ export default function SuccessPageContent({ orderId, amount, paymentKey }: TSuc
 
     if (!order) return;
 
-    // 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
-    // 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.
-    if (String(order.totalPrice + 3000) !== amount) {
+    // 쿼리 파라미터 값과 DB의 amount 비교 (조작 방지)
+    if (String(order.productsPriceTotal + order.deliveryFee) !== amount) {
       router.push("/fail?message=가격 정보가 일치하지 않습니다.&code=400");
       return;
     }
@@ -65,12 +64,10 @@ export default function SuccessPageContent({ orderId, amount, paymentKey }: TSuc
       const json = await response.json();
 
       if (!response.ok) {
-        // 결제 실패 비즈니스 로직을 구현하세요.
         router.replace(`/fail?message=${json.message}&code=${json.code}`);
         return;
       }
 
-      // 결제 성공 비즈니스 로직을 구현하세요.
       setSuccess(true);
     }
 
@@ -84,12 +81,6 @@ export default function SuccessPageContent({ orderId, amount, paymentKey }: TSuc
       </div>
     );
   }
-
-  /**
-   * 주문 번호: searchParams.get("orderId")
-   * 결제 금액: Number(searchParams.get("amount")).toLocaleString()
-   * paymentKey: searchParams.get("paymentKey")
-   */
 
   return (
     <div className="flex flex-col justify-center items-center h-screen gap-[28px] -mb-[24px]">

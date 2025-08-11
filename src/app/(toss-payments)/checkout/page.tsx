@@ -29,7 +29,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (order) {
-      setAmount({ currency: "KRW", value: order.totalPrice + 3000 });
+      setAmount({ currency: "KRW", value: order.productsPriceTotal + order.deliveryFee });
     }
   }, [order]);
 
