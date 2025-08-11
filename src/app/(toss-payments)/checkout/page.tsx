@@ -27,10 +27,6 @@ export default function CheckoutPage() {
   const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY!;
   const customerKey = user ? user!.id : "";
 
-  console.log("order", order);
-  console.log("clientKey", clientKey);
-  console.log("customerKey", customerKey);
-
   useEffect(() => {
     if (order) {
       setAmount({ currency: "KRW", value: order.totalPrice + 3000 });
@@ -58,7 +54,6 @@ export default function CheckoutPage() {
         return;
       }
 
-      console.log("amount", amount);
       // ------ 주문의 결제 금액 설정 ------
       await widgets.setAmount(amount);
 

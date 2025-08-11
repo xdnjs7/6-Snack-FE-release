@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { TGetCartItemsResponse } from "@/types/cart.types";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
+import DogSpinner from "@/components/common/DogSpinner";
 
 type TOrderItemProps = {
   cartItems: TGetCartItemsResponse | undefined;
@@ -23,7 +24,9 @@ export default function OrderItem({ isPending, cartItems }: TOrderItemProps) {
       <div className="flex flex-col justify-center items-center w-full gap-[20px] sm:shadow-[0px_0px_10px_0px_rgba(0,0,0,0.12)] sm:py-[40px] sm:px-[30px] sm:rounded-[2px] md:px-[60px]">
         <div className="flex flex-col items-center w-full">
           {isPending ? (
-            <div>로딩 중...</div>
+            <div className="flex justify-center items-center py-[30px]">
+              <DogSpinner />
+            </div>
           ) : !cartItems?.cart.length ? (
             <div className="flex justify-center items-center h-[200px]">올바른 요청이 아닙니다.</div>
           ) : (
