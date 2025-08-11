@@ -211,7 +211,7 @@ export default function InviteMemberModal({
             />
             <Button
               onClick={handleSubmit}
-              type={updateRoleMutation.isPending ? "primaryDisabled" : "black"}
+              type={updateRoleMutation.isPending ? "grayDisabled" : "black"}
               label={updateRoleMutation.isPending ? "처리 중..." : mode === "edit" ? "권한 수정" : "초대하기"}
               className="flex justify-center items-center w-full  min-w-[155px] sm:max-w-[230px] h-[64px] py-[12px] px-[16px] font-bold"
               disabled={updateRoleMutation.isPending}
