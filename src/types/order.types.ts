@@ -20,6 +20,8 @@ export type TOrderBase = {
   adminMessage: string;
   requestMessage: string;
   totalPrice: number;
+  deliveryFee: number;
+  productsPriceTotal: number;
   createdAt: string;
   updatedAt: string;
   status: string;
