@@ -85,6 +85,16 @@ const OrderHistoryPage = () => {
     ? Math.round((safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100)
     : 0;
 
+  const emptyOrdersContent = (
+    <NoContent
+      title="구매 내역이 없어요"
+      subText1="아직 구매한 내역이 없습니다."
+      subText2="상품을 둘러보고 첫 주문을 진행해 보세요."
+      buttonText="상품 보러가기"
+      onClick={() => router.push("/products")}
+    />
+  );
+
   return (
     <>
       {/* Mobile Layout */}
@@ -276,13 +286,7 @@ const OrderHistoryPage = () => {
               </article>
             ))
           ) : (
-            <NoContent
-              title="구매 내역이 없어요"
-              subText1="아직 구매한 내역이 없습니다."
-              subText2="상품을 둘러보고 첫 주문을 진행해 보세요."
-              buttonText="상품 보러가기"
-              onClick={() => router.push("/products")}
-            />
+            emptyOrdersContent
           )}
         </section>
         <nav className="self-stretch h-10 flex justify-between items-center px-4" aria-label="페이지 이동">
@@ -509,13 +513,7 @@ const OrderHistoryPage = () => {
               </article>
             ))
           ) : (
-            <NoContent
-              title="구매 내역이 없어요"
-              subText1="아직 구매한 내역이 없습니다."
-              subText2="상품을 둘러보고 첫 주문을 진행해 보세요."
-              buttonText="상품 보러가기"
-              onClick={() => router.push("/products")}
-            />
+            emptyOrdersContent
           )}
         </section>
         <nav className="self-stretch h-10 flex justify-between items-center px-8" aria-label="페이지 이동">
@@ -721,11 +719,7 @@ const OrderHistoryPage = () => {
                   </div>
                 ))
               ) : (
-                <div className="self-stretch h-24 px-10 border-b border-neutral-200 inline-flex justify-center items-center">
-                  <div className="text-center justify-center text-neutral-800 text-base font-normal font-['SUIT']">
-                    구매 내역이 없어요
-                  </div>
-                </div>
+                emptyOrdersContent
               )}
             </div>
           </div>
