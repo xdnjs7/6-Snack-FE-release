@@ -285,9 +285,7 @@ const OrderHistoryPage = () => {
                 </div>
               </article>
             ))
-          ) : (
-            emptyOrdersContent
-          )}
+          ) : emptyOrdersContent}
         </section>
         <nav className="self-stretch h-10 flex justify-between items-center px-4" aria-label="페이지 이동">
           {/* Mobile Pagination */}
@@ -512,9 +510,7 @@ const OrderHistoryPage = () => {
                 </div>
               </article>
             ))
-          ) : (
-            emptyOrdersContent
-          )}
+          ) : emptyOrdersContent}
         </section>
         <nav className="self-stretch h-10 flex justify-between items-center px-8" aria-label="페이지 이동">
           {/* Tablet Pagination */}
