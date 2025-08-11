@@ -45,24 +45,24 @@ const OrderHistoryPage = () => {
   }) => (
     <div className={`p-6 bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 shadow-lg ${className}`}>
       <div className="inline-flex justify-start items-center gap-2">
-        <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
+        <div className="justify-center text-white text-base font-extrabold">
           이번 달 남은 예산:
         </div>
-        <div className="justify-center text-white text-base font-extrabold font-['SUIT']">
+        <div className="justify-center text-white text-base font-extrabold">
           {budgetData
             ? formatNumber(budgetData.currentMonthBudget - budgetData.currentMonthExpense)
             : "데이터 로딩 중..."}
         </div>
       </div>
       <div className="inline-flex justify-start items-center gap-1">
-        <div className="justify-center text-white text-sm font-normal font-['SUIT']">지난 달 남은 예산:</div>
-        <div className="justify-center text-white text-sm font-normal font-['SUIT']">
+        <div className="justify-center text-white text-sm font-normal">지난 달 남은 예산:</div>
+        <div className="justify-center text-white text-sm font-normal">
           {budgetData
             ? formatNumber(budgetData.previousMonthBudget - budgetData.previousMonthExpense)
             : "데이터 로딩 중..."}
         </div>
       </div>
-      <div className="justify-center text-white text-sm font-normal font-['SUIT']">
+      <div className="justify-center text-white text-sm font-normal">
         지난 달보다{" "}
         {budgetData
           ? formatPrice(Math.abs(budgetData.currentMonthExpense - budgetData.previousMonthExpense))
