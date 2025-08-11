@@ -1,6 +1,5 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { TSideMenuProps, TSideMenuItem } from "../../types/sideMenu.types";
 import XIconSvg from "../svg/XIconSvg";
 import { createPortal } from "react-dom";
