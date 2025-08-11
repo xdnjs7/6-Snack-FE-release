@@ -53,8 +53,8 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
       if (!product) throw new Error("상품 정보가 없습니다.");
       return addToCart(product.id, selectedQuantity);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["cartItems"] });
       router.push("/cart");
     },
     onError: () => {

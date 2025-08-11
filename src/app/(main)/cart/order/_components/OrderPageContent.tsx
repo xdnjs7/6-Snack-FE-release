@@ -31,7 +31,7 @@ export default function OrderPageContent({ cartItemId }: TOrderPageContentProps)
     isPending,
     error,
   } = useQuery<TGetCartItemsResponse, Error, TGetCartItemsResponse, [string, string, string]>({
-    queryKey: ["cart", "order", cartItemId ?? "isChecked"],
+    queryKey: ["cartItems", "order", cartItemId ?? "isChecked"],
     queryFn: () => getCartItems(params),
   });
 
