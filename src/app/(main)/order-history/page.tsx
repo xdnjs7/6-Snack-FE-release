@@ -153,7 +153,7 @@ const OrderHistoryPage = () => {
                 <div className="self-stretch inline-flex justify-left items-center gap-1">
                   <div className="w-20 h-1.5 bg-primary-200 rounded-md overflow-hidden">
                     <div
-                      className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-blue-500'}`}
+                      className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-secondary-500'}`}
                       style={{ width: `${Math.max(1, percent)}%` }}
                     />
                   </div>
@@ -251,7 +251,7 @@ const OrderHistoryPage = () => {
                       </div>
                       {item.adminMessage?.includes("즉시 구매") && (
                         <div className="px-1 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1">
-                          <div className="justify-center text-blue-500 text-xs font-bold">즉시 구매</div>
+                          <div className="justify-center text-secondary-500 text-xs font-bold">즉시 구매</div>
                         </div>
                       )}
                     </div>
@@ -376,7 +376,7 @@ const OrderHistoryPage = () => {
               <div className="self-stretch inline-flex justify-left items-center gap-2.5">
                 <div className="w-36 h-1.5 bg-primary-200 rounded-md overflow-hidden">
                   <div
-                    className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-blue-500'}`}
+                    className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-secondary-500'}`}
                     style={{ width: `${Math.max(1, percent)}%` }}
                   />
                 </div>
@@ -472,7 +472,7 @@ const OrderHistoryPage = () => {
                           </div>
                           {item.adminMessage?.includes("즉시 구매") && (
                             <div className="px-1 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1">
-                              <div className="justify-center text-blue-500 text-xs font-bold">
+                              <div className="justify-center text-secondary-500 text-xs font-bold">
                                 즉시 구매
                               </div>
                             </div>
@@ -607,7 +607,7 @@ const OrderHistoryPage = () => {
               <div className="self-stretch inline-flex justify-left items-center gap-2.5">
                 <div className="w-90 h-1.5 bg-primary-200 rounded-md overflow-hidden">
                   <div
-                    className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-blue-500'}`}
+                    className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-secondary-500'}`}
                     style={{ width: `${Math.max(1, percent)}%` }}
                   />
                 </div>
@@ -685,7 +685,7 @@ const OrderHistoryPage = () => {
                       </div>
                       {item.adminMessage?.includes("즉시 구매") && (
                         <div className="px-2 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1 whitespace-nowrap">
-                          <div className="justify-center items-center text-center text-blue-500 text-xs font-bold w-12 whitespace-nowrap overflow-hidden text-ellipsis">
+                          <div className="justify-center items-center text-center text-secondary-500 text-xs font-bold w-12 whitespace-nowrap overflow-hidden text-ellipsis">
                             즉시 구매
                           </div>
                         </div>
