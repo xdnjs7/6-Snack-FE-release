@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import ErrorPageContent from "./_components/ErrorPageContent";
 

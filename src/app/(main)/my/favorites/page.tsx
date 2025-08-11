@@ -1,5 +1,6 @@
 "use client";
 
+import DogSpinner from "@/components/common/DogSpinner";
 import ProductGrid from "@/components/common/ProductGrid";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import { getFavorites } from "@/lib/api/favorite.api";
@@ -50,7 +51,11 @@ export default function MyFavoritesPage() {
     [];
 
   if (isLoading) {
-    return <p role="alert">로딩 중...</p>;
+    return (
+      <div className="flex justify-center items-center h-[80vh] md:h-[60vh]">
+        <DogSpinner />
+      </div>
+    );
   }
 
   if (!favorites || favorites.pages.length === 0) {

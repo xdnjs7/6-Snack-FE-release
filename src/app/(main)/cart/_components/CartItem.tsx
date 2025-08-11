@@ -12,6 +12,7 @@ import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 import Link from "next/link";
+import DogSpinner from "@/components/common/DogSpinner";
 
 /**
  * @De-cal
@@ -55,9 +56,9 @@ export default function CartItem({
     onMutate: async ({ cartItemId, isChecked }) => {
       await queryClient.cancelQueries({ queryKey: ["cartItems"] });
 
-      const previousCartItems = queryClient.getQueryData<TGetCartItemsResponse>(["cart"]);
+      const previousCartItems = queryClient.getQueryData<TGetCartItemsResponse>(["cartItems"]);
 
-      queryClient.setQueryData<TGetCartItemsResponse>(["cart"], (old) =>
+      queryClient.setQueryData<TGetCartItemsResponse>(["cartItems"], (old) =>
         old ? { ...old, cart: old.cart.map((item) => (item.id === cartItemId ? { ...item, isChecked } : item)) } : old,
       );
 
@@ -65,7 +66,7 @@ export default function CartItem({
     },
     onError: (error, variables, context) => {
       if (context?.previousCartItems) {
-        queryClient.setQueryData(["cart"], context.previousCartItems);
+        queryClient.setQueryData(["cartItems"], context.previousCartItems);
       }
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["cartItems"] }),
@@ -94,9 +95,9 @@ export default function CartItem({
     onMutate: async (isAllChecked) => {
       await queryClient.cancelQueries({ queryKey: ["cartItems"] });
 
-      const previousCartItems = queryClient.getQueryData<TGetCartItemsResponse>(["cart"]);
+      const previousCartItems = queryClient.getQueryData<TGetCartItemsResponse>(["cartItems"]);
 
-      queryClient.setQueryData<TGetCartItemsResponse>(["cart"], (old) =>
+      queryClient.setQueryData<TGetCartItemsResponse>(["cartItems"], (old) =>
         old ? { ...old, cart: old.cart.map((item) => ({ ...item, isChecked: !isAllChecked })) } : old,
       );
 
@@ -104,7 +105,7 @@ export default function CartItem({
     },
     onError: (error, variables, context) => {
       if (context?.previousCartItems) {
-        queryClient.setQueryData(["cart"], context.previousCartItems);
+        queryClient.setQueryData(["cartItems"], context.previousCartItems);
       }
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["cartItems"] }),
@@ -146,7 +147,9 @@ export default function CartItem({
       </div>
 
       {isPending ? (
-        <div>로딩 중...</div>
+        <div className="flex justify-center items-center py-[30px]">
+          <DogSpinner />
+        </div>
       ) : !cartItems?.cart.length ? (
         <div className="flex justify-center items-center h-[200px]">장바구니에 담은 상품이 없습니다.</div>
       ) : (

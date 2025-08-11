@@ -89,7 +89,7 @@ export default function LoginPage() {
     <div className="flex justify-center">
       <div className="flex flex-col justify-center w-full max-w-[480px] pt-[48px] sm:max-w-[600px] sm:py-[160px]">
         <Toast text={toastText} isVisible={isToastVisible} />
-        <nav className="flex justify-center w-full h-[140px] py-[38.18px] px-[50.92px] sm:h-auto sm:pb-0">
+        <nav className="z-1 flex justify-center w-full h-[140px] py-[38.18px] px-[50.92px] sm:h-auto sm:pb-0">
           <Link href="/">
             <SnackIconSvg className="w-[225.16px] h-[63.64px] sm:w-[344px] sm:h-[97.3px]" />
           </Link>

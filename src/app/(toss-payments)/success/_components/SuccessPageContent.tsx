@@ -47,15 +47,20 @@ export default function SuccessPageContent({ orderId, amount, paymentKey }: TSuc
     async function confirm() {
       hasConfirmed.current = true; // ✅ 중복 방지
 
-      const response = await fetch("http://localhost:8080/payments/confirm", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        process.env.NODE_ENV === "production"
+          ? "https://api.5nack.site/payments/confirm"
+          : "http://localhost:8080/payments/confirm",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+          credentials: "include",
+          cache: "no-store",
         },
-        body: JSON.stringify(requestData),
-        credentials: "include",
-        cache: "no-store",
-      });
+      );
 
       const json = await response.json();
 
