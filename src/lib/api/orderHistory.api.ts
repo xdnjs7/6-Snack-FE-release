@@ -54,7 +54,9 @@ export type TMyOrderDetail = {
   approver: string | null;
   adminMessage: string | null;
   requestMessage: string | null;
-  totalPrice: number;
+  // totalPrice: number; // deprecated, productsPriceTotal로 대체
+  productsPriceTotal: number;
+  deliveryFee: number;
   createdAt: string;
   updatedAt: string;
   status: "PENDING" | "APPROVED" | "REJECTED" | "CANCELED";

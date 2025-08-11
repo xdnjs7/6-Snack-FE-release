@@ -85,7 +85,7 @@ export default function Pagination({
       <div className="w-full h-10 inline-flex justify-between items-center py-[11.5px]">
         {/* Page Info */}
         <div
-          className={`text-center justify-start text-gray-950 font-normal font-['SUIT'] ${isTablet ? "text-xl" : "text-lg"}`}
+          className={`text-center justify-start text-gray-950 font-normal  ${isTablet ? "text-xl" : "text-lg"}`}
         >
           {currentPage} of {totalPages}
         </div>
@@ -105,7 +105,7 @@ export default function Pagination({
               className={isFirstPage ? "text-gray-500" : "text-gray-950"}
             />
             <div
-              className={`text-center justify-start ${isFirstPage ? "text-gray-500" : "text-gray-950"} font-normal font-['SUIT'] ${isTablet ? "text-lg" : "text-base"}`}
+              className={`text-center justify-start ${isFirstPage ? "text-gray-500" : "text-gray-950"} font-normal  ${isTablet ? "text-lg" : "text-base"}`}
             >
               Prev
             </div>
@@ -119,7 +119,7 @@ export default function Pagination({
             onClick={handleNextPage}
           >
             <div
-              className={`text-center justify-start text-gray-950 font-normal font-['SUIT'] ${isTablet ? "text-lg" : "text-base"}`}
+              className={`text-center justify-start text-gray-950 font-normal  ${isTablet ? "text-lg" : "text-base"}`}
             >
               Next
             </div>

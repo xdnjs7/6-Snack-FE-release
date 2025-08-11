@@ -149,9 +149,9 @@ export default function OrderConfirmedPage() {
   }, [router]);
 
   // 메모이제이션된 계산값들
-  const shippingFee = useMemo(() => 3000, []);
+  const shippingFee = useMemo(() => orderData ? orderData.deliveryFee : 0, [orderData]);
   const totalAmount = useMemo(() => 
-    orderData ? orderData.totalPrice + shippingFee : 0, 
+    orderData ? orderData.productsPriceTotal + shippingFee : 0, 
     [orderData, shippingFee]
   );
 
@@ -221,8 +221,7 @@ export default function OrderConfirmedPage() {
         className={clsx(
           "min-h-screen",
           "bg-white",
-          "text-[--color-primary-950]",
-          "font-[var(--font-suit)]",
+          "text-primary-950",
           "flex",
           "flex-col",
         )}
@@ -285,7 +284,7 @@ export default function OrderConfirmedPage() {
                       주문금액
                     </div>
                     <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold">
-                      {formatPrice(orderData.totalPrice)}원
+                      {formatPrice(orderData.productsPriceTotal)}원
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
