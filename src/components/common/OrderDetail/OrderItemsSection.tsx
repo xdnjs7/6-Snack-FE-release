@@ -93,16 +93,16 @@ export default function OrderItemsSection({
                         </div>
                       </div>
                       <div className="flex justify-between items-center w-full sm:justify-start sm:flex sm:justify-start">
-                        <div className="justify-center text-gray-500 text-[13px] sm:text-base font-bold">
+                        <div className="justify-center text-primary-500 text-[13px] sm:text-base font-bold">
                           수량 {item.quantity}개
                         </div>
-                        <div className="text-center justify-center text-gray-700 text-base font-bold sm:hidden">
+                        <div className="text-center justify-center text-primary-700 text-base font-bold sm:hidden">
                           {formatPrice(item.price * item.quantity)}원
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="hidden sm:block text-center justify-center text-gray-700 text-[20px] font-extrabold">
+                  <div className="hidden sm:block text-center justify-center text-primary-700 text-[20px] font-extrabold">
                     {formatPrice(item.price * item.quantity)}원
                   </div>
                 </div>
@@ -112,18 +112,18 @@ export default function OrderItemsSection({
             {/* Order Amount Info */}
             <div className="self-stretch flex flex-col gap-3 sm:gap-[7px] sm:px-5">
               <div className="flex justify-between items-center">
-                <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold">
+                <div className="text-center justify-center text-primary-700 text-sm sm:text-base font-bold">
                   주문금액
                 </div>
-                <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold">
+                <div className="text-center justify-center text-primary-700 text-sm sm:text-base font-bold">
                   {formatPrice(calculatedTotal)}원
                 </div>
               </div>
               <div className="flex justify-between items-center">
-                <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold">
+                <div className="text-center justify-center text-primary-700 text-sm sm:text-base font-bold">
                   배송비
                 </div>
-                <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold">
+                <div className="text-center justify-center text-primary-700 text-sm sm:text-base font-bold">
                   {formatPrice(shippingFee)}원
                 </div>
               </div>

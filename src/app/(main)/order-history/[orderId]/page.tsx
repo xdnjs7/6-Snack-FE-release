@@ -23,14 +23,14 @@ type TOrderHistoryDetailPageProps = Record<string, never>;
 const LoadingSkeleton = () => (
   <div className="min-h-screen bg-white">
     <div className="w-full max-w-7xl mx-auto pt-[30px] flex flex-col justify-start items-start gap-[23px]">
-      <div className="self-stretch justify-center text-gray-950 text-lg font-bold ">구매 내역 상세</div>
+      <div className="self-stretch justify-center text-primary-950 text-lg font-bold ">구매 내역 상세</div>
       
       {/* 스켈레톤 UI - 실제 레이아웃과 동일한 크기 */}
       <div className="self-stretch flex flex-col justify-start items-start gap-10">
         <div className="self-stretch flex flex-col justify-start items-start gap-[15px]">
           <div className="inline-flex justify-start items-start gap-1.5">
-            <div className="justify-center text-gray-950 text-base font-bold ">구매 품목</div>
-            <div className="justify-center text-gray-950 text-base font-normal ">총 0개</div>
+            <div className="justify-center text-primary-950 text-base font-bold ">구매 품목</div>
+            <div className="justify-center text-primary-950 text-base font-normal ">총 0개</div>
           </div>
           <div className="self-stretch bg-white rounded-sm sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline-1 sm:outline-neutral-200 flex flex-col justify-start items-start gap-5 sm:px-5 sm:pt-5 sm:pb-[30px] md:px-[60px] md:py-[40px]">
             <div className="self-stretch flex flex-col justify-start items-start gap-[16px] sm:gap-0">
@@ -40,16 +40,16 @@ const LoadingSkeleton = () => (
                     <div className="w-[72px] sm:w-[140px] h-[72px] sm:h-[140px] bg-primary-50 sm:bg-white rounded-xs animate-pulse" style={{ aspectRatio: '1' }}></div>
                     <div className="flex-1 inline-flex flex-col items-start gap-3 sm:justify-start sm:inline-flex sm:flex-col sm:justify-start sm:items-start sm:gap-7">
                       <div className="flex flex-col justify-center items-start gap-1 sm:justify-start sm:gap-2.5">
-                        <div className="w-32 h-4 bg-gray-200 animate-pulse rounded"></div>
-                        <div className="w-20 h-4 bg-gray-200 animate-pulse rounded"></div>
+                        <div className="w-32 h-4 bg-primary-200 animate-pulse rounded"></div>
+                        <div className="w-20 h-4 bg-primary-200 animate-pulse rounded"></div>
                       </div>
                       <div className="flex justify-between items-center w-full sm:justify-start sm:flex sm:justify-start">
-                        <div className="w-16 h-4 bg-gray-200 animate-pulse rounded"></div>
-                        <div className="text-center justify-center text-gray-700 text-base font-bold  sm:hidden w-20 h-4 bg-gray-200 animate-pulse rounded"></div>
+                        <div className="w-16 h-4 bg-primary-200 animate-pulse rounded"></div>
+                        <div className="text-center justify-center text-primary-700 text-base font-bold  sm:hidden w-20 h-4 bg-primary-200 animate-pulse rounded"></div>
                       </div>
                     </div>
                   </div>
-                  <div className="hidden sm:block w-24 h-6 bg-gray-200 animate-pulse rounded"></div>
+                  <div className="hidden sm:block w-24 h-6 bg-primary-200 animate-pulse rounded"></div>
                 </div>
               ))}
             </div>
@@ -59,8 +59,8 @@ const LoadingSkeleton = () => (
 
       {/* 하단 버튼 스켈레톤 */}
       <div className="self-stretch h-16 inline-flex justify-start md:justify-center items-center gap-5">
-        <div className="flex-1 md:flex-none md:w-[260px] h-16 bg-gray-200 animate-pulse rounded"></div>
-        <div className="flex-1 md:flex-none md:w-[264px] h-16 bg-gray-200 animate-pulse rounded"></div>
+        <div className="flex-1 md:flex-none md:w-[260px] h-16 bg-primary-200 animate-pulse rounded"></div>
+        <div className="flex-1 md:flex-none md:w-[264px] h-16 bg-primary-200 animate-pulse rounded"></div>
       </div>
     </div>
   </div>
@@ -141,10 +141,10 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
     return (
       <div className="min-h-screen bg-white">
         <div className="w-full max-w-7xl mx-auto pt-[30px] flex flex-col justify-start items-start gap-[23px]">
-          <div className="self-stretch justify-center text-gray-950 text-lg font-bold ">구매 내역 상세</div>
+          <div className="self-stretch justify-center text-primary-950 text-lg font-bold ">구매 내역 상세</div>
 
           <Suspense fallback={
-            <div className="w-full h-32 bg-gray-100 animate-pulse rounded" style={{ minHeight: '128px' }}></div>
+            <div className="w-full h-32 bg-primary-100 animate-pulse rounded" style={{ minHeight: '128px' }}></div>
           }>
             <OrderItemsSection 
               products={orderData.products}
@@ -153,7 +153,7 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
           </Suspense>
 
           <Suspense fallback={
-            <div className="w-full h-32 bg-gray-100 animate-pulse rounded" style={{ minHeight: '128px' }}></div>
+            <div className="w-full h-32 bg-primary-100 animate-pulse rounded" style={{ minHeight: '128px' }}></div>
           }>
             <RequestInfoSection
               requester={orderData.requester}
@@ -164,7 +164,7 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
           </Suspense>
 
           <Suspense fallback={
-            <div className="w-full h-32 bg-gray-100 animate-pulse rounded" style={{ minHeight: '128px' }}></div>
+            <div className="w-full h-32 bg-primary-100 animate-pulse rounded" style={{ minHeight: '128px' }}></div>
           }>
             <ApprovalInfoSection
               approver={orderData.approver}
@@ -179,7 +179,7 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
           {/* 하단 버튼 */}
           <div className="self-stretch h-16 inline-flex justify-start md:justify-center items-center gap-5 mt-8">
             <button
-              className="flex-1 md:flex-none md:w-[260px] h-16 px-4 py-3 bg-white rounded-[2px] outline-1 outline-offset-[-1px] outline-zinc-400 flex justify-center items-center text-lg font-semibold cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+              className="flex-1 md:flex-none md:w-[260px] h-16 px-4 py-3 bg-white rounded-[2px] outline-1 outline-offset-[-1px] outline-zinc-400 flex justify-center items-center text-lg font-semibold cursor-pointer hover:bg-primary-50 transition-colors duration-200"
               onClick={handleGoHome}
               type="button"
             >

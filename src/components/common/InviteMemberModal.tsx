@@ -187,7 +187,7 @@ export default function InviteMemberModal({
                     {Object.entries(roleLabels).map(([role, label]) => (
                       <div
                         key={role}
-                        className="px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-primary-950 text-base font-normal"
+                        className="px-4 py-2.5 hover:bg-primary-50 cursor-pointer text-primary-950 text-base font-normal"
                         onClick={() => {
                           setSelectedRole(role as TUserRole);
                           setIsDropdownOpen(false);
@@ -211,7 +211,7 @@ export default function InviteMemberModal({
             />
             <Button
               onClick={handleSubmit}
-              type={updateRoleMutation.isPending ? "grayDisabled" : "black"}
+              type={updateRoleMutation.isPending ? "primaryDisabled" : "black"}
               label={updateRoleMutation.isPending ? "처리 중..." : mode === "edit" ? "권한 수정" : "초대하기"}
               className="flex justify-center items-center w-full  min-w-[155px] sm:max-w-[230px] h-[64px] py-[12px] px-[16px] font-bold"
               disabled={updateRoleMutation.isPending}

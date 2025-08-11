@@ -40,16 +40,16 @@ const ProductItem = React.memo(({ receipt }: { receipt: { price: number; quantit
             </div>
           </div>
           <div className="flex justify-between items-center w-full sm:justify-start sm:flex sm:justify-start">
-            <div className="justify-center text-gray-500 text-[13px] sm:text-base font-bold">
+            <div className="justify-center text-primary-500 text-[13px] sm:text-base font-bold">
               수량 {receipt.quantity}개
             </div>
-            <div className="text-center justify-center text-gray-700 text-base font-bold sm:hidden">
+            <div className="text-center justify-center text-primary-700 text-base font-bold sm:hidden">
               {formatPrice(totalPrice)}원
             </div>
           </div>
         </div>
       </div>
-      <div className="hidden sm:block text-center justify-center text-gray-700 text-[20px] font-extrabold">
+      <div className="hidden sm:block text-center justify-center text-primary-700 text-[20px] font-extrabold">
         {formatPrice(totalPrice)}원
       </div>
     </div>
@@ -64,22 +64,22 @@ const LoadingSkeleton = () => (
     <main className="flex-1 p-4 sm:p-6 md:p-8 max-w-7xl mx-auto w-full flex flex-col items-center gap-10 sm:gap-12 md:gap-16 pt-10 sm:pt-12 md:pt-16 pb-24 sm:pb-28 md:pb-32">
       {/* 진행 단계 스켈레톤 */}
       <div className="flex flex-col sm:flex-row md:gap-5 justify-center items-center gap-2.5 sm:gap-4">
-        <div className="w-32 h-6 bg-gray-200 animate-pulse rounded"></div>
-        <div className="w-6 h-6 bg-gray-200 animate-pulse rounded hidden sm:block"></div>
-        <div className="w-32 h-6 bg-gray-200 animate-pulse rounded"></div>
-        <div className="w-6 h-6 bg-gray-200 animate-pulse rounded hidden sm:block"></div>
-        <div className="w-32 h-6 bg-gray-200 animate-pulse rounded"></div>
+        <div className="w-32 h-6 bg-primary-200 animate-pulse rounded"></div>
+        <div className="w-6 h-6 bg-primary-200 animate-pulse rounded hidden sm:block"></div>
+        <div className="w-32 h-6 bg-primary-200 animate-pulse rounded"></div>
+        <div className="w-6 h-6 bg-primary-200 animate-pulse rounded hidden sm:block"></div>
+        <div className="w-32 h-6 bg-primary-200 animate-pulse rounded"></div>
       </div>
 
       {/* 주문 완료 메시지 스켈레톤 */}
-      <div className="w-64 h-8 bg-gray-200 animate-pulse rounded"></div>
+      <div className="w-64 h-8 bg-primary-200 animate-pulse rounded"></div>
 
       {/* 상품 목록 스켈레톤 */}
       <div className="self-stretch flex flex-col justify-start items-start gap-10">
         <div className="self-stretch flex flex-col justify-start items-start gap-[15px]">
           <div className="inline-flex justify-start items-start gap-1.5">
-            <div className="w-20 h-6 bg-gray-200 animate-pulse rounded"></div>
-            <div className="w-16 h-6 bg-gray-200 animate-pulse rounded"></div>
+            <div className="w-20 h-6 bg-primary-200 animate-pulse rounded"></div>
+            <div className="w-16 h-6 bg-primary-200 animate-pulse rounded"></div>
           </div>
           <div className="self-stretch bg-white rounded-sm sm:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.1)] md:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.1)] flex flex-col justify-start items-start gap-5 sm:px-5 sm:pt-5 sm:pb-[30px] md:px-[60px] md:py-[40px]">
             <div className="self-stretch flex flex-col justify-start items-start gap-[16px] sm:gap-0">
@@ -89,16 +89,16 @@ const LoadingSkeleton = () => (
                     <div className="w-[72px] sm:w-[140px] h-[72px] sm:h-[140px] bg-primary-50 sm:bg-white rounded-xs animate-pulse"></div>
                     <div className="flex-1 inline-flex flex-col items-start gap-3 sm:justify-start sm:inline-flex sm:flex-col sm:justify-start sm:items-start sm:gap-7">
                       <div className="flex flex-col justify-center items-start gap-1 sm:justify-start sm:gap-2.5">
-                        <div className="w-32 h-4 bg-gray-200 animate-pulse rounded"></div>
-                        <div className="w-20 h-4 bg-gray-200 animate-pulse rounded"></div>
+                        <div className="w-32 h-4 bg-primary-200 animate-pulse rounded"></div>
+                        <div className="w-20 h-4 bg-primary-200 animate-pulse rounded"></div>
                       </div>
                       <div className="flex justify-between items-center w-full sm:justify-start sm:flex sm:justify-start">
-                        <div className="w-16 h-4 bg-gray-200 animate-pulse rounded"></div>
-                        <div className="w-20 h-4 bg-gray-200 animate-pulse rounded sm:hidden"></div>
+                        <div className="w-16 h-4 bg-primary-200 animate-pulse rounded"></div>
+                        <div className="w-20 h-4 bg-primary-200 animate-pulse rounded sm:hidden"></div>
                       </div>
                     </div>
                   </div>
-                  <div className="hidden sm:block w-24 h-6 bg-gray-200 animate-pulse rounded"></div>
+                  <div className="hidden sm:block w-24 h-6 bg-primary-200 animate-pulse rounded"></div>
                 </div>
               ))}
             </div>
@@ -108,8 +108,8 @@ const LoadingSkeleton = () => (
 
       {/* 버튼 스켈레톤 */}
       <div className="self-stretch h-16 inline-flex justify-start md:justify-center items-center gap-5">
-        <div className="flex-1 md:flex-none md:w-[260px] h-16 bg-gray-200 animate-pulse rounded"></div>
-        <div className="flex-1 md:flex-none md:w-[264px] h-16 bg-gray-200 animate-pulse rounded"></div>
+        <div className="flex-1 md:flex-none md:w-[260px] h-16 bg-primary-200 animate-pulse rounded"></div>
+        <div className="flex-1 md:flex-none md:w-[264px] h-16 bg-primary-200 animate-pulse rounded"></div>
       </div>
     </main>
   </div>
@@ -280,18 +280,18 @@ export default function OrderConfirmedPage() {
                 {/* 주문 금액 정보 */}
                 <div className="self-stretch flex flex-col gap-3 sm:gap-[7px] sm:px-5">
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold">
+                    <div className="text-center justify-center text-primary-700 text-sm sm:text-base font-bold">
                       주문금액
                     </div>
-                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold">
+                    <div className="text-center justify-center text-primary-700 text-sm sm:text-base font-bold">
                       {formatPrice(orderData.productsPriceTotal)}원
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
-                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold">
+                    <div className="text-center justify-center text-primary-700 text-sm sm:text-base font-bold">
                       배송비
                     </div>
-                    <div className="text-center justify-center text-gray-700 text-sm sm:text-base font-bold">
+                    <div className="text-center justify-center text-primary-700 text-sm sm:text-base font-bold">
                       {formatPrice(shippingFee)}원
                     </div>
                   </div>
