@@ -17,8 +17,8 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 쿠키에서 인증 토큰 확인
-  const authToken = request.cookies.get("accessToken")?.value;
-  
+  const authToken = request.cookies.get("refreshToken")?.value;
+
   // JWT 토큰에서 사용자 역할 추출
   const userRole = authToken ? getUserRoleFromToken(authToken) : null;
 
@@ -54,22 +54,20 @@ export function middleware(request: NextRequest) {
   if (isAuthenticated && userRole) {
     // 1. 일반유저(USER)가 접근할 수 없는 경로들
     const userRestrictedPaths = [
-      "/manage/users",      // 회원관리
-      "/manage/budgets",    // 예산관리
-      "/order-manage",      // 구매요청관리
-      "/order-history",     // 구매내역확인
+      "/manage/users", // 회원관리
+      "/manage/budgets", // 예산관리
+      "/order-manage", // 구매요청관리
+      "/order-history", // 구매내역확인
     ];
 
     // 2. 일반유저가 아닌 경우(ADMIN, SUPER_ADMIN) 접근할 수 없는 경로
     const nonUserRestrictedPaths = [
-      "/cart/order",              // 장바구니-주문
+      "/cart/order", // 장바구니-주문
     ];
 
     // 일반유저 제한 체크 (6개 경로: 회원관리, 예산관리, 구매요청관리, 구매요청관리상세, 구매내역확인, 구매내역확인상세)
     if (userRole === "USER") {
-      const isUserRestricted = userRestrictedPaths.some(path => 
-        pathname === path || pathname.startsWith(path + "/")
-      );
+      const isUserRestricted = userRestrictedPaths.some((path) => pathname === path || pathname.startsWith(path + "/"));
       if (isUserRestricted) {
         return NextResponse.redirect(new URL("/error", request.url));
       }
@@ -77,8 +75,8 @@ export function middleware(request: NextRequest) {
 
     // 일반유저가 아닌 경우 제한 체크 (장바구니-주문 접근 불가)
     if (userRole !== "USER") {
-      const isNonUserRestricted = nonUserRestrictedPaths.some(path => 
-        pathname === path || pathname.startsWith(path + "/")
+      const isNonUserRestricted = nonUserRestrictedPaths.some(
+        (path) => pathname === path || pathname.startsWith(path + "/"),
       );
       if (isNonUserRestricted) {
         return NextResponse.redirect(new URL("/error?from=order", request.url));
@@ -86,7 +84,7 @@ export function middleware(request: NextRequest) {
     }
   }
 
-    // 로그인한 사용자가 "/"로 접근하는 경우 /products로 리디렉션
+  // 로그인한 사용자가 "/"로 접근하는 경우 /products로 리디렉션
   if (pathname === "/" && isAuthenticated) {
     return NextResponse.redirect(new URL("/products", request.url));
   }
