@@ -75,8 +75,8 @@ export default function SubCategoryItem({ categories }: TSubCategoryItemProps) {
         </button>
       </div>
       <div className="flex flex-col justify-start w-[180px] gap-[4px]">
-        {parentCategory.map((parent, id) => (
-          <Fragment key={`${parent}_${id}`}>
+        {parentCategory.map((parent) => (
+          <Fragment key={`parent-${parent.id}`}>
             <button
               id="parent"
               onClick={(e) => handleClick(e, parent.name)}
@@ -102,10 +102,10 @@ export default function SubCategoryItem({ categories }: TSubCategoryItemProps) {
               />
             </button>
             {isActiveParentCategory === parent.name &&
-              childrenCategory[parent.name].map((children, id) => (
+              childrenCategory[parent.name].map((children) => (
                 <button
                   id="children"
-                  key={`${children}_${id}`}
+                  key={`children-${children.id}`}
                   onClick={(e) => handleClick(e, children.name, children.id)}
                   className="group/children hover:bg-primary-50/60 transition-all duration-200 flex justify-between items-center w-[180px] h-[50px] py-[10px] px-[30px] cursor-pointer"
                 >

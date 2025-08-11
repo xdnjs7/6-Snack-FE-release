@@ -28,10 +28,8 @@ type TSortOptions = "latest" | "popular" | "low" | "high";
 export default function ProductsPageContent() {
   const [categories] = useState<TCategoryData>(CATEGORIES);
   const [selectedSort, setSelectedSort] = useState<TSortOptions>("latest");
-  // 전역 카테고리 상태 Zustand 사용
   const { selectedCategory, clearSelectedCategory, findCategoryPath } = useCategoryStore();
 
-  // 정렬 옵션 매핑
   const sortOptions = [
     { label: "최신순", value: "latest" as const },
     { label: "판매순", value: "popular" as const },
@@ -44,7 +42,6 @@ export default function ProductsPageContent() {
 
   const { isMobile, isTablet, isDesktop } = useDeviceType();
 
-  // 디바이스별 보여줄 상품갯수 계산
   const getLimit = () => {
     if (isMobile) return 4;
     if (isTablet) return 9;
@@ -75,17 +72,14 @@ export default function ProductsPageContent() {
     const sortValue = sortValueMap[selectedValue];
     if (sortValue) {
       setSelectedSort(sortValue);
-      // 정렬 변경 시 쿼리를 리셋하여 첫 페이지부터 다시 로드
       refetch();
     }
   };
 
-  // 상품 등록 모달 열기
   const handleProductRegistration = () => {
     openModal(<ProductRegistrationForm onClose={closeModal} />);
   };
 
-  // URL 파라미터에서 카테고리 정보 가져와서 전역 상태에 저장
   useEffect(() => {
     const categoryId = searchParams.get("category");
     if (categoryId) {
@@ -101,22 +95,18 @@ export default function ProductsPageContent() {
       role="main"
       aria-label="상품 목록 페이지"
     >
-      {/* 카테고리 태블릿,데스크탑 */}
       <aside className="hidden sm:block" role="complementary" aria-label="카테고리 네비게이션">
         <SubCategoryItem categories={categories} />
       </aside>
 
       <div className="flex flex-col sm:h-16 w-full sm:border-b sm:border-primary-100">
-        {/* TODO: 모바일 전용 하위 카테고리 TabMenu - 선택된 카테고리가 있을 때만 표시 */}
         <SubCategoryTabs />
 
         <div className="flex flex-col sm:flex-row sm:justify-between">
-          {/* 모바일, 태블릿, 데스크탑에서 전부 보이는 상위/하위 카테고리 바 */}
           <nav role="navigation" aria-label="카테고리 탐색">
             <CategoryNavigation parentCategory={selectedCategory?.parent} childCategory={selectedCategory?.child} />
           </nav>
 
-          {/* 정렬, 상품등록 버튼 wrapper */}
           <div
             className="flex items-center w-full justify-between sm:justify-end sm:gap-[30px] pb-5 border-b border-primary-100 sm:border-0"
             role="toolbar"
@@ -142,7 +132,6 @@ export default function ProductsPageContent() {
           </div>
         </div>
 
-        {/* 상품 목록 */}
         <section className="container mx-auto pt-[20px] sm:pt-[30px]" aria-labelledby="products-section-title">
           <h2 id="products-section-title" className="sr-only">
             {selectedCategory?.child || selectedCategory?.parent || "전체"} 상품 목록
@@ -152,7 +141,6 @@ export default function ProductsPageContent() {
             <ProductGridSkeleton count={getLimit()} />
           ) : (
             <>
-              {/* 상품 그리드 */}
               <ProductGrid
                 products={allProducts}
                 currentCategoryId={selectedCategory?.id}
@@ -160,7 +148,7 @@ export default function ProductsPageContent() {
               />
 
               {hasNextPage && (
-                <div className="flex justify-center mt-8">
+                <div className="flex justify-center mb-8">
                   <Button
                     type="white"
                     label={

@@ -22,6 +22,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import { getCartItems } from "@/lib/api/cart.api";
 import { useDeviceType } from "@/hooks/useDeviceType";
+import clsx from "clsx";
 
 export default function AuthenticatedHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,7 +30,6 @@ export default function AuthenticatedHeader() {
   const pathname = usePathname();
   const router = useRouter();
 
-  // 전역 카테고리 상태 사용
   const { selectedCategory, setSelectedCategory, clearSelectedCategory } = useCategoryStore();
 
   const { user, logout } = useAuth();
@@ -42,23 +42,19 @@ export default function AuthenticatedHeader() {
 
   const cartItemCount = cartItems?.cart.length ?? 0;
 
-  // 모든 유저 공통 메뉴
   const commonMenuItems: TSideMenuItem[] = [
     { id: "products", label: "상품 리스트", href: "/products" },
     { id: "my-order-list", label: "구매 요청 내역", href: "/my/order-list" },
     { id: "my-products", label: "상품 등록 내역", href: "/my/products" },
   ];
 
-  // 관리자 메뉴 (ADMIN, SUPER_ADMIN)
   const adminMenuItems = [
     { id: "order-manage", label: "구매 요청 관리", href: "/order-manage" },
     { id: "order-history", label: "구매 내역 확인", href: "/order-history" },
   ];
 
-  // 최고 관리자 메뉴 (SUPER_ADMIN만)
   const superAdminMenuItems = [{ id: "manage-users", label: "관리", href: "/manage/users" }];
 
-  // 공통 메뉴 (nav와 SideMenu 모두에서 사용)
   const getCommonMenuItems = () => {
     let menuItems = [...commonMenuItems];
 
@@ -73,13 +69,11 @@ export default function AuthenticatedHeader() {
     return menuItems;
   };
 
-  // SideMenu 전용 메뉴 (찜목록, 마이페이지, 로그아웃 포함)
   const getSideMenuItems = () => {
     const commonItems = getCommonMenuItems();
 
     commonItems.push({ id: "my-favorites", label: "찜목록", href: "/my/favorites" });
 
-    // 모바일 버전에서만 마이페이지 옵션 보여야함
     if (isMobile) {
       commonItems.push({ id: "profile", label: "마이 페이지", href: "/profile" });
     }
@@ -92,17 +86,21 @@ export default function AuthenticatedHeader() {
   const navItems = getCommonMenuItems();
   const sideMenuItems = getSideMenuItems();
 
-  // 햄버거 메뉴버튼 클릭 핸들러
+  const isMenuActive = (menuHref: string, currentPath: string) => {
+    if (menuHref === "/manage/users") {
+      return currentPath.startsWith("/manage");
+    }
+    return currentPath === menuHref;
+  };
+
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // 카테고리 메뉴 토글 핸들러
   const handleCategoryMenuClick = () => {
     setIsCategoryMenuOpen(!isCategoryMenuOpen);
   };
 
-  // 사이드바 메뉴에서 nav 선택시 핸들러
   const handleItemClick = (item: TSideMenuItem) => {
     if (item.id === "logout") {
       logout();
@@ -113,14 +111,10 @@ export default function AuthenticatedHeader() {
     }
   };
 
-  // 카테고리 아이템 클릭 핸들러
   const handleCategoryItemClick = (item: TCategoryItem) => {
     setIsCategoryMenuOpen(false);
 
-    // 부모 카테고리 찾기
     const parentCategory = CATEGORIES.parentCategory.find((parent) => parent.id === item.parentId);
-
-    // categoryStore 업데이트
     setSelectedCategory({
       parent: parentCategory?.name || "",
       child: item.name,
@@ -130,14 +124,12 @@ export default function AuthenticatedHeader() {
     router.push(`/products?category=${item.id}`);
   };
 
-  // '전체' 클릭 핸들러
   const handleAllCategoriesClick = () => {
     setIsCategoryMenuOpen(false);
-    clearSelectedCategory(); // 전역 상태를 null로 초기화
-    router.push("/products"); // category 파라미터 없이 이동
+    clearSelectedCategory(); 
+    router.push("/products"); 
   };
 
-  // 현재 선택된 카테고리 이름 표시 (전역 상태에서 가져옴)
   const currentCategoryName = selectedCategory?.parent || "전체";
   return (
     <header className="sticky top-0 w-full h-14 sm:h-25 md:h-[90px] flex justify-between items-center overflow-hidden pl-[10px] pr-[24px] pt-[16px] pb-[16px] sm:px-[24px] sm:py-[28px] md:px-[100px] md:py-[32px] bg-white/90 shadow-[0px_4px_6px_0px_rgba(0,0,0,0.02)] backdrop-blur-lg z-50">
@@ -147,13 +139,15 @@ export default function AuthenticatedHeader() {
             <Image src={img_logo} fill alt="스낵 로고" className="object-contain" />
           </div>
         </Link>
-        {/* nav - 상품 리스트, 구매요청내역, 상품등록내역, 구매요청관리, 구매내역확인, 관리  (권한에 따라 다르게 보임) */}
         <div className="hidden md:block">
           <nav className="flex items-center justify-center gap-[30px]">
             {navItems.map((item) => (
               <Link key={item.id} href={item.href || "#"} className="px-2.5">
                 <p
-                  className={`text-primary-950 tracking-tight text-base/[20px] ${pathname === item.href ? "font-extrabold" : "font-normal"}`}
+                  className={clsx(
+                    "text-primary-950 tracking-tight text-base/[20px]",
+                    item.href && isMenuActive(item.href, pathname) ? "font-extrabold" : "font-normal",
+                  )}
                 >
                   {item.label}
                 </p>
@@ -163,7 +157,6 @@ export default function AuthenticatedHeader() {
         </div>
       </div>
 
-      {/* 카테고리 dropdown 버튼 - mobile  */}
       <div className="block sm:hidden">
         <button
           className={`flex gap-1 items-center ${
@@ -178,7 +171,6 @@ export default function AuthenticatedHeader() {
         </button>
       </div>
 
-      {/* 장바구니 + 메뉴 영역 */}
       <div className="flex items-center gap-5 sm:gap-10 md:gap-7.5">
         <div className="hidden md:block">
           <Link href="/my/favorites">
@@ -217,7 +209,7 @@ export default function AuthenticatedHeader() {
             로그아웃
           </button>
         </div>
-        {/* 여기에 menu 누를시 SideMenu 화면 옆에 나오도록 */}
+
         <HamburgerMenuIconSvg className="md:hidden text-primary-400" onClick={handleMenuClick} />
 
         <SideMenu
@@ -229,7 +221,6 @@ export default function AuthenticatedHeader() {
           className=""
         />
 
-        {/* 상품 상세 페이지, 상품 리스트 페이지에서만 모바일버전에서 보임 */}
         <MobileCategoryMenu
           items={CATEGORIES.parentCategory}
           isOpen={isCategoryMenuOpen}
