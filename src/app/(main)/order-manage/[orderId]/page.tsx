@@ -13,6 +13,7 @@ import { useOrderStatusUpdate } from "@/hooks/useOrderStatusUpdate";
 import { useModal } from "@/providers/ModalProvider";
 import OrderActionModal from "../_components/OrderActionModal";
 import DogSpinner from "@/components/common/DogSpinner";
+import OrderDetailSkeleton from "./_components/OrderDetailSkeleton";
 
 export default function OrderManageDetailPage() {
   const params = useParams();
@@ -36,7 +37,7 @@ export default function OrderManageDetailPage() {
   });
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-// TODO - shipppingFee 없에고 orderRequest.deliveryFee 참조
+  // TODO - shipppingFee 없에고 orderRequest.deliveryFee 참조
   const calculatedTotal: number =
     orderRequest?.products?.reduce((sum: number, item) => sum + item.price * item.quantity, 0) || 0;
   const shippingFee: number = 3000;
@@ -130,16 +131,7 @@ export default function OrderManageDetailPage() {
   };
 
   if (isLoading) {
-    return (
-      <main
-        className="min-h-screen bg-white flex items-center justify-center"
-        role="main"
-        aria-live="polite"
-        aria-label="페이지 로딩 중"
-      >
-        <DogSpinner />
-      </main>
-    );
+    return <OrderDetailSkeleton />;
   }
 
   if (error || !orderRequest) {
@@ -173,7 +165,7 @@ export default function OrderManageDetailPage() {
           aria-labelledby="items-section-title"
         >
           <button
-            className="inline-flex justify-start items-center gap-1.5 cursor-pointer"
+            className="inline-flex justify-start items-center gap-1.5 cursor-pointer z-10"
             onClick={() => setIsItemsExpanded(!isItemsExpanded)}
             aria-expanded={isItemsExpanded}
             aria-controls="items-content"
