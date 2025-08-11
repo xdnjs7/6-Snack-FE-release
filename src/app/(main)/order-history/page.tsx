@@ -10,7 +10,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-// Budget 데이터 타입 정의
 type TBudgetData = {
   currentMonthBudget: number;
   previousMonthBudget: number;
@@ -20,7 +19,6 @@ type TBudgetData = {
   previousYearTotalExpense: number;
 };
 
-// 상품명에서 "외 N건" 패턴을 추출해 총 상품 종류 개수 반환
 const getProductTypeCount = (productName?: string) => {
   if (!productName) return 1;
   const match = productName.match(/외 (\d+)건/);
@@ -29,20 +27,15 @@ const getProductTypeCount = (productName?: string) => {
 
 const OrderHistoryPage = () => {
   const router = useRouter();
-
-  // 공통 로직 훅 사용
   const { budgetData, currentItems, totalPages, currentPage, handlePageChange, setSortBy, formatNumber } =
     useOrderHistory("latest");
 
-  // 각 레이아웃별 호버 상태
   const [isHoveredMobile, setIsHoveredMobile] = useState(false);
   const [isHoveredTablet, setIsHoveredTablet] = useState(false);
   const [isHoveredDesktop, setIsHoveredDesktop] = useState(false);
 
-  // budgetData 타입 안전성을 위한 타입 가드
   const safeBudgetData = budgetData as TBudgetData | undefined;
 
-  // 호버 박스 컴포넌트
   const BudgetHoverBox = ({
     className = "",
     budgetData
@@ -82,14 +75,12 @@ const OrderHistoryPage = () => {
     </div>
   );
 
-  // 상품명 클릭 시 상세 페이지로 이동하는 함수
   const handleProductClick = (orderId: string) => {
     if (orderId) {
       router.push(`/order-history/${orderId}?status=approved`);
     }
   };
 
-  // 게이지 퍼센트 계산 공통 변수
   const percent = safeBudgetData && safeBudgetData.currentMonthBudget > 0
     ? Math.round((safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100)
     : 0;
