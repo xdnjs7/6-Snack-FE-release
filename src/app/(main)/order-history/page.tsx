@@ -49,7 +49,7 @@ const OrderHistoryPage = () => {
     className?: string;
     budgetData: TBudgetData | undefined;
   }) => (
-    <div className={`p-6 bg-neutral-800 rounded flex flex-col justify-center items-start gap-2 shadow-lg ${className}`}>
+    <div className={`p-6 bg-primary-800 rounded flex flex-col justify-center items-start gap-2 shadow-lg ${className}`}>
       <div className="inline-flex justify-start items-center gap-2">
         <div className="justify-center text-white text-base font-extrabold ">
           이번 달 남은 예산:
@@ -98,7 +98,7 @@ const OrderHistoryPage = () => {
       {/* Mobile Layout */}
       <main className="min-h-screen w-full max-w-sm mx-auto relative bg-white overflow-hidden sm:hidden" aria-label="구매 내역 모바일 화면">
         <header className="self-stretch flex justify-between items-center px-4 pt-6 pb-6" role="banner">
-          <h1 className="text-neutral-800 text-lg font-bold  flex-shrink-0">구매 내역 확인</h1>
+          <h1 className="text-primary-800 text-lg font-bold  flex-shrink-0">구매 내역 확인</h1>
           <nav aria-label="정렬 옵션" className="flex-shrink-0">
             <div className="relative custom-sort-dropdown w-auto" role="region">
               <Dropdown
@@ -117,12 +117,12 @@ const OrderHistoryPage = () => {
           {/* 예산 카드 */}
           <div className="self-stretch relative flex flex-col justify-center items-start gap-4">
             <div className="self-stretch inline-flex justify-start items-start gap-4 min-w-0">
-              <div className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 overflow-hidden min-w-0">
+              <div className="flex-1 h-40 p-5 bg-primary-100 rounded inline-flex flex-col justify-start items-start gap-5 overflow-hidden min-w-0">
                 <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
-                  <div className="self-stretch justify-center text-neutral-800 text-base font-bold ">
+                  <div className="self-stretch justify-center text-primary-800 text-base font-bold ">
                     이번 달 예산
                   </div>
-                  <div className="justify-center text-neutral-800 text-lg font-extrabold ">
+                  <div className="justify-center text-primary-800 text-lg font-extrabold ">
                     {safeBudgetData ? formatNumber(safeBudgetData.currentMonthBudget) : "0원"}
                   </div>
                 </div>
@@ -131,17 +131,17 @@ const OrderHistoryPage = () => {
                 </div>
               </div>
               <div
-                className="flex-1 h-40 p-5 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-3 relative min-w-0"
+                className="flex-1 h-40 p-5 bg-primary-100 rounded inline-flex flex-col justify-start items-start gap-3 relative min-w-0"
                 onMouseEnter={() => setIsHoveredMobile(true)}
                 onMouseLeave={() => setIsHoveredMobile(false)}
                 onTouchStart={() => setIsHoveredMobile(true)}
                 onTouchEnd={() => setIsHoveredMobile(false)}
               >
                 <div className="self-stretch flex flex-col justify-start items-start gap-2.5 overflow-hidden">
-                  <div className="self-stretch justify-center text-neutral-800 text-base font-bold ">
+                  <div className="self-stretch justify-center text-primary-800 text-base font-bold ">
                     이번 달 지출액
                   </div>
-                  <div className="justify-center text-neutral-800 text-lg font-extrabold ">
+                  <div className="justify-center text-primary-800 text-lg font-extrabold ">
                     {safeBudgetData ? formatNumber(safeBudgetData.currentMonthExpense) : "0원"}
                   </div>
                 </div>
@@ -149,13 +149,13 @@ const OrderHistoryPage = () => {
                   지난 달: {safeBudgetData ? formatNumber(safeBudgetData.previousMonthExpense) : "0원"}
                 </div>
                 <div className="self-stretch inline-flex justify-left items-center gap-1">
-                  <div className="w-20 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
+                  <div className="w-20 h-1.5 bg-primary-300 rounded-md overflow-hidden">
                     <div
                       className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-blue-500'}`}
                       style={{ width: `${Math.max(1, percent)}%` }}
                     />
                   </div>
-                  <div className="justify-center text-neutral-800 text-xs font-normal ">
+                  <div className="justify-center text-primary-800 text-xs font-normal ">
                     {safeBudgetData && safeBudgetData.currentMonthBudget > 0
                       ? `${Math.max(1, Math.round((safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100))}%`
                       : "0%"}
@@ -170,16 +170,16 @@ const OrderHistoryPage = () => {
                 )}
               </div>
             </div>
-            <div className="self-stretch h-40 p-5 bg-neutral-100 rounded flex flex-col justify-between items-start overflow-hidden">
+            <div className="self-stretch h-40 p-5 bg-primary-100 rounded flex flex-col justify-between items-start overflow-hidden">
               <div className="flex flex-col justify-start items-start gap-2.5">
                 <div className="inline-flex justify-start items-center gap-3.5">
                   <div className="inline-flex flex-col justify-start items-start gap-2">
-                    <div className="self-stretch justify-center text-neutral-800 text-base font-bold ">
+                    <div className="self-stretch justify-center text-primary-800 text-base font-bold ">
                       올해 총 지출액
                     </div>
                   </div>
                 </div>
-                <div className="justify-center text-neutral-800 text-lg font-extrabold ">
+                <div className="justify-center text-primary-800 text-lg font-extrabold ">
                   {safeBudgetData ? formatNumber(safeBudgetData.currentYearTotalExpense) : "0원"}
                 </div>
               </div>
@@ -220,30 +220,30 @@ const OrderHistoryPage = () => {
                   <div className="text-center justify-center text-zinc-500 text-xs font-normal  ml-[-100px]">
                     총 수량 {getProductTypeCount(item.productName)}개
                   </div>
-                  <div className="text-center justify-center text-neutral-800 text-base font-extrabold ">
+                  <div className="text-center justify-center text-primary-800 text-base font-extrabold ">
                     {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
                   </div>
                 </div>
                 <div className="self-stretch flex flex-col justify-center items-start">
                   <div className="self-stretch inline-flex justify-start items-center">
-                    <div className="w-36 h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                      <div className="text-center justify-center text-neutral-800 text-sm font-normal ">
+                    <div className="w-36 h-12 p-2 border-r border-b border-primary-200 flex justify-start items-center gap-2">
+                      <div className="text-center justify-center text-primary-800 text-sm font-normal ">
                         구매 요청일
                       </div>
                     </div>
-                    <div className="flex-1 h-12 px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
+                    <div className="flex-1 h-12 px-4 py-2 border-b border-primary-200 flex justify-start items-center gap-2">
                       <div className="text-center justify-center text-zinc-800 text-sm font-bold ">
                         {item.requestDate}
                       </div>
                     </div>
                   </div>
                   <div className="self-stretch inline-flex justify-start items-center">
-                    <div className="w-36 h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                      <div className="text-center justify-center text-neutral-800 text-sm font-normal ">
+                    <div className="w-36 h-12 p-2 border-r border-b border-primary-200 flex justify-start items-center gap-2">
+                      <div className="text-center justify-center text-primary-800 text-sm font-normal ">
                         요청인
                       </div>
                     </div>
-                    <div className="flex-1 h-12 px-4 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
+                    <div className="flex-1 h-12 px-4 py-2 border-b border-primary-200 flex justify-start items-center gap-2">
                       <div className="text-center justify-center text-zinc-800 text-sm font-bold ">
                         {item.requester}
                       </div>
@@ -257,24 +257,24 @@ const OrderHistoryPage = () => {
                 </div>
                 <div className="self-stretch flex flex-col justify-center items-start">
                   <div className="self-stretch inline-flex justify-start items-center">
-                    <div className="w-36 self-stretch px-2 py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
-                      <div className="text-center justify-center text-neutral-800 text-sm font-normal ">
+                    <div className="w-36 self-stretch px-2 py-4 border-r border-b border-primary-200 flex justify-start items-start gap-2">
+                      <div className="text-center justify-center text-primary-800 text-sm font-normal ">
                         구매 승인일
                       </div>
                     </div>
-                    <div className="flex-1 self-stretch p-4 border-b border-neutral-200 flex justify-start items-start gap-2">
+                    <div className="flex-1 self-stretch p-4 border-b border-primary-200 flex justify-start items-start gap-2">
                       <div className="text-center justify-center text-zinc-800 text-sm font-bold ">
                         {item.approvalDate}
                       </div>
                     </div>
                   </div>
                   <div className="self-stretch inline-flex justify-start items-start">
-                    <div className="w-36 self-stretch px-2 py-4 border-r border-b border-neutral-200 flex justify-start items-start gap-2">
-                      <div className="text-center justify-center text-neutral-800 text-sm font-normal ">
+                    <div className="w-36 self-stretch px-2 py-4 border-r border-b border-primary-200 flex justify-start items-start gap-2">
+                      <div className="text-center justify-center text-primary-800 text-sm font-normal ">
                         담당자
                       </div>
                     </div>
-                    <div className="flex-1 p-4 border-b border-neutral-200 flex justify-start items-center gap-2">
+                    <div className="flex-1 p-4 border-b border-primary-200 flex justify-start items-center gap-2">
                       <div className="flex-1 justify-center text-zinc-800 text-sm font-bold  leading-snug">
                         {item.manager}
                       </div>
@@ -287,7 +287,7 @@ const OrderHistoryPage = () => {
             <div className="self-stretch pb-2.5 flex flex-col justify-start items-start">
               <div className="self-stretch py-3.5 border-b border-zinc-400 inline-flex justify-between items-center">
                 <div className="flex justify-start items-center gap-2">
-                  <div className="text-center justify-center text-neutral-800 text-base font-bold ">
+                  <div className="text-center justify-center text-primary-800 text-base font-bold ">
                     구매 내역이 없어요
                   </div>
                 </div>
@@ -297,7 +297,7 @@ const OrderHistoryPage = () => {
         </section>
         <nav className="self-stretch h-10 flex justify-between items-center px-4" aria-label="페이지 이동">
           {/* Mobile Pagination */}
-          <div className="text-neutral-800 text-base font-normal ">
+          <div className="text-primary-800 text-base font-normal ">
             {currentPage} of {totalPages}
           </div>
           <div className="flex items-center gap-7">
@@ -316,7 +316,7 @@ const OrderHistoryPage = () => {
               disabled={currentPage === totalPages}
               className="flex items-center gap-[5px] cursor-pointer disabled:cursor-not-allowed"
             >
-              <div className="text-neutral-800 text-base font-normal ">
+              <div className="text-primary-800 text-base font-normal ">
                 Next
               </div>
               <div className="w-6 h-6 relative overflow-hidden">
@@ -330,7 +330,7 @@ const OrderHistoryPage = () => {
       {/* Tablet Layout */}
       <main className="min-h-screen w-full max-w-3xl mx-auto relative bg-white overflow-hidden hidden sm:block md:hidden" aria-label="구매 내역 태블릿 화면">
         <header className="self-stretch flex justify-between items-center pt-8 px-8 pb-6" role="banner">
-          <h1 className="text-neutral-800 text-lg font-bold  flex-shrink-0">구매 내역 확인</h1>
+          <h1 className="text-primary-800 text-lg font-bold  flex-shrink-0">구매 내역 확인</h1>
           <nav aria-label="정렬 옵션" className="flex-shrink-0">
             <div className="relative custom-sort-dropdown w-auto" role="region">
               <Dropdown
@@ -348,12 +348,12 @@ const OrderHistoryPage = () => {
           <h2 id="budget-section-tablet" className="sr-only">예산 현황</h2>
           {/* Tablet Budget Cards */}
           <div className="self-stretch pb-5 inline-flex justify-start items-center gap-5">
-            <div className="flex-1 min-w-0 self-stretch p-5 bg-neutral-100 rounded inline-flex flex-col justify-between items-start overflow-hidden">
+            <div className="flex-1 min-w-0 self-stretch p-5 bg-primary-100 rounded inline-flex flex-col justify-between items-start overflow-hidden">
               <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
-                <div className="self-stretch justify-center text-neutral-800 text-lg font-bold ">
+                <div className="self-stretch justify-center text-primary-800 text-lg font-bold ">
                   이번 달 예산
                 </div>
-                <div className="justify-center text-neutral-800 text-2xl font-extrabold ">
+                <div className="justify-center text-primary-800 text-2xl font-extrabold ">
                   {safeBudgetData ? formatNumber(safeBudgetData.currentMonthBudget) : "0원"}
                 </div>
               </div>
@@ -364,17 +364,17 @@ const OrderHistoryPage = () => {
               </div>
             </div>
             <div
-              className="flex-1 min-w-0 self-stretch p-5 bg-neutral-100 rounded inline-flex flex-col justify-between items-start relative"
+              className="flex-1 min-w-0 self-stretch p-5 bg-primary-100 rounded inline-flex flex-col justify-between items-start relative"
               onMouseEnter={() => setIsHoveredTablet(true)}
               onMouseLeave={() => setIsHoveredTablet(false)}
               onTouchStart={() => setIsHoveredTablet(true)}
               onTouchEnd={() => setIsHoveredTablet(false)}
             >
               <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
-                <div className="self-stretch justify-center text-neutral-800 text-lg font-bold ">
+                <div className="self-stretch justify-center text-primary-800 text-lg font-bold ">
                   이번 달 지출액
                 </div>
-                <div className="justify-center text-neutral-800 text-2xl font-extrabold ">
+                <div className="justify-center text-primary-800 text-2xl font-extrabold ">
                   {safeBudgetData ? formatNumber(safeBudgetData.currentMonthExpense) : "0원"}
                 </div>
               </div>
@@ -382,13 +382,13 @@ const OrderHistoryPage = () => {
                 지난 달: {safeBudgetData ? formatNumber(safeBudgetData.previousMonthExpense) : "0원"}
               </div>
               <div className="self-stretch inline-flex justify-left items-center gap-2.5">
-                <div className="w-36 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
+                <div className="w-36 h-1.5 bg-primary-300 rounded-md overflow-hidden">
                   <div
                     className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-blue-500'}`}
                     style={{ width: `${Math.max(1, percent)}%` }}
                   />
                 </div>
-                <div className="justify-center text-neutral-800 text-sm font-normal ">
+                <div className="justify-center text-primary-800 text-sm font-normal ">
                   {safeBudgetData && safeBudgetData.currentMonthBudget > 0
                     ? `${Math.max(1, Math.round((safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100))}%`
                     : "0%"}
@@ -402,16 +402,16 @@ const OrderHistoryPage = () => {
                 />
               )}
             </div>
-            <div className="flex-1 min-w-0 self-stretch p-5 bg-neutral-100 rounded inline-flex flex-col justify-between items-start overflow-hidden">
+            <div className="flex-1 min-w-0 self-stretch p-5 bg-primary-100 rounded inline-flex flex-col justify-between items-start overflow-hidden">
               <div className="flex flex-col justify-start items-start gap-2.5">
                 <div className="inline-flex justify-start items-center gap-3.5">
                   <div className="inline-flex flex-col justify-start items-start gap-2">
-                    <div className="self-stretch justify-center text-neutral-800 text-lg font-bold ">
+                    <div className="self-stretch justify-center text-primary-800 text-lg font-bold ">
                       올해 총 지출액
                     </div>
                   </div>
                 </div>
-                <div className="justify-center text-neutral-800 text-2xl font-extrabold ">
+                <div className="justify-center text-primary-800 text-2xl font-extrabold ">
                   {safeBudgetData ? formatNumber(safeBudgetData.currentYearTotalExpense) : "0원"}
                 </div>
               </div>
@@ -449,31 +449,31 @@ const OrderHistoryPage = () => {
                       총 수량 {getProductTypeCount(item.productName)}개
                     </div>
                   </div>
-                  <div className="text-center justify-center text-neutral-800 text-base font-extrabold ">
+                  <div className="text-center justify-center text-primary-800 text-base font-extrabold ">
                     {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
                   </div>
                 </div>
                 <div className="self-stretch flex flex-col justify-center items-start">
                   <div className="self-stretch inline-flex justify-start items-center">
                     <div className="flex-1 flex justify-start items-center">
-                      <div className="w-36 h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                        <div className="text-center justify-center text-neutral-800 text-base font-normal ">
+                      <div className="w-36 h-12 p-2 border-r border-b border-primary-200 flex justify-start items-center gap-2">
+                        <div className="text-center justify-center text-primary-800 text-base font-normal ">
                           구매 요청일
                         </div>
                       </div>
-                      <div className="flex-1 h-12 px-5 py-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
+                      <div className="flex-1 h-12 px-5 py-2 border-r border-b border-primary-200 flex justify-start items-center gap-2">
                         <div className="text-center justify-center text-zinc-800 text-base font-bold ">
                           {item.requestDate}
                         </div>
                       </div>
                     </div>
                     <div className="flex-1 flex justify-start items-center">
-                      <div className="w-36 h-12 px-5 py-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                        <div className="text-center justify-center text-neutral-800 text-base font-normal ">
+                      <div className="w-36 h-12 px-5 py-2 border-r border-b border-primary-200 flex justify-start items-center gap-2">
+                        <div className="text-center justify-center text-primary-800 text-base font-normal ">
                           요청인
                         </div>
                       </div>
-                      <div className="flex-1 h-12 px-5 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
+                      <div className="flex-1 h-12 px-5 py-2 border-b border-primary-200 flex justify-start items-center gap-2">
                         <div className="flex justify-start items-center gap-2">
                           <div className="text-center justify-center text-zinc-800 text-base font-bold ">
                             {item.requester}
@@ -491,24 +491,24 @@ const OrderHistoryPage = () => {
                   </div>
                   <div className="self-stretch inline-flex justify-start items-center">
                     <div className="flex-1 flex justify-start items-center">
-                      <div className="w-36 h-12 p-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                        <div className="text-center justify-center text-neutral-800 text-base font-normal ">
+                      <div className="w-36 h-12 p-2 border-r border-b border-primary-200 flex justify-start items-center gap-2">
+                        <div className="text-center justify-center text-primary-800 text-base font-normal ">
                           구매 승인일
                         </div>
                       </div>
-                      <div className="flex-1 h-12 px-5 py-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
+                      <div className="flex-1 h-12 px-5 py-2 border-r border-b border-primary-200 flex justify-start items-center gap-2">
                         <div className="text-center justify-center text-zinc-800 text-base font-bold ">
                           {item.approvalDate}
                         </div>
                       </div>
                     </div>
                     <div className="flex-1 flex justify-start items-center">
-                      <div className="w-36 h-12 px-5 py-2 border-r border-b border-neutral-200 flex justify-start items-center gap-2">
-                        <div className="text-center justify-center text-neutral-800 text-base font-normal ">
+                      <div className="w-36 h-12 px-5 py-2 border-r border-b border-primary-200 flex justify-start items-center gap-2">
+                        <div className="text-center justify-center text-primary-800 text-base font-normal ">
                           담당자
                         </div>
                       </div>
-                      <div className="flex-1 h-12 px-5 py-2 border-b border-neutral-200 flex justify-start items-center gap-2">
+                      <div className="flex-1 h-12 px-5 py-2 border-b border-primary-200 flex justify-start items-center gap-2">
                         <div className="text-center justify-center text-zinc-800 text-base font-bold ">
                           {item.manager}
                         </div>
@@ -522,7 +522,7 @@ const OrderHistoryPage = () => {
             <div className="self-stretch pb-5 flex flex-col justify-start items-start">
               <div className="self-stretch py-3.5 border-b border-zinc-400 inline-flex justify-between items-center">
                 <div className="flex justify-start items-center gap-2">
-                  <div className="text-center justify-center text-neutral-800 text-base font-bold ">
+                  <div className="text-center justify-center text-primary-800 text-base font-bold ">
                     구매 내역이 없어요
                   </div>
                 </div>
@@ -532,7 +532,7 @@ const OrderHistoryPage = () => {
         </section>
         <nav className="self-stretch h-10 flex justify-between items-center px-8" aria-label="페이지 이동">
           {/* Tablet Pagination */}
-          <div className="text-neutral-800 text-base font-normal ">
+          <div className="text-primary-800 text-base font-normal ">
             {currentPage} of {totalPages}
           </div>
           <div className="flex items-center gap-7">
@@ -551,7 +551,7 @@ const OrderHistoryPage = () => {
               disabled={currentPage === totalPages}
               className="flex items-center gap-[5px] cursor-pointer disabled:cursor-not-allowed"
             >
-              <div className="text-neutral-800 text-base font-normal ">
+              <div className="text-primary-800 text-base font-normal ">
                 Next
               </div>
               <div className="w-6 h-6 relative overflow-hidden">
@@ -565,7 +565,7 @@ const OrderHistoryPage = () => {
       {/* Desktop Layout */}
       <main className="min-h-screen w-full relative bg-white overflow-hidden hidden md:block" aria-label="구매 내역 데스크탑 화면">
         <header className="self-stretch flex justify-between items-center pt-10 px-10 pb-8" role="banner">
-          <h1 className="text-neutral-800 text-lg font-bold  flex-shrink-0">구매 내역 확인</h1>
+          <h1 className="text-primary-800 text-lg font-bold  flex-shrink-0">구매 내역 확인</h1>
           <nav aria-label="정렬 옵션" className="flex-shrink-0">
             <div className="relative custom-sort-dropdown w-auto" role="region">
               <Dropdown
@@ -583,10 +583,10 @@ const OrderHistoryPage = () => {
           <h2 id="budget-section-desktop" className="sr-only">예산 현황</h2>
           {/* Desktop Budget Cards */}
           <div className="self-stretch inline-flex justify-start items-center gap-7 pb-10">
-            <div className="flex-1 min-w-0 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-5 relative">
+            <div className="flex-1 min-w-0 self-stretch pl-7 pr-10 py-7 bg-primary-100 rounded inline-flex flex-col justify-center items-start gap-5 relative">
               <div className="self-stretch inline-flex justify-between items-start">
-                <div className="justify-center text-neutral-800 text-lg font-bold ">이번 달 예산</div>
-                <div className="justify-center text-neutral-800 text-2xl font-extrabold ">
+                <div className="justify-center text-primary-800 text-lg font-bold ">이번 달 예산</div>
+                <div className="justify-center text-primary-800 text-2xl font-extrabold ">
                   {safeBudgetData ? formatNumber(safeBudgetData.currentMonthBudget) : "0원"}
                 </div>
               </div>
@@ -599,7 +599,7 @@ const OrderHistoryPage = () => {
               </div>
             </div>
             <div
-              className="flex-1 min-w-0 pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-start items-start gap-5 relative"
+              className="flex-1 min-w-0 pl-7 pr-10 py-7 bg-primary-100 rounded inline-flex flex-col justify-start items-start gap-5 relative"
               onMouseEnter={() => setIsHoveredDesktop(true)}
               onMouseLeave={() => setIsHoveredDesktop(false)}
               onTouchStart={() => setIsHoveredDesktop(true)}
@@ -608,7 +608,7 @@ const OrderHistoryPage = () => {
               <div className="self-stretch inline-flex justify-between items-start">
                 <div className="flex justify-start items-center gap-3.5">
                   <div className="inline-flex flex-col justify-start items-start gap-2">
-                    <div className="self-stretch justify-center text-neutral-800 text-lg font-bold ">
+                    <div className="self-stretch justify-center text-primary-800 text-lg font-bold ">
                       이번 달 지출액
                     </div>
                     <div
@@ -618,18 +618,18 @@ const OrderHistoryPage = () => {
                     </div>
                   </div>
                 </div>
-                <div className="justify-center text-neutral-800 text-2xl font-extrabold ">
+                <div className="justify-center text-primary-800 text-2xl font-extrabold ">
                   {safeBudgetData ? formatNumber(safeBudgetData.currentMonthExpense) : "0원"}
                 </div>
               </div>
               <div className="self-stretch inline-flex justify-left items-center gap-2.5">
-                <div className="w-90 h-1.5 bg-neutral-300 rounded-md overflow-hidden">
+                <div className="w-90 h-1.5 bg-primary-300 rounded-md overflow-hidden">
                   <div
                     className={`h-1.5 rounded-md ${percent > 100 ? 'bg-red-500' : 'bg-blue-500'}`}
                     style={{ width: `${Math.max(1, percent)}%` }}
                   />
                 </div>
-                <div className="justify-center text-neutral-800 text-sm font-normal ">
+                <div className="justify-center text-primary-800 text-sm font-normal ">
                   {safeBudgetData && safeBudgetData.currentMonthBudget > 0
                     ? `${Math.max(1, Math.round((safeBudgetData.currentMonthExpense / safeBudgetData.currentMonthBudget) * 100))}%`
                     : "0%"}
@@ -643,16 +643,16 @@ const OrderHistoryPage = () => {
                 />
               )}
             </div>
-            <div className="flex-1 min-w-0 self-stretch pl-7 pr-10 py-7 bg-neutral-100 rounded inline-flex flex-col justify-center items-start gap-5 relative">
+            <div className="flex-1 min-w-0 self-stretch pl-7 pr-10 py-7 bg-primary-100 rounded inline-flex flex-col justify-center items-start gap-5 relative">
               <div className="self-stretch inline-flex justify-between items-center">
                 <div className="flex justify-start items-center gap-3.5">
                   <div className="inline-flex flex-col justify-start items-start gap-2">
-                    <div className="self-stretch justify-center text-neutral-800 text-lg font-bold ">
+                    <div className="self-stretch justify-center text-primary-800 text-lg font-bold ">
                       올해 총 지출액
                     </div>
                   </div>
                 </div>
-                <div className="justify-center text-neutral-800 text-2xl font-extrabold ">
+                <div className="justify-center text-primary-800 text-2xl font-extrabold ">
                   {safeBudgetData ? formatNumber(safeBudgetData.currentYearTotalExpense) : "0원"}
                 </div>
               </div>
@@ -676,7 +676,7 @@ const OrderHistoryPage = () => {
           <h2 id="purchase-list-desktop" className="sr-only">구매 내역 목록</h2>
           {/* Desktop Purchase List - Table Format */}
           <div className="self-stretch flex flex-col justify-start items-start">
-            <div className="self-stretch px-10 py-5 border-t border-b border-neutral-200 inline-flex justify-between items-center">
+            <div className="self-stretch px-10 py-5 border-t border-b border-primary-200 inline-flex justify-between items-center">
               <div className="w-32 justify-start text-zinc-500 text-base font-bold ">구매 요청일</div>
               <div className="w-32 justify-start text-zinc-500 text-base font-bold ">요청인</div>
               <div className="w-44 justify-start text-zinc-500 text-base font-bold ">상품 정보</div>
@@ -691,14 +691,14 @@ const OrderHistoryPage = () => {
                 currentItems.map((item) => (
                   <div
                     key={item.id}
-                    className="self-stretch h-24 px-10 border-b border-neutral-200 inline-flex justify-between items-center"
+                    className="self-stretch h-24 px-10 border-b border-primary-200 inline-flex justify-between items-center"
                     role="listitem"
                   >
-                    <div className="w-32 justify-start text-neutral-800 text-base font-normal ">
+                    <div className="w-32 justify-start text-primary-800 text-base font-normal ">
                       {item.requestDate}
                     </div>
                     <div className="w-32 flex justify-start items-center gap-2 whitespace-nowrap overflow-hidden text-ellipsis">
-                      <div className="justify-start text-neutral-800 text-base font-normal  whitespace-nowrap overflow-hidden text-ellipsis">
+                      <div className="justify-start text-primary-800 text-base font-normal  whitespace-nowrap overflow-hidden text-ellipsis">
                         {item.requester}
                       </div>
                       {item.adminMessage?.includes("즉시 구매") && (
@@ -719,22 +719,22 @@ const OrderHistoryPage = () => {
                       </button>
                       <div className="justify-start text-zinc-500 text-sm font-normal ">총 수량 {getProductTypeCount(item.productName)}개</div>
                     </div>
-                    <div className="w-32 justify-start text-neutral-800 text-base font-normal ">
+                    <div className="w-32 justify-start text-primary-800 text-base font-normal ">
                       {(parseInt(item.amount.replace(/[^0-9]/g, '')) + 3000).toLocaleString()}원
                     </div>
                     <div className="flex justify-start items-center gap-5">
-                      <div className="w-32 justify-start text-neutral-800 text-base font-normal ">
+                      <div className="w-32 justify-start text-primary-800 text-base font-normal ">
                         {item.approvalDate}
                       </div>
                     </div>
-                    <div className="w-24 justify-start text-neutral-800 text-base font-normal ">
+                    <div className="w-24 justify-start text-primary-800 text-base font-normal ">
                       {item.manager}
                     </div>
                   </div>
                 ))
               ) : (
-                <div className="self-stretch h-24 px-10 border-b border-neutral-200 inline-flex justify-center items-center">
-                  <div className="text-center justify-center text-neutral-800 text-base font-normal ">
+                <div className="self-stretch h-24 px-10 border-b border-primary-200 inline-flex justify-center items-center">
+                  <div className="text-center justify-center text-primary-800 text-base font-normal ">
                     구매 내역이 없어요
                   </div>
                 </div>
@@ -745,7 +745,7 @@ const OrderHistoryPage = () => {
         <nav className="self-stretch h-10 flex justify-between items-center px-10" aria-label="페이지 이동">
           {/* Desktop Pagination */}
           <div className="flex items-center">
-            <div className="text-center justify-start text-neutral-800 text-base font-normal ">
+            <div className="text-center justify-start text-primary-800 text-base font-normal ">
               {currentPage} of {totalPages}
             </div>
           </div>
@@ -765,7 +765,7 @@ const OrderHistoryPage = () => {
               disabled={currentPage === totalPages}
               className="flex justify-start items-center gap-[5px] cursor-pointer disabled:cursor-not-allowed"
             >
-              <div className="text-center justify-start text-neutral-800 text-base font-normal ">
+              <div className="text-center justify-start text-primary-800 text-base font-normal ">
                 Next
               </div>
               <div className="w-6 h-6 relative overflow-hidden">

@@ -68,7 +68,7 @@ export default function OrderItemsSection({
               {items.map((item: TProduct | TReceipt) => (
                 <div
                   key={item.id}
-                  className="self-stretch border-b border-neutral-200 inline-flex justify-between items-center sm:py-5 sm:pr-5"
+                  className="self-stretch border-b border-primary-200 inline-flex justify-between items-center sm:py-5 sm:pr-5"
                 >
                   <div className="flex gap-5 flex-1 sm:flex sm:justify-start sm:items-center sm:gap-5">
                     <div className="w-[72px] sm:w-[140px] h-[72px] sm:h-[140px] bg-primary-50 rounded-xs sm:bg-white flex justify-center items-center flex-shrink-0">

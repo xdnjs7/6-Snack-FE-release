@@ -17,7 +17,7 @@ const ProductItem = React.memo(({ receipt }: { receipt: { price: number; quantit
   
   return (
     <div
-      className="self-stretch border-b border-neutral-200 inline-flex justify-between items-center sm:py-5 sm:pr-5"
+      className="self-stretch border-b border-primary-200 inline-flex justify-between items-center sm:py-5 sm:pr-5"
     >
       <div className="flex gap-5 flex-1 sm:flex sm:justify-start sm:items-center sm:gap-5">
         <div className="relative w-[72px] sm:w-[140px] h-[72px] sm:h-[140px] bg-primary-50 rounded-xs sm:bg-white flex justify-center items-center flex-shrink-0">
@@ -84,7 +84,7 @@ const LoadingSkeleton = () => (
           <div className="self-stretch bg-white rounded-sm sm:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.1)] md:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.1)] flex flex-col justify-start items-start gap-5 sm:px-5 sm:pt-5 sm:pb-[30px] md:px-[60px] md:py-[40px]">
             <div className="self-stretch flex flex-col justify-start items-start gap-[16px] sm:gap-0">
               {[1, 2].map((i) => (
-                <div key={i} className="self-stretch border-b border-neutral-200 inline-flex justify-between items-center sm:py-5 sm:pr-5">
+                <div key={i} className="self-stretch border-b border-primary-200 inline-flex justify-between items-center sm:py-5 sm:pr-5">
                   <div className="flex gap-5 flex-1 sm:flex sm:justify-start sm:items-center sm:gap-5">
                     <div className="w-[72px] sm:w-[140px] h-[72px] sm:h-[140px] bg-primary-50 sm:bg-white rounded-xs animate-pulse"></div>
                     <div className="flex-1 inline-flex flex-col items-start gap-3 sm:justify-start sm:inline-flex sm:flex-col sm:justify-start sm:items-start sm:gap-7">
@@ -185,7 +185,7 @@ export default function OrderConfirmedPage() {
           <div className="hidden sm:block">
             <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400 cursor-default" />
           </div>
-          <div className="justify-center text-neutral-800 text-base sm:text-lg md:text-lg font-bold">
+          <div className="justify-center text-primary-950 text-base sm:text-lg md:text-lg font-bold">
             3. Order Confirmed
           </div>
         </>
@@ -199,7 +199,7 @@ export default function OrderConfirmedPage() {
           <div className="hidden sm:block">
             <ArrowIconSvg direction="right" className="w-6 h-6 text-zinc-400 cursor-default" />
           </div>
-          <div className="justify-center text-neutral-800 text-base sm:text-lg md:text-lg font-bold">
+          <div className="justify-center text-primary-800 text-base sm:text-lg md:text-lg font-bold">
             2. Order Confirmed
           </div>
         </>
@@ -255,7 +255,7 @@ export default function OrderConfirmedPage() {
           </div>
 
           {/* 주문 완료 메시지 */}
-          <div className="self-stretch text-center justify-center text-neutral-800 text-2xl sm:text-3xl md:text-3xl font-bold">
+          <div className="self-stretch text-center justify-center text-primary-800 text-2xl sm:text-3xl md:text-3xl font-bold">
             {completionMessage}
           </div>
 
@@ -310,11 +310,11 @@ export default function OrderConfirmedPage() {
 
           {/* 요청 메시지 */}
           <div className="self-stretch flex flex-col justify-start items-start gap-5">
-            <div className="self-stretch justify-center text-neutral-800 text-base font-bold">
+            <div className="self-stretch justify-center text-primary-800 text-base font-bold">
               요청 메시지
             </div>
-            <div className="self-stretch h-40 p-6 bg-white rounded-sm outline-1 outline-offset-[-1px] outline-neutral-300 inline-flex justify-start items-start gap-2 overflow-hidden">
-              <div className="justify-center text-neutral-400 text-base font-normal leading-relaxed">
+            <div className="self-stretch h-40 p-6 bg-white rounded-sm outline-1 outline-offset-[-1px] outline-primary-300 inline-flex justify-start items-start gap-2 overflow-hidden">
+              <div className="justify-center text-primary-400 text-base font-normal leading-relaxed">
                 {orderData.requestMessage || "요청 메시지가 없습니다."}
               </div>
             </div>
@@ -331,7 +331,7 @@ export default function OrderConfirmedPage() {
             <Button
               type="black"
               label={buttonText}
-              className="flex-1 md:flex-none md:w-[264px] h-16 px-4 py-3 bg-neutral-800 rounded-[2px] flex justify-center items-center text-base font-bold"
+              className="flex-1 md:flex-none md:w-[264px] h-16 px-4 py-3 bg-primary-800 rounded-[2px] flex justify-center items-center text-base font-bold"
               onClick={handleViewOrderHistory}
             />
           </div>

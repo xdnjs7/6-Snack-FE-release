@@ -33,10 +33,10 @@ const LoadingSkeleton = () => (
             <div className="justify-center text-primary-950 text-base font-bold ">요청 품목</div>
             <div className="justify-center text-primary-950 text-base font-normal ">총 0개</div>
           </div>
-          <div className="self-stretch bg-white rounded-sm sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline-1 sm:outline-neutral-200 flex flex-col justify-start items-start gap-5 sm:px-5 sm:pt-5 sm:pb-[30px] md:px-[60px] md:py-[40px]">
+          <div className="self-stretch bg-white rounded-sm sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline-1 sm:outline-primary-200 flex flex-col justify-start items-start gap-5 sm:px-5 sm:pt-5 sm:pb-[30px] md:px-[60px] md:py-[40px]">
             <div className="self-stretch flex flex-col justify-start items-start gap-[16px] sm:gap-0">
               {[1, 2].map((i) => (
-                <div key={i} className="self-stretch border-b border-neutral-200 inline-flex justify-between items-center sm:py-5 sm:pr-5">
+                <div key={i} className="self-stretch border-b border-primary-200 inline-flex justify-between items-center sm:py-5 sm:pr-5">
                   <div className="flex gap-5 flex-1 sm:flex sm:justify-start sm:items-center sm:gap-5">
                     <div className="w-[72px] sm:w-[140px] h-[72px] sm:h-[140px] bg-primary-50 sm:bg-white rounded-xs animate-pulse" style={{ aspectRatio: '1' }}></div>
                     <div className="flex-1 inline-flex flex-col items-start gap-3 sm:justify-start sm:inline-flex sm:flex-col sm:justify-start sm:items-start sm:gap-7">
@@ -262,12 +262,12 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
               onClick={handleBackToList}
               type="button"
             >
-              <div className="text-center justify-center text-neutral-800 text-base font-bold ">
+              <div className="text-center justify-center text-primary-800 text-base font-bold ">
                 목록 보기
               </div>
             </button>
             <button
-              className="w-[155.5px] sm:w-[338px] md:w-[300px] h-16 px-4 py-3 bg-neutral-800 rounded-[2px] inline-flex justify-center items-center cursor-pointer hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+              className="w-[155.5px] sm:w-[338px] md:w-[300px] h-16 px-4 py-3 bg-primary-800 rounded-[2px] inline-flex justify-center items-center cursor-pointer hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
               onClick={handleAddToCart}
               disabled={isAddingToCart}
               type="button"
