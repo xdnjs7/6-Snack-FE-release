@@ -69,7 +69,7 @@ export function middleware(request: NextRequest) {
     if (userRole === "USER") {
       const isUserRestricted = userRestrictedPaths.some((path) => pathname === path || pathname.startsWith(path + "/"));
       if (isUserRestricted) {
-        return NextResponse.redirect(new URL("/error", request.url));
+        return NextResponse.redirect(new URL("/unauthorized", request.url));
       }
     }
 
@@ -79,7 +79,7 @@ export function middleware(request: NextRequest) {
         (path) => pathname === path || pathname.startsWith(path + "/"),
       );
       if (isNonUserRestricted) {
-        return NextResponse.redirect(new URL("/error?from=order", request.url));
+        return NextResponse.redirect(new URL("/unauthorized?from=order", request.url));
       }
     }
   }
