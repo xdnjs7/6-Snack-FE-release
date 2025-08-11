@@ -3,6 +3,7 @@
 import ChevronLeftIcon from "@/assets/icons/ic_chevron_left.svg";
 import ChevronRightIcon from "@/assets/icons/ic_chevron_right.svg";
 import Dropdown from "@/components/common/DropDown";
+import NoContent from "@/components/common/NoContent";
 import { useOrderHistory } from "@/hooks/useOrderHistory";
 import { formatPrice } from "@/lib/utils/formatPrice.util";
 import Image from "next/image";
@@ -284,15 +285,13 @@ const OrderHistoryPage = () => {
               </article>
             ))
           ) : (
-            <div className="self-stretch pb-2.5 flex flex-col justify-start items-start">
-              <div className="self-stretch py-3.5 border-b border-zinc-400 inline-flex justify-between items-center">
-                <div className="flex justify-start items-center gap-2">
-                  <div className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT']">
-                    구매 내역이 없어요
-                  </div>
-                </div>
-              </div>
-            </div>
+            <NoContent
+              title="구매 내역이 없어요"
+              subText1="아직 구매한 내역이 없습니다."
+              subText2="상품을 둘러보고 첫 주문을 진행해 보세요."
+              buttonText="상품 보러가기"
+              onClick={() => router.push("/products")}
+            />
           )}
         </section>
         <nav className="self-stretch h-10 flex justify-between items-center px-4" aria-label="페이지 이동">
@@ -519,15 +518,13 @@ const OrderHistoryPage = () => {
               </article>
             ))
           ) : (
-            <div className="self-stretch pb-5 flex flex-col justify-start items-start">
-              <div className="self-stretch py-3.5 border-b border-zinc-400 inline-flex justify-between items-center">
-                <div className="flex justify-start items-center gap-2">
-                  <div className="text-center justify-center text-neutral-800 text-base font-bold font-['SUIT']">
-                    구매 내역이 없어요
-                  </div>
-                </div>
-              </div>
-            </div>
+            <NoContent
+              title="구매 내역이 없어요"
+              subText1="아직 구매한 내역이 없습니다."
+              subText2="상품을 둘러보고 첫 주문을 진행해 보세요."
+              buttonText="상품 보러가기"
+              onClick={() => router.push("/products")}
+            />
           )}
         </section>
         <nav className="self-stretch h-10 flex justify-between items-center px-8" aria-label="페이지 이동">
