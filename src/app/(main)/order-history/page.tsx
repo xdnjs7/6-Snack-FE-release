@@ -594,7 +594,7 @@ const OrderHistoryPage = () => {
                       이번 달 지출액
                     </div>
                     <div
-                      className="justify-center text-[16px] font-normal leading-normal tracking-[-0.4px] text-[color:var(--gray-primary-600,#696969)]"
+                      className="justify-center text-[16px] font-normal leading-normal tracking-[-0.4px] text-primary-600"
                     >
                       지난 달 지출액: {safeBudgetData ? formatNumber(safeBudgetData.previousMonthExpense) : "0원"}
                     </div>
