@@ -12,7 +12,6 @@ import { formatPrice } from "@/lib/utils/formatPrice.util";
 import { useOrderStatusUpdate } from "@/hooks/useOrderStatusUpdate";
 import { useModal } from "@/providers/ModalProvider";
 import OrderActionModal from "../_components/OrderActionModal";
-import DogSpinner from "@/components/common/DogSpinner";
 import OrderDetailSkeleton from "./_components/OrderDetailSkeleton";
 
 export default function OrderManageDetailPage() {
