@@ -128,7 +128,7 @@ const OrderHistoryPage = () => {
                     {safeBudgetData ? formatNumber(safeBudgetData.currentMonthBudget) : "0원"}
                   </div>
                 </div>
-                <div className="relative justify-center text-stone-500 text-sm font-normal">
+                <div className="relative justify-center text-primary-600 text-sm font-normal">
                   지난 달 예산은 {safeBudgetData ? formatNumber(safeBudgetData.previousMonthBudget) : "0원"}이었어요
                 </div>
               </div>
@@ -147,7 +147,7 @@ const OrderHistoryPage = () => {
                     {safeBudgetData ? formatNumber(safeBudgetData.currentMonthExpense) : "0원"}
                   </div>
                 </div>
-                <div className="justify-center text-stone-500 text-sm font-normal">
+                <div className="justify-center text-primary-600 text-sm font-normal">
                   지난 달: {safeBudgetData ? formatNumber(safeBudgetData.previousMonthExpense) : "0원"}
                 </div>
                 <div className="self-stretch inline-flex justify-left items-center gap-1">
@@ -185,7 +185,7 @@ const OrderHistoryPage = () => {
                   {safeBudgetData ? formatNumber(safeBudgetData.currentYearTotalExpense) : "0원"}
                 </div>
               </div>
-              <div className="self-stretch justify-center text-stone-500 text-sm font-normal leading-snug">
+              <div className="self-stretch justify-center text-primary-600 text-sm font-normal leading-snug">
                 작년보다{" "}
                 {safeBudgetData
                   ? formatPrice(
@@ -219,7 +219,7 @@ const OrderHistoryPage = () => {
                       {item.item}
                     </button>
                   </div>
-                  <div className="text-center justify-center text-zinc-500 text-xs font-normal ml-[-100px]">
+                  <div className="text-center justify-center text-primary-500 text-xs font-normal ml-[-100px]">
                     총 수량 {getProductTypeCount(item.productName)}개
                   </div>
                   <div className="text-center justify-center text-primary-800 text-base font-extrabold">
@@ -234,7 +234,7 @@ const OrderHistoryPage = () => {
                       </div>
                     </div>
                     <div className="flex-1 h-12 px-4 py-2 border-b border-primary-200 flex justify-start items-center gap-2">
-                      <div className="text-center justify-center text-zinc-800 text-sm font-bold">
+                      <div className="text-center justify-center text-primary-950 text-sm font-bold">
                         {item.requestDate}
                       </div>
                     </div>
@@ -246,7 +246,7 @@ const OrderHistoryPage = () => {
                       </div>
                     </div>
                     <div className="flex-1 h-12 px-4 py-2 border-b border-primary-200 flex justify-start items-center gap-2">
-                      <div className="text-center justify-center text-zinc-800 text-sm font-bold">
+                      <div className="text-center justify-center text-primary-950 text-sm font-bold">
                         {item.requester}
                       </div>
                       {item.adminMessage?.includes("즉시 구매") && (
@@ -265,7 +265,7 @@ const OrderHistoryPage = () => {
                       </div>
                     </div>
                     <div className="flex-1 self-stretch p-4 border-b border-primary-200 flex justify-start items-start gap-2">
-                      <div className="text-center justify-center text-zinc-800 text-sm font-bold">
+                      <div className="text-center justify-center text-primary-950 text-sm font-bold">
                         {item.approvalDate}
                       </div>
                     </div>
@@ -277,7 +277,7 @@ const OrderHistoryPage = () => {
                       </div>
                     </div>
                     <div className="flex-1 p-4 border-b border-primary-200 flex justify-start items-center gap-2">
-                      <div className="flex-1 justify-center text-zinc-800 text-sm font-bold leading-snug">
+                      <div className="flex-1 justify-center text-primary-950 text-sm font-bold leading-snug">
                         {item.manager}
                       </div>
                     </div>
@@ -301,7 +301,7 @@ const OrderHistoryPage = () => {
               <div className="w-6 h-6 relative overflow-hidden">
                 <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
               </div>
-              <div className="text-zinc-500 text-base font-normal">Prev</div>
+              <div className="text-primary-500 text-base font-normal">Prev</div>
             </button>
             <button
               onClick={() => handlePageChange(currentPage + 1)}
@@ -349,7 +349,7 @@ const OrderHistoryPage = () => {
                   {safeBudgetData ? formatNumber(safeBudgetData.currentMonthBudget) : "0원"}
                 </div>
               </div>
-              <div className="justify-center text-stone-500 text-base font-normal leading-relaxed">
+              <div className="justify-center text-primary-600 text-base font-normal leading-relaxed">
                 지난 달 예산은
                 <br />
                 {safeBudgetData ? formatNumber(safeBudgetData.previousMonthBudget) : "0원"}이었어요
@@ -370,7 +370,7 @@ const OrderHistoryPage = () => {
                   {safeBudgetData ? formatNumber(safeBudgetData.currentMonthExpense) : "0원"}
                 </div>
               </div>
-              <div className="justify-center text-stone-500 text-base font-normal">
+              <div className="justify-center text-primary-600 text-base font-normal">
                 지난 달: {safeBudgetData ? formatNumber(safeBudgetData.previousMonthExpense) : "0원"}
               </div>
               <div className="self-stretch inline-flex justify-left items-center gap-2.5">
@@ -407,7 +407,7 @@ const OrderHistoryPage = () => {
                   {safeBudgetData ? formatNumber(safeBudgetData.currentYearTotalExpense) : "0원"}
                 </div>
               </div>
-              <div className="self-stretch justify-center text-stone-500 text-base font-normal leading-relaxed">
+              <div className="self-stretch justify-center text-primary-600 text-base font-normal leading-relaxed">
                 작년보다{" "}
                 {safeBudgetData
                   ? formatPrice(
@@ -437,7 +437,7 @@ const OrderHistoryPage = () => {
                     >
                       {item.item}
                     </button>
-                    <div className="text-zinc-500 text-xs font-normal ml-2">
+                    <div className="text-primary-500 text-xs font-normal ml-2">
                       총 수량 {getProductTypeCount(item.productName)}개
                     </div>
                   </div>
@@ -454,7 +454,7 @@ const OrderHistoryPage = () => {
                         </div>
                       </div>
                       <div className="flex-1 h-12 px-5 py-2 border-r border-b border-primary-200 flex justify-start items-center gap-2">
-                        <div className="text-center justify-center text-zinc-800 text-base font-bold">
+                        <div className="text-center justify-center text-primary-950 text-base font-bold">
                           {item.requestDate}
                         </div>
                       </div>
@@ -467,7 +467,7 @@ const OrderHistoryPage = () => {
                       </div>
                       <div className="flex-1 h-12 px-5 py-2 border-b border-primary-200 flex justify-start items-center gap-2">
                         <div className="flex justify-start items-center gap-2">
-                          <div className="text-center justify-center text-zinc-800 text-base font-bold">
+                          <div className="text-center justify-center text-primary-950 text-base font-bold">
                             {item.requester}
                           </div>
                           {item.adminMessage?.includes("즉시 구매") && (
@@ -489,7 +489,7 @@ const OrderHistoryPage = () => {
                         </div>
                       </div>
                       <div className="flex-1 h-12 px-5 py-2 border-r border-b border-primary-200 flex justify-start items-center gap-2">
-                        <div className="text-center justify-center text-zinc-800 text-base font-bold">
+                        <div className="text-center justify-center text-primary-950 text-base font-bold">
                           {item.approvalDate}
                         </div>
                       </div>
@@ -501,7 +501,7 @@ const OrderHistoryPage = () => {
                         </div>
                       </div>
                       <div className="flex-1 h-12 px-5 py-2 border-b border-primary-200 flex justify-start items-center gap-2">
-                        <div className="text-center justify-center text-zinc-800 text-base font-bold">
+                        <div className="text-center justify-center text-primary-950 text-base font-bold">
                           {item.manager}
                         </div>
                       </div>
@@ -526,7 +526,7 @@ const OrderHistoryPage = () => {
               <div className="w-6 h-6 relative overflow-hidden">
                 <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
               </div>
-              <div className="text-zinc-500 text-base font-normal">Prev</div>
+              <div className="text-primary-500 text-base font-normal">Prev</div>
             </button>
             <button
               onClick={() => handlePageChange(currentPage + 1)}
@@ -573,7 +573,7 @@ const OrderHistoryPage = () => {
                 </div>
               </div>
               <div className="flex flex-col justify-start items-start gap-2">
-                <div className="justify-center text-stone-500 text-base font-normal leading-relaxed">
+                <div className="justify-center text-primary-600 text-base font-normal leading-relaxed">
                   지난 달 예산은
                   <br />
                   {safeBudgetData ? formatNumber(safeBudgetData.previousMonthBudget) : "0원"}이었어요
@@ -638,7 +638,7 @@ const OrderHistoryPage = () => {
                   {safeBudgetData ? formatNumber(safeBudgetData.currentYearTotalExpense) : "0원"}
                 </div>
               </div>
-              <div className="justify-center text-stone-500 text-base font-normal leading-relaxed">
+              <div className="justify-center text-primary-600 text-base font-normal leading-relaxed">
                 올해 작년보다
                 <br />
                 {safeBudgetData
@@ -659,14 +659,14 @@ const OrderHistoryPage = () => {
           {/* Desktop Purchase List - Table Format */}
           <div className="self-stretch flex flex-col justify-start items-start">
             <div className="self-stretch px-10 py-5 border-t border-b border-primary-200 inline-flex justify-between items-center">
-              <div className="w-32 justify-start text-zinc-500 text-base font-bold">구매 요청일</div>
-              <div className="w-32 justify-start text-zinc-500 text-base font-bold">요청인</div>
-              <div className="w-44 justify-start text-zinc-500 text-base font-bold">상품 정보</div>
-              <div className="w-32 justify-start text-zinc-500 text-base font-bold">주문 금액</div>
+              <div className="w-32 justify-start text-primary-500 text-base font-bold">구매 요청일</div>
+              <div className="w-32 justify-start text-primary-500 text-base font-bold">요청인</div>
+              <div className="w-44 justify-start text-primary-500 text-base font-bold">상품 정보</div>
+              <div className="w-32 justify-start text-primary-500 text-base font-bold">주문 금액</div>
               <div className="flex justify-start items-center gap-2">
-                <div className="w-32 justify-start text-zinc-500 text-base font-bold">구매 승인일</div>
+                <div className="w-32 justify-start text-primary-500 text-base font-bold">구매 승인일</div>
               </div>
-              <div className="w-24 justify-start text-zinc-500 text-base font-bold">담당자</div>
+              <div className="w-24 justify-start text-primary-500 text-base font-bold">담당자</div>
             </div>
             <div className="self-stretch flex flex-col justify-start items-start">
               {currentItems.length > 0 ? (
@@ -699,7 +699,7 @@ const OrderHistoryPage = () => {
                       >
                         {item.item}
                       </button>
-                      <div className="justify-start text-zinc-500 text-sm font-normal">
+                      <div className="justify-start text-primary-500 text-sm font-normal">
                         총 수량 {getProductTypeCount(item.productName)}개
                       </div>
                     </div>
@@ -738,7 +738,7 @@ const OrderHistoryPage = () => {
               <div className="w-6 h-6 relative overflow-hidden">
                 <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
               </div>
-              <div className="text-center justify-start text-zinc-500 text-base font-normal">Prev</div>
+              <div className="text-center justify-start text-primary-500 text-base font-normal">Prev</div>
             </button>
             <button
               onClick={() => handlePageChange(currentPage + 1)}
