@@ -32,7 +32,7 @@ export default function SuccessPageContent({ orderId, amount, paymentKey }: TSuc
     if (!order) return;
 
     // 쿼리 파라미터 값과 DB의 amount 비교 (조작 방지)
-    if (String(order.totalPrice + 3000) !== amount) {
+    if (String(order.productsPriceTotal + order.deliveryFee) !== amount) {
       router.push("/fail?message=가격 정보가 일치하지 않습니다.&code=400");
       return;
     }
