@@ -206,7 +206,6 @@ export default function OrderManageDetailPage() {
                     className="flex w-full items-center gap-3 sm:gap-5 border-b pb-[20px] sm:pt-[20px] sm:pr-[20px] border-primary-100"
                     role="listitem"
                   >
-                    {/* 상품이미지 */}
                     <div className="w-[72px] sm:w-[140px] h-[72px] sm:h-[140px] bg-primary-50 rounded-xs sm:bg-white flex justify-center items-center flex-shrink-0">
                       {typeof item.imageUrl === "string" && (
                         <div className="relative w-[75%] h-[75%]">
@@ -219,19 +218,16 @@ export default function OrderManageDetailPage() {
                         </div>
                       )}
                     </div>
-                    {/* 아이템이름, 가격, 수량 */}
                     <div className="flex flex-col w-full justify-center items-start gap-[12px] sm:gap-[30px]">
-                      {/* 이름+가격 */}
                       <div className="flex flex-col justify-center items-start gap-1 sm:gap-[10px]">
-                        <h3 className="text-primary-950 text-sm/[17px] tracking-tight sm:text-base/[20px] sm:font-medium">
+                        <p className="text-primary-950 text-sm/[17px] tracking-tight sm:text-base/[20px] sm:font-medium">
                           {item.productName}
-                        </h3>
+                        </p>
                         <div className="text-primary-950 text-sm/[17px] tracking-tight sm:text-base/[20px] font-bold">
                           {formatPrice(item.price)}원
                         </div>
                       </div>
 
-                      {/* 모바일:수량+가격 */}
                       <div className="flex w-full items-center justify-between">
                         <div className=" text-primary-500 text-[13px]/[16px] sm:text-base/[20px] tracking-tight font-bold">
                           수량 {item.quantity}개
@@ -241,14 +237,12 @@ export default function OrderManageDetailPage() {
                         </div>
                       </div>
                     </div>
-                    {/* 가격 */}
                     <div className="hidden sm:block text-center  text-primary-700 text-xl/[32px] tracking-tight font-extrabold whitespace-nowrap">
                       {formatPrice(item.price * item.quantity)}원
                     </div>
                   </div>
                 ))}
 
-                {/* Order Amount Info */}
                 <div
                   className="w-full flex flex-col gap-4 sm:gap-2.5 sm:pt-[20px] sm:px-[20px]"
                   role="region"
