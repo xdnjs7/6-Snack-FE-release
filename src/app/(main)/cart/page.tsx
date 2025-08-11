@@ -107,7 +107,26 @@ export default function CartPage() {
 
   return (
     <div className="flex flex-col justify-center items-center w-full">
-      <div className="w-full max-w-[1200px] md:px-[24px]">
+      {checkedCartItemIds.length === 0 ? (
+        <Toast text="1개 이상의 상품을 선택하세요." isVisible={isToastVisible} />
+      ) : (
+        <Toast
+          text={
+            isMobile ? (
+              "예산이 부족합니다."
+            ) : (
+              <>
+                <p>예산이 부족합니다.&nbsp;</p>
+                <p>수량을 줄이거나 항목을 제거해주세요.</p>
+              </>
+            )
+          }
+          isVisible={isToastVisible}
+          budget={remainingBudget}
+        />
+      )}
+
+      <div className="z-2 w-full max-w-[1200px] md:px-[24px]">
         <div className="flex flex-col gap-[40px] mt-[20px] sm:gap-[70px] sm:mt-[60px] sm:pb-[36px] md:mt-[80px]">
           <section className="flex flex-col justify-center items-center gap-[10px] font-bold text-[16px]/[20px] tracking-tight sm:flex-row sm:gap-[20px] sm:text-[18px]/[22px]">
             <h2 className="text-primary-950">1. Shopping Cart</h2>
@@ -123,25 +142,6 @@ export default function CartPage() {
             <ArrowIconSvg direction="right" className="hidden sm:block relative w-[24px] h-[24px] text-primary-300" />
             <p className="text-primary-300">{user?.role === "USER" ? "3. Order Confirmed" : "2. Order Confirmed"}</p>
           </section>
-
-          {checkedCartItemIds.length === 0 ? (
-            <Toast text="1개 이상의 상품을 선택하세요." isVisible={isToastVisible} />
-          ) : (
-            <Toast
-              text={
-                isMobile ? (
-                  "예산이 부족합니다."
-                ) : (
-                  <>
-                    <p>예산이 부족합니다.&nbsp;</p>
-                    <p>수량을 줄이거나 항목을 제거해주세요.</p>
-                  </>
-                )
-              }
-              isVisible={isToastVisible}
-              budget={remainingBudget}
-            />
-          )}
 
           <CartItem
             cartItems={cartItems}
