@@ -162,7 +162,6 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
               formatDate={formatDate}
             />
           </Suspense>
-
           <Suspense fallback={
             <div className="w-full h-32 bg-primary-100 animate-pulse rounded" style={{ minHeight: '128px' }}></div>
           }>
@@ -175,7 +174,6 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
               getStatusText={getStatusText}
             />
           </Suspense>
-
           {/* 하단 버튼 */}
           <div className="self-stretch h-16 inline-flex justify-start md:justify-center items-center gap-5 mt-8">
             <button
