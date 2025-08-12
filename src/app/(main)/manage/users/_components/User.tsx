@@ -116,13 +116,13 @@ export default function User() {
       queryClient.invalidateQueries({ queryKey: ["companyUsers"] });
     },
     onError: (error) => {
-      const err: any = error;
-      const msg: string | undefined = err?.message;
-      const isConflict = err?.status === 409 || /Unique constraint/i.test(msg || "");
+      const message: string = (error as Error).message || "";
+      const isConflict =
+        /Unique constraint/i.test(message) || /이미 초대/i.test(message) || /이미 등록된 이메일/i.test(message);
       if (isConflict) {
         showToast("이미 초대 내역이 존재합니다.", "error");
       } else {
-        showToast(error instanceof Error ? error.message : "초대 발송에 실패했습니다.", "error");
+        showToast(message || "초대 발송에 실패했습니다.", "error");
       }
       console.error(error);
     },

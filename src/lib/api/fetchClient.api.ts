@@ -43,10 +43,7 @@ export const cookieFetch = async <T>(path: string, options: RequestInit = {}): P
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    const err: any = new Error(errorData.message || `HTTP error! status: ${response.status}`);
-    err.status = response.status;
-    err.data = errorData;
-    throw err;
+    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
   }
 
   if (response.status === 204) {
