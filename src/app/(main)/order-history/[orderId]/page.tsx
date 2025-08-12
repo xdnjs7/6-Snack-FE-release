@@ -8,6 +8,7 @@ import {
   getStatusText, 
   formatDate 
 } from "@/components/common/OrderDetail";
+import DogSpinner from "@/components/common/DogSpinner";
 
 // Lazy loading으로 컴포넌트 분리 - 더 세밀한 분리
 const OrderItemsSection = lazy(() => import("@/components/common/OrderDetail/OrderItemsSection"));
@@ -19,50 +20,10 @@ type TOrderStatus = "pending" | "approved" | "rejected" | "canceled" | null;
 
 type TOrderHistoryDetailPageProps = Record<string, never>;
 
-// 최적화된 로딩 스켈레톤 컴포넌트 - 레이아웃 시프트 방지
-const LoadingSkeleton = () => (
-  <div className="min-h-screen bg-white">
-    <div className="w-full max-w-7xl mx-auto pt-[30px] flex flex-col justify-start items-start gap-[23px]">
-      <div className="self-stretch justify-center text-primary-950 text-lg font-bold ">구매 내역 상세</div>
-      
-      {/* 스켈레톤 UI - 실제 레이아웃과 동일한 크기 */}
-      <div className="self-stretch flex flex-col justify-start items-start gap-10">
-        <div className="self-stretch flex flex-col justify-start items-start gap-[15px]">
-          <div className="inline-flex justify-start items-start gap-1.5">
-            <div className="justify-center text-primary-950 text-base font-bold ">구매 품목</div>
-            <div className="justify-center text-primary-950 text-base font-normal ">총 0개</div>
-          </div>
-          <div className="self-stretch bg-white rounded-sm sm:shadow-[0px_0px_6px_0px_rgba(0,0,0,0.10)] sm:outline-1 sm:outline-primary-200 flex flex-col justify-start items-start gap-5 sm:px-5 sm:pt-5 sm:pb-[30px] md:px-[60px] md:py-[40px]">
-            <div className="self-stretch flex flex-col justify-start items-start gap-[16px] sm:gap-0">
-              {[1, 2].map((i) => (
-                <div key={i} className="self-stretch border-b border-primary-200 inline-flex justify-between items-center sm:py-5 sm:pr-5">
-                  <div className="flex gap-5 flex-1 sm:flex sm:justify-start sm:items-center sm:gap-5">
-                    <div className="w-[72px] sm:w-[140px] h-[72px] sm:h-[140px] bg-primary-50 sm:bg-white rounded-xs animate-pulse" style={{ aspectRatio: '1' }}></div>
-                    <div className="flex-1 inline-flex flex-col items-start gap-3 sm:justify-start sm:inline-flex sm:flex-col sm:justify-start sm:items-start sm:gap-7">
-                      <div className="flex flex-col justify-center items-start gap-1 sm:justify-start sm:gap-2.5">
-                        <div className="w-32 h-4 bg-primary-200 animate-pulse rounded"></div>
-                        <div className="w-20 h-4 bg-primary-200 animate-pulse rounded"></div>
-                      </div>
-                      <div className="flex justify-between items-center w-full sm:justify-start sm:flex sm:justify-start">
-                        <div className="w-16 h-4 bg-primary-200 animate-pulse rounded"></div>
-                        <div className="text-center justify-center text-primary-700 text-base font-bold  sm:hidden w-20 h-4 bg-primary-200 animate-pulse rounded"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="hidden sm:block w-24 h-6 bg-primary-200 animate-pulse rounded"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 하단 버튼 스켈레톤 */}
-      <div className="self-stretch h-16 inline-flex justify-start md:justify-center items-center gap-5">
-        <div className="flex-1 md:flex-none md:w-[260px] h-16 bg-primary-200 animate-pulse rounded"></div>
-        <div className="flex-1 md:flex-none md:w-[264px] h-16 bg-primary-200 animate-pulse rounded"></div>
-      </div>
-    </div>
+// 간단한 로딩 컴포넌트
+const LoadingComponent = () => (
+  <div className="flex justify-center items-center h-[80vh] md:h-[60vh]">
+    <DogSpinner />
   </div>
 );
 
@@ -225,7 +186,7 @@ export default function OrderHistoryDetailPage({}: TOrderHistoryDetailPageProps)
             `
           }} />
         </Head>
-        <LoadingSkeleton />
+        <LoadingComponent />
       </>
     );
   }
