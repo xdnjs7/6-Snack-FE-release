@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useModal } from "@/providers/ModalProvider";
 import { useEffect } from "react";
 import { useDeleteProduct } from "@/hooks/useDeleteProduct";
+import { useFlashToast } from "@/stores/flashToast";
 
 type TProductActionsProps = {
   selectedQuantity: number;
@@ -30,18 +31,17 @@ export default function ProductActions({
 
   const { mutate: deleteProduct } = useDeleteProduct();
 
+  const setFlash = useFlashToast((s) => s.setFlash);
+
   const handleDelete = () => {
     deleteProduct(productId, {
       onSuccess: () => {
-        showToast("상품이 삭제되었습니다.", "success");
+        setFlash("상품이 삭제되었습니다.", "success");
         closeModal();
-
-        setTimeout(() => {
-          router.push("/products");
-        }, 3000);
+        router.push("/products"); // 즉시 이동
       },
       onError: () => {
-        showToast("상품 삭제 실패", "error");
+        showToast("상품 삭제 실패", "error"); // 현재 페이지에서 실패만 즉시 표시
       },
     });
   };
