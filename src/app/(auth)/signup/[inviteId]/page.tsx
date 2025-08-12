@@ -42,7 +42,6 @@ export default function InviteSignUpPage() {
 
   const [passwordInput, passwordConfirmInput] = watch("password", "passwordConfirm");
 
-  // 초대 정보 가져오기
   useEffect(() => {
     const fetchInviteInfo = async () => {
       try {
@@ -55,13 +54,11 @@ export default function InviteSignUpPage() {
         setIsLoading(false);
       }
     };
-    //  inviteId 정하기
     if (inviteId) {
       fetchInviteInfo();
     }
   }, [inviteId]);
 
-  // react hook form 회원가입 처리
   const onSubmit = async (data: TInviteSignUpFormData) => {
     // ??
     if (!inviteInfo) return;
@@ -107,10 +104,7 @@ export default function InviteSignUpPage() {
   }
 
   return (
-    // top parent
     <div className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[48px] sm:pt-[160px]">
-      {/* mobile */}
-      {/* logo + intro */}
       <div className="sm:absolute sm:top-0 flex flex-col items-center justify-center w-full max-w-[480px] sm:max-w-[600px]">
         <div className="flex justify-center items-center w-full sm:max-w-[500px] h-[140px] sm:h-[214px] py-[38.18px] sm:py-[58.4px] px-[50.92px] sm:px-[77.86px]">
           <Link href="/">
@@ -128,7 +122,6 @@ export default function InviteSignUpPage() {
           </div>
         </div>
       </div>
-      {/* signup content - form, register button, link to login */}
 
       <div className="sm:absolute sm:w-[600px] sm:top-[152.12px] flex flex-col w-full items-center justify-center sm:items-start sm:px-[60px] sm:py-[40px] sm:bg-white sm:rounded-xs sm:shadow-[0px_0px_40px_0px_rgba(0,0,0,0.10)]">
         <div className="hidden sm:block sm:mb-[20px]">
@@ -160,16 +153,17 @@ export default function InviteSignUpPage() {
           <div className="flex flex-col gap-1">
             <div
               className={clsx(
-                "relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b",
                 errors.password ? "border-error-500" : "border-primary-600",
+                passwordInput ? "items-end" : "items-center",
+                "relative flex justify-between h-[56px] gap-[4px] py-[8px] px-[4px] border-b-1",
               )}
             >
-              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
+              <div className="flex flex-col justify-center w-full gap-[5px]">
                 <label
                   htmlFor="password"
                   className={clsx(
-                    "text-primary-500 text-xs/[15px] font-normal tracking-tight",
-                    !passwordInput && "hidden",
+                    passwordInput && passwordInput.length > 0 ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                    "absolute left-[4px] top-[8px] font-normal text-[12px]/[15px] tracking-tight text-primary-600 transition-all duration-300",
                   )}
                 >
                   비밀번호
@@ -183,7 +177,7 @@ export default function InviteSignUpPage() {
                   aria-invalid={!!errors.password}
                   className={clsx(
                     showPassword ? "tracking-tight" : "tracking-[0.25em]",
-                    "w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
+                    "z-10 w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
                   )}
                 />
               </div>
@@ -192,8 +186,10 @@ export default function InviteSignUpPage() {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
-                aria-pressed={showPassword}
-                className="absolute right-1 bottom-2"
+                className={clsx(
+                  passwordInput ? "opacity-100" : "opacity-0",
+                  "mt-[24px] cursor-pointer transition-all duration-300",
+                )}
               >
                 {showPassword ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
               </button>
@@ -203,13 +199,21 @@ export default function InviteSignUpPage() {
 
           {/* 비밀번호 확인 input wrapper*/}
           <div className="flex flex-col gap-1">
-            <div className="relative flex justify-between items-center w-full h-[56px] py-2 px-1 border-b border-primary-600">
-              <div className="flex flex-col w-full justify-between items-start gap-[5px] pr-[24px]">
+            <div
+              className={clsx(
+                errors.passwordConfirm ? "border-error-500" : "border-primary-600",
+                passwordConfirmInput ? "items-end" : "items-center",
+                "relative flex justify-between h-[56px] gap-[4px] py-[8px] px-[4px] border-b-1",
+              )}
+            >
+              <div className="flex flex-col justify-center w-full gap-[5px]">
                 <label
                   htmlFor="passwordConfirm"
                   className={clsx(
-                    "text-primary-500 text-xs/[15px] font-normal tracking-tight",
-                    !passwordConfirmInput && "hidden",
+                    passwordConfirmInput && passwordConfirmInput.length > 0
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-3 opacity-0",
+                    "absolute left-[4px] top-[8px] font-normal text-[12px]/[15px] tracking-tight text-primary-600 transition-all duration-300",
                   )}
                 >
                   비밀번호 확인
@@ -222,8 +226,8 @@ export default function InviteSignUpPage() {
                   aria-describedby={errors.passwordConfirm ? "passwordConfirm-error" : undefined}
                   aria-invalid={!!errors.passwordConfirm}
                   className={clsx(
-                    showPassword ? "tracking-tight" : "tracking-[0.25em]",
-                     "w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
+                    showPasswordConfirm ? "tracking-tight" : "tracking-[0.25em]",
+                    "z-10 w-full max-w-[480px] font-normal text-[16px]/[20px] text-primary-950 outline-none placeholder:font-normal placeholder:text-[16px]/[20px] placeholder:tracking-tight placeholder:text-primary-500",
                   )}
                 />
               </div>
@@ -232,8 +236,10 @@ export default function InviteSignUpPage() {
                 type="button"
                 onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
                 aria-label={showPasswordConfirm ? "비밀번호 확인 숨기기" : "비밀번호 확인 보기"}
-                aria-pressed={showPasswordConfirm}
-                className="cursor-pointer absolute right-1 bottom-2"
+                className={clsx(
+                  passwordConfirmInput ? "opacity-100" : "opacity-0",
+                  "mt-[24px] cursor-pointer transition-all duration-300",
+                )}
               >
                 {showPasswordConfirm ? <VisibilityOnIconSvg /> : <VisibilityOffIconSvg />}
               </button>
@@ -260,14 +266,16 @@ export default function InviteSignUpPage() {
             모든 필수 항목을 올바르게 입력해주세요.
           </div>
         )}
-        <p className="self-stretch text-center text-primary-500 text-base/[20px] tracking-tight">
-          이미 계정이 있으신가요?
-          <Link href="/login">
-            <span className="text-primary-950 text-base/[20px] tracking-tight font-bold underline decoration-primary-950 underline-offset-2">
-              로그인
-            </span>
-          </Link>
-        </p>
+        <div className="flex w-full justify-center items-center">
+          <p className="text-center text-primary-500 text-base/[20px] tracking-tight ">
+            이미 계정이 있으신가요?
+            <Link href="/login">
+              <span className="text-primary-950 text-base/[20px] tracking-tight font-bold underline decoration-primary-950 underline-offset-2 ml-1">
+                로그인
+              </span>
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
