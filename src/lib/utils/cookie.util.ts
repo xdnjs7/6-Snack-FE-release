@@ -26,12 +26,12 @@ export function setTokensToCookie(accessToken: string, refreshToken?: string) {
   const accessTokenData = JSON.parse(atob(accessToken.split(".")[1]));
   const accessTokenExpiresIn = accessTokenData.exp - Math.floor(Date.now() / 1000);
 
-  document.cookie = `accessToken=${accessToken}; path=/; max-age=${accessTokenExpiresIn}; SameSite=Strict`;
+  document.cookie = `accessToken=${accessToken}; path=/; max-age=${accessTokenExpiresIn}; SameSite=Lax`;
 
   if (refreshToken) {
     const refreshTokenData = JSON.parse(atob(refreshToken.split(".")[1]));
     const refreshTokenExpiresIn = refreshTokenData.exp - Math.floor(Date.now() / 1000);
-    document.cookie = `refreshToken=${refreshToken}; path=/; max-age=${refreshTokenExpiresIn}; SameSite=Strict`;
+    document.cookie = `refreshToken=${refreshToken}; path=/; max-age=${refreshTokenExpiresIn}; SameSite=Lax`;
   }
 }
 
