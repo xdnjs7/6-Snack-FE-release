@@ -3,6 +3,7 @@ export const convertStatus = (raw: string): "대기중" | "요청완료" | "요�
     case "PENDING":
       return "대기중";
     case "APPROVED":
+    case "INSTANT_APPROVED":
       return "요청완료";
     case "REJECTED":
       return "요청반려";

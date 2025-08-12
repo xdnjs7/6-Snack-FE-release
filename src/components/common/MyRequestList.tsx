@@ -12,7 +12,7 @@ type TRequestListItemProps = {
   productName: string;
   price: number;
   status: "대기중" | "요청반려" | "요청완료" | "요청취소";
-  orderId: number; // ✅ 추가
+  orderId: number;
   onRequestCancel?: () => void;
 };
 
@@ -44,7 +44,7 @@ export default function RequestListItem({
   const handleCancelClick = () => {
     openModal(
       <ConfirmationModal
-        isOpen={true} // ✅ 이 줄이 빠져 있었음
+        isOpen={true}
         onCancel={closeModal}
         onDelete={() => {
           closeModal();
@@ -87,7 +87,7 @@ export default function RequestListItem({
       {/* 태블릿 & 데스크탑 */}
       <div className="hidden sm:grid grid-cols-[1fr_1.5fr_1fr_1fr_1fr] items-center w-full h-24 md:gap-10 lg:gap-20 border-b border-primary-100">
         <div className="min-w-[90px] text-sm md:text-base text-primary-950">{requestDate}</div>
-        <Link href={`/my/order-list/${orderId}`} className="text-secondary-500 underline">
+        <Link href={`/my/order-list/${orderId}`} className="text-blue-600">
           {productName}
         </Link>
         <div className="min-w-[90px] text-sm md:text-base text-primary-950">{formatPrice(price)}원</div>

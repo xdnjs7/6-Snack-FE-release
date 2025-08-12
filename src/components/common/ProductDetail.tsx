@@ -82,9 +82,7 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
     return (
       <div className="flex flex-col items-center h-screen">
         <DogSpinner />
-        <p className="text-black text-sm font-medium animate-pulse -mt-7">Loading...</p>
       </div>
-      // 나중에 교체
     );
   }
   if (isError || !product)
@@ -137,7 +135,7 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
           parentCategory={product.category.parent?.name ?? "기타"}
           childCategory={product.category.name}
         />
-        <div className="w-full flex flex-col md:flex-row md:gap-10">
+        <div className="w-full flex flex-col md:flex-row md:gap-10 ">
           <ProductImage imageUrl={product.imageUrl} />
           <div className="flex flex-col justify-center md:justify-start items-center w-full gap-8 md:gap-7.5 pt-7.5 md:pt-8">
             <div className="self-stretch inline-flex justify-between items-start">

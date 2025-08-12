@@ -50,7 +50,7 @@ export default function MenuDropdown({ menuType, onEdit, onDelete, className = "
       </div>
 
       {showDropdown && (
-        <div className="absolute top-0 right-6 md:left-6 bg-white border border-primary-200 shadow-lg z-10 w-[95px]">
+        <div className="absolute top-0  right-6 bg-white border border-primary-200 shadow-lg z-10 w-[95px]">
           <div className="py-1">
             {menuType !== "product" && (
               <div
