@@ -27,7 +27,8 @@ export default function OrderManageModal({
   const { closeModal } = useModal();
   const [adminMessage, setAdminMessage] = useState("");
 
-  const remainingBudget = order.budget.currentMonthBudget - order.budget.currentMonthExpense - order.totalPrice - 3000;
+  const remainingBudget =
+    order.budget.currentMonthBudget - order.budget.currentMonthExpense - order.productsPriceTotal - order.deliveryFee;
 
   return (
     <div
@@ -133,13 +134,15 @@ export default function OrderManageModal({
               <div className="flex justify-between items-center w-full px-[8px]">
                 <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-700">주문금액</p>
                 <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-700">
-                  {formatPrice(order.totalPrice)}원
+                  {formatPrice(order.productsPriceTotal)}원
                 </p>
               </div>
 
               <div className="flex justify-between items-center w-full px-[8px]">
                 <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-700">배송비</p>
-                <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-700">3,000원</p>
+                <p className="font-bold text-[16px]/[20px] tracking-tight text-primary-700">
+                  {formatPrice(order.deliveryFee)}원
+                </p>
               </div>
 
               <div className="flex justify-between items-center w-full px-[8px]">
@@ -147,7 +150,7 @@ export default function OrderManageModal({
                   총 주문금액
                 </p>
                 <p className="font-extrabold text-[20px]/[25px] tracking-tight text-primary-950 sm:text-[24px]/[30px]">
-                  {formatPrice(order.totalPrice + 3000)}원
+                  {formatPrice(order.productsPriceTotal + order.deliveryFee)}원
                 </p>
               </div>
             </section>
@@ -218,6 +221,11 @@ export default function OrderManageModal({
 
               // 승인인 경우 onClick 함수 실행 (토스페이먼츠 결제 페이지로 이동)
               if (type === "approve") {
+                onUpdateOrderStatus({
+                  orderId: String(order.id),
+                  status: "APPROVED",
+                  adminMessage,
+                });
                 onClick();
                 closeModal();
                 return;

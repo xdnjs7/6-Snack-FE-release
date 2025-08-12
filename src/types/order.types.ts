@@ -19,7 +19,8 @@ export type TOrderBase = {
   approver: null;
   adminMessage: string;
   requestMessage: string;
-  totalPrice: number;
+  deliveryFee: number;
+  productsPriceTotal: number;
   createdAt: string;
   updatedAt: string;
   status: string;
@@ -80,4 +81,38 @@ export type TOrderResponse = TOrderBase & {
     createdAt: string;
   })[];
   budget: TBudget;
+};
+
+export type TOrderWithoutStatus = {
+  id: string;
+  companyId: number;
+  userId: string;
+  approver: string | null;
+  adminMessage: string;
+  requestMessage: string;
+  deliveryFee: number;
+  productsPriceTotal: number;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+    companyId: number;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+    role: string;
+  };
+  receipts: {
+    id: number;
+    productId: number;
+    orderId: string;
+    productName: string;
+    price: number;
+    imageUrl: string;
+    quantity: number;
+    createdAt: string;
+  }[];
 };

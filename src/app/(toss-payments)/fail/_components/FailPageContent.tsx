@@ -23,8 +23,8 @@ export default function FailPageContent({ message }: TFailPageContentProps) {
           >{`실패 사유 : ${message}`}</p>
         </div>
         <button
-          aria-label="장바구니로 이동"
-          onClick={() => router.push("/cart")}
+          aria-label="상품 리스트로 이동"
+          onClick={() => router.push("/products")}
           className="outline-none bg-blue-500 text-white text-[18px]/[30px] w-full max-w-[285px] rounded-[12px] h-[56px] font-bold cursor-pointer sm:max-w-[360px] sm:h-[64px]"
         >
           닫기

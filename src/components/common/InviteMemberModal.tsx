@@ -187,7 +187,7 @@ export default function InviteMemberModal({
                     {Object.entries(roleLabels).map(([role, label]) => (
                       <div
                         key={role}
-                        className="px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-primary-950 text-base font-normal"
+                        className="px-4 py-2.5 hover:bg-primary-50 cursor-pointer text-primary-950 text-base font-normal"
                         onClick={() => {
                           setSelectedRole(role as TUserRole);
                           setIsDropdownOpen(false);

@@ -13,7 +13,7 @@ type TErrorPageContentProps = {
   from?: string;
 };
 
-export default function ErrorPageContent({ from }: TErrorPageContentProps) {
+export default function UnauthorizedErrorPageContent({ from }: TErrorPageContentProps) {
   const { user } = useAuth();
   const router = useRouter();
 
