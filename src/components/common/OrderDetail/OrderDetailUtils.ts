@@ -3,6 +3,7 @@ export const getStatusText = (status: string): string => {
   const statusMap: Record<string, string> = {
     PENDING: "대기중",
     APPROVED: "승인",
+    INSTANT_APPROVED: "즉시 구매",
     REJECTED: "거절",
     CANCELED: "취소",
   };
