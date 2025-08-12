@@ -40,7 +40,8 @@ export default function InviteSignUpPage() {
     mode: "onChange",
   });
 
-  const [passwordInput, passwordConfirmInput] = watch("password", "passwordConfirm");
+  const passwordInput = watch("password");
+  const passwordConfirmInput = watch("passwordConfirm");
 
   useEffect(() => {
     const fetchInviteInfo = async () => {
