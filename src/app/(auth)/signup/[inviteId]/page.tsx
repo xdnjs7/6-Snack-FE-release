@@ -33,6 +33,7 @@ export default function InviteSignUpPage() {
     register,
     handleSubmit,
     watch,
+    trigger,
     formState: { errors, isSubmitting, isValid },
     setError: setFormError,
   } = useForm<TInviteSignUpFormData>({
@@ -42,6 +43,12 @@ export default function InviteSignUpPage() {
 
   const passwordInput = watch("password");
   const passwordConfirmInput = watch("passwordConfirm");
+
+  useEffect(() => {
+    if (passwordConfirmInput) {
+      trigger("passwordConfirm");
+    }
+  }, [passwordInput, passwordConfirmInput, trigger]);
 
   useEffect(() => {
     const fetchInviteInfo = async () => {
@@ -198,7 +205,6 @@ export default function InviteSignUpPage() {
             <FormErrorMessage message={errors.password?.message} />
           </div>
 
-          {/* 비밀번호 확인 input wrapper*/}
           <div className="flex flex-col gap-1">
             <div
               className={clsx(
@@ -232,7 +238,6 @@ export default function InviteSignUpPage() {
                   )}
                 />
               </div>
-              {/* 비밀번호 확인 보임토글 */}
               <button
                 type="button"
                 onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
