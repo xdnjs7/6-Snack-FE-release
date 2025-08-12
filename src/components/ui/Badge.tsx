@@ -37,12 +37,12 @@ const badgeStyleMap: Record<
     textColor: "text-red",
   },
   admin: {
-    bg: "bg-primary-600",
+    bg: "bg-primary-700",
     text: "관리자",
     textColor: "text-white",
   },
   user: {
-    bg: "bg-primary-100",
+    bg: "bg-primary-50",
     text: "일반",
     textColor: "text-primary-400",
   },
