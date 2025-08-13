@@ -296,7 +296,7 @@ const OrderHistoryPage = () => {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="flex items-center gap-1.5 cursor-pointer disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 cursor-pointer disabled:cursor-default"
             >
               <div className="w-6 h-6 relative overflow-hidden">
                 <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
@@ -306,7 +306,7 @@ const OrderHistoryPage = () => {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="flex items-center gap-[5px] cursor-pointer disabled:cursor-not-allowed"
+              className="flex items-center gap-[5px] cursor-pointer disabled:cursor-default"
             >
               <div className="text-primary-800 text-base font-normal">
                 Next
@@ -521,7 +521,7 @@ const OrderHistoryPage = () => {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="flex items-center gap-1.5 cursor-pointer disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 cursor-pointer disabled:cursor-default"
             >
               <div className="w-6 h-6 relative overflow-hidden">
                 <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
@@ -531,7 +531,7 @@ const OrderHistoryPage = () => {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="flex items-center gap-[5px] cursor-pointer disabled:cursor-not-allowed"
+              className="flex items-center gap-[5px] cursor-pointer disabled:cursor-default"
             >
               <div className="text-primary-800 text-base font-normal">
                 Next
@@ -733,7 +733,7 @@ const OrderHistoryPage = () => {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="flex justify-start items-center gap-1.5 cursor-pointer disabled:cursor-not-allowed"
+              className="flex justify-start items-center gap-1.5 cursor-pointer disabled:cursor-default"
             >
               <div className="w-6 h-6 relative overflow-hidden">
                 <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
@@ -743,7 +743,7 @@ const OrderHistoryPage = () => {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="flex justify-start items-center gap-[5px] cursor-pointer disabled:cursor-not-allowed"
+              className="flex justify-start items-center gap-[5px] cursor-pointer disabled:cursor-default"
             >
               <div className="text-center justify-start text-primary-800 text-base font-normal">
                 Next
