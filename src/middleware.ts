@@ -29,26 +29,13 @@ export function middleware(request: NextRequest) {
   const authPaths = ["/login", "/signup"];
   const isAuthRoute = authPaths.some((path) => pathname === path);
 
-  // protected 폴더 경로 확인 (main 그룹의 모든 경로, products 제외)
-  const isProtectedRoute =
-    pathname.startsWith("/cart") ||
-    pathname.startsWith("/manage") ||
-    pathname.startsWith("/my") ||
-    pathname.startsWith("/order-history") ||
-    pathname.startsWith("/order-manage") ||
-    pathname.startsWith("/profile") ||
-    pathname.startsWith("/products");
-
   // 로그인한 사용자가 인증 경로(로그인, 회원가입)에 접근하는 경우
   if (isAuthRoute && isAuthenticated) {
     // 인증된 사용자는 메인 페이지로 리디렉션
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // 로그인하지 않은 사용자가 protected 경로에 접근하는 경우
-  if (isProtectedRoute && !isAuthenticated) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  // accessToken이 없어도 보호 경로 차단하지 않음 (자동 재발급을 위해)
 
   // 역할 기반 접근 제어 (인증된 사용자만)
   if (isAuthenticated && userRole) {
