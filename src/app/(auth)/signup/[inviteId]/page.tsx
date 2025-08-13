@@ -23,6 +23,7 @@ export default function InviteSignUpPage() {
   const router = useRouter();
   const inviteId = params.inviteId as string;
 
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [inviteInfo, setInviteInfo] = useState<TInviteInfo | null>(null);
   const [inviteError, setInviteError] = useState<string | null>(null);
@@ -34,7 +35,7 @@ export default function InviteSignUpPage() {
     handleSubmit,
     watch,
     trigger,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isValid },
     setError: setFormError,
   } = useForm<TInviteSignUpFormData>({
     resolver: zodResolver(inviteSignupSchema),
@@ -72,16 +73,19 @@ export default function InviteSignUpPage() {
     if (!inviteInfo) return;
 
     try {
+      setIsDisabled(true);
       await signUpWithInviteApi(inviteId, data.password, data.passwordConfirm);
       router.push("/login");
     } catch {
       setFormError("root", { message: "회원가입에 실패했습니다. 다시 시도해주세요." });
+    } finally {
+      setIsDisabled(false);
     }
   };
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center ">
+      <div className="flex flex-col items-center justify-center h-[80vh]">
         <DogSpinner />
       </div>
     );
@@ -258,13 +262,13 @@ export default function InviteSignUpPage() {
 
         <Button
           type="primary"
-          label={isSubmitting ? "처리 중..." : "가입하기"}
+          label={isDisabled ? "처리 중..." : "가입하기"}
           className={clsx(
             "w-full h-[64px] mb-[24px]",
-            isValid && !isSubmitting ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
+            isValid && !isDisabled ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
           )}
-          onClick={isValid && !isSubmitting ? handleSubmit(onSubmit) : undefined}
-          disabled={!isValid || isSubmitting}
+          onClick={isValid && !isDisabled ? handleSubmit(onSubmit) : undefined}
+          disabled={!isValid || isDisabled}
           aria-describedby={!isValid ? "form-validation-info" : undefined}
         />
         {!isValid && (
