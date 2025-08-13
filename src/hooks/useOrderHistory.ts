@@ -50,7 +50,8 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
     productName?: string;
     itemSummary?: string;
     item?: string;
-    totalPrice?: number;
+    deliveryFee?: number;
+    productsPriceTotal?: number;
     amount?: number;
     approvalDate?: string;
     updatedAt?: string;
@@ -68,11 +69,9 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
     status: statusMap["approved"],
     item: item.productName || item.itemSummary || item.item || "-",
     amount:
-      typeof item.totalPrice === "number"
-        ? formatPrice(item.totalPrice)
-        : typeof item.amount === "number"
-          ? formatPrice(item.amount)
-          : "-",
+      typeof item.productsPriceTotal === "number" && typeof item.deliveryFee === "number"
+        ? formatPrice(item.productsPriceTotal + item.deliveryFee)
+        : "-",
     approvalDate: item.approvalDate ? formatDate(item.approvalDate) : item.updatedAt ? formatDate(item.updatedAt) : "-",
     manager: item.approver || item.managerName || item.manager || "-",
     adminMessage: item.adminMessage,
