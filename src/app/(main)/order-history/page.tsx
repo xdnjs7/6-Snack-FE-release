@@ -86,13 +86,15 @@ const OrderHistoryPage = () => {
     : 0;
 
   const emptyOrdersContent = (
-    <NoContent
-      title="구매 내역이 없어요"
-      subText1="아직 구매한 내역이 없습니다."
-      subText2="상품을 둘러보고 첫 주문을 진행해 보세요."
-      buttonText="상품 보러가기"
-      onClick={() => router.push("/products")}
-    />
+    <div className="flex flex-col justify-center items-center pb-10 w-full">
+      <NoContent
+        title="구매 내역이 없어요"
+        subText1="아직 구매한 내역이 없습니다."
+        subText2="상품을 둘러보고 첫 주문을 진행해 보세요."
+        buttonText="상품 보러가기"
+        onClick={() => router.push("/products")}
+      />
+    </div>
   );
 
   return (
