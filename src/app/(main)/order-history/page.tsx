@@ -100,7 +100,7 @@ const OrderHistoryPage = () => {
   return (
     <>
       {/* Mobile Layout */}
-      <main className="min-h-screen w-full max-w-sm mx-auto relative bg-white overflow-hidden sm:hidden" aria-label="구매 내역 모바일 화면">
+      <main className="min-h-screen w-full relative bg-white overflow-hidden sm:hidden" aria-label="구매 내역 모바일 화면">
         <header className="self-stretch flex justify-between items-center px-4 pt-6 pb-6" role="banner">
           <h1 className="text-primary-800 text-lg font-bold flex-shrink-0">구매 내역 확인</h1>
           <nav aria-label="정렬 옵션" className="flex-shrink-0">
@@ -322,7 +322,7 @@ const OrderHistoryPage = () => {
       </main>
 
       {/* Tablet Layout */}
-      <main className="min-h-screen w-full max-w-3xl mx-auto relative bg-white overflow-hidden hidden sm:block md:hidden" aria-label="구매 내역 태블릿 화면">
+      <main className="min-h-screen w-full relative bg-white overflow-hidden hidden sm:block md:hidden" aria-label="구매 내역 태블릿 화면">
         <header className="self-stretch flex justify-between items-center pt-8 px-8 pb-6" role="banner">
           <h1 className="text-primary-800 text-lg font-bold flex-shrink-0">구매 내역 확인</h1>
           <nav aria-label="정렬 옵션" className="flex-shrink-0">
