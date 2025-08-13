@@ -8,7 +8,7 @@ export type TPurchaseItem = {
   id: string;
   requestDate: string;
   requester: string;
-  status: "요청" | "승인";
+  status: "요청" | "승인" | "INSTANT_APPROVED";
   item: string;
   amount: string;
   approvalDate: string;
@@ -38,19 +38,18 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
   const purchaseListLoading = approvedLoading;
   const purchaseListError = approvedIsError ? (approvedErrorObj as Error)?.message : null;
 
-  // 데이터 파싱 및 정렬
-  const statusMap: Record<string, "요청" | "승인"> = { approved: "승인" };
-
   type TOrderItem = {
     id: number | string;
     requestDate?: string;
     createdAt?: string;
     requesterName?: string;
     requester?: string;
+    status?: "요청" | "승인" | "INSTANT_APPROVED";
     productName?: string;
     itemSummary?: string;
     item?: string;
-    totalPrice?: number;
+    deliveryFee?: number;
+    productsPriceTotal?: number;
     amount?: number;
     approvalDate?: string;
     updatedAt?: string;
@@ -65,14 +64,12 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
     id: String(item.id),
     requestDate: item.requestDate ? formatDate(item.requestDate) : item.createdAt ? formatDate(item.createdAt) : "-",
     requester: item.requesterName || item.requester || "-",
-    status: statusMap["approved"],
+    status: item.status as "요청" | "승인" | "INSTANT_APPROVED",
     item: item.productName || item.itemSummary || item.item || "-",
     amount:
-      typeof item.totalPrice === "number"
-        ? formatPrice(item.totalPrice)
-        : typeof item.amount === "number"
-          ? formatPrice(item.amount)
-          : "-",
+      typeof item.productsPriceTotal === "number" && typeof item.deliveryFee === "number"
+        ? formatPrice(item.productsPriceTotal + item.deliveryFee)
+        : "-",
     approvalDate: item.approvalDate ? formatDate(item.approvalDate) : item.updatedAt ? formatDate(item.updatedAt) : "-",
     manager: item.approver || item.managerName || item.manager || "-",
     adminMessage: item.adminMessage,
