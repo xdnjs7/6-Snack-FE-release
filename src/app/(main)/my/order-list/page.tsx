@@ -48,9 +48,9 @@ export default function MyOrderListPage() {
     const copy = [...requests];
     switch (sortOption) {
       case "낮은 가격순":
-        return copy.sort((a, b) => a.totalPrice - b.totalPrice);
+        return copy.sort((a, b) => a.productsPriceTotal - b.productsPriceTotal);
       case "높은 가격순":
-        return copy.sort((a, b) => b.totalPrice - a.totalPrice);
+        return copy.sort((a, b) => b.productsPriceTotal - a.productsPriceTotal);
       default:
         return copy.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     }
@@ -86,7 +86,7 @@ export default function MyOrderListPage() {
               key={item.id}
               requestDate={formatDate(item.createdAt)}
               productName={getProductName(item.receipts)}
-              price={item.totalPrice + 3000}
+              price={(item.productsPriceTotal ?? 0) + (item.deliveryFee ?? 0)}
               status={convertStatus(item.status)}
               orderId={item.id}
               onRequestCancel={() => {
