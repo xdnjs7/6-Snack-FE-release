@@ -38,15 +38,13 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
   const purchaseListLoading = approvedLoading;
   const purchaseListError = approvedIsError ? (approvedErrorObj as Error)?.message : null;
 
-  // 데이터 파싱 및 정렬
-  const statusMap: Record<string, "요청" | "승인"> = { approved: "승인" };
-
   type TOrderItem = {
     id: number | string;
     requestDate?: string;
     createdAt?: string;
     requesterName?: string;
     requester?: string;
+    status?: "요청" | "승인" | "INSTANT_APPROVED";
     productName?: string;
     itemSummary?: string;
     item?: string;
@@ -66,7 +64,7 @@ export const useOrderHistory = (sortByDefault: string = "latest", itemsPerPage: 
     id: String(item.id),
     requestDate: item.requestDate ? formatDate(item.requestDate) : item.createdAt ? formatDate(item.createdAt) : "-",
     requester: item.requesterName || item.requester || "-",
-    status: statusMap["approved"],
+    status: item.status as "요청" | "승인" | "INSTANT_APPROVED",
     item: item.productName || item.itemSummary || item.item || "-",
     amount:
       typeof item.productsPriceTotal === "number" && typeof item.deliveryFee === "number"
