@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, FormEvent, KeyboardEvent } from 'react';
+import React, { useState, FormEvent, KeyboardEvent, useRef, useEffect } from 'react';
 import { ChatMessage } from '@/types/chat.types';
 
 interface ChatWindowProps {
@@ -12,6 +12,11 @@ interface ChatWindowProps {
 
 export default function ChatWindow({ messages, isLoading, onSendMessage, onResend, onClose }: ChatWindowProps) {
   const [input, setInput] = useState('');
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isLoading]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -99,7 +104,7 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
             </div>
           </div>
         )}
-        <div className="h-1" />
+        <div ref={bottomRef} className="h-1" />
       </div>
 
       {/* Input */}
