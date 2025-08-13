@@ -18,6 +18,17 @@ export function middleware(request: NextRequest) {
 
   // 쿠키에서 인증 토큰 확인
   const authToken = request.cookies.get("accessToken")?.value;
+  const refreshToken = request.cookies.get("refreshToken")?.value;
+
+  // 로그인을 아예 안한 유저(둘 다 없음)는 랜딩, 로그인, 회원가입(하위포함)만 허용
+  if (!authToken && !refreshToken) {
+    const allowedPaths = ["/", "/login"];
+    const isSignupPath = pathname === "/signup" || pathname.startsWith("/signup/");
+    const isAllowed = allowedPaths.includes(pathname) || isSignupPath;
+    if (!isAllowed) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+  }
 
   // JWT 토큰에서 사용자 역할 추출
   const userRole = authToken ? getUserRoleFromToken(authToken) : null;
