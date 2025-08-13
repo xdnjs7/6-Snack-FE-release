@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+
 import Dropdown from "@/components/common/DropDown";
 import Pagination from "@/components/common/Pagination";
 import MyRequestList from "@/components/common/MyRequestList";
@@ -10,6 +13,8 @@ import { formatDate } from "@/lib/utils/formatDate.util";
 import { convertStatus } from "@/lib/utils/convertStatus.util";
 import { useCancelOrder } from "@/hooks/useCancelOrder";
 import Toast from "@/components/common/Toast";
+import DogSpinner from "@/components/common/DogSpinner";
+import icNoOrder from "@/assets/icons/ic_no_order.svg";
 
 const PAGE_SIZE = 5;
 
@@ -19,24 +24,30 @@ export default function MyOrderListPage() {
   const [sortOption, setSortOption] = useState("최신순");
   const [toastVisible, setToastVisible] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const router = useRouter();
+
   const cancelOrder = useCancelOrder((orderId: number) => {
     setRequests((prev) => prev.filter((item) => item.id !== orderId));
     setToastVisible(true);
-
     setTimeout(() => setToastVisible(false), 3000);
   });
 
   useEffect(() => {
     const loadData = async () => {
       try {
+        setIsLoading(true);
         const data = await fetchMyOrders();
-        const filtered = data.filter((item) => item.status !== "CANCELED"); // 취소된 요청은 표시 안함
+        const filtered = data.filter((item) => item.status !== "CANCELED");
         setRequests(filtered);
       } catch (error) {
         console.error(error);
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
       }
     };
-
     loadData();
   }, []);
 
@@ -64,6 +75,49 @@ export default function MyOrderListPage() {
 
   const paginated = sorted.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
+  useEffect(() => {
+    if (!isLoading && !isError && requests.length > 0 && paginated.length === 0 && currentPage > 1) {
+      setCurrentPage((p) => p - 1);
+    }
+  }, [requests.length, paginated.length, isLoading, isError]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col justify-center items-center h-screen">
+        <DogSpinner />
+      </div>
+    );
+  }
+
+  if (isError || requests.length === 0) {
+    return (
+      <section className="flex flex-1 justify-center min-h-screen" role="status" aria-label="빈 상태">
+        <div className="sm:w-80 inline-flex flex-col justify-start items-center gap-7 py-12 mt-[142px] sm:mt-[222px] md:mt-[191px]">
+          <div className="w-24 h-24 relative" role="img" aria-label="주문 내역 없음 아이콘">
+            <Image src={icNoOrder} alt="주문 내역 없음" fill className="object-contain" />
+          </div>
+          <div className="self-stretch flex flex-col justify-start items-center gap-12">
+            <div className="w-72 flex flex-col justify-start items-center gap-2.5">
+              <h2 className="self-stretch text-center text-neutral-800 text-2xl font-extrabold">
+                구매 요청 내역이 없어요
+              </h2>
+              <p className="self-stretch text-center text-neutral-700 text-base leading-relaxed">
+                원하는 상품을 요청해보세요.
+              </p>
+            </div>
+            <button
+              className="self-stretch h-16 px-4 py-3 bg-neutral-800 rounded-sm inline-flex justify-center items-center cursor-pointer"
+              onClick={() => router.push("/products")}
+              aria-label="상품 리스트 페이지로 이동"
+            >
+              <span className="text-white text-base font-bold">상품 리스트로 이동</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <main className="flex flex-col items-center md:px-0 pt-10 pb-40 min-h-[calc(100vh-112px)]">
       <div className="w-full max-w-[1400px] py-4 flex justify-between items-center">
@@ -89,9 +143,7 @@ export default function MyOrderListPage() {
               price={(item.productsPriceTotal ?? 0) + (item.deliveryFee ?? 0)}
               status={convertStatus(item.status)}
               orderId={item.id}
-              onRequestCancel={() => {
-                handleCancel(item.id);
-              }}
+              onRequestCancel={() => handleCancel(item.id)}
             />
           ))}
         </div>

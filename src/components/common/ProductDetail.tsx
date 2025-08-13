@@ -80,7 +80,7 @@ export default function ProductDetail({ productId }: TProductDetailProps) {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center h-screen">
+      <div className="flex flex-col justify-center h-screen">
         <DogSpinner />
       </div>
     );
