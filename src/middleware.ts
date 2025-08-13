@@ -18,7 +18,6 @@ export function middleware(request: NextRequest) {
 
   // 쿠키에서 인증 토큰 확인
   const authToken = request.cookies.get("accessToken")?.value;
-  const refreshToken = request.cookies.get("refreshToken")?.value;
 
   // JWT 토큰에서 사용자 역할 추출
   const userRole = authToken ? getUserRoleFromToken(authToken) : null;
@@ -47,14 +46,8 @@ export function middleware(request: NextRequest) {
   }
 
   // 로그인하지 않은 사용자가 protected 경로에 접근하는 경우
-  if (isProtectedRoute && !authToken) {
-    // accessToken이 없고 refreshToken이 있는 경우, 재발급 API로 리디렉션
-    if (refreshToken) {
-      return NextResponse.redirect(new URL("/auth/refresh-token", request.url));
-    } else {
-      // 둘 다 없으면 로그인 페이지로 이동
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
+  if (isProtectedRoute && !isAuthenticated) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
   // 역할 기반 접근 제어 (인증된 사용자만)
