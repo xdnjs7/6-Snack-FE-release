@@ -249,7 +249,7 @@ const OrderHistoryPage = () => {
                       <div className="text-center justify-center text-primary-950 text-sm font-bold">
                         {item.requester}
                       </div>
-                      {item.adminMessage?.includes("즉시 구매") && (
+                      {item.status === "INSTANT_APPROVED" && (
                         <div className="px-1 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1">
                           <div className="justify-center text-secondary-500 text-xs font-bold">즉시 구매</div>
                         </div>
@@ -470,7 +470,7 @@ const OrderHistoryPage = () => {
                           <div className="text-center justify-center text-primary-950 text-base font-bold">
                             {item.requester}
                           </div>
-                          {item.adminMessage?.includes("즉시 구매") && (
+                          {item.status === "INSTANT_APPROVED" && (
                             <div className="px-1 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1">
                               <div className="justify-center text-secondary-500 text-xs font-bold">
                                 즉시 구매
@@ -683,7 +683,7 @@ const OrderHistoryPage = () => {
                       <div className="justify-start text-primary-800 text-base font-normal whitespace-nowrap overflow-hidden text-ellipsis">
                         {item.requester}
                       </div>
-                      {item.adminMessage?.includes("즉시 구매") && (
+                      {item.status === "INSTANT_APPROVED" && (
                         <div className="px-2 py-1 bg-blue-50 rounded-[100px] flex justify-center items-center gap-1 whitespace-nowrap">
                           <div className="justify-center items-center text-center text-secondary-500 text-xs font-bold w-12 whitespace-nowrap overflow-hidden text-ellipsis">
                             즉시 구매

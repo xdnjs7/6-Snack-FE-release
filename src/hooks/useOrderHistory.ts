@@ -8,7 +8,7 @@ export type TPurchaseItem = {
   id: string;
   requestDate: string;
   requester: string;
-  status: "요청" | "승인";
+  status: "요청" | "승인" | "INSTANT_APPROVED";
   item: string;
   amount: string;
   approvalDate: string;
