@@ -50,35 +50,37 @@ export function middleware(request: NextRequest) {
 
   // 역할 기반 접근 제어 (인증된 사용자만)
   if (isAuthenticated && userRole) {
-    // 1. 일반유저(USER)가 접근할 수 없는 경로들
+    // SUPER_ADMIN만 접근 가능한 경로
+    const superAdminOnlyPaths = [
+      "/manage/users",
+      "/manage/budgets",
+    ];
+
+    // USER, ADMIN 모두 접근 불가 (SUPER_ADMIN만 접근 가능)
+    const isSuperAdminOnly = superAdminOnlyPaths.some((path) => pathname === path || pathname.startsWith(path + "/"));
+    if ((userRole === "USER" || userRole === "ADMIN") && isSuperAdminOnly) {
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
+    }
+
+    // 일반유저(USER)가 접근할 수 없는 경로들 (SUPER_ADMIN 전용 제외)
     const userRestrictedPaths = [
-      "/manage/users", // 회원관리
-      "/manage/budgets", // 예산관리
       "/order-manage", // 구매요청관리
       "/order-history", // 구매내역확인
     ];
-
-    // 2. 일반유저가 아닌 경우(ADMIN, SUPER_ADMIN) 접근할 수 없는 경로
-    const nonUserRestrictedPaths = [
-      "/cart/order", // 장바구니-주문
-    ];
-
-    // 일반유저 제한 체크 (6개 경로: 회원관리, 예산관리, 구매요청관리, 구매요청관리상세, 구매내역확인, 구매내역확인상세)
-    if (userRole === "USER") {
-      const isUserRestricted = userRestrictedPaths.some((path) => pathname === path || pathname.startsWith(path + "/"));
-      if (isUserRestricted) {
-        return NextResponse.redirect(new URL("/unauthorized", request.url));
-      }
+    const isUserRestricted = userRestrictedPaths.some((path) => pathname === path || pathname.startsWith(path + "/"));
+    if (userRole === "USER" && isUserRestricted) {
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
 
     // 일반유저가 아닌 경우 제한 체크 (장바구니-주문 접근 불가)
-    if (userRole !== "USER") {
-      const isNonUserRestricted = nonUserRestrictedPaths.some(
-        (path) => pathname === path || pathname.startsWith(path + "/"),
-      );
-      if (isNonUserRestricted) {
-        return NextResponse.redirect(new URL("/unauthorized?from=order", request.url));
-      }
+    const nonUserRestrictedPaths = [
+      "/cart/order", // 장바구니-주문
+    ];
+    const isNonUserRestricted = nonUserRestrictedPaths.some(
+      (path) => pathname === path || pathname.startsWith(path + "/"),
+    );
+    if (userRole !== "USER" && isNonUserRestricted) {
+      return NextResponse.redirect(new URL("/unauthorized?from=order", request.url));
     }
   }
 
