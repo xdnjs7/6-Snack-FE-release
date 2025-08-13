@@ -1,6 +1,9 @@
 import Link from "next/link";
 import ArrowRightIcon from "@/components/svg/ArrowRightIconSvg";
 import Image from "next/image";
+import mobileImg from "@/assets/images/landing/landingPage_mobile.webp";
+import tabletImg from "@/assets/images/landing/landingPage_tablet.webp";
+import desktopImg from "@/assets/images/landing/landingPage_desktop.webp";
 
 const CARD_TEXTS = [
   "흩어진 간식 구매처를 통합하고,\n기수별 지출을 똑똑하게 관리하세요.",
@@ -13,7 +16,7 @@ const CARD_TEXTS = [
 export default function LandingPage() {
   return (
     <div className="flex flex-col">
-      <div className="flex flex-col items-center justify-start pt-10flex-grow">
+      <div className="flex flex-col items-center justify-start pt-10 flex-grow">
         <h1 className="text-center text-2xl sm:text-4xl md:text-5xl font-extrabold text-primary-950 leading-tight">
           내가 원하는 간식을 쉽고 빠르게 구매
         </h1>
@@ -30,23 +33,21 @@ export default function LandingPage() {
 
         <div className="mt-10 w-full max-w-[1300px] rounded-[10px] overflow-hidden">
           <Image
-            src="/images/landingPage_mobile.png"
+            src={mobileImg}
             alt="mobile preview"
             width={1300}
             height={600}
             className="block sm:hidden w-full h-auto"
           />
-
           <Image
-            src="/images/landingPage_tablet.png"
+            src={tabletImg}
             alt="tablet preview"
             width={1300}
             height={600}
             className="hidden sm:block md:hidden w-full h-auto"
           />
-
           <Image
-            src="/images/landingPage_desktop.png"
+            src={desktopImg}
             alt="desktop preview"
             width={1300}
             height={600}
@@ -55,7 +56,7 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* ✅ Desktop/Tablet 고정 슬라이드 */}
+      {/* Desktop/Tablet 고정 슬라이드 */}
       <div className="hidden sm:block fixed bottom-0 w-full py-6 overflow-hidden z-20 bg-transparent backdrop-blur">
         <div className="flex animate-slide gap-10 w-max px-8">
           {[...CARD_TEXTS, ...CARD_TEXTS, ...CARD_TEXTS].map((text, idx) => (
@@ -69,7 +70,7 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* ✅ Mobile 고정 슬라이드 */}
+      {/* Mobile 고정 슬라이드 */}
       <div className="block sm:hidden fixed bottom-0 w-full z-20 bg-transparent backdrop-blur ">
         <div className="h-[260px] relative">
           {[0, 1].map((row) => (

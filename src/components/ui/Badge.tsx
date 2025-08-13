@@ -2,7 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import Image, { StaticImageData } from "next/image";
 import XIconSvg from "@/components/svg/XIconSvg";
-import IcPending from "@/assets/icons/ic_time.svg";
+import TimeIconSvg from "@/components/svg/TimeIconSvg";
 import { TBadgeProps, TBadgeType } from "@/types/badge.types";
 import CheckIconSvg from "@/components/svg/CheckIconSvg";
 
@@ -24,7 +24,6 @@ const badgeStyleMap: Record<
     bg: "bg-primary-200",
     text: "대기 중",
     textColor: "text-primary-700",
-    iconSrc: IcPending,
   },
   approved: {
     bg: "bg-sky-100",
@@ -37,12 +36,12 @@ const badgeStyleMap: Record<
     textColor: "text-red",
   },
   admin: {
-    bg: "bg-primary-600",
+    bg: "bg-primary-700",
     text: "관리자",
     textColor: "text-white",
   },
   user: {
-    bg: "bg-primary-100",
+    bg: "bg-primary-50",
     text: "일반",
     textColor: "text-primary-400",
   },
@@ -70,6 +69,10 @@ export default function Badge({ type }: TBadgeProps) {
       ) : type === "approved" ? (
         <div className="w-3.5 h-3.5">
           <CheckIconSvg stroke="white" bgColor="#0EA5E9" className="w-full h-full" />
+        </div>
+      ) : type === "pending" ? (
+        <div className="w-3.5 h-3.5">
+          <TimeIconSvg className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary-700" />
         </div>
       ) : iconSrc ? (
         <div className="w-3.5 h-3.5 relative">

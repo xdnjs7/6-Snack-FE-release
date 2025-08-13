@@ -70,7 +70,9 @@ export default function RequestListItem({
           </div>
         </div>
         <div className="flex flex-col gap-1">
-          <div className="text-sm text-primary-950">{productName}</div>
+          <Link href={`/my/order-list/${orderId}`} className="text-blue-600">
+            {productName}
+          </Link>
           <div className="text-sm text-primary-950">{formatPrice(price)}원</div>
         </div>
 

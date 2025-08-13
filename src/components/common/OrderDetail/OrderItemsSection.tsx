@@ -58,7 +58,7 @@ export default function OrderItemsSection({
           <div className="justify-center text-primary-950 text-base font-normal">
             총 {items.length}개
           </div>
-          <ArrowIconSvg direction={isItemsExpanded ? "up" : "down"} className="w-5 h-5 text-primary-950" />
+          <ArrowIconSvg direction={isItemsExpanded ? "up" : "down"} className="w-5 h-5 text-primary-950 relative z-[110]" />
         </div>
 
         {isItemsExpanded && (

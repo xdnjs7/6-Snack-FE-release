@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, FormEvent, KeyboardEvent } from 'react';
+import React, { useState, FormEvent, KeyboardEvent, useRef, useEffect } from 'react';
 import { ChatMessage } from '@/types/chat.types';
 
 interface ChatWindowProps {
@@ -12,6 +12,11 @@ interface ChatWindowProps {
 
 export default function ChatWindow({ messages, isLoading, onSendMessage, onResend, onClose }: ChatWindowProps) {
   const [input, setInput] = useState('');
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isLoading]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -48,7 +53,6 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
       <header
         className="relative flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 bg-primary-50 border-b border-primary-200 text-primary-950"
       >
-        <div className="absolute left-1/2 top-1 -translate-x-1/2 h-1.5 w-14 rounded-full bg-primary-200 sm:hidden" />
         <div className="flex items-center gap-2 text-sm font-semibold tracking-wide">
           <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-primary-700 ring-2 ring-white/50" />
           Snack AI 도우미
@@ -100,7 +104,7 @@ export default function ChatWindow({ messages, isLoading, onSendMessage, onResen
             </div>
           </div>
         )}
-        <div className="h-1" />
+        <div ref={bottomRef} className="h-1" />
       </div>
 
       {/* Input */}

@@ -17,7 +17,18 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 쿠키에서 인증 토큰 확인
-  const authToken = request.cookies.get("refreshToken")?.value;
+  const authToken = request.cookies.get("accessToken")?.value;
+  const refreshToken = request.cookies.get("refreshToken")?.value;
+
+  // 로그인을 아예 안한 유저(둘 다 없음)는 랜딩, 로그인, 회원가입(하위포함)만 허용
+  if (!authToken && !refreshToken) {
+    const allowedPaths = ["/", "/login"];
+    const isSignupPath = pathname === "/signup" || pathname.startsWith("/signup/");
+    const isAllowed = allowedPaths.includes(pathname) || isSignupPath;
+    if (!isAllowed) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+  }
 
   // JWT 토큰에서 사용자 역할 추출
   const userRole = authToken ? getUserRoleFromToken(authToken) : null;
@@ -29,58 +40,47 @@ export function middleware(request: NextRequest) {
   const authPaths = ["/login", "/signup"];
   const isAuthRoute = authPaths.some((path) => pathname === path);
 
-  // protected 폴더 경로 확인 (main 그룹의 모든 경로, products 제외)
-  const isProtectedRoute =
-    pathname.startsWith("/cart") ||
-    pathname.startsWith("/manage") ||
-    pathname.startsWith("/my") ||
-    pathname.startsWith("/order-history") ||
-    pathname.startsWith("/order-manage") ||
-    pathname.startsWith("/profile") ||
-    pathname.startsWith("/products");
-
   // 로그인한 사용자가 인증 경로(로그인, 회원가입)에 접근하는 경우
   if (isAuthRoute && isAuthenticated) {
     // 인증된 사용자는 메인 페이지로 리디렉션
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // 로그인하지 않은 사용자가 protected 경로에 접근하는 경우
-  if (isProtectedRoute && !isAuthenticated) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  // accessToken이 없어도 보호 경로 차단하지 않음 (자동 재발급을 위해)
 
   // 역할 기반 접근 제어 (인증된 사용자만)
   if (isAuthenticated && userRole) {
-    // 1. 일반유저(USER)가 접근할 수 없는 경로들
+    // SUPER_ADMIN만 접근 가능한 경로
+    const superAdminOnlyPaths = [
+      "/manage/users",
+      "/manage/budgets",
+    ];
+
+    // USER, ADMIN 모두 접근 불가 (SUPER_ADMIN만 접근 가능)
+    const isSuperAdminOnly = superAdminOnlyPaths.some((path) => pathname === path || pathname.startsWith(path + "/"));
+    if ((userRole === "USER" || userRole === "ADMIN") && isSuperAdminOnly) {
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
+    }
+
+    // 일반유저(USER)가 접근할 수 없는 경로들 (SUPER_ADMIN 전용 제외)
     const userRestrictedPaths = [
-      "/manage/users", // 회원관리
-      "/manage/budgets", // 예산관리
       "/order-manage", // 구매요청관리
       "/order-history", // 구매내역확인
     ];
-
-    // 2. 일반유저가 아닌 경우(ADMIN, SUPER_ADMIN) 접근할 수 없는 경로
-    const nonUserRestrictedPaths = [
-      "/cart/order", // 장바구니-주문
-    ];
-
-    // 일반유저 제한 체크 (6개 경로: 회원관리, 예산관리, 구매요청관리, 구매요청관리상세, 구매내역확인, 구매내역확인상세)
-    if (userRole === "USER") {
-      const isUserRestricted = userRestrictedPaths.some((path) => pathname === path || pathname.startsWith(path + "/"));
-      if (isUserRestricted) {
-        return NextResponse.redirect(new URL("/unauthorized", request.url));
-      }
+    const isUserRestricted = userRestrictedPaths.some((path) => pathname === path || pathname.startsWith(path + "/"));
+    if (userRole === "USER" && isUserRestricted) {
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
 
     // 일반유저가 아닌 경우 제한 체크 (장바구니-주문 접근 불가)
-    if (userRole !== "USER") {
-      const isNonUserRestricted = nonUserRestrictedPaths.some(
-        (path) => pathname === path || pathname.startsWith(path + "/"),
-      );
-      if (isNonUserRestricted) {
-        return NextResponse.redirect(new URL("/unauthorized?from=order", request.url));
-      }
+    const nonUserRestrictedPaths = [
+      "/cart/order", // 장바구니-주문
+    ];
+    const isNonUserRestricted = nonUserRestrictedPaths.some(
+      (path) => pathname === path || pathname.startsWith(path + "/"),
+    );
+    if (userRole !== "USER" && isNonUserRestricted) {
+      return NextResponse.redirect(new URL("/unauthorized?from=order", request.url));
     }
   }
 
