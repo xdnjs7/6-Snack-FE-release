@@ -40,3 +40,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# .cursor
+.cursor/
+
+# documentation
+Convention.md
+
+# Sentry Config File
+.env.sentry-build-plugin
