@@ -50,7 +50,7 @@ export function middleware(request: NextRequest) {
   if (isProtectedRoute && !authToken) {
     // accessToken이 없고 refreshToken이 있는 경우, 재발급 API로 리디렉션
     if (refreshToken) {
-      return NextResponse.redirect(new URL("/api/auth/refresh", request.url));
+      return NextResponse.redirect(new URL("/api/auth/refresh-token", request.url));
     } else {
       // 둘 다 없으면 로그인 페이지로 이동
       return NextResponse.redirect(new URL("/login", request.url));
