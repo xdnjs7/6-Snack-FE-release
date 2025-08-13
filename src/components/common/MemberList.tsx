@@ -78,7 +78,7 @@ export default function MemberList({ id, name, email, role, onClickDeleteUser, o
 
         <div className="flex gap-2">
           <div
-            className="w-24 px-5 py-2.5 bg-white rounded-sm outline-1 outline-offset-[-1px] outline-primary-300 flex justify-center items-center cursor-pointer"
+            className="w-24 px-5 py-3 bg-white rounded-xs outline-1 outline-offset-[-1px] outline-primary-300 flex justify-center items-center cursor-pointer"
             onClick={() => {
               openModal(
                 <InviteMemberModal
@@ -96,7 +96,7 @@ export default function MemberList({ id, name, email, role, onClickDeleteUser, o
             <div className="text-center text-primary-900 text-base whitespace-nowrap leading-none">권한 변경</div>
           </div>
           <div
-            className="w-24 px-5 py-2.5 bg-red flex justify-center items-center rounded-sm cursor-pointer"
+            className="w-24 px-5 py-3 bg-red flex justify-center items-center rounded-xs cursor-pointer"
             onClick={() =>
               openModal(
                 <DeleteAccountConfirmModal

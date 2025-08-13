@@ -15,6 +15,7 @@ import { TToastVariant } from "@/types/toast.types";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useMemo, useState, useRef, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import DogSpinner from "@/components/common/DogSpinner";
 
 export default function User() {
   const [currentPaginationPage, setCurrentPaginationPage] = useState<number>(1);
@@ -115,7 +116,14 @@ export default function User() {
       queryClient.invalidateQueries({ queryKey: ["companyUsers"] });
     },
     onError: (error) => {
-      showToast(error instanceof Error ? error.message : "초대 발송에 실패했습니다.", "error");
+      const message: string = (error as Error).message || "";
+      const isConflict =
+        /Unique constraint/i.test(message) || /이미 초대/i.test(message) || /이미 등록된 이메일/i.test(message);
+      if (isConflict) {
+        showToast("이미 초대 내역이 존재합니다.", "error");
+      } else {
+        showToast(message || "초대 발송에 실패했습니다.", "error");
+      }
       console.error(error);
     },
   });
@@ -193,8 +201,8 @@ export default function User() {
         {/* 회원 목록 */}
         <div role="list" aria-label="회원 목록">
           {isLoadingMembers || deleteUserMutation.isPending || inviteUserMutation.isPending ? (
-            <div className="text-center py-10" role="status" aria-live="polite" aria-label="회원 목록 로딩 중">
-              로딩 중...
+            <div className="py-10 flex justify-center" role="status" aria-live="polite" aria-label="회원 목록 로딩 중">
+              <DogSpinner />
             </div>
           ) : paginateMembers.length > 0 ? (
             paginateMembers.map((member) => (
