@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 쿠키에서 인증 토큰 확인
-  const authToken = request.cookies.get("refreshToken")?.value;
+  const authToken = request.cookies.get("accessToken")?.value;
 
   // JWT 토큰에서 사용자 역할 추출
   const userRole = authToken ? getUserRoleFromToken(authToken) : null;
