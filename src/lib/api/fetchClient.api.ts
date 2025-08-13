@@ -28,7 +28,6 @@ export const cookieFetch = async <T>(path: string, options: RequestInit = {}): P
 
   const isRefreshRequest = path === "/auth/refresh-token";
 
-
   if (response.status === 401 && !isRefreshRequest) {
     try {
       console.log("🔄 액세스 토큰 갱신 시도");
