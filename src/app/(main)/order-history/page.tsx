@@ -740,7 +740,7 @@ const OrderHistoryPage = () => {
               <div className="w-6 h-6 relative overflow-hidden">
                 <Image src={ChevronLeftIcon} alt="Chevron Left" width={24} height={24} />
               </div>
-              <div className="text-center justify-start text-primary-500 text-base font-normal">Prev</div>
+              <div className="text-center justify-start text-primary-800 text-base font-normal">Prev</div>
             </button>
             <button
               onClick={() => handlePageChange(currentPage + 1)}
