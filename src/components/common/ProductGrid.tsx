@@ -28,6 +28,7 @@ export default function ProductGrid({ products, currentCategoryId }: ProductGrid
         subText2="상품 리스트에 추가 해보세요."
         buttonText="전체 상품 보기"
         onClick={() => router.push("/products")}
+        className="sm:mt-[150px] md:mt-[170px]"
       />
     );
   }
