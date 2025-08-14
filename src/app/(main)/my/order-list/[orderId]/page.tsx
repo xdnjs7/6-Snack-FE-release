@@ -7,10 +7,7 @@ import { getMyOrderDetail, TMyOrderDetail } from "@/lib/api/orderHistory.api";
 import { cookieFetch } from "@/lib/api/fetchClient.api";
 import Toast from "@/components/common/Toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { 
-  getStatusText, 
-  formatDate 
-} from "@/components/common/OrderDetail";
+import { getStatusText, formatDate } from "@/components/common/OrderDetail";
 import DogSpinner from "@/components/common/DogSpinner";
 
 // Lazy loading으로 컴포넌트 분리 - 더 세밀한 코드 분할
@@ -35,42 +32,42 @@ const ErrorComponent = memo(({ error }: { error: string | null }) => (
   </div>
 ));
 
-ErrorComponent.displayName = 'ErrorComponent';
+ErrorComponent.displayName = "ErrorComponent";
 
 // 최적화된 액션 버튼 컴포넌트
-const ActionButtons = memo(({ 
-  onBackToList, 
-  onAddToCart, 
-  isAddingToCart 
-}: { 
-  onBackToList: () => void;
-  onAddToCart: () => void;
-  isAddingToCart: boolean;
-}) => (
-  <div className="self-stretch flex justify-center items-center gap-4 pt-6 sm:pt-8">
-    <button
-      className="w-[155.5px] sm:w-[338px] md:w-[296px] h-16 px-4 py-3 bg-white rounded-[2px] outline outline-1 outline-offset-[-1px] outline-zinc-400 inline-flex justify-center items-center cursor-pointer hover:bg-primary-50 transition-colors duration-200"
-      onClick={onBackToList}
-      type="button"
-    >
-      <div className="text-center justify-center text-primary-800 text-base font-bold">
-        목록 보기
-      </div>
-    </button>
-    <button
-      className="w-[155.5px] sm:w-[338px] md:w-[300px] h-16 px-4 py-3 bg-primary-800 rounded-[2px] inline-flex justify-center items-center cursor-pointer hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-      onClick={onAddToCart}
-      disabled={isAddingToCart}
-      type="button"
-    >
-      <div className="text-center justify-center text-white text-base font-bold">
-        {isAddingToCart ? "처리 중..." : "장바구니 다시 담기"}
-      </div>
-    </button>
-  </div>
-));
+const ActionButtons = memo(
+  ({
+    onBackToList,
+    onAddToCart,
+    isAddingToCart,
+  }: {
+    onBackToList: () => void;
+    onAddToCart: () => void;
+    isAddingToCart: boolean;
+  }) => (
+    <div className="self-stretch flex justify-center items-center gap-4 pt-6 sm:pt-8">
+      <button
+        className="w-[155.5px] sm:w-[338px] md:w-[296px] h-16 px-4 py-3 bg-white rounded-[2px] outline outline-1 outline-offset-[-1px] outline-zinc-400 inline-flex justify-center items-center cursor-pointer hover:bg-primary-50 transition-colors duration-200"
+        onClick={onBackToList}
+        type="button"
+      >
+        <div className="text-center justify-center text-primary-800 text-base font-bold">목록 보기</div>
+      </button>
+      <button
+        className="w-[155.5px] sm:w-[338px] md:w-[300px] h-16 px-4 py-3 bg-primary-800 rounded-[2px] inline-flex justify-center items-center cursor-pointer hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+        onClick={onAddToCart}
+        disabled={isAddingToCart}
+        type="button"
+      >
+        <div className="text-center justify-center text-white text-base font-bold">
+          {isAddingToCart ? "처리 중..." : "장바구니 다시 담기"}
+        </div>
+      </button>
+    </div>
+  ),
+);
 
-ActionButtons.displayName = 'ActionButtons';
+ActionButtons.displayName = "ActionButtons";
 
 export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
   const params = useParams();
@@ -98,10 +95,10 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       // 비동기 작업을 별도로 처리하여 메인 스레드 블로킹 방지
       const data: TMyOrderDetail = await getMyOrderDetail(orderId);
-      
+
       // 상태 업데이트를 즉시 실행하여 LCP 개선
       setOrderData(data);
       setIsLoading(false);
@@ -177,10 +174,8 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
       }
     },
     onSuccess: () => {
-      // 강제로 refetch 실행
-      queryClient.refetchQueries({
-        predicate: (query) => query.queryKey[0] === "cart",
-      });
+      // cartItems queryKey로 캐시 무효화
+      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
       showToast("장바구니에 상품이 추가되었습니다.", "success");
     },
     onError: () => {
@@ -205,25 +200,22 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
   // 메인 컨텐츠 메모이제이션
   const mainContent = useMemo(() => {
     if (!orderData) return null;
-    
+
     return (
       <div className="min-h-screen bg-white">
         <Toast text={toast.text} variant={toast.variant} isVisible={toast.isVisible} />
         <div className="w-full max-w-7xl mx-auto pt-[30px] flex flex-col justify-start items-start gap-[23px]">
           <div className="self-stretch justify-center text-primary-950 text-lg font-bold">구매 요청 내역</div>
 
-          <Suspense fallback={
-            <div className="w-full h-32 bg-primary-100 rounded" style={{ minHeight: '128px' }}></div>
-          }>
-            <OrderItemsSection 
-              receipts={orderData.receipts}
-              title="요청 품목"
-            />
+          <Suspense
+            fallback={<div className="w-full h-32 bg-primary-100 rounded" style={{ minHeight: "128px" }}></div>}
+          >
+            <OrderItemsSection receipts={orderData.receipts} title="요청 품목" />
           </Suspense>
 
-          <Suspense fallback={
-            <div className="w-full h-32 bg-primary-100 rounded" style={{ minHeight: '128px' }}></div>
-          }>
+          <Suspense
+            fallback={<div className="w-full h-32 bg-primary-100 rounded" style={{ minHeight: "128px" }}></div>}
+          >
             <RequestInfoSection
               userName={orderData.user?.name}
               createdAt={orderData.createdAt}
@@ -232,9 +224,9 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
             />
           </Suspense>
 
-          <Suspense fallback={
-            <div className="w-full h-32 bg-primary-100 rounded" style={{ minHeight: '128px' }}></div>
-          }>
+          <Suspense
+            fallback={<div className="w-full h-32 bg-primary-100 rounded" style={{ minHeight: "128px" }}></div>}
+          >
             <ApprovalInfoSection
               approver={orderData.approver}
               updatedAt={orderData.updatedAt}
@@ -286,16 +278,16 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
           <title>구매 요청 내역 - 로딩 중</title>
           <meta name="description" content="구매 요청 내역을 불러오는 중입니다." />
           <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-          
+
           {/* Preconnect 최적화 - LCP 개선 */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
           <link rel="dns-prefetch" href="//fonts.googleapis.com" />
           <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-          
+
           {/* 외부 API preconnect - 라이트하우스 권장사항 */}
           <link rel="preconnect" href="http://localhost:8080" />
-          
+
           {/* Critical CSS 인라인화 - 최적화된 버전 */}
           <style dangerouslySetInnerHTML={{ __html: criticalCSS }} />
         </Head>
@@ -321,21 +313,24 @@ export default function MyOrderDetailPage({}: TMyOrderDetailPageProps) {
     <>
       <Head>
         <title>{pageTitle}</title>
-        <meta name="description" content={`구매 요청 내역 상세 페이지입니다. ${orderData.receipts?.length || 0}개의 상품이 포함되어 있습니다.`} />
+        <meta
+          name="description"
+          content={`구매 요청 내역 상세 페이지입니다. ${orderData.receipts?.length || 0}개의 상품이 포함되어 있습니다.`}
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-        
+
         {/* Preconnect 최적화 - LCP 개선 */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-        
+
         {/* 외부 API preconnect - 라이트하우스 권장사항 */}
         <link rel="preconnect" href="http://localhost:8080" />
-        
+
         {/* 폰트 preload - LCP 개선 */}
         <link rel="preload" href="/fonts/suit.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        
+
         {/* Critical CSS 인라인화 - 최적화된 버전 */}
         <style dangerouslySetInnerHTML={{ __html: criticalCSS }} />
       </Head>
