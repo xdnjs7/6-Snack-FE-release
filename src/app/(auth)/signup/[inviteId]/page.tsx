@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SnackIconSvg from "@/components/svg/SnackIconSvg";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -17,25 +17,28 @@ import Image from "next/image";
 import DogSpinner from "@/components/common/DogSpinner";
 import { inviteSignupSchema, TInviteSignUpFormData } from "@/lib/schemas/inviteSignupSchema";
 import FormErrorMessage from "../../login/_components/FormErrorMessage";
+import Toast from "@/components/common/Toast";
 
 export default function InviteSignUpPage() {
   const params = useParams();
   const router = useRouter();
   const inviteId = params.inviteId as string;
 
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [inviteInfo, setInviteInfo] = useState<TInviteInfo | null>(null);
   const [inviteError, setInviteError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-
+  const [isToastVisible, setIsToastVisible] = useState<boolean>(false);
+  const [toastText, setToastText] = useState<string>("");
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const {
     register,
     handleSubmit,
     watch,
     trigger,
-    formState: { errors, isSubmitting, isValid },
-    setError: setFormError,
+    formState: { errors, isValid },
   } = useForm<TInviteSignUpFormData>({
     resolver: zodResolver(inviteSignupSchema),
     mode: "onChange",
@@ -43,6 +46,14 @@ export default function InviteSignUpPage() {
 
   const passwordInput = watch("password");
   const passwordConfirmInput = watch("passwordConfirm");
+  // 언마운트 시 타이머 클린업
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (passwordConfirmInput) {
@@ -72,16 +83,26 @@ export default function InviteSignUpPage() {
     if (!inviteInfo) return;
 
     try {
+      setIsDisabled(true);
       await signUpWithInviteApi(inviteId, data.password, data.passwordConfirm);
       router.push("/login");
     } catch {
-      setFormError("root", { message: "회원가입에 실패했습니다. 다시 시도해주세요." });
+      setIsToastVisible(true);
+      setToastText("회원가입에 실패했습니다. 다시 시도해주세요.");
+      if (timerRef.current) clearTimeout(timerRef.current);
+
+      timerRef.current = setTimeout(() => {
+        setIsToastVisible(false);
+        timerRef.current = null;
+      }, 3000);
+    } finally {
+      setIsDisabled(false);
     }
   };
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center ">
+      <div className="flex flex-col items-center justify-center h-[80vh]">
         <DogSpinner />
       </div>
     );
@@ -113,6 +134,7 @@ export default function InviteSignUpPage() {
 
   return (
     <div className="sm:relative flex flex-col items-center justify-center gap-[46px] sm:gap-0 pt-[48px] sm:pt-[160px]">
+      <Toast text={toastText} isVisible={isToastVisible} />
       <div className="sm:absolute sm:top-0 flex flex-col items-center justify-center w-full max-w-[480px] sm:max-w-[600px]">
         <div className="flex justify-center items-center w-full sm:max-w-[500px] h-[140px] sm:h-[214px] py-[38.18px] sm:py-[58.4px] px-[50.92px] sm:px-[77.86px]">
           <Link href="/">
@@ -258,13 +280,13 @@ export default function InviteSignUpPage() {
 
         <Button
           type="primary"
-          label={isSubmitting ? "처리 중..." : "가입하기"}
+          label={isDisabled ? "처리 중..." : "가입하기"}
           className={clsx(
             "w-full h-[64px] mb-[24px]",
-            isValid && !isSubmitting ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
+            isValid && !isDisabled ? "bg-primary-950 text-primary-50" : "bg-primary-100 text-primary-300",
           )}
-          onClick={isValid && !isSubmitting ? handleSubmit(onSubmit) : undefined}
-          disabled={!isValid || isSubmitting}
+          onClick={isValid && !isDisabled ? handleSubmit(onSubmit) : undefined}
+          disabled={!isValid || isDisabled}
           aria-describedby={!isValid ? "form-validation-info" : undefined}
         />
         {!isValid && (
