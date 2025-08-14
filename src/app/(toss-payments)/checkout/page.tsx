@@ -107,7 +107,6 @@ export default function CheckoutPage() {
       </div>
     );
   }
-  usePreventLeave(order.id);
 
   if (!user) {
     return (

@@ -1,12 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 export function usePreventLeave(orderId: string) {
-  const pathname = usePathname();
-  const prevPathRef = useRef(pathname);
-
   // 취소 API 호출
   async function cancel(orderId: string) {
     const response = await fetch(
