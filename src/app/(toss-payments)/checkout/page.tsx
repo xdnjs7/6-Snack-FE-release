@@ -9,6 +9,7 @@ import img_dog_error from "@/assets/images/img_dog_error.png";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
+import { usePreventLeave } from "@/hooks/usePreventLeave";
 
 export default function CheckoutPage() {
   const [amount, setAmount] = useState<{ currency: string; value: number }>({
@@ -26,6 +27,8 @@ export default function CheckoutPage() {
 
   const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY!;
   const customerKey = user ? user!.id : "";
+
+  usePreventLeave(order?.id ?? "");
 
   useEffect(() => {
     if (order) {
@@ -104,6 +107,7 @@ export default function CheckoutPage() {
       </div>
     );
   }
+  usePreventLeave(order.id);
 
   if (!user) {
     return (
