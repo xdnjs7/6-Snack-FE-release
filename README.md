@@ -69,8 +69,11 @@
 
 ## 📱 기능 구현 영상
 
-<br></br>
-<a name="team-members"></a>
+<div align="center">
+    
+  [![Snack 시연 영상](https://img.youtube.com/vi/57Z76QTaeqA/hqdefault.jpg)](https://www.youtube.com/watch?v=57Z76QTaeqA)
+</div>
+
 
 
 ## 🚧 프론트엔드 시스템 아키텍쳐
