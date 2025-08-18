@@ -23,14 +23,14 @@
     **불필요한 지출을 줄이며 합리적인 소비 패턴을 도출**할 수 있습니다.  
     **복잡한 총무 업무를 줄이고, 기업 복지 운영의 효율성을 극대화**하는 도구, 바로 <mark>**Snack**</mark>입니다.
 
-### 🔗 팀 문서 
-- 📗 [Notion 링크 바로가기](https://www.notion.so/3-Snack-2156e9d243fd81cd90e7e05503fe930b)  
+### 📗 팀 문서 
+- [Notion 링크 바로가기](https://www.notion.so/3-Snack-2156e9d243fd81cd90e7e05503fe930b)  
 
-### 백엔드 Git 저장소  
-- 🔧 [GitHub Repository 보러가기](https://github.com/De-cal/6-Snack-BE)
+### 🔧 백엔드 Git 저장소  
+- [GitHub Repository 보러가기](https://github.com/De-cal/6-Snack-BE)
 
-### API 명세서
-- 🧾 [Swagger API 보러가기](https://api.5nack.site/api-docs)
+### 🧾 API 명세서
+- [Swagger API 보러가기](https://api.5nack.site/api-docs)
 
 
 <a name="feature-preview"></a>
