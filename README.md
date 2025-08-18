@@ -34,7 +34,7 @@
 <br></br>
 <a name="feature-preview"></a>
 ## 🖼️ Snack(스낵) 미리보기
-<table>
+<table align="center">
   <thead>
     <tr>
       <th align="center">AI 챗봇 도우미</th>
@@ -45,17 +45,17 @@
   </thead>
   <tbody>
     <tr>
-      <td align="center"><img src="https://github.com/user-attachments/assets/42bd0632-4e3a-404f-aeb8-02576ac02d07" width="200" alt="AI 챗봇 도우미"></td>
-      <td align="center"><img src="https://github.com/user-attachments/assets/ca2a3cff-ddc5-40ed-bd96-a933744eb2b0" width="200" alt="결제 모듈"></td>
-      <td align="center"><img src="https://github.com/user-attachments/assets/4f56bb40-c95a-4c10-8a95-7831355372c0" width="200" alt="모바일 구매 내역 확인"></td>
-      <td align="center"><img src="https://github.com/user-attachments/assets/ff45a00e-e42c-4d7f-8355-fb326ed719ef" width="200" alt="상품 상세와 담기"></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/42bd0632-4e3a-404f-aeb8-02576ac02d07" width="150" alt="AI 챗봇 도우미"></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/ca2a3cff-ddc5-40ed-bd96-a933744eb2b0" width="150" alt="결제 모듈"></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/4f56bb40-c95a-4c10-8a95-7831355372c0" width="150" alt="모바일 구매 내역 확인"></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/ff45a00e-e42c-4d7f-8355-fb326ed719ef" width="150" alt="상품 상세와 담기"></td>
     </tr>
   </tbody>
 </table>
 
 <br>
 
-<table>
+<table align="center">
   <thead>
     <tr>
       <th align="center">스낵 예산 관리</th>
@@ -66,10 +66,10 @@
   </thead>
   <tbody>
     <tr>
-      <td align="center"><img src="https://github.com/user-attachments/assets/25c63f64-8f8e-492b-bf48-f8e5f6f826d6" width="200" alt="스낵 예산 관리"></td>
-      <td align="center"><img src="https://github.com/user-attachments/assets/2c8a665c-2956-4273-bd68-a146ff3c645f" width="200" alt="찜하기 해제 기능"></td>
-      <td align="center"><img src="https://github.com/user-attachments/assets/efec779a-5d3b-41fd-8158-f50b9826c240" width="200" alt="카테고리 정렬 둘러보기"></td>
-      <td align="center"><img src="https://github.com/user-attachments/assets/4f5850e2-051d-4383-9143-3852a7f71174" width="200" alt="회원 관리 모바일"></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/25c63f64-8f8e-492b-bf48-f8e5f6f826d6" width="150" alt="스낵 예산 관리"></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/2c8a665c-2956-4273-bd68-a146ff3c645f" width="150" alt="찜하기 해제 기능"></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/efec779a-5d3b-41fd-8158-f50b9826c240" width="150" alt="카테고리 정렬 둘러보기"></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/4f5850e2-051d-4383-9143-3852a7f71174" width="150" alt="회원 관리 모바일"></td>
     </tr>
   </tbody>
 </table>
