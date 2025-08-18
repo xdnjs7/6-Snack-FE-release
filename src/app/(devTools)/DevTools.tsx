@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { navLinks } from "@/app/(preview)/components-preview/navigationLinks";
+import { navLinks } from "@/app/(devTools)/navigationLinks";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "@/providers/AuthProvider";
 
