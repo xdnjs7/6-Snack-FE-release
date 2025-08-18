@@ -85,7 +85,8 @@
 <details>
   <summary><h3>FE 기술 스택 한눈에 보기</h3></summary>
   
-<img  width="1076" height="565" alt="image" src="https://github.com/user-attachments/assets/d30f82fc-52fe-4353-a17c-601b6296dfda" />
+<img width="1076" height="565" alt="image" src="https://github.com/user-attachments/assets/46b1ca37-3e59-40b0-9d0f-4281a6dbd813" />
+
 
   
 </details>
