@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import React from "react";
 import localFont from "next/font/local";
 import "./globals.css";
-import DevNavBar from "@/app/(preview)/components-preview/DevTools";
+// import DevNavBar from "@/app/(devTools)/DevTools";
 import { TChildrenProps } from "@/types/children.types";
 import Header from "@/components/layout/Header";
 import Providers from "./Providers";
@@ -26,8 +26,8 @@ export default function RootLayout({ children }: TChildrenProps) {
       <body className={`${suit.variable} min-h-screen flex flex-col`}>
         <Providers>
           <Header />
-          {/* 개발용 네비게이션 바 작업완료 후 삭제*/}
-          <DevNavBar />
+          {/* 개발용 네비게이션 바*/}
+          {/* <DevNavBar /> */}
           <main className="relative flex-1">
             <GeneralLayout>{children}</GeneralLayout>
           </main>
