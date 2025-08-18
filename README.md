@@ -1,18 +1,8 @@
-# 고급 프로젝트 - Snack(스낵)
+# Snack(스낵) - 원스톱 구매 내역 관리 서비스
 <img width="1107" height="380" alt="스크린샷 2025-08-18 130003" src="https://github.com/user-attachments/assets/1b33e7da-435f-47bd-bb99-1a0faf7e91b3" />
 
-## 📝 목차
 
-🔹 [**프로젝트 소개**](#project-introduction)  
-🔹 [**Snack(스낵) 미리보기**](#feature-preview)  
-🔹 [**기능 구현 영상**](#feature-demo-video)  
-🔹 [**팀원 소개**](#team-members)  
-🔹 [**시스템 아키텍쳐**](#system-architecture)  
-🔹 [**기술 스택**](#tech-stack)  
-🔹 [**주요 기능**](#project-features)  
-🔹 [**트러블 슈팅**](#troubleshooting)  
 
-<a name="project-introduction"></a>
 ## 📑 프로젝트 소개
 - 간식 대장
     
@@ -33,7 +23,7 @@
 - [Swagger API 보러가기](https://api.5nack.site/api-docs)
 
 
-<a name="feature-preview"></a>
+
 ## 🖼️ Snack(스낵) 미리보기
 <table align="center">
   <thead>
@@ -76,11 +66,62 @@
 
 
 
-<a name="feature-demo-video"></a>
+
 ## 📱 기능 구현 영상
 
 <br></br>
 <a name="team-members"></a>
+
+
+## 🚧 프론트엔드 시스템 아키텍쳐
+<p align="center">
+ <img width="455" height="511" alt="image" src="https://github.com/user-attachments/assets/d58f6d2e-bdbf-4898-b77f-5c302d460c31" />
+</p>
+
+
+
+## ⚙️ 기술 스택
+
+<details>
+  <summary><h3>FE 기술 스택 한눈에 보기</h3></summary>
+  
+<img  width="1076" height="565" alt="image" src="https://github.com/user-attachments/assets/d30f82fc-52fe-4353-a17c-601b6296dfda" />
+
+  
+</details>
+
+### 📌 프레임워크 & 언어
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+
+### 🎨 UI & 스타일링
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![tailwind-merge](https://img.shields.io/badge/tailwind--merge-0F172A?style=for-the-badge)](https://tailwind-merge.vercel.app/)
+
+### 📊 상태 & 데이터 관리
+[![React Query](https://img.shields.io/badge/React%20Query-FF4154?style=for-the-badge&logo=reactquery&logoColor=white)](https://tanstack.com/query)
+[![Zustand](https://img.shields.io/badge/Zustand-443E38?style=for-the-badge&logo=zustand&logoColor=white)](https://zustand-demo.pmnd.rs/)
+[![Zod](https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white)](https://zod.dev/)
+[![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white)](https://react-hook-form.com/)
+
+### 🛠 개발 도구
+[![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)](https://eslint.org/)
+[![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)](https://prettier.io/)
+[![Sentry](https://img.shields.io/badge/Sentry-362D59?style=for-the-badge&logo=sentry&logoColor=white)](https://sentry.io/)
+
+### 🔧 유틸리티
+[![clsx](https://img.shields.io/badge/clsx-000000?style=for-the-badge)](https://github.com/lukeed/clsx)
+[![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com/)
+[![TossPayments](https://img.shields.io/badge/Toss%20Payments-0064FF?style=for-the-badge)](https://developers.tosspayments.com/)
+
+### 🚀 배포 & 협업 도구
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/)
+[![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/)
+[![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)](https://notion.so/)
+
+
 ## 👨‍👩‍👧‍👦 팀원 소개
 <table align="center">
   <tbody>
@@ -139,54 +180,30 @@
   </tbody>
 </table>
 
+## 🏗️ 프로젝트 구조
+<details>
+  <summary><h3>프로젝트 구조 보기</h3></summary>
 
-<a name="system-architecture"></a>
-## 🚧 프론트엔드 시스템 아키텍쳐
-<p align="center">
- <img width="455" height="511" alt="image" src="https://github.com/user-attachments/assets/d58f6d2e-bdbf-4898-b77f-5c302d460c31" />
-</p>
+```
+src/
+├── app/                 # 앱 엔트리포인트 및 주요 페이지 구조
+├── assets/              # 정적 자원 (이미지, 폰트 등)
+├── components/          # 공용 UI 컴포넌트
+├── hooks/               # 커스텀 훅 정의
+├── lib/                 # 외부 라이브러리 설정 및 유틸 함수
+├── providers/           # 전역 상태/컨텍스트 제공자
+├── stores/              # 상태 관리
+├── types/               # TypeScript 타입 정의
+├── instrumentation-client.ts # 클라이언트 측 계측 로직
+├── instrumentation.ts   # 서버/공용 계측 로직
+└── middleware.ts        # 서버 미들웨어 (인증, 로깅 등)
+```
 
-<br></br>
-<a name="tech-stack"></a>
-## ⚙️ 기술 스택
+</details>
 
-### 📌 프레임워크 & 언어
-[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-
-### 🎨 UI & 스타일링
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![tailwind-merge](https://img.shields.io/badge/tailwind--merge-0F172A?style=for-the-badge)](https://tailwind-merge.vercel.app/)
-
-### 📊 상태 & 데이터 관리
-[![React Query](https://img.shields.io/badge/React%20Query-FF4154?style=for-the-badge&logo=reactquery&logoColor=white)](https://tanstack.com/query)
-[![Zustand](https://img.shields.io/badge/Zustand-443E38?style=for-the-badge&logo=zustand&logoColor=white)](https://zustand-demo.pmnd.rs/)
-[![Zod](https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white)](https://zod.dev/)
-[![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white)](https://react-hook-form.com/)
-
-### 🛠 개발 도구
-[![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)](https://eslint.org/)
-[![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)](https://prettier.io/)
-[![Sentry](https://img.shields.io/badge/Sentry-362D59?style=for-the-badge&logo=sentry&logoColor=white)](https://sentry.io/)
-
-### 🔧 유틸리티
-[![clsx](https://img.shields.io/badge/clsx-000000?style=for-the-badge)](https://github.com/lukeed/clsx)
-[![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com/)
-[![TossPayments](https://img.shields.io/badge/Toss%20Payments-0064FF?style=for-the-badge)](https://developers.tosspayments.com/)
-
-### 🚀 배포 & 협업 도구
-[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/)
-[![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/)
-[![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)](https://notion.so/)
-
-
-
-<a name="project-features"></a>
 ## ✨ 주요 기능
 <details>
-<summary><h3>1. 사내 간식 주문 플랫폼 </h3></summary>
+<summary>1. 사내 간식 주문 플랫폼 </summary>
 
 - **상품 카테고리** : 카테고리별 간식 상품 조회  
 - **장바구니 시스템** : 상품 선택, 수량 조절, 주문 전 확인  
@@ -194,7 +211,7 @@
 </details>
 
 <details>
-<summary><h3>2. 예산 관리 시스템</h3></summary>
+<summary>2. 예산 관리 시스템</summary>
 
 - **월별 예산 설정** : 관리자가 회사 예산 한도 설정  
 - **지출 현황 모니터링** : 실시간 예산 사용량 추적  
@@ -202,7 +219,7 @@
 </details>
 
 <details>
-<summary><h3>3. 사용자 권한 관리</h3></summary>
+<summary>3. 사용자 권한 관리</summary>
 
 - **역할 기반 접근 제어** : USER, ADMIN, SUPER_ADMIN 권한 체계  
 - **회원 초대 시스템** : 이메일 초대 링크 발송  
@@ -210,7 +227,7 @@
 </details>
 
 <details>
-<summary><h3>4. 주문 관리 대시보드</h3></summary>
+<summary>4. 주문 관리 대시보드</summary>
 
 - **주문 현황 모니터링** : 전체 주문 상태 실시간 확인  
 - **승인 워크플로우** : 관리자 주문 승인/거절 프로세스  
@@ -218,7 +235,7 @@
 </details>
 
 <details>
-<summary><h3>5. 결제 시스템 연동</h3></summary>
+<summary>5. 결제 시스템 연동</summary>
 
 - **토스페이먼츠 연동** : 안전한 결제 처리  
 - **결제 성공/실패 처리** : 사용자 피드백 및 에러 핸들링  
@@ -227,7 +244,7 @@
 </details>
 
 <details>
-<summary><h3>6. 개인 맞춤형 시스템</h3></summary>
+<summary>6. 개인 맞춤형 시스템</summary>
 
 - **찜 기능** : 자주 주문하는 상품 즐겨찾기  
 - **판매 통계** : 주문량 기반 상품 표시
@@ -235,12 +252,12 @@
 
 
 ## 💣 트러블 슈팅
-<a name="troubleshooting"></a>
+
 ### 기획 의도 관련 문제
 
 
 <details>
-<summary><h3>1.문제점 (Problem)</h3></summary>
+<summary>1.문제점 (Problem)<</summary>
 
 이번 프로젝트에서 가장 크게 부딪힌 문제는 **기획 의도 문제**였습니다.
 <p align="center">
@@ -261,7 +278,7 @@
 </details>
 
 <details>
-<summary><h3>2.원인 (Cause) </h3></summary>
+<summary>2.원인 (Cause) </summary>
 
 
 - 문제의 근본 원인은 **상품 수정 기능**이었습니다.
@@ -271,7 +288,7 @@
 </details>
 
 <details>
-<summary><h3>3. 해결 과정 (Solution)</h3></summary>
+<summary>3. 해결 과정 (Solution)</summary>
 
 - 벤치마킹 대상으로 **AirSupply** 플랫폼을 참고했습니다.
   - 해당 서비스는 상품 정보를 직접 수정하지 않고, **URL 입력 시 자동으로 상품 정보를 가져오는 구조**를 사용하고 있었습니다.
@@ -283,7 +300,7 @@
 </details>
 
 <details>
-<summary><h3> 4. 결과 및 배운 점 (Result & Learnings)</h3></summary>
+<summary>4. 결과 및 배운 점 (Result & Learnings)</summary>
     
 - 실제 개발 과정에서 발생하는 **다양한 오류와 문제 상황을 해결하며 트러블슈팅 능력**을 키울 수 있었습니다.
 - 단순히 기능을 구현하는 개발자가 아니라, **실제 서비스 운영을 고려한 기획과 설계**의 중요성을 체감했습니다.
